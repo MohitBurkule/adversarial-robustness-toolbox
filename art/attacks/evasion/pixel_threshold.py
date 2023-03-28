@@ -153,7 +153,7 @@ class PixelThreshold(EvasionAttack):
         :return: An array holding the adversarial examples.
         """
         if y is not None:
-            y = check_and_transform_label_format(y, self.estimator.nb_classes, return_one_hot=False)
+            y = check_and_transform_label_format(y, nb_classes=self.estimator.nb_classes, return_one_hot=False)
 
         if y is None:
             if self.targeted:
@@ -167,7 +167,7 @@ class PixelThreshold(EvasionAttack):
             if y.ndim > 1 and y.shape[1] > 1:
                 y = np.argmax(y, axis=1)
 
-        y = np.squeeze(y)  # type: ignore
+        y = y.flatten()  # type: ignore
 
         if self.th is None:
             logger.info(

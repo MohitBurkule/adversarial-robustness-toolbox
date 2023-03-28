@@ -633,6 +633,8 @@ def get_image_classifier_kr(
         else:
             model.add(Dense(10, activation="softmax"))
 
+    loss = None
+
     if loss_name == "categorical_hinge":
         if loss_type == "label":
             raise AttributeError("This combination of loss function options is not supported.")
@@ -856,6 +858,8 @@ def get_image_classifier_kr_tf(loss_name="categorical_crossentropy", loss_type="
     model.layers[-1].set_weights(
         [_kr_tf_weights_loader("MNIST", "W", "DENSE"), _kr_tf_weights_loader("MNIST", "B", "DENSE")]
     )
+
+    loss = None
 
     if loss_name == "categorical_hinge":
         if loss_type == "label":
@@ -1794,6 +1798,99 @@ def get_tabular_classifier_kr(load_init=True):
 
     # Get classifier
     krc = KerasClassifier(model, clip_values=(0, 1), use_logits=False, channels_first=True)
+
+    return krc
+
+
+def get_tabular_regressor_kr(load_init=True):
+    """
+    Standard Keras regressor for unit testing on Diabetes dataset. Passes loss to compile() as string.
+
+    :param load_init: Load the initial weights if True.
+    :type load_init: `bool`
+    :return: The trained model for Diabetes dataset and the session.
+    :rtype: `tuple(KerasRegressor, tf.Session)`
+    """
+    import tensorflow as tf
+
+    tf_version = [int(v) for v in tf.__version__.split(".")]
+    if tf_version[0] == 2 and tf_version[1] >= 3:
+        is_tf23_keras24 = True
+        tf.compat.v1.disable_eager_execution()
+        from tensorflow import keras
+        from tensorflow.keras.layers import Dense
+        from tensorflow.keras.models import Sequential
+    else:
+        is_tf23_keras24 = False
+        import keras
+        from keras.models import Sequential
+        from keras.layers import Dense
+
+    from art.estimators.regression.keras import KerasRegressor
+
+    # Create simple regression model
+    model = Sequential()
+
+    if load_init:
+        if is_tf23_keras24:
+            model.add(
+                Dense(
+                    100,
+                    input_shape=(10,),
+                    activation="relu",
+                    kernel_initializer=_tf_weights_loader("DIABETES", "W", "DENSE1", 2),
+                    bias_initializer=_tf_weights_loader("DIABETES", "B", "DENSE1", 2),
+                )
+            )
+            model.add(
+                Dense(
+                    10,
+                    activation="relu",
+                    kernel_initializer=_tf_weights_loader("DIABETES", "W", "DENSE2", 2),
+                    bias_initializer=_tf_weights_loader("DIABETES", "B", "DENSE2", 2),
+                )
+            )
+            model.add(
+                Dense(
+                    1,
+                    kernel_initializer=_tf_weights_loader("DIABETES", "W", "DENSE3", 2),
+                    bias_initializer=_tf_weights_loader("DIABETES", "B", "DENSE3", 2),
+                )
+            )
+        else:
+            model.add(
+                Dense(
+                    100,
+                    input_shape=(10,),
+                    activation="relu",
+                    kernel_initializer=_kr_weights_loader("DIABETES", "W", "DENSE1"),
+                    bias_initializer=_kr_weights_loader("DIABETES", "B", "DENSE1"),
+                )
+            )
+            model.add(
+                Dense(
+                    10,
+                    activation="relu",
+                    kernel_initializer=_kr_weights_loader("DIABETES", "W", "DENSE2"),
+                    bias_initializer=_kr_weights_loader("DIABETES", "B", "DENSE2"),
+                )
+            )
+            model.add(
+                Dense(
+                    1,
+                    kernel_initializer=_kr_weights_loader("DIABETES", "W", "DENSE3"),
+                    bias_initializer=_kr_weights_loader("DIABETES", "B", "DENSE3"),
+                )
+            )
+    else:
+        model.add(Dense(100, input_shape=(10,), activation="relu"))
+        model.add(Dense(10, activation="relu"))
+        model.add(Dense(1))
+
+    model.compile(loss="mean_squared_error", optimizer=keras.optimizers.Adam(lr=0.001), metrics=["accuracy"])
+
+    # Get regressor
+    krc = KerasRegressor(model)
 
     return krc
 
