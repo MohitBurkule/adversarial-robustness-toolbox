@@ -101,10 +101,10 @@ class SleeperAgentAttack(GradientMatchingAttack):
         """
         if isinstance(classifier.preprocessing, (StandardisationMeanStdPyTorch, StandardisationMeanStdTensorFlow)):
             clip_values_normalised = (
-                classifier.clip_values - classifier.preprocessing.mean
+                classifier.clip_values - classifier.preprocessing.mean  # type: ignore
             ) / classifier.preprocessing.std
             clip_values_normalised = (clip_values_normalised[0], clip_values_normalised[1])
-            epsilon_normalised = epsilon * (clip_values_normalised[1] - clip_values_normalised[0])
+            epsilon_normalised = epsilon * (clip_values_normalised[1] - clip_values_normalised[0])  # type: ignore
             patch_normalised = (patch - classifier.preprocessing.mean) / classifier.preprocessing.std
         else:
             raise ValueError("classifier.preprocessing not an instance of pytorch/tensorflow")
@@ -360,7 +360,7 @@ class SleeperAgentAttack(GradientMatchingAttack):
             for layer in model_pt.model.children():
                 if hasattr(layer, "reset_parameters"):
                     layer.reset_parameters()  # type: ignore
-            model_pt.fit(x_train, y_train, batch_size=batch_size, nb_epochs=epochs, verbose=1)
+            model_pt.fit(x_train, y_train, batch_size=batch_size, nb_epochs=epochs, verbose=True)
             predictions = model_pt.predict(x_test)
             accuracy = np.sum(np.argmax(predictions, axis=1) == np.argmax(y_test, axis=1)) / len(y_test)
             logger.info("Accuracy of retrained model : %s", accuracy * 100.0)
@@ -370,7 +370,7 @@ class SleeperAgentAttack(GradientMatchingAttack):
 
             self.substitute_classifier.model.trainable = True
             model_tf = self.substitute_classifier.clone_for_refitting()
-            model_tf.fit(x_train, y_train, batch_size=batch_size, nb_epochs=epochs, verbose=0)
+            model_tf.fit(x_train, y_train, batch_size=batch_size, nb_epochs=epochs, verbose=False)
             predictions = model_tf.predict(x_test)
             accuracy = np.sum(np.argmax(predictions, axis=1) == np.argmax(y_test, axis=1)) / len(y_test)
             logger.info("Accuracy of retrained model : %s", accuracy * 100.0)
@@ -431,7 +431,7 @@ class SleeperAgentAttack(GradientMatchingAttack):
             classifier.model.trainable = model_trainable
         else:
             raise NotImplementedError("SleeperAgentAttack is currently implemented only for PyTorch and TensorFlowV2.")
-        indices = sorted(range(len(grad_norms)), key=lambda k: grad_norms[k])
+        indices = sorted(range(len(grad_norms)), key=lambda k: grad_norms[k])  # type: ignore
         indices = indices[-num_poison:]
         return np.array(indices)  # this will get only indices for target class
 

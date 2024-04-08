@@ -46,11 +46,11 @@ logger = logging.getLogger(__name__)
 SUPPORTED_METHODS: Dict[str, Dict[str, Any]] = {
     "auto": {
         "class": AutoAttack,
-        "params": {"eps_step": 0.1, "eps_max": 1.0},
+        "params": {"eps_step": 0.1},
     },
     "fgsm": {
         "class": FastGradientMethod,
-        "params": {"eps_step": 0.1, "eps_max": 1.0, "clip_min": 0.0, "clip_max": 1.0},
+        "params": {"eps_step": 0.1},
     },
     "hsj": {
         "class": HopSkipJump,
@@ -90,10 +90,10 @@ def get_crafter(classifier: "CLASSIFIER_TYPE", attack: str, params: Optional[Dic
 def adversarial_accuracy(
     classifier: "CLASSIFIER_TYPE",
     x: np.ndarray,
-    y: np.ndarray = None,
-    attack_name: str = None,
+    y: Optional[np.ndarray] = None,
+    attack_name: Optional[str] = None,
     attack_params: Optional[Dict[str, Any]] = None,
-    attack_crafter: EvasionAttack = None,
+    attack_crafter: Optional[EvasionAttack] = None,
 ) -> float:
     """
     Compute the adversarial accuracy of a classifier object over the sample `x` for a given adversarial crafting

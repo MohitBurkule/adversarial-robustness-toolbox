@@ -74,12 +74,13 @@ class RandomizedSmoothingMixin(ABC):
         """
         raise NotImplementedError
 
-    def predict(self, x: np.ndarray, batch_size: int = 128, **kwargs) -> np.ndarray:
+    def predict(self, x: np.ndarray, batch_size: int = 128, verbose: bool = False, **kwargs) -> np.ndarray:
         """
         Perform prediction of the given classifier for a batch of inputs, taking an expectation over transformations.
 
         :param x: Input samples.
         :param batch_size: Batch size.
+        :param verbose: Display training progress bar.
         :param is_abstain: True if function will abstain from prediction and return 0s. Default: True
         :type is_abstain: `boolean`
         :return: Array of predictions of shape `(nb_inputs, nb_classes)`.
@@ -95,7 +96,7 @@ class RandomizedSmoothingMixin(ABC):
         logger.info("Applying randomized smoothing.")
         n_abstained = 0
         prediction = []
-        for x_i in tqdm(x, desc="Randomized smoothing"):
+        for x_i in tqdm(x, desc="Randomized smoothing", disable=not verbose):
             # get class counts
             counts_pred = self._prediction_counts(x_i, batch_size=batch_size)
             top = counts_pred.argsort()[::-1]

@@ -353,8 +353,8 @@ class PyTorchGoturn(ObjectTrackerMixin, PyTorchEstimator):
             mean_np = self.preprocessing.mean
             std_np = self.preprocessing.std
         else:
-            mean_np = np.ones((3, 1, 1))
-            std_np = np.ones((3, 1, 1))
+            mean_np = np.ones(shape=(3, 1, 1), dtype=float)
+            std_np = np.ones(shape=(3, 1, 1), dtype=float)
         mean = torch.from_numpy(mean_np).reshape((3, 1, 1))
         std = torch.from_numpy(std_np).reshape((3, 1, 1))
         img = img.permute(2, 0, 1)
@@ -743,11 +743,12 @@ class PyTorchGoturn(ObjectTrackerMixin, PyTorchEstimator):
 
         return output
 
-    def init(self, image: "PIL.JpegImagePlugin.JpegImageFile", box: np.ndarray):
+    def init(self, image: "PIL.JpegImagePlugin.JpegImageFile", box: np.ndarray):  # type: ignore
         """
         Method `init` for GOT-10k trackers.
 
         :param image: Current image.
+        :param box: Initial boxes.
         :return: Predicted box.
         """
         import torch
@@ -766,7 +767,7 @@ class PyTorchGoturn(ObjectTrackerMixin, PyTorchEstimator):
         """
         import torch
 
-        curr = torch.from_numpy(np.array(image) / 255.0)
+        curr = torch.from_numpy(image / 255.0)
         if self.clip_values is not None:
             curr = curr * self.clip_values[1]
         curr = curr.to(self.device)
@@ -809,7 +810,7 @@ class PyTorchGoturn(ObjectTrackerMixin, PyTorchEstimator):
             if i_f == 0:
                 self.init(image, box)
             else:
-                boxes[i_f, :] = self.update(image)
+                boxes[i_f, :] = self.update(np.array(image))
             times[i_f] = time.time() - start_time
 
             if visualize:

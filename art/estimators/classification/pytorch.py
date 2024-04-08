@@ -24,9 +24,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import copy
 import logging
 import os
-import random
 import time
 from typing import Any, Dict, List, Optional, Tuple, Union, TYPE_CHECKING
+from tqdm.auto import tqdm
 
 import numpy as np
 import six
@@ -309,6 +309,7 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
         :return: Array of predictions of shape `(nb_inputs, nb_classes)`.
         """
         import torch
+        from torch.utils.data import TensorDataset, DataLoader
 
         # Set model mode
         self._model.train(mode=training_mode)
@@ -316,19 +317,19 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
         # Apply preprocessing
         x_preprocessed, _ = self._apply_preprocessing(x, y=None, fit=False)
 
+        # Create dataloader
+        x_tensor = torch.from_numpy(x_preprocessed)
+        dataset = TensorDataset(x_tensor)
+        dataloader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=False)
+
         results_list = []
+        for (x_batch,) in dataloader:
+            # Move inputs to device
+            x_batch = x_batch.to(self._device)
 
-        # Run prediction with batch processing
-        num_batch = int(np.ceil(len(x_preprocessed) / float(batch_size)))
-        for m in range(num_batch):
-            # Batch indexes
-            begin, end = (
-                m * batch_size,
-                min((m + 1) * batch_size, x_preprocessed.shape[0]),
-            )
-
+            # Run prediction
             with torch.no_grad():
-                model_outputs = self._model(torch.from_numpy(x_preprocessed[begin:end]).to(self._device))
+                model_outputs = self._model(x_batch)
             output = model_outputs[-1]
             output = output.detach().cpu().numpy().astype(np.float32)
             if len(output.shape) == 1:
@@ -373,7 +374,8 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
         nb_epochs: int = 10,
         training_mode: bool = True,
         drop_last: bool = False,
-        scheduler: Optional[Any] = None,
+        scheduler: Optional["torch.optim.lr_scheduler._LRScheduler"] = None,
+        verbose: bool = False,
         **kwargs,
     ) -> None:
         """
@@ -389,10 +391,12 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
                           the batch size. If ``False`` and the size of dataset is not divisible by the batch size, then
                           the last batch will be smaller. (default: ``False``)
         :param scheduler: Learning rate scheduler to run at the start of every epoch.
+        :param verbose: Display training progress bar.
         :param kwargs: Dictionary of framework-specific arguments. This parameter is not currently supported for PyTorch
                        and providing it takes no effect.
         """
         import torch
+        from torch.utils.data import TensorDataset, DataLoader
 
         # Set model mode
         self._model.train(mode=training_mode)
@@ -408,32 +412,25 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
         # Check label shape
         y_preprocessed = self.reduce_labels(y_preprocessed)
 
-        num_batch = len(x_preprocessed) / float(batch_size)
-        if drop_last:
-            num_batch = int(np.floor(num_batch))
-        else:
-            num_batch = int(np.ceil(num_batch))
-        ind = np.arange(len(x_preprocessed))
-
-        x_preprocessed = torch.from_numpy(x_preprocessed).to(self._device)
-        y_preprocessed = torch.from_numpy(y_preprocessed).to(self._device)
+        # Create dataloader
+        x_tensor = torch.from_numpy(x_preprocessed)
+        y_tensor = torch.from_numpy(y_preprocessed)
+        dataset = TensorDataset(x_tensor, y_tensor)
+        dataloader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, drop_last=drop_last)
 
         # Start training
-        for _ in range(nb_epochs):
-            # Shuffle the examples
-            random.shuffle(ind)
-
-            # Train for one epoch
-            for m in range(num_batch):
-                i_batch = x_preprocessed[ind[m * batch_size : (m + 1) * batch_size]]
-                o_batch = y_preprocessed[ind[m * batch_size : (m + 1) * batch_size]]
+        for _ in tqdm(range(nb_epochs), disable=not verbose, desc="Epochs"):
+            for x_batch, y_batch in dataloader:
+                # Move inputs to device
+                x_batch = x_batch.to(self._device)
+                y_batch = y_batch.to(self._device)
 
                 # Zero the parameter gradients
                 self._optimizer.zero_grad()
 
                 # Perform prediction
                 try:
-                    model_outputs = self._model(i_batch)
+                    model_outputs = self._model(x_batch)
                 except ValueError as err:
                     if "Expected more than 1 value per channel when training" in str(err):
                         logger.exception(
@@ -443,7 +440,7 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
                     raise err
 
                 # Form the loss function
-                loss = self._loss(model_outputs[-1], o_batch)
+                loss = self._loss(model_outputs[-1], y_batch)
 
                 # Do training
                 if self._use_amp:  # pragma: no cover
@@ -451,7 +448,6 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
 
                     with amp.scale_loss(loss, self._optimizer) as scaled_loss:
                         scaled_loss.backward()
-
                 else:
                     loss.backward()
 
@@ -460,14 +456,17 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
             if scheduler is not None:
                 scheduler.step()
 
-    def fit_generator(self, generator: "DataGenerator", nb_epochs: int = 20, **kwargs) -> None:
+    def fit_generator(  # pylint: disable=W0221
+        self, generator: "DataGenerator", nb_epochs: int = 20, verbose: bool = False, **kwargs
+    ) -> None:
         """
         Fit the classifier using the generator that yields batches as specified.
 
         :param generator: Batch generator providing `(x, y)` for each epoch.
         :param nb_epochs: Number of epochs to use for training.
+        :param verbose: Display the training progress bar.
         :param kwargs: Dictionary of framework-specific arguments. This parameter is not currently supported for PyTorch
-               and providing it takes no effect.
+                       and providing it takes no effect.
         """
         import torch
         from art.data_generators import PyTorchDataGenerator
@@ -492,7 +491,7 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
                 == (0, 1)
             )
         ):
-            for _ in range(nb_epochs):
+            for _ in tqdm(range(nb_epochs), disable=not verbose, desc="Epochs"):
                 for i_batch, o_batch in generator.iterator:
                     if isinstance(i_batch, np.ndarray):
                         i_batch = torch.from_numpy(i_batch).to(self._device)
@@ -568,7 +567,11 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
         self.model.apply(weight_reset)
 
     def class_gradient(  # pylint: disable=W0221
-        self, x: np.ndarray, label: Union[int, List[int], None] = None, training_mode: bool = False, **kwargs
+        self,
+        x: np.ndarray,
+        label: Optional[Union[int, List[int], np.ndarray]] = None,
+        training_mode: bool = False,
+        **kwargs,
     ) -> np.ndarray:
         """
         Compute per-class derivatives w.r.t. `x`.
@@ -605,6 +608,8 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
                 self.set_batchnorm(train=False)
                 self.set_dropout(train=False)
 
+        if isinstance(label, list):
+            label = np.array(label)
         if not (
             (label is None)
             or (isinstance(label, (int, np.integer)) and label in range(self.nb_classes))
@@ -1054,9 +1059,10 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
         # pylint: disable=W0212
         # disable pylint because access to _modules required
         torch.save(self._model._model.state_dict(), full_path + ".model")
-        torch.save(self._optimizer.state_dict(), full_path + ".optimizer")  # type: ignore
+        if self._optimizer is not None:
+            torch.save(self._optimizer.state_dict(), full_path + ".optimizer")  # type: ignore
+            logger.info("Optimizer state dict saved in path: %s.", full_path + ".optimizer")
         logger.info("Model state dict saved in path: %s.", full_path + ".model")
-        logger.info("Optimizer state dict saved in path: %s.", full_path + ".optimizer")
 
     def __getstate__(self) -> Dict[str, Any]:
         """
@@ -1101,7 +1107,8 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
         self._model.to(self._device)
 
         # Recover optimizer
-        self._optimizer.load_state_dict(torch.load(str(full_path) + ".optimizer"))  # type: ignore
+        if os.path.isfile(str(full_path) + ".optimizer"):
+            self._optimizer.load_state_dict(torch.load(str(full_path) + ".optimizer"))  # type: ignore
 
         self.__dict__.pop("model_name", None)
         self.__dict__.pop("inner_model", None)
