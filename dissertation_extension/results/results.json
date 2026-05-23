@@ -1,0 +1,27 @@
+{
+  "baseline": {
+    "clean": 0.9049,
+    "fgsm": 0.3313,
+    "pgd": 0.1345,
+    "bim": 0.127
+  },
+  "fgsm_defended": {
+    "clean": 0.8823,
+    "fgsm": 0.7861,
+    "pgd": 0.7497,
+    "bim": 0.7462
+  },
+  "novel_on_baseline_fixed_batch": {
+    "clean": 0.89453125,
+    "fgsm_final_model": 0.3203125,
+    "v1_accum_sign": 0.326171875,
+    "v2_traj_per_sample_best": 0.30078125,
+    "v2_traj_sign_mean": 0.361328125
+  },
+  "novel_on_defended_fixed_batch": {
+    "clean": 0.87109375,
+    "fgsm": 0.78515625,
+    "v1": 0.818359375,
+    "v2": 0.8203125
+  }
+}

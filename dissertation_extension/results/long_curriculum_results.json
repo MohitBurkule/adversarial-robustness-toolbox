@@ -1,0 +1,23 @@
+{
+  "vanilla": {
+    "clean": 0.9155,
+    "fgsm": 0.2854,
+    "pgd": 0.0321,
+    "bim": 0.0805,
+    "adv_samples_per_epoch": 0
+  },
+  "adv_all": {
+    "clean": 0.8885,
+    "fgsm": 0.7949,
+    "pgd": 0.7407,
+    "bim": 0.7599,
+    "adv_samples_per_epoch": 60000
+  },
+  "adv_hard_only": {
+    "clean": 0.8932,
+    "fgsm": 0.7933,
+    "pgd": 0.6338,
+    "bim": 0.681,
+    "adv_samples_per_epoch": 29999
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "clean": 0.908203125,
+  "FGSM_final_model": 0.3203125,
+  "V1_accum_true": 0.3359375,
+  "V2_traj_true": 0.30859375,
+  "V3_accum_pred": 0.408203125,
+  "V4_late_traj": 0.322265625,
+  "V5_loss_weighted": 0.400390625,
+  "V6_margin_loss": 0.337890625,
+  "V7_per_pixel_vote": 0.365234375,
+  "V8_traj_pred": 0.328125,
+  "V9_adam_accum": 0.30859375,
+  "V10_targeted_early_confusion": 0.373046875,
+  "V10b_targeted_random": 0.525390625,
+  "V10c_targeted_final_2nd_best": 0.330078125,
+  "V10_target_agrees_with_final_2nd": 0.513671875
+}
