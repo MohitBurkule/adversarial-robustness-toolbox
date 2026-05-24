@@ -1,0 +1,37 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: STL10
+[*] Executing script: dissertation_extension/hypotheses/h137_pixel_sign_agreement.py
+Loading Fashion-MNIST dataset...
+Training model 1/5...
+Training model 2/5...
+Training model 3/5...
+Training model 4/5...
+Training model 5/5...
+Evaluating victim model correctness...
+Victim correctly classified samples: 3702/8000
+Computing gradient sign agreement across models...
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: pixel_sign_agreement
+  Target: flipped_fgsm  AUROC = 0.6158
+  Target: flipped_pgd   AUROC = 0.6300
+  Target: min_eps       AUROC = 0.5169
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9295
+  Target: flipped_pgd   AUROC = 0.9663
+  Target: min_eps       AUROC = 0.9389
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.6119
+  Target: flipped_pgd   AUROC = 0.6979
+  Target: min_eps       AUROC = 0.5287
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.6947
+  Target: flipped_pgd   AUROC = 0.6600
+  Target: min_eps       AUROC = 0.5885
