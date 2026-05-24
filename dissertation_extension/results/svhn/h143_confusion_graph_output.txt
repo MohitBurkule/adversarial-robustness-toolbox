@@ -1,0 +1,32 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: SVHN
+[*] Executing script: dissertation_extension/hypotheses/h143_confusion_graph.py
+============================================================
+Hypothesis H143: Confusion Graph Centrality Analysis
+============================================================
+
+Training CNN victim...
+CNN trained in 57.9s
+Traceback (most recent call last):
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/run_with_patch.py", line 22, in <module>
+    runpy.run_path(target_script, run_name="__main__")
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "dissertation_extension/hypotheses/h143_confusion_graph.py", line 287, in <module>
+    main()
+  File "dissertation_extension/hypotheses/h143_confusion_graph.py", line 154, in main
+    pred = model(test_x).argmax(1)
+           ^^^^^^^^^^^^^
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "dissertation_extension/hypotheses/h143_confusion_graph.py", line 57, in forward
+    x = F.relu(self.c2(x))
+        ^^^^^^^^^^^^^^^^^^
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/functional.py", line 1704, in relu
+    result = torch.relu(input)
+             ^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.58 GiB. GPU 0 has a total capacity of 7.92 GiB of which 385.81 MiB is free. Process 5520 has 615.32 MiB memory in use. Process 7047 has 328.33 MiB memory in use. Process 41336 has 134.83 MiB memory in use. Process 5162 has 7.96 MiB memory in use. Process 115518 has 50.08 MiB memory in use. Process 3740 has 7.96 MiB memory in use. Including non-PyTorch memory, this process has 5.96 GiB memory in use. Of the allocated memory 5.77 GiB is allocated by PyTorch, and 49.50 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
