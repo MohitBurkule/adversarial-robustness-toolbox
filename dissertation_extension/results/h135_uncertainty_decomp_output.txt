@@ -1,0 +1,45 @@
+Loading Fashion-MNIST dataset...
+Training model 1/5...
+Training model 2/5...
+Training model 3/5...
+Training model 4/5...
+Training model 5/5...
+Evaluating victim model correctness...
+Victim correctly classified samples: 9241/10000
+Evaluating models for uncertainty decomposition...
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: predictive_entropy
+  Target: flipped_fgsm  AUROC = 0.9149
+  Target: flipped_pgd   AUROC = 0.9547
+  Target: min_eps       AUROC = 0.9330
+
+Feature: aleatoric
+  Target: flipped_fgsm  AUROC = 0.9149
+  Target: flipped_pgd   AUROC = 0.9547
+  Target: min_eps       AUROC = 0.9332
+
+Feature: epistemic
+  Target: flipped_fgsm  AUROC = 0.9115
+  Target: flipped_pgd   AUROC = 0.9481
+  Target: min_eps       AUROC = 0.9265
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9132
+  Target: flipped_pgd   AUROC = 0.9431
+  Target: min_eps       AUROC = 0.9399
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.5048
+  Target: flipped_pgd   AUROC = 0.5896
+  Target: min_eps       AUROC = 0.6027
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.6192
+  Target: flipped_pgd   AUROC = 0.6630
+  Target: min_eps       AUROC = 0.5411
