@@ -1,0 +1,52 @@
+============================================================
+Hypothesis H109: Momentum Iterative Method (MIM) Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 35.7s
+Evaluating MIM on 1000 correctly classified test samples...
+MIM attack success at eps=15/255: 0.9440
+Computing minimum eps to flip using MIM...
+  Mean MIM min eps: 0.0304
+Computing minimum eps to flip using FGSM...
+  Mean FGSM min eps: 0.0543
+MIM/FGSM evaluation completed in 5.8s
+
+============================================================
+UNIVARIATE AUROC ANALYSIS (Target: flipped_MIM)
+============================================================
+Target: flipped_MIM (Positive Rate = 0.9440)
+  Feature            AUROC Direction 
+  margin            0.9284  -
+  mean_pix          0.5248  +
+  std_pix           0.6346  -
+  sobel_mean        0.6726  -
+
+============================================================
+MIM vs FGSM VULNERABILITY RANKING COMPARISON
+============================================================
+Spearman rank correlation coefficient: +0.969741 (p-value: 0.00e+00)
+
+Mean MIM/FGSM Min Eps by margin quartile:
+  Quartile 1 [0.03, 4.56] (n=250):
+    Mean MIM Min Eps:  0.0093
+    Mean FGSM Min Eps: 0.0114
+  Quartile 2 [4.56, 8.78] (n=250):
+    Mean MIM Min Eps:  0.0231
+    Mean FGSM Min Eps: 0.0335
+  Quartile 3 [8.78, 15.98] (n=250):
+    Mean MIM Min Eps:  0.0369
+    Mean FGSM Min Eps: 0.0598
+  Quartile 4 [15.98, 34.38] (n=250):
+    Mean MIM Min Eps:  0.0522
+    Mean FGSM Min Eps: 0.1124
