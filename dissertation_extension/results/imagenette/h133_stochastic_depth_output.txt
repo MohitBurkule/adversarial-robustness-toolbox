@@ -1,0 +1,23 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h133_stochastic_depth.py
+Loading Fashion-MNIST dataset...
+
+--- Training Vanilla CNN ---
+Vanilla CNN Correctly classified: 1875/3925
+Computing attack targets for Vanilla CNN...
+Computing features for Vanilla CNN...
+
+UNIVARIATE AUROC RESULTS for Vanilla CNN:
+  Feature: margin     | FGSM: 0.8714 | PGD: 0.9475 | MinEps: 0.9292
+  Feature: mean_pix   | FGSM: 0.6287 | PGD: 0.7580 | MinEps: 0.5857
+  Feature: std_pix    | FGSM: 0.5930 | PGD: 0.7267 | MinEps: 0.5237
+
+--- Training Stochastic Depth CNN ---
+Stochastic Depth CNN Correctly classified: 1649/3925
+Computing attack targets for Stochastic Depth CNN...
+Computing features for Stochastic Depth CNN...
+
+UNIVARIATE AUROC RESULTS for Stochastic Depth CNN:
+  Feature: margin     | FGSM: 0.8368 | PGD: 0.8639 | MinEps: 0.9103
+  Feature: mean_pix   | FGSM: 0.6340 | PGD: 0.7359 | MinEps: 0.5917
+  Feature: std_pix    | FGSM: 0.5721 | PGD: 0.6353 | MinEps: 0.5334
