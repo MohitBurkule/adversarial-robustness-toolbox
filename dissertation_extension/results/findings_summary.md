@@ -127,3 +127,51 @@ This document compiles the running analysis and scientific findings of our execu
 - **Univariate AUROC (predicting empirical PGD-10 success)**:
   - `margin`: **0.9210** | `IBP_certified_radius`: **0.8755**
 - **Implications**: Standard trained CNNs have virtually zero certified robustness. However, certified radii correlate strongly with empirical white-box robustness.
+
+### H118: CURE Curvature Regularization vs Vanilla CNN
+- **Path**: [h118_cure.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h118_cure.py)
+- **Log**: [h118_cure_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h118_cure_output.txt)
+- **Robustness Results**:
+  - *Vanilla CNN*: Clean Acc = **93.4%**, FGSM Success = **68.1%**, PGD Success = **93.0%**, Mean min $\epsilon$ = **0.0320**
+  - *CURE CNN*: Clean Acc = **91.8%**, FGSM Success = **27.8%**, PGD Success = **39.5%**, Mean min $\epsilon$ = **0.0946**
+- **Vulnerability Feature Predictability changes (PGD)**:
+  - `margin`: CURE = **0.9656** | Vanilla = **0.9627** (Change = `+0.0029`)
+  - `sobel_mean`: CURE = **0.5524** | Vanilla = **0.7212** (Change = `-0.1689`)
+- **Implications**: Curvature Regularization (CURE) significantly elevates empirical robustness (reducing PGD success from 93% to 39.5% and expanding mean boundary distance threefold from 0.032 to 0.095) while maintaining exceptional generalization (91.8% clean). Interestingly, edge energy (`sobel_mean`) becomes fully decoupled from vulnerability, while margin remains a perfect predictor.
+
+### H119: Adversarial Logit Pairing (ALP) vs Vanilla CNN
+- **Path**: [h119_alp.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h119_alp.py)
+- **Log**: [h119_alp_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h119_alp_output.txt)
+- **Robustness Results**:
+  - *Vanilla CNN*: Clean Acc = **93.6%**, FGSM Success = **69.7%**, PGD Success = **95.1%**, Mean min $\epsilon$ = **0.0309**
+  - *ALP CNN*: Clean Acc = **88.4%**, FGSM Success = **0.0%**, PGD Success = **70.3%**, Mean min $\epsilon$ = **0.0664**
+- **Predictability changes (PGD)**:
+  - `margin`: ALP = **0.7141** | Vanilla = **0.9598** (Change = `-0.2457`)
+- **Implications**: Adversarial Logit Pairing (ALP) successfully enforces FGSM immunity (0% success) and moderately reduces PGD susceptibility. However, the pairing regularizer heavily compresses clean logit representations, resulting in a **24.5% drop in margin's predictive power (AUROC 0.71)** and a minor decrease in clean accuracy.
+
+### H120: Adversarial Weight Perturbation (AWP) vs Vanilla CNN
+- **Path**: [h120_awp.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h120_awp.py)
+- **Log**: [h120_awp_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h120_awp_output.txt)
+- **Robustness Results**:
+  - *Vanilla CNN*: Clean Acc = **93.6%**, FGSM Success = **71.8%**, PGD Success = **95.5%**, Mean min $\epsilon$ = **0.0309**
+  - *AWP CNN*: Clean Acc = **35.2%**, FGSM Success = **21.9%**, PGD Success = **31.0%**, Mean min $\epsilon$ = **0.1362**
+- **Implications**: While AWP achieves an impressive boundary distance expansion (mean min $\epsilon$ = 0.1362), performing weight-space adversarial perturbation on a small model without concurrent standard adversarial training results in severe underfitting/collapse (clean accuracy drop to 35.2%). This highlights that weight perturbation is a regularizer that *supplements* AT, rather than substituting for it.
+
+### H121: Cutout Data Augmentation Defense vs Vanilla CNN
+- **Path**: [h121_cutout.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h121_cutout.py)
+- **Log**: [h121_cutout_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h121_cutout_output.txt)
+- **Robustness Results**:
+  - *Vanilla CNN*: Clean Acc = **93.8%**, FGSM Success = **71.5%**, PGD Success = **95.2%**, Mean min $\epsilon$ = **0.0305**
+  - *Cutout CNN*: Clean Acc = **93.0%**, FGSM Success = **67.2%**, PGD Success = **94.5%**, Mean min $\epsilon$ = **0.0321**
+- **Predictability changes (PGD)**:
+  - `margin`: Cutout = **0.9300** | Vanilla = **0.9542** (Change = `-0.0242`)
+- **Implications**: Spatial pixel-patch occlusion (Cutout) offers almost no empirical defense against L-inf noise attacks (PGD remains at 94.5%), showing that occlusion robustness does not generalize to mathematical high-frequency noise.
+
+### H122: Random Erasing Data Augmentation Defense vs Vanilla CNN
+- **Path**: [h122_random_erasing.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h122_random_erasing.py)
+- **Log**: [h122_random_erasing_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h122_random_erasing_output.txt)
+- **Robustness Results**:
+  - *Vanilla CNN*: Clean Acc = **93.9%**, FGSM Success = **68.7%**, PGD Success = **93.0%**, Mean min $\epsilon$ = **0.0316**
+  - *Random Erasing CNN*: Clean Acc = **93.3%**, FGSM Success = **69.4%**, PGD Success = **95.1%**, Mean min $\epsilon$ = **0.0323**
+- **Implications**: Correspondingly to Cutout, filling random patches with noise (Random Erasing) does not offer protection against adversarial gradients, with PGD success slightly rising to 95.1%. Occlusion augmentation is ineffective against direct adversarial input perturbations.
+
