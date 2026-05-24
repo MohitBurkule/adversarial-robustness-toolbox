@@ -1,0 +1,56 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: STL10
+[*] Executing script: dissertation_extension/hypotheses/h138_layer_ablation.py
+============================================================
+Hypothesis H138: Layer Ablation Vulnerability Analysis
+============================================================
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 10.4s
+Using 3727/8000 correctly classified samples
+
+Computing layer ablation features...
+
+Running attacks...
+  FGSM flip rate = 0.9482
+  PGD-10 flip rate = 0.9775
+  Mean min_eps = 0.0213
+
+============================================================
+TARGET: flipped_FGSM | Univariate AUROC
+============================================================
+  max_ablation_drop         AUROC = 0.9281
+  mean_ablation_drop        AUROC = 0.9268
+  std_ablation_drop         AUROC = 0.5606
+  margin                    AUROC = 0.9322
+  mean_pix                  AUROC = 0.6230
+  std_pix                   AUROC = 0.7028
+
+============================================================
+TARGET: flipped_PGD | Univariate AUROC
+============================================================
+  max_ablation_drop         AUROC = 0.9503
+  mean_ablation_drop        AUROC = 0.9479
+  std_ablation_drop         AUROC = 0.6126
+  margin                    AUROC = 0.9506
+  mean_pix                  AUROC = 0.6821
+  std_pix                   AUROC = 0.7102
+
+============================================================
+TARGET: min_eps (continuous) | Univariate AUROC (above median)
+============================================================
+  max_ablation_drop         AUROC = 0.9099
+  mean_ablation_drop        AUROC = 0.9107
+  std_ablation_drop         AUROC = 0.5153
+  margin                    AUROC = 0.9418
+  mean_pix                  AUROC = 0.5235
+  std_pix                   AUROC = 0.6010
