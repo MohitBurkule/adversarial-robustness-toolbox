@@ -1,0 +1,47 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h117_ibp_bound.py
+============================================================
+Hypothesis H117: certified IBP Robustness Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 29.4s
+Evaluating certified bounds and attacks on 1000 correctly classified test samples...
+Computing IBP certified robustness radii...
+IBP certification completed in 11.7s
+Running empirical attacks...
+
+Empirical Attack Success Rates:
+  FGSM Success Rate: 0.9620
+  PGD-10 Success Rate: 0.9780
+Certified Robustness Stats:
+  Mean IBP Certified Radius: 0.0002
+  Percentage certified robust at eps=0.0588: 0.00%
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: flipped_FGSM (Positive Rate = 0.9620) ---
+  Feature                   AUROC Direction 
+  margin                   0.9165  -
+  mean_pix                 0.7322  -
+  std_pix                  0.7961  -
+  IBP_certified_radius     0.9394  -
+
+--- Target: flipped_PGD (Positive Rate = 0.9780) ---
+  Feature                   AUROC Direction 
+  margin                   0.9480  -
+  mean_pix                 0.6918  -
+  std_pix                  0.8516  -
+  IBP_certified_radius     0.9685  -
