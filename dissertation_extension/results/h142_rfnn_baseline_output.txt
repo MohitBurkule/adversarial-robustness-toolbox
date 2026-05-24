@@ -1,0 +1,45 @@
+============================================================
+Hypothesis H142: Random Features Neural Network Baseline
+============================================================
+
+Training CNN victim...
+CNN trained in 35.5s
+
+Training RFNN baseline...
+RFNN trained in 34.1s
+
+Using 9268/10000 correctly classified samples from victim (CNN)
+
+Computing features...
+
+Running attacks on CNN victim...
+  FGSM flip rate = 0.7006
+  PGD-10 flip rate = 0.9329
+  Mean min_eps = 0.0525
+
+============================================================
+TARGET: flipped_FGSM | Univariate AUROC
+============================================================
+  rfnn_margin          AUROC = 0.9232
+  rfnn_confidence      AUROC = 0.9184
+  cnn_margin           AUROC = 0.9201
+  mean_pix             AUROC = 0.5141
+  std_pix              AUROC = 0.6093
+
+============================================================
+TARGET: flipped_PGD | Univariate AUROC
+============================================================
+  rfnn_margin          AUROC = 0.9188
+  rfnn_confidence      AUROC = 0.9164
+  cnn_margin           AUROC = 0.9381
+  mean_pix             AUROC = 0.5207
+  std_pix              AUROC = 0.6513
+
+============================================================
+TARGET: min_eps (continuous) | Univariate AUROC (above median)
+============================================================
+  rfnn_margin          AUROC = 0.9367
+  rfnn_confidence      AUROC = 0.9325
+  cnn_margin           AUROC = 0.9459
+  mean_pix             AUROC = 0.6005
+  std_pix              AUROC = 0.5439
