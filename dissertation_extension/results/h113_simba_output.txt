@@ -1,0 +1,41 @@
+============================================================
+Hypothesis H113: SimBA-Pixel Attack Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 36.0s
+Evaluating SimBA on 200 correctly classified test samples...
+SimBA evaluations completed in 12.0s
+
+SimBA Attack Success Rate: 0.6000
+Mean Queries used: 139.70
+Mean queries to flip (for successful attacks): 99.50
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: simba_flipped (Positive Rate = 0.6000) ---
+  Feature            AUROC Direction 
+  margin            0.9318  -
+  mean_pix          0.5685  +
+  std_pix           0.5653  -
+  sobel_mean        0.5883  -
+
+============================================================
+SPEARMAN CORRELATION WITH QUERIES TO FLIP (Successful Flips only)
+============================================================
+  margin          -> Correlation: +0.7319 (p-value: 2.20e-21)
+  mean_pix        -> Correlation: -0.0947 (p-value: 3.04e-01)
+  std_pix         -> Correlation: -0.0235 (p-value: 7.99e-01)
+  sobel_mean      -> Correlation: +0.0094 (p-value: 9.19e-01)
