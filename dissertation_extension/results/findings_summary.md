@@ -175,3 +175,160 @@ This document compiles the running analysis and scientific findings of our execu
   - *Random Erasing CNN*: Clean Acc = **93.3%**, FGSM Success = **69.4%**, PGD Success = **95.1%**, Mean min $\epsilon$ = **0.0323**
 - **Implications**: Correspondingly to Cutout, filling random patches with noise (Random Erasing) does not offer protection against adversarial gradients, with PGD success slightly rising to 95.1%. Occlusion augmentation is ineffective against direct adversarial input perturbations.
 
+### H123: AugMix Defense vs Vanilla CNN
+- **Path**: [h123_augmix.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h123_augmix.py)
+- **Log**: [h123_augmix_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h123_augmix_output.txt)
+- **Robustness Results**:
+  - *Vanilla CNN*: Clean Acc = **92.9%**, FGSM = **69.9%**, PGD = **94.3%**, Mean min ε = **0.0309**
+  - *AugMix CNN*: Clean Acc = **87.1%**, FGSM = **35.7%**, PGD = **70.2%**, Mean min ε = **0.0508**
+- **Predictability Changes (PGD)**:
+  - `margin`: AugMix = **0.8183** | Vanilla = **0.9689** (Δ = **−0.1506**)
+  - `sobel_mean`: AugMix = **0.6554** | Vanilla = **0.7114** (Δ = **−0.0560**)
+- **Implications**: AugMix offers meaningful empirical robustness gains (PGD 94.3% → 70.2%) at a 6% clean accuracy cost. Like ALP, it compresses logit distributions enough to reduce margin AUROC by 15pp, suggesting it alters decision boundary geometry — but at a smaller accuracy penalty than ALP.
+
+### H124: Manifold Mixup Defense vs Vanilla CNN
+- **Path**: [h124_manifold_mixup.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h124_manifold_mixup.py)
+- **Log**: [h124_manifold_mixup_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h124_manifold_mixup_output.txt)
+- **Robustness Results**:
+  - *Vanilla CNN*: Clean Acc = **93.1%**, FGSM = **69.1%**, PGD = **94.1%**, Mean min ε = **0.0312**
+  - *Manifold Mixup CNN*: Clean Acc = **92.5%**, FGSM = **64.1%**, PGD = **88.0%**, Mean min ε = **0.0371**
+- **Predictability Changes (PGD)**:
+  - `margin`: MixMix = **0.7734** | Vanilla = **0.9844** (Δ = **−0.2110**)
+- **Implications**: Manifold Mixup provides mild robustness (PGD 94.1% → 88.0%) while maintaining clean accuracy (~92.5%), but reduces margin AUROC by a striking **21pp** — the largest reduction among augmentation-based defenses. Feature-space interpolation fundamentally scrambles the logit geometry that otherwise cleanly separates robust from vulnerable samples.
+
+### H125: LRP Attribution vs Adversarial Vulnerability
+- **Path**: [h125_lrp.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h125_lrp.py)
+- **Status**: ❌ **FAILED** (RuntimeError: `.detach()` missing before `.numpy()` — **now patched** in source)
+
+### H126: SmoothGrad Attribution vs Adversarial Vulnerability
+- **Path**: [h126_smoothgrad.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h126_smoothgrad.py)
+- **Log**: [h126_smoothgrad_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h126_smoothgrad_output.txt)
+- **Model**: Clean Acc = **93.8%**, FGSM = **72.5%**, PGD = **94.5%**
+- **Univariate AUROC (vs PGD Flip)**:
+  - `smoothgrad_l2_norm`: **0.9704** | `smoothgrad_max`: **0.9699** | `smoothgrad_entropy`: **0.8881** | `margin`: **0.9710**
+- **Implications**: SmoothGrad norms and maxima are **exceptional vulnerability predictors** (~0.97 AUROC), essentially matching the logit margin. Attribution concentration (entropy) is also a strong predictor (0.89). This is a key finding: noise-averaged attribution signals carry nearly all the adversarial vulnerability information that direct boundary proximity measures carry.
+
+### H127: Integrated Gradients Attribution vs Adversarial Vulnerability
+- **Path**: [h127_integrated_gradients.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h127_integrated_gradients.py)
+- **Log**: [h127_integrated_gradients_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h127_integrated_gradients_output.txt)
+- **Model**: Clean Acc = **94.0%**, FGSM = **73.1%**, PGD = **96.4%**
+- **Univariate AUROC (vs PGD Flip)**:
+  - `margin`: **0.9661** | `IG_l2_norm`: **0.7554** | `IG_entropy`: **0.6232** | `IG_total_attribution`: **0.6292**
+- **Implications**: Unlike SmoothGrad, IG features are considerably weaker predictors (best 0.76). IG captures semantic attribution via path integration from a baseline, making it less informative about boundary proximity. The contrast with SmoothGrad confirms that noise-based averaging tracks boundary oscillation better than path-integration.
+
+### H128: GradCAM Saliency vs Adversarial Vulnerability
+- **Path**: [h128_gradcam.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h128_gradcam.py)
+- **Log**: [h128_gradcam_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h128_gradcam_output.txt)
+- **Model**: Correctly classified **9,250 / 10,000**
+- **Univariate AUROC (vs PGD Flip)**:
+  - `gradcam_max`: **0.8111** | `gradcam_entropy`: **0.6429** | `gradcam_l2_to_image_center`: **0.5860** | `margin`: **0.9607**
+- **Implications**: GradCAM peak activation is a moderately strong predictor (0.81 AUROC). Spatial concentration and entropy are weak. High peak activation signals a strong gradient hook at the last convolutional layer, but the spatial pattern of class-discriminative features carries limited additional vulnerability information.
+
+### H129: Forgetting Events vs Adversarial Vulnerability
+- **Path**: [h129_forgetting_events.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h129_forgetting_events.py)
+- **Log**: [h129_forgetting_events_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h129_forgetting_events_output.txt)
+- **Univariate AUROC (vs PGD Flip)**:
+  - `forgetting_event_count`: **0.5372** (≈ random) | `margin`: **0.9428**
+- **Implications**: Forgetting events (times a sample is learned then re-misclassified during training) are essentially **uninformative** about test-time adversarial vulnerability. Training-time learning instability and test-time boundary proximity are orthogonal properties.
+
+### H130: C-Score (Training Consistency) vs Adversarial Vulnerability
+- **Path**: [h130_cscore.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h130_cscore.py)
+- **Log**: [h130_cscore_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h130_cscore_output.txt)
+- **Univariate AUROC (vs PGD Flip)**:
+  - `c_score`: **0.5280** (≈ random) | `margin`: **0.9638**
+- **Implications**: The C-score (fraction of random-subset ensembles correctly classifying a sample) is entirely uninformative. *Learning difficulty* and *adversarial proximity* are orthogonal.
+
+### H131: Memorization Proxy vs Adversarial Vulnerability
+- **Path**: [h131_memorization.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h131_memorization.py)
+- **Log**: [h131_memorization_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h131_memorization_output.txt)
+- **Model**: Correctly classified **9,133 / 10,000**
+- **Univariate AUROC (vs PGD Flip)**:
+  - `memorization_proxy`: **0.9284** | `margin`: **0.9387**
+- **Implications**: Variance in predictions across independent random-subset ensembles (a memorization proxy) achieves **0.93 AUROC** — nearly matching the logit margin. Highly memorised samples are disproportionately close to the decision boundary. This is one of the strongest novel alternative predictors discovered.
+
+### H132: Snapshot Ensemble Disagreement vs Adversarial Vulnerability
+- **Path**: [h132_snapshot_ensemble.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h132_snapshot_ensemble.py)
+- **Log**: [h132_snapshot_ensemble_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h132_snapshot_ensemble_output.txt)
+- **Model**: Correctly classified **9,354 / 10,000**
+- **Univariate AUROC (vs PGD Flip)**:
+  - `snap_disagreement`: **0.5130** (≈ random) | `softmax_variance`: **0.8969** | `margin`: **0.9363**
+- **Implications**: Hard-vote snapshot disagreement is near-random; **softmax variance across snapshots** achieves 0.90 AUROC. Soft continuous signals vastly outperform hard label signals — retaining calibrated probabilities is critical for vulnerability assessment.
+
+### H133: Stochastic Depth CNN vs Vanilla CNN
+- **Path**: [h133_stochastic_depth.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h133_stochastic_depth.py)
+- **Log**: [h133_stochastic_depth_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h133_stochastic_depth_output.txt)
+- **Robustness**:
+  - *Vanilla CNN*: Correct = **9,225**, margin AUROC PGD = **0.9532**
+  - *Stochastic Depth CNN*: Correct = **8,918** (↓3%), margin AUROC PGD = **0.9031**
+- **Implications**: Stochastic Depth provides no robustness benefit and reduces clean accuracy by 3% on this shallow network. Without sufficient depth for meaningful path randomization, SD acts as a noisy regularizer with marginal adverse effects.
+
+### H134: BNN Predictive Variance (SWAG) vs Adversarial Vulnerability
+- **Path**: [h134_bnn_variance.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h134_bnn_variance.py)
+- **Log**: [h134_bnn_variance_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h134_bnn_variance_output.txt)
+- **Model**: SWA correctness = **9,257 / 10,000**
+- **Univariate AUROC (vs PGD Flip)**:
+  - `bnn_predictive_variance`: **0.9176** | `margin`: **0.9307**
+- **Implications**: SWAG posterior predictive variance is a **strong predictor** (0.92 AUROC), nearly matching the margin. Bayesian weight-space uncertainty captures boundary proximity well — practically useful when logits are inaccessible.
+
+### H135: Uncertainty Decomposition (Aleatoric vs Epistemic) vs Adversarial Vulnerability
+- **Path**: [h135_uncertainty_decomp.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h135_uncertainty_decomp.py)
+- **Log**: [h135_uncertainty_decomp_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h135_uncertainty_decomp_output.txt)
+- **Model**: Victim = **9,241 / 10,000**
+- **Univariate AUROC (vs PGD Flip)**:
+  - `predictive_entropy`: **0.9547** | `aleatoric`: **0.9547** | `epistemic`: **0.9481** | `margin`: **0.9431**
+- **Implications**: Ensemble predictive entropy **exceeds the logit margin** (0.955 vs 0.943). Both aleatoric and epistemic components are independently strong. **Deep ensemble uncertainty is a better single vulnerability predictor than the clean logit margin** — a flagship result.
+
+### H136: Per-Class Margin Statistics vs Adversarial Vulnerability
+- **Path**: [h136_class_margin_stats.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h136_class_margin_stats.py)
+- **Log**: [h136_class_margin_stats_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h136_class_margin_stats_output.txt)
+- **Class Margin Means**: Trouser (class 1) = **18.76** (safest), Shirt (class 6) = **3.61** (most vulnerable)
+- **Univariate AUROC (vs PGD Flip)**:
+  - `deviation_from_class_mean`: **0.8607** | `margin`: **0.9484**
+- **Implications**: Intra-class margin deviation is a moderately strong predictor (0.86). Classes differ dramatically in boundary proximity: Trouser is 5× safer than Shirt. The within-class deviation captures genuine per-sample variability beyond class-level effects.
+
+### H137: Pixel Gradient Sign Agreement (Multi-Model) vs Adversarial Vulnerability
+- **Path**: [h137_pixel_sign_agreement.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h137_pixel_sign_agreement.py)
+- **Log**: [h137_pixel_sign_agreement_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h137_pixel_sign_agreement_output.txt)
+- **Univariate AUROC (vs PGD Flip)**:
+  - `pixel_sign_agreement`: **0.8864** | `margin`: **0.9686**
+- **Implications**: Cross-model gradient sign consensus is a **strong predictor** (0.89 AUROC). Samples with highly aligned adversarial gradients across models are disproportionately vulnerable. This architecture-agnostic signal could support black-box vulnerability assessment without model access.
+
+### H138: Layer Ablation Sensitivity vs Adversarial Vulnerability
+- **Path**: [h138_layer_ablation.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h138_layer_ablation.py)
+- **Log**: [h138_layer_ablation_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h138_layer_ablation_output.txt)
+- **Model**: 9,261 correctly classified; FGSM = **70.3%**, PGD = **93.8%**
+- **Univariate AUROC (vs min_eps)**:
+  - `max_ablation_drop`: **0.7664** | `mean_ablation_drop`: **0.7305** | `margin`: **0.9468**
+- **Implications**: Max accuracy drop upon zeroing out any single layer is a moderate predictor (0.77 AUROC). Samples overly reliant on a single narrow representation layer are more vulnerable, suggesting that representational breadth (distributing information across layers) correlates with adversarial robustness.
+
+---
+
+## Running AUROC Leaderboard (updated H107–H138)
+
+| Rank | Feature | Best AUROC | Target | Hypothesis |
+|------|---------|-----------|--------|------------|
+| 1 | `margin` (ZOO context) | **0.9976** | min_eps | H114 |
+| 2 | `predictive_entropy` (deep ensemble) | **0.9547** | PGD | H135 ⭐ |
+| 3 | `smoothgrad_l2_norm` | **0.9704** | PGD | H126 ⭐ |
+| 4 | `smoothgrad_max` | **0.9699** | PGD | H126 ⭐ |
+| 5 | `margin` (typical) | **~0.95** | PGD | most Hxxx |
+| 6 | `bnn_predictive_variance` (SWAG) | **0.9349** | min_eps | H134 |
+| 7 | `memorization_proxy` | **0.9284** | PGD | H131 |
+| 8 | `softmax_variance` (snapshot) | **0.8969** | PGD | H132 |
+| 9 | `smoothgrad_entropy` | **0.8881** | PGD | H126 |
+| 10 | `pixel_sign_agreement` | **0.8864** | PGD | H137 |
+| 11 | `gradcam_max` | **0.8111** | PGD | H128 |
+| 12 | `deviation_from_class_mean` | **0.8607** | PGD | H136 |
+| 13 | `max_ablation_drop` | **0.7664** | min_eps | H138 |
+| 14 | `IG_l2_norm` | **0.7554** | PGD | H127 |
+| 15 | `IBP_certified_radius` | **0.8755** | PGD | H117 |
+| 16 | `forgetting_event_count` | **0.5372** | PGD | H129 (≈ random) |
+| 17 | `c_score` | **0.5280** | PGD | H130 (≈ random) |
+
+**Key Insights**:
+- Training dynamics features (forgetting, C-score) are near-random vulnerability predictors — learning difficulty ≠ adversarial proximity.
+- SmoothGrad attribution norms approach margin-level prediction (0.97 AUROC).
+- Deep ensemble uncertainty **exceeds** the margin as a vulnerability predictor (H135) — a flagship result for practical applications without logit access.
+- Memorization proxy and SWAG posterior variance are strong novel predictors (0.92–0.93 AUROC).
+- Augmentation defenses (AugMix, Manifold Mixup) alter decision boundary geometry, reducing margin predictability — unlike CURE which preserves it perfectly.
+

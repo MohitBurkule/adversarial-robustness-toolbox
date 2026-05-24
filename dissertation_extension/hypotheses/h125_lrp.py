@@ -230,7 +230,7 @@ def evaluate_auroc(features, target, feature_names):
         return {name: 0.5 for name in feature_names}
     
     for i, name in enumerate(feature_names):
-        feat_np = features[:, i].cpu().numpy()
+        feat_np = features[:, i].detach().cpu().numpy()
         a = roc_auc_score(target_np, feat_np)
         scores[name] = max(a, 1.0 - a)
     return scores
