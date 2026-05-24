@@ -1,0 +1,44 @@
+============================================================
+Hypothesis H141: SGD Noise Sensitivity Analysis
+============================================================
+
+Training K=3 perturbed models from seed=42...
+  Model 0 trained in 34.8s
+  Model 1 trained in 41.8s
+  Model 2 trained in 35.7s
+
+Using 8988/10000 correctly classified samples from victim (Model 0)
+
+Computing disagreement metrics...
+
+Running attacks on victim...
+  FGSM flip rate = 0.5187
+  PGD-10 flip rate = 0.6247
+  Mean min_eps = 0.0735
+
+============================================================
+TARGET: flipped_FGSM | Univariate AUROC
+============================================================
+  vote_agreement       AUROC = 0.5265
+  softmax_variance     AUROC = 0.9059
+  margin               AUROC = 0.9169
+  mean_pix             AUROC = 0.5096
+  std_pix              AUROC = 0.6188
+
+============================================================
+TARGET: flipped_PGD | Univariate AUROC
+============================================================
+  vote_agreement       AUROC = 0.5231
+  softmax_variance     AUROC = 0.9243
+  margin               AUROC = 0.9307
+  mean_pix             AUROC = 0.5040
+  std_pix              AUROC = 0.6272
+
+============================================================
+TARGET: min_eps (continuous) | Univariate AUROC (above median)
+============================================================
+  vote_agreement       AUROC = 0.5269
+  softmax_variance     AUROC = 0.9052
+  margin               AUROC = 0.9166
+  mean_pix             AUROC = 0.5104
+  std_pix              AUROC = 0.6175
