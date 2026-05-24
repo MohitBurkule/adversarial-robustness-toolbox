@@ -1,0 +1,54 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h109_mim.py
+============================================================
+Hypothesis H109: Momentum Iterative Method (MIM) Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 28.9s
+Evaluating MIM on 1000 correctly classified test samples...
+MIM attack success at eps=15/255: 0.9790
+Computing minimum eps to flip using MIM...
+  Mean MIM min eps: 0.0175
+Computing minimum eps to flip using FGSM...
+  Mean FGSM min eps: 0.0252
+MIM/FGSM evaluation completed in 5.4s
+
+============================================================
+UNIVARIATE AUROC ANALYSIS (Target: flipped_MIM)
+============================================================
+Target: flipped_MIM (Positive Rate = 0.9790)
+  Feature            AUROC Direction 
+  margin            0.9507  -
+  mean_pix          0.7238  -
+  std_pix           0.9102  -
+  sobel_mean        0.8209  -
+
+============================================================
+MIM vs FGSM VULNERABILITY RANKING COMPARISON
+============================================================
+Spearman rank correlation coefficient: +0.956103 (p-value: 0.00e+00)
+
+Mean MIM/FGSM Min Eps by margin quartile:
+  Quartile 1 [0.00, 0.49] (n=250):
+    Mean MIM Min Eps:  0.0039
+    Mean FGSM Min Eps: 0.0106
+  Quartile 2 [0.49, 1.15] (n=250):
+    Mean MIM Min Eps:  0.0110
+    Mean FGSM Min Eps: 0.0194
+  Quartile 3 [1.15, 2.01] (n=250):
+    Mean MIM Min Eps:  0.0204
+    Mean FGSM Min Eps: 0.0244
+  Quartile 4 [2.01, 8.13] (n=250):
+    Mean MIM Min Eps:  0.0347
+    Mean FGSM Min Eps: 0.0463
