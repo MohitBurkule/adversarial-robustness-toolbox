@@ -1,0 +1,57 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h155_meta_detector.py
+======================================================================
+Hypothesis H155: Ensembled Meta-Detector for Adversaries
+======================================================================
+
+Training 3 ensemble models...
+  Model with seed 0 trained for 10 epochs.
+  Model with seed 1 trained for 10 epochs.
+dissertation_extension/hypotheses/h155_meta_detector.py:177: RuntimeWarning: Mean of empty slice
+  class_means[c] = z_train_np[y_train_np == c].mean(axis=0)
+/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/numpy/_core/_methods.py:134: RuntimeWarning: invalid value encountered in divide
+  ret = um.true_divide(
+  Model with seed 2 trained for 10 epochs.
+All models trained in 73.8s
+
+Using 1000 correctly classified samples from Model 0.
+
+Generating 50/50 clean/adversarial evaluation mix...
+
+Extracting reference representations from training set...
+  Fitting Kernel Density Estimator...
+  Calculating class-conditional covariance for Mahalanobis...
+
+Extracting 5 detection features on the 50/50 mix...
+
+============================================================
+Individual Detector AUROCs
+============================================================
+  Feature-Squeezing L1          : AUROC = 0.5445 (Adversarial has LOWER values)
+  MC-Dropout Entropy            : AUROC = 0.6529 (Adversarial has HIGHER values)
+  Ensemble Disagreement         : AUROC = 0.5554 (Adversarial has HIGHER values)
+  KDE-Density Log-Likelihood    : AUROC = 0.6999 (Adversarial has LOWER values)
+Traceback (most recent call last):
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/run_with_patch.py", line 22, in <module>
+    runpy.run_path(target_script, run_name="__main__")
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "dissertation_extension/hypotheses/h155_meta_detector.py", line 321, in <module>
+    main()
+  File "dissertation_extension/hypotheses/h155_meta_detector.py", line 291, in main
+    a = roc_auc_score(is_adv, X_scaled[:, idx])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py", line 683, in roc_auc_score
+    y_score = check_array(y_score, ensure_2d=False)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/sklearn/utils/validation.py", line 1074, in check_array
+    _assert_all_finite(
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/sklearn/utils/validation.py", line 133, in _assert_all_finite
+    _assert_all_finite_element_wise(
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/sklearn/utils/validation.py", line 182, in _assert_all_finite_element_wise
+    raise ValueError(msg_err)
+ValueError: Input contains NaN.
