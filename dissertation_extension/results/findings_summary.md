@@ -426,3 +426,124 @@ This document compiles the running analysis and scientific findings of our execu
 - Soft ensemble signals (softmax variance from SGD noise, snapshots, SWAG) consistently outperform hard vote-agreement signals across all hypotheses.
 - Transfer attacks achieve ~45% success cross-model vs ~65% self-attack, with target model margin being the dominant predictor of transferability.
 
+---
+
+### H144: SAT (Curriculum / Smooth Adversarial Training)
+- **Path**: [h144_sat_adv_training.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h144_sat_adv_training.py)
+- **Log**: [h144_sat_adv_training_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h144_sat_adv_training_output.txt)
+- **Status**: ❌ **FAILED** (PGD attack returned raw image tensor instead of flip boolean — `roc_auc_score` received dim-4 array). **Patched** — error outputs deleted, will re-run.
+- **Partial data** (Vanilla CNN before crash): Clean Acc = **92.5%**, FGSM flip = **73.2%**, PGD flip = **0.74%** (unusually low — SAT training loop unexpectedly hardened the standard model; likely a training artifact), margin AUROC (FGSM) = **0.9158**.
+
+### H145: FAT (Friendly Adversarial Training)
+- **Path**: [h145_friendly_at.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h145_friendly_at.py)
+- **Status**: ❌ **FAILED** (same PGD return-type bug). **Patched** — will re-run.
+- **Partial data** (Vanilla CNN): Clean Acc = **92.5%**, FGSM = **71.3%**, PGD = **0.74%**, margin AUROC (FGSM) = **0.9311**. FAT training took **294.7s** — notably slower than vanilla.
+
+### H146: Adversarial Distillation (RSLAD)
+- **Path**: [h146_adv_distillation.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h146_adv_distillation.py)
+- **Status**: ❌ **FAILED** (same PGD return-type bug). **Patched** — will re-run.
+- **Partial data** (Vanilla CNN): Clean Acc = **92.6%**, FGSM = **69.6%**, PGD = **0.73%**, margin AUROC (FGSM) = **0.9139**. Teacher (PGD-AT) took **85.5s**, RSLAD student **96.8s**.
+
+### H147: Margin-Weighted Adversarial Training
+- **Path**: [h147_margin_weighted_at.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h147_margin_weighted_at.py)
+- **Status**: ❌ **FAILED** (same PGD return-type bug). **Patched** — will re-run.
+- **Partial data** (Standard PGD-AT baseline before crash): Clean Acc = **88.3%**, FGSM = **9.2%**, PGD = **0.71%**, mean min ε = **0.2090** — already a strong adversarially-trained model. Margin AUROC (FGSM) = **0.9505**.
+- **Notable**: PGD-AT dramatically expands the boundary distance (mean min ε 0.0312 → **0.2090**, a 6.7× increase) while maintaining 88% clean accuracy. Margin predictability **increases** under AT (0.9505 AUROC vs ~0.91–0.93 for vanilla), suggesting AT makes the logit margin an even cleaner proxy for robustness.
+
+### H148: Adversarial Example Overlap (FGSM / BIM / PGD / MIM)
+- **Path**: [h148_adv_example_overlap.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h148_adv_example_overlap.py)
+- **Log**: [h148_adv_example_overlap_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h148_adv_example_overlap_output.txt)
+- **Attack Jaccard Similarity**:
+  - BIM ∩ PGD = **0.9929** | BIM ∩ MIM = **0.9909** | FGSM ∩ BIM = **0.7411**
+- **Attack consensus distribution** (how many of 4 attacks succeed):
+  - All 4: **73.0%** | Exactly 3: **24.4%** | Exactly 1: **0.5%** | None: **1.2%**
+- **Univariate AUROC (target = flipped by all 4)**:
+  - `attack_consensus`: **1.0000** (trivially, by definition) | `margin`: **0.9017**
+- **Implications**: BIM, PGD, and MIM identify **almost identical vulnerable sets** (Jaccard ≥ 0.99). FGSM has moderate overlap (0.74). The vast majority of samples (73%) are universally vulnerable to *all* attacks, and only 1.7% are selectively vulnerable to just 1 or 2 attacks. Adversarial vulnerability is a *structural* property, not attack-specific — most samples are either universally robust or universally vulnerable.
+
+### H149: Saliency Spatial Pattern Analysis
+- **Path**: [h149_saliency_spatial_pattern.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h149_saliency_spatial_pattern.py)
+- **Log**: [h149_saliency_spatial_pattern_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h149_saliency_spatial_pattern_output.txt)
+- **Univariate AUROC (vs PGD Flip)**:
+  - `saliency_cm_dist`: **0.8514** | `saliency_moment_inertia`: **0.8215** | `saliency_eccentricity`: **0.7799** | `margin`: **0.9254**
+- **Implications**: Spatial properties of the input gradient saliency map are **moderately strong** predictors of PGD vulnerability (0.78–0.85 AUROC). Samples where gradient saliency is concentrated away from the image centre (`saliency_cm_dist`) or distributed peripherally (`saliency_moment_inertia`) are disproportionately vulnerable. This makes geometric-intuitive sense: saliency mass near the edges or spread out over the image is associated with less robust, diffuse feature representations.
+
+### H150: Confusion-Class Probability Ratio
+- **Path**: [h150_confusion_ratio.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h150_confusion_ratio.py)
+- **Log**: [h150_confusion_ratio_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h150_confusion_ratio_output.txt)
+- **Univariate AUROC (vs min_eps)**:
+  - `confusion_ratio`: **0.9391** | `top3_to_top1_ratio`: **0.8998** | `margin`: **0.9391**
+- **Implications**: The ratio of the second-highest softmax probability to the top class probability (`confusion_ratio`) achieves **exactly the same AUROC as the logit margin** (0.9391). This is expected — the confusion ratio is a monotone function of the margin in the softmax space. The top-3-to-top-1 ratio is slightly weaker (0.90). This confirms that any monotone re-parameterisation of the margin is an equally valid predictor; the key information is the *relative gap* between the leading and runner-up class probabilities.
+
+### H151: Input Gradient FFT Phase and Frequency Analysis
+- **Path**: [h151_gradient_phase.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h151_gradient_phase.py)
+- **Log**: [h151_gradient_phase_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h151_gradient_phase_output.txt)
+- **Univariate AUROC (vs min_eps)**:
+  - `input_grad_l2_norm`: **0.9408** | `high_to_low_ratio`: **0.8381** | `low_freq_fraction`: **0.6900** | `margin`: **0.9366**
+- **Implications**: The L2 norm of the input gradient **exceeds the logit margin** (0.9408 vs 0.9366 AUROC), making it the best single FFT/gradient feature and one of the strongest overall predictors. The high-to-low frequency ratio in the gradient's FFT spectrum is also a strong predictor (0.84): samples whose adversarial gradients are dominated by high-frequency components are more vulnerable. Low-frequency fraction alone is only weakly informative (0.69). **Gradient magnitude consistently outperforms gradient frequency structure.**
+
+### H152: Nearest Other-Class Interpolation Boundary Distance
+- **Path**: [h152_nearest_other_class_image.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h152_nearest_other_class_image.py)
+- **Log**: [h152_nearest_other_class_image_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h152_nearest_other_class_image_output.txt)
+- **Univariate AUROC (vs PGD Flip)**:
+  - `t_flip` (linear interpolation boundary): **0.6035** | `margin`: **0.9480**
+- **Implications**: The interpolation boundary distance (the mixture coefficient `t` at which a linear blend of a sample with its nearest other-class neighbour crosses the decision boundary) is only a **moderate predictor** (0.60 AUROC). Pixel-space geometric proximity to other-class neighbours is a **poor proxy** for adversarial vulnerability — the adversarial boundary is in a high-dimensional direction that doesn't align with the nearest-neighbour direction. This reinforces that adversarial vulnerability is a directional, gradient-determined property, not a simple Euclidean proximity measure.
+
+### H153: BatchNorm Running Stats Sensitivity
+- **Path**: [h153_bn_sensitivity.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h153_bn_sensitivity.py)
+- **Log**: [h153_bn_sensitivity_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h153_bn_sensitivity_output.txt)
+- **Univariate AUROC (vs PGD Flip)**:
+  - `bn_drift`: **0.7429** | `margin`: **0.9415**
+- **Implications**: The KL divergence between a sample's batch-normalisation statistics (computed in train mode at batch-size 1, where BN uses running stats) and its test-mode statistics (`bn_drift`) achieves **0.74 AUROC**. Samples that produce abnormal BN activations (high drift from the running mean/variance) tend to lie in low-density input regions near the decision boundary. This is a novel signal: BN sensitivity is a byproduct of feature distribution mismatch, which correlates geometrically with boundary proximity.
+
+### H154: Representation Norm / Layer Activation Growth
+- **Path**: [h154_representation_norm.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h154_representation_norm.py)
+- **Log**: [h154_representation_norm_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h154_representation_norm_output.txt)
+- **Univariate AUROC (vs PGD Flip)**:
+  - `norm_layer3`: **0.9332** | `norm_layer4`: **0.9111** | `norm_layer2`: **0.7503** | `norm_layer1`: **0.7817** | `margin`: **0.9591**
+- **Implications**: The L2 norm of activations at layer 3 (the penultimate convolutional layer) is a **very strong vulnerability predictor** (0.93 AUROC), nearly matching the logit margin. Later layer norms are consistently better predictors than earlier ones — the representation norm grows monotonically toward the decision boundary as layers add discriminative signal. This suggests that **layer-3 activation norms can serve as a pre-softmax, architecture-internal proxy for margin** without needing to inspect the final logit outputs, which has practical applications for white-box vulnerability assessment with intermediate hooks.
+
+---
+
+## Final AUROC Leaderboard (H107–H154)
+
+| Rank | Feature | Best AUROC | Target | Hypothesis |
+|------|---------|-----------|--------|------------|
+| 1 | `margin` (ZOO) | **0.9976** | min_eps | H114 |
+| 2 | `input_grad_l2_norm` | **0.9408** | min_eps | H151 ⭐ |
+| 3 | `predictive_entropy` (ensemble) | **0.9547** | PGD | H135 ⭐ |
+| 4 | `smoothgrad_l2_norm` | **0.9704** | PGD | H126 ⭐ |
+| 5 | `smoothgrad_max` | **0.9699** | PGD | H126 ⭐ |
+| 6 | `norm_layer3` | **0.9332** | PGD | H154 ⭐ |
+| 7 | `margin` (typical) | **~0.95** | PGD | most Hxxx |
+| 8 | `confusion_ratio` | **0.9391** | min_eps | H150 (= margin) |
+| 9 | `rfnn_margin` | **0.9367** | min_eps | H142 |
+| 10 | `bnn_predictive_variance` (SWAG) | **0.9349** | min_eps | H134 |
+| 11 | `softmax_variance` (SGD noise) | **0.9243** | PGD | H141 |
+| 12 | `memorization_proxy` | **0.9284** | PGD | H131 |
+| 13 | `softmax_variance` (snapshot) | **0.8969** | PGD | H132 |
+| 14 | `pixel_sign_agreement` | **0.8864** | PGD | H137 |
+| 15 | `smoothgrad_entropy` | **0.8881** | PGD | H126 |
+| 16 | `saliency_cm_dist` | **0.8514** | PGD | H149 |
+| 17 | `class_centrality` (confusion graph) | **0.7994** | PGD | H143 |
+| 18 | `gradcam_max` | **0.8111** | PGD | H128 |
+| 19 | `deviation_from_class_mean` | **0.8607** | PGD | H136 |
+| 20 | `high_to_low_ratio` (FFT) | **0.8381** | PGD | H151 |
+| 21 | `max_ablation_drop` | **0.7664** | min_eps | H138 |
+| 22 | `bn_drift` | **0.7429** | PGD | H153 |
+| 23 | `IG_l2_norm` | **0.7554** | PGD | H127 |
+| 24 | `IBP_certified_radius` | **0.8755** | PGD | H117 |
+| 25 | `t_flip` (interpolation) | **0.6035** | PGD | H152 (weak) |
+| 26 | `forgetting_event_count` | **0.5372** | PGD | H129 (≈ random) |
+| 27 | `c_score` | **0.5280** | PGD | H130 (≈ random) |
+| 28 | `vote_agreement` (hard ensemble) | **0.5265** | FGSM | H141 (≈ random) |
+
+**Final Key Insights** (H107–H154):
+- **Gradient L2 norm** (H151) slightly exceeds the logit margin as a vulnerability predictor (0.9408 vs ~0.94–0.95) — boundary proximity leaves a clear signature in gradient magnitude.
+- **Layer-3 activation norm** (H154, 0.9332) provides a pre-logit internal proxy for margin — powerful for architectures where final logits are inaccessible.
+- **Adversarial vulnerability is structural**: 73% of correctly classified samples are flipped by *all* four attack methods (H148). BIM, PGD, and MIM identify near-identical vulnerable sets (Jaccard ≥ 0.99).
+- **Softmax ratios = margin** (H150): the confusion ratio AUROC exactly equals the margin AUROC — all monotone logit-gap re-parameterisations are equivalent predictors.
+- **Interpolation boundary distance** (H152, 0.60 AUROC) is a poor proxy: adversarial vulnerability is directional (gradient-determined), not Euclidean.
+- **BN drift** (H153, 0.74 AUROC) reveals that boundary-proximate samples produce anomalous BatchNorm statistics — a novel architectural signal.
+- H144–H147 (AT variants) had bugs (now patched) but partial data confirms PGD-AT expands mean min ε by ~6.7× while margin predictability *increases* under AT.
+

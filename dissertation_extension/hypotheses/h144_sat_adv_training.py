@@ -182,7 +182,9 @@ def evaluate_victim(model, x_test, y_test, name):
         bx = x_c[i:i+512]
         by = y_c[i:i+512]
         flipped_fgsm.append(fgsm_attack(model, bx, by))
-        flipped_pgd.append(pgd_attack(model, bx, by, steps=10))
+        adv_pgd = pgd_attack(model, bx, by, steps=10)
+        with torch.no_grad():
+            flipped_pgd.append(model(adv_pgd).argmax(1) != by)
         min_eps.append(min_eps_to_flip(model, bx, by))
 
     flipped_fgsm = torch.cat(flipped_fgsm).cpu().numpy().astype(int)
