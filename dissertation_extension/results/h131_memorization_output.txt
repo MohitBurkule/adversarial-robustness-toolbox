@@ -1,0 +1,34 @@
+Loading Fashion-MNIST dataset...
+Training model 1/5 on random 70% subset...
+Training model 2/5 on random 70% subset...
+Training model 3/5 on random 70% subset...
+Training model 4/5 on random 70% subset...
+Training model 5/5 on random 70% subset...
+Evaluating models for confidence variance...
+Victim correctly classified samples: 9133/10000
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: memorization_proxy
+  Target: flipped_fgsm  AUROC = 0.9038
+  Target: flipped_pgd   AUROC = 0.9284
+  Target: min_eps       AUROC = 0.9284
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9163
+  Target: flipped_pgd   AUROC = 0.9387
+  Target: min_eps       AUROC = 0.9350
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.5104
+  Target: flipped_pgd   AUROC = 0.5865
+  Target: min_eps       AUROC = 0.5672
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.6178
+  Target: flipped_pgd   AUROC = 0.6784
+  Target: min_eps       AUROC = 0.5654
