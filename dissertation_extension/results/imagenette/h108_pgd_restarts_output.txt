@@ -1,0 +1,82 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h108_pgd_restarts.py
+============================================================
+Hypothesis H108: PGD Random Restarts Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 29.1s
+Running restarts evaluation on 1000 correctly classified test samples...
+PGD evaluation completed in 7.5s
+
+Adversarial Success by Restart Limit K:
+  K = 1: Success rate = 0.9740
+  K = 5: Success rate = 0.9770
+  K = 10: Success rate = 0.9800
+  K = 20: Success rate = 0.9810
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: flipped_at_1 (Positive Rate = 0.9740) ---
+  Feature            AUROC Direction 
+  margin            0.9234  -
+  mean_pix          0.6817  -
+  std_pix           0.8175  -
+  sobel_mean        0.8567  -
+
+--- Target: flipped_at_5 (Positive Rate = 0.9770) ---
+  Feature            AUROC Direction 
+  margin            0.9136  -
+  mean_pix          0.6972  -
+  std_pix           0.8248  -
+  sobel_mean        0.8591  -
+
+--- Target: flipped_at_10 (Positive Rate = 0.9800) ---
+  Feature            AUROC Direction 
+  margin            0.9053  -
+  mean_pix          0.6843  -
+  std_pix           0.8302  -
+  sobel_mean        0.8495  -
+
+--- Target: flipped_at_20 (Positive Rate = 0.9810) ---
+  Feature            AUROC Direction 
+  margin            0.9220  -
+  mean_pix          0.6721  -
+  std_pix           0.8416  -
+  sobel_mean        0.8608  -
+
+============================================================
+ANALYSIS OF SAMPLES NEEDING MORE RESTARTS
+============================================================
+  Easy (K=1) (n=974):
+    margin         : 1.3137
+    mean_pix       : 0.4643
+    std_pix        : 0.2008
+    sobel_mean     : 0.7610
+  Medium (1<K<=10) (n=6):
+    margin         : 4.4537
+    mean_pix       : 0.5369
+    std_pix        : 0.2696
+    sobel_mean     : 1.0778
+  Hard (10<K<=20) (n=1):
+    margin         : 1.3652
+    mean_pix       : 0.6578
+    std_pix        : 0.2167
+    sobel_mean     : 0.8257
+  Robust (K>20) (n=19):
+    margin         : 4.8768
+    mean_pix       : 0.5824
+    std_pix        : 0.2971
+    sobel_mean     : 1.0934
