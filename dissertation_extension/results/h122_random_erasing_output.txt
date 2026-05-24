@@ -1,0 +1,66 @@
+======================================================================
+Hypothesis H122: Random Erasing Defense vs Vanilla CNN
+======================================================================
+
+Training Vanilla model...
+  [vanilla] Epoch 1/10 completed
+  [vanilla] Epoch 2/10 completed
+  [vanilla] Epoch 3/10 completed
+  [vanilla] Epoch 4/10 completed
+  [vanilla] Epoch 5/10 completed
+  [vanilla] Epoch 6/10 completed
+  [vanilla] Epoch 7/10 completed
+  [vanilla] Epoch 8/10 completed
+  [vanilla] Epoch 9/10 completed
+  [vanilla] Epoch 10/10 completed
+
+Training Random Erasing model...
+  [random_erasing] Epoch 1/10 completed
+  [random_erasing] Epoch 2/10 completed
+  [random_erasing] Epoch 3/10 completed
+  [random_erasing] Epoch 4/10 completed
+  [random_erasing] Epoch 5/10 completed
+  [random_erasing] Epoch 6/10 completed
+  [random_erasing] Epoch 7/10 completed
+  [random_erasing] Epoch 8/10 completed
+  [random_erasing] Epoch 9/10 completed
+  [random_erasing] Epoch 10/10 completed
+
+Evaluating Vanilla model...
+   Evaluating attacks...
+
+Evaluating Random Erasing model...
+   Evaluating attacks...
+
+==================================================
+VANILLA MODEL RESULTS
+==================================================
+Accuracy: 0.9390
+FGSM Success: 0.6869
+PGD Success: 0.9297
+Mean min_eps: 0.0316
+
+Univariate AUROC vs PGD Flip (Vanilla):
+  margin          : 0.9804
+  mean_pix        : 0.5206
+  std_pix         : 0.6119
+
+==================================================
+RANDOM ERASING MODEL RESULTS
+==================================================
+Accuracy: 0.9330
+FGSM Success: 0.6935
+PGD Success: 0.9507
+Mean min_eps: 0.0323
+
+Univariate AUROC vs PGD Flip (Random Erasing):
+  margin          : 0.9538
+  mean_pix        : 0.5074
+  std_pix         : 0.6669
+
+==================================================
+SUMMARY OF AUROC CHANGES (Random Erasing vs Vanilla PGD)
+==================================================
+  margin          : Random Erasing=0.9538  Vanilla=0.9804  Change=-0.0267
+  mean_pix        : Random Erasing=0.5074  Vanilla=0.5206  Change=-0.0132
+  std_pix         : Random Erasing=0.6669  Vanilla=0.6119  Change=+0.0549
