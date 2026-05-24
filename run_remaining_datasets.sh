@@ -27,4 +27,13 @@ echo "=== Step 6/6: Running on EuroSAT ==="
 ./run_patch_benchmark.sh eurosat
 
 echo "=== All Remaining Datasets Complete! ==="
+
+# 7. Sweep up newly added hypotheses (H157-H162) on completed datasets
+echo "=== Step 7/7: Running newly added hypotheses (H157-H162) on completed datasets ==="
+./run_hypotheses_benchmark.sh || true
+./run_patch_benchmark.sh cifar10 || true
+./run_patch_benchmark.sh imagenette || true
+./run_patch_benchmark.sh svhn || true
+
+echo "=== Complete Master Multi-Dataset Benchmark Finished! ==="
 echo "Finished at: $(date)"
