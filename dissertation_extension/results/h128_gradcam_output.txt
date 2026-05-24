@@ -1,0 +1,54 @@
+Loading Fashion-MNIST dataset...
+Training CNN model...
+Epoch 1/10 done
+Epoch 2/10 done
+Epoch 3/10 done
+Epoch 4/10 done
+Epoch 5/10 done
+Epoch 6/10 done
+Epoch 7/10 done
+Epoch 8/10 done
+Epoch 9/10 done
+Epoch 10/10 done
+Correctly classified samples: 9250/10000
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: gradcam_entropy
+  Target: flipped_fgsm  AUROC = 0.6014
+  Target: flipped_pgd   AUROC = 0.6429
+  Target: min_eps       AUROC = 0.5934
+
+Feature: gradcam_max
+  Target: flipped_fgsm  AUROC = 0.7269
+  Target: flipped_pgd   AUROC = 0.8111
+  Target: min_eps       AUROC = 0.7184
+
+Feature: gradcam_l2_to_image_center
+  Target: flipped_fgsm  AUROC = 0.5568
+  Target: flipped_pgd   AUROC = 0.5860
+  Target: min_eps       AUROC = 0.5450
+
+Feature: gradcam_concentration
+  Target: flipped_fgsm  AUROC = 0.5974
+  Target: flipped_pgd   AUROC = 0.6449
+  Target: min_eps       AUROC = 0.5899
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9131
+  Target: flipped_pgd   AUROC = 0.9607
+  Target: min_eps       AUROC = 0.9442
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.5213
+  Target: flipped_pgd   AUROC = 0.5300
+  Target: min_eps       AUROC = 0.6075
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.6120
+  Target: flipped_pgd   AUROC = 0.6561
+  Target: min_eps       AUROC = 0.5410
