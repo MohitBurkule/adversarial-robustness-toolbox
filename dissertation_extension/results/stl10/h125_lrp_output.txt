@@ -1,0 +1,40 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: STL10
+[*] Executing script: dissertation_extension/hypotheses/h125_lrp.py
+======================================================================
+Hypothesis H125: LRP Attribution vs Adversarial Vulnerability
+======================================================================
+
+Training CNN model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Using 445 correctly classified test samples
+   Computing LRP attributions...
+   Evaluating attacks...
+
+==================================================
+MODEL PERFORMANCE & ROBUSTNESS
+==================================================
+Clean Accuracy: 0.4450
+FGSM Success: 0.9438
+PGD Success: 0.9775
+Mean min_eps: 0.0184
+
+==================================================
+UNIVARIATE AUROC SCORES
+==================================================
+Feature         | vs FGSM Flip | vs PGD Flip 
+--------------------------------------------------
+margin          | 0.9450       | 0.9697
+mean_pix        | 0.6346       | 0.5264
+std_pix         | 0.7037       | 0.7582
+lrp_total       | 0.6198       | 0.6768
+lrp_entropy     | 0.5978       | 0.5779
+lrp_max         | 0.5557       | 0.6016
