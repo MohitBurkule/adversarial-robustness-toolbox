@@ -1,0 +1,56 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: STL10
+[*] Executing script: dissertation_extension/hypotheses/h128_gradcam.py
+Loading Fashion-MNIST dataset...
+Training CNN model...
+Epoch 1/10 done
+Epoch 2/10 done
+Epoch 3/10 done
+Epoch 4/10 done
+Epoch 5/10 done
+Epoch 6/10 done
+Epoch 7/10 done
+Epoch 8/10 done
+Epoch 9/10 done
+Epoch 10/10 done
+Correctly classified samples: 3695/8000
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: gradcam_entropy
+  Target: flipped_fgsm  AUROC = 0.5594
+  Target: flipped_pgd   AUROC = 0.6391
+  Target: min_eps       AUROC = 0.5422
+
+Feature: gradcam_max
+  Target: flipped_fgsm  AUROC = 0.5781
+  Target: flipped_pgd   AUROC = 0.6498
+  Target: min_eps       AUROC = 0.5208
+
+Feature: gradcam_l2_to_image_center
+  Target: flipped_fgsm  AUROC = 0.5549
+  Target: flipped_pgd   AUROC = 0.6206
+  Target: min_eps       AUROC = 0.5283
+
+Feature: gradcam_concentration
+  Target: flipped_fgsm  AUROC = 0.5941
+  Target: flipped_pgd   AUROC = 0.6955
+  Target: min_eps       AUROC = 0.5621
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9280
+  Target: flipped_pgd   AUROC = 0.9681
+  Target: min_eps       AUROC = 0.9378
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.6327
+  Target: flipped_pgd   AUROC = 0.7652
+  Target: min_eps       AUROC = 0.5306
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.7075
+  Target: flipped_pgd   AUROC = 0.6939
+  Target: min_eps       AUROC = 0.5881
