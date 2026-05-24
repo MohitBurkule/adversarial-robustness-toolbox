@@ -547,3 +547,83 @@ This document compiles the running analysis and scientific findings of our execu
 - **BN drift** (H153, 0.74 AUROC) reveals that boundary-proximate samples produce anomalous BatchNorm statistics — a novel architectural signal.
 - H144–H147 (AT variants) had bugs (now patched) but partial data confirms PGD-AT expands mean min ε by ~6.7× while margin predictability *increases* under AT.
 
+---
+
+### H155: Ensembled Meta-Detector for Adversarial Inputs
+- **Path**: [h155_meta_detector.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h155_meta_detector.py)
+- **Log**: [h155_meta_detector_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h155_meta_detector_output.txt)
+- **Individual Detector AUROCs** (clean vs adversarial detection):
+  - `Feature-Squeezing L1`: **0.8928** | `MC-Dropout Entropy`: **0.8584** | `Ensemble Disagreement`: **0.8530** | `Mahalanobis Distance`: **0.7465** | `KDE Log-Likelihood`: **0.7317**
+- **Meta-Detector (Logistic Regression over all 5)**: **0.9478 ± 0.0085** (5-fold CV)
+- **Top feature weights**: Feature-Squeezing (+2.27), MC-Dropout Entropy (+1.31), Ensemble Disagreement (+0.66)
+- **Implications**: A simple logistic regression combining 5 orthogonal detection signals achieves **94.8% AUROC** for adversarial detection — a significant improvement over any single detector (best individual: 89.3%). Feature Squeezing (measuring L1 sensitivity to spatial smoothing) is the dominant signal. The ensemble meta-detector demonstrates that adversarial examples can be reliably detected at test time using model-intrinsic signals, without requiring access to the attack procedure.
+
+### H156: Multi-Attack Meta-Learner (FGSM / BIM / PGD / MIM)
+- **Path**: [h156_multi_attack_metamodel.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h156_multi_attack_metamodel.py)
+- **Log**: [h156_multi_attack_metamodel_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h156_multi_attack_metamodel_output.txt)
+- **Attack consensus** (1000 samples):
+  - All 4 attacks succeed: **74.7%** | Exactly 3: **21.6%** | ≤ 2: **3.7%** | Immune to all: **1.0%**
+- **Top feature importances** (Random Forest):
+  - *FGSM*: `grad_std` (0.117), `grad_l2_norm` (0.116), `margin` (0.089), `mc_entropy` (0.080)
+  - *BIM*: `margin` (0.153), `act_norm_layer4` (0.110), `mc_entropy` (0.099), `act_norm_layer3` (0.094)
+  - *PGD*: `act_norm_layer4` (0.135), `act_norm_layer3` (0.109), `margin` (0.107)
+  - *MIM*: `margin` (0.137), `act_norm_layer3` (0.096), `mc_entropy` (0.096)
+- **Feature importance correlation across attacks**:
+  - BIM ∩ PGD: **0.9282** | BIM ∩ MIM: **0.9735** | FGSM ∩ PGD: **−0.034** (orthogonal!)
+- **Implications**: The multi-attack meta-learner reveals that **FGSM has a fundamentally different feature importance structure from iterative attacks** (BIM, PGD, MIM) — their feature importances are strongly correlated with each other (0.93–0.97) but orthogonal to FGSM's (r = −0.03). FGSM vulnerability is governed by gradient variance and L2 norm (single-step gradient alignment), while iterative attacks are governed by margin and layer-4 activation norms (iterative boundary refinement). This architectural dissociation suggests that FGSM and iterative attacks exploit fundamentally different geometric properties of the decision boundary.
+
+---
+
+## 🏁 COMPLETE STUDY CONCLUSIONS (H107–H156)
+
+This concludes the systematic analysis of 50 adversarial robustness hypotheses on Fashion-MNIST. Below are the consolidated scientific conclusions:
+
+### Tier 1: Flagship Findings
+
+1. **The Logit Margin is the Supreme Univariate Predictor**: Across all 50 hypotheses and all attack types, the clean logit margin (gap between top-1 and top-2 logits) achieves 0.87–0.9976 AUROC as a vulnerability predictor. No single alternative feature consistently beats it in all contexts.
+
+2. **Deep Ensemble Entropy Can Exceed the Margin (H135)**: Ensemble predictive entropy (0.9547 AUROC) slightly exceeds the typical margin (0.943) as a vulnerability predictor and is actionable in settings where logits are inaccessible.
+
+3. **SmoothGrad Norms ≈ Margin (H126)**: `smoothgrad_l2_norm` and `smoothgrad_max` achieve ~0.97 AUROC — essentially equivalent to the margin. Noise-averaged gradient attribution signals carry all the boundary proximity information.
+
+4. **Adversarial Vulnerability is Structural, Not Attack-Specific (H148, H156)**: 74.7% of samples are universally vulnerable to all 4 attacks (FGSM, BIM, PGD, MIM). BIM, PGD, and MIM identify near-identical vulnerable sets (Jaccard ≥ 0.99). Vulnerability is a property of boundary geometry, not a quirk of any specific attack.
+
+5. **FGSM vs Iterative Attacks are Orthogonal (H156)**: Feature importance correlation between FGSM and PGD across 20 features is **−0.034** — effectively zero. They exploit fundamentally different geometric properties (gradient alignment vs iterative boundary refinement).
+
+### Tier 2: Strong Novel Predictors (AUROC 0.85–0.97)
+
+| Feature | AUROC | Key Property |
+|---------|-------|-------------|
+| `smoothgrad_l2_norm` | 0.9704 | Attribution noise captures boundary |
+| `predictive_entropy` | 0.9547 | Ensemble uncertainty > margin |
+| `input_grad_l2_norm` | 0.9408 | Gradient size = boundary proximity |
+| `confusion_ratio` | 0.9391 | Monotone re-parameterisation of margin |
+| `norm_layer3` | 0.9332 | Pre-logit internal margin proxy |
+| `rfnn_margin` | 0.9367 | Random features capture geometry |
+| `memorization_proxy` | 0.9284 | Memorised = boundary-proximate |
+| `softmax_variance` | 0.9243 | Soft ensemble signal >> hard vote |
+| `pixel_sign_agreement` | 0.8864 | Cross-model gradient alignment |
+| `saliency_cm_dist` | 0.8514 | Peripheral saliency = vulnerable |
+
+### Tier 3: Null Findings (≈ Random Predictors)
+
+These features are effectively **uninformative** about adversarial vulnerability:
+- **Forgetting events** (H129, AUROC 0.54): Learning instability ≠ boundary proximity
+- **C-score** (H130, AUROC 0.53): Training consistency ≠ test-time robustness
+- **Hard ensemble vote agreement** (H141, AUROC 0.53): Hard labels destroy information
+- **Pixel-space interpolation boundary** (H152, AUROC 0.60): Euclidean ≠ adversarial direction
+
+### Tier 4: Defense Effectiveness Summary
+
+| Defense | PGD Success | Clean Acc | Margin AUROC Change |
+|---------|-----------|----------|---------------------|
+| Vanilla CNN (baseline) | ~94% | ~93% | — |
+| CURE (H118) | **39.5%** | 91.8% | **+0.003** (preserved) |
+| AugMix (H123) | **70.2%** | 87.1% | **−0.151** |
+| Manifold Mixup (H124) | **88.0%** | 92.5% | **−0.211** |
+| ALP (H119) | **70.3%** | 88.4% | **−0.246** |
+| AWP alone (H120) | **31.0%** | 35.2% | N/A (collapsed) |
+| PGD-AT (H147 partial) | **~0.7%** | 88.3% | **+0.025** (increased) |
+
+**Key pattern**: Curvature regularisation (CURE) and adversarial training (PGD-AT) preserve or improve margin predictability, while augmentation-based defenses (AugMix, Manifold Mixup, ALP) reduce it by altering decision boundary geometry.
+
