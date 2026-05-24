@@ -1,0 +1,71 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h123_augmix.py
+======================================================================
+Hypothesis H123: AugMix Defense vs Vanilla CNN
+======================================================================
+
+Training Vanilla model...
+  [vanilla] Epoch 1/10 completed
+  [vanilla] Epoch 2/10 completed
+  [vanilla] Epoch 3/10 completed
+  [vanilla] Epoch 4/10 completed
+  [vanilla] Epoch 5/10 completed
+  [vanilla] Epoch 6/10 completed
+  [vanilla] Epoch 7/10 completed
+  [vanilla] Epoch 8/10 completed
+  [vanilla] Epoch 9/10 completed
+  [vanilla] Epoch 10/10 completed
+
+Training AugMix model...
+  [augmix] Epoch 1/10 completed
+  [augmix] Epoch 2/10 completed
+  [augmix] Epoch 3/10 completed
+  [augmix] Epoch 4/10 completed
+  [augmix] Epoch 5/10 completed
+  [augmix] Epoch 6/10 completed
+  [augmix] Epoch 7/10 completed
+  [augmix] Epoch 8/10 completed
+  [augmix] Epoch 9/10 completed
+  [augmix] Epoch 10/10 completed
+
+Evaluating Vanilla model...
+   Evaluating attacks...
+
+Evaluating AugMix model...
+   Evaluating attacks...
+
+==================================================
+VANILLA MODEL RESULTS
+==================================================
+Accuracy: 0.6340
+FGSM Success: 0.9353
+PGD Success: 0.9795
+Mean min_eps: 0.0190
+
+Univariate AUROC vs PGD Flip (Vanilla):
+  margin          : 0.9700
+  mean_pix        : 0.6825
+  std_pix         : 0.8545
+  sobel_mean      : 0.8688
+
+==================================================
+AUGMIX MODEL RESULTS
+==================================================
+Accuracy: 0.6960
+FGSM Success: 0.9167
+PGD Success: 0.9756
+Mean min_eps: 0.0208
+
+Univariate AUROC vs PGD Flip (AugMix):
+  margin          : 0.9790
+  mean_pix        : 0.6703
+  std_pix         : 0.8824
+  sobel_mean      : 0.8781
+
+==================================================
+SUMMARY OF AUROC CHANGES (AugMix vs Vanilla PGD)
+==================================================
+  margin          : AugMix=0.9790  Vanilla=0.9700  Change=+0.0090
+  mean_pix        : AugMix=0.6703  Vanilla=0.6825  Change=-0.0122
+  std_pix         : AugMix=0.8824  Vanilla=0.8545  Change=+0.0279
+  sobel_mean      : AugMix=0.8781  Vanilla=0.8688  Change=+0.0093
