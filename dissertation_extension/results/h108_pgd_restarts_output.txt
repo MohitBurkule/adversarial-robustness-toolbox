@@ -1,0 +1,80 @@
+============================================================
+Hypothesis H108: PGD Random Restarts Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 35.7s
+Running restarts evaluation on 1000 correctly classified test samples...
+PGD evaluation completed in 8.0s
+
+Adversarial Success by Restart Limit K:
+  K = 1: Success rate = 0.9590
+  K = 5: Success rate = 0.9700
+  K = 10: Success rate = 0.9740
+  K = 20: Success rate = 0.9790
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: flipped_at_1 (Positive Rate = 0.9590) ---
+  Feature            AUROC Direction 
+  margin            0.9579  -
+  mean_pix          0.5130  -
+  std_pix           0.6479  -
+  sobel_mean        0.6991  -
+
+--- Target: flipped_at_5 (Positive Rate = 0.9700) ---
+  Feature            AUROC Direction 
+  margin            0.9619  -
+  mean_pix          0.5046  +
+  std_pix           0.6199  -
+  sobel_mean        0.6879  -
+
+--- Target: flipped_at_10 (Positive Rate = 0.9740) ---
+  Feature            AUROC Direction 
+  margin            0.9588  -
+  mean_pix          0.5077  -
+  std_pix           0.6409  -
+  sobel_mean        0.7052  -
+
+--- Target: flipped_at_20 (Positive Rate = 0.9790) ---
+  Feature            AUROC Direction 
+  margin            0.9550  -
+  mean_pix          0.5171  +
+  std_pix           0.6155  -
+  sobel_mean        0.6970  -
+
+============================================================
+ANALYSIS OF SAMPLES NEEDING MORE RESTARTS
+============================================================
+  Easy (K=1) (n=959):
+    margin         : 9.7419
+    mean_pix       : 0.2883
+    std_pix        : 0.3205
+    sobel_mean     : 0.7356
+  Medium (1<K<=10) (n=15):
+    margin         : 23.6986
+    mean_pix       : 0.2891
+    std_pix        : 0.3629
+    sobel_mean     : 0.8218
+  Hard (10<K<=20) (n=5):
+    margin         : 26.2796
+    mean_pix       : 0.3302
+    std_pix        : 0.3808
+    sobel_mean     : 0.8513
+  Robust (K>20) (n=21):
+    margin         : 25.4700
+    mean_pix       : 0.2717
+    std_pix        : 0.3538
+    sobel_mean     : 0.8487
