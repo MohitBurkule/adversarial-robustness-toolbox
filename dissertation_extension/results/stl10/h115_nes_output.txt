@@ -1,0 +1,42 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: STL10
+[*] Executing script: dissertation_extension/hypotheses/h115_nes.py
+============================================================
+Hypothesis H115: NES Zeroth-Order PGD Attack Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 10.6s
+Evaluating NES and FGSM on 200 correctly classified test samples...
+Evaluations completed: NES (39.4s), FGSM (0.2s)
+
+NES Attack Success Rate:  0.7600
+FGSM Attack Success Rate: 0.9350
+Mean NES Queries used:    481.48
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: nes_flipped (Positive Rate = 0.7600) ---
+  Feature            AUROC Direction 
+  margin            0.9341  -
+  mean_pix          0.5248  +
+  std_pix           0.6032  -
+  sobel_mean        0.5787  -
+
+--- Target: flipped_FGSM (Positive Rate = 0.9350) ---
+  Feature            AUROC Direction 
+  margin            0.9515  -
+  mean_pix          0.6088  -
+  std_pix           0.6796  -
+  sobel_mean        0.6364  -
