@@ -1,0 +1,34 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: SVHN
+[*] Executing script: dissertation_extension/hypotheses/h114_zoo.py
+============================================================
+Hypothesis H114: ZOO Zeroth-Order Attack Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 70.2s
+Evaluating ZOO on 200 correctly classified test samples...
+ZOO evaluations completed in 34.6s
+
+ZOO Attack Success Rate: 0.9100
+Mean Queries used: 406.81
+Mean queries to flip (for successful attacks): 150.24
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: zoo_flipped (Positive Rate = 0.9100) ---
+  Feature            AUROC Direction 
+  margin            0.9576  -
+  mean_pix          0.5403  -
+  std_pix           0.7457  -
