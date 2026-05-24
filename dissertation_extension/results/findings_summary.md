@@ -325,10 +325,104 @@ This document compiles the running analysis and scientific findings of our execu
 | 16 | `forgetting_event_count` | **0.5372** | PGD | H129 (≈ random) |
 | 17 | `c_score` | **0.5280** | PGD | H130 (≈ random) |
 
-**Key Insights**:
+**Key Insights** (H107–H138):
 - Training dynamics features (forgetting, C-score) are near-random vulnerability predictors — learning difficulty ≠ adversarial proximity.
 - SmoothGrad attribution norms approach margin-level prediction (0.97 AUROC).
 - Deep ensemble uncertainty **exceeds** the margin as a vulnerability predictor (H135) — a flagship result for practical applications without logit access.
 - Memorization proxy and SWAG posterior variance are strong novel predictors (0.92–0.93 AUROC).
 - Augmentation defenses (AugMix, Manifold Mixup) alter decision boundary geometry, reducing margin predictability — unlike CURE which preserves it perfectly.
+
+---
+
+### H139: Attention (ViT) vs CNN Adversarial Vulnerability
+- **Path**: [h139_vit_vs_cnn.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h139_vit_vs_cnn.py)
+- **Log**: [h139_vit_vs_cnn_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h139_vit_vs_cnn_output.txt)
+- **Shared samples** (correctly classified by both): **8,533 / 10,000**
+- **Attack success rates**:
+  - *CNN*: FGSM = **70.2%**, PGD-10 = **93.5%**, mean min ε = **0.054**
+  - *ViT*: FGSM = **75.7%**, PGD-10 = **93.7%**, mean min ε = **0.045**
+- **Cross-architecture FGSM vulnerability correlation**: **0.4007** (moderate)
+- **Univariate AUROC (margin vs PGD flip)**:
+  - CNN margin: **0.9358** | ViT margin: **0.8224**
+- **Implications**: The ViT is marginally *more* vulnerable than the CNN (mean min ε 0.045 vs 0.054), likely because the small patch-based ViT trained from scratch on Fashion-MNIST hasn't built the same smooth low-frequency decision geometry as the CNN. Critically, **margin predictability is significantly weaker for ViT (AUROC 0.82 vs 0.94 for CNN)** — the ViT's attention-based representations produce a less monotone relationship between clean logit confidence and adversarial boundary proximity. Cross-architecture attack transfer is moderate (r=0.40), showing that vulnerability rankings are partially but not fully preserved across architectures.
+
+### H140: Adversarial Transferability Matrix
+- **Path**: [h140_transferability_matrix.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h140_transferability_matrix.py)
+- **Log**: [h140_transferability_matrix_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h140_transferability_matrix_output.txt)
+- **Transferability Matrix** (FGSM flip rates across 4 CNN models):
+
+  |       | To M0 | To M1 | To M2 | To M3 |
+  |-------|-------|-------|-------|-------|
+  | From M0 | **0.682** | 0.423 | 0.450 | 0.464 |
+  | From M1 | 0.463 | **0.624** | 0.436 | 0.444 |
+  | From M2 | 0.467 | 0.428 | **0.619** | 0.448 |
+  | From M3 | 0.508 | 0.448 | 0.463 | **0.664** |
+
+- **Mean cross-model transfer rate**: **45.4%** (vs self-attack diagonal ~65%)
+- **Univariate AUROC (high-transferability target)**:
+  - `margin`: **0.9138** | `std_pix`: **0.5628** | `mean_pix`: **0.5748**
+- **Implications**: Cross-model transfer rates are consistently around 45%, well below self-attack success (~65%). The self-transfer advantage comes from gradient alignment in weight space. The logit margin of the *target* model remains the dominant predictor of high-transferability (**0.91 AUROC**), reinforcing that transferability is governed by target boundary proximity rather than source attack strength.
+
+### H141: SGD Noise Sensitivity vs Adversarial Vulnerability
+- **Path**: [h141_sgd_noise.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h141_sgd_noise.py)
+- **Log**: [h141_sgd_noise_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h141_sgd_noise_output.txt)
+- **Model**: 8,988 / 10,000 correctly classified; FGSM = **51.9%**, PGD = **62.5%**, mean min ε = **0.0735**
+- **Univariate AUROC (vs PGD Flip)**:
+  - `margin`: **0.9307** | `softmax_variance` (SGD noise): **0.9243** | `vote_agreement`: **0.5231** (≈ random)
+- **Implications**: Softmax variance under SGD initialisation noise (K=3 differently-seeded training runs) achieves **0.924 AUROC** — nearly matching the logit margin. This mirrors H132's snapshot finding: *soft* (continuous probability) inter-model disagreement is highly informative while *hard* (label) vote agreement is useless. SGD stochasticity reveals boundary proximity with high fidelity.
+
+### H142: Random Feature Neural Network (RFNN) Baseline
+- **Path**: [h142_rfnn_baseline.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h142_rfnn_baseline.py)
+- **Log**: [h142_rfnn_baseline_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h142_rfnn_baseline_output.txt)
+- **Model**: 9,268 / 10,000 correctly classified; FGSM = **70.1%**, PGD = **93.3%**, mean min ε = **0.0525**
+- **Univariate AUROC (vs min_eps)**:
+  - `rfnn_margin`: **0.9367** | `rfnn_confidence`: **0.9325** | `cnn_margin`: **0.9459**
+- **Implications**: A Random Feature Neural Network (fixed random first-layer weights, only the linear output layer trained) achieves essentially the **same AUROC as the fully trained CNN margin** (0.93–0.94 vs 0.95). This is a striking result: the CNN's vulnerability is predictable even from a random feature map. Boundary proximity is not a deeply learned property — it appears to be encoded in the input/feature geometry that even shallow random projections can capture.
+
+### H143: Confusion Graph Centrality Analysis
+- **Path**: [h143_confusion_graph.py](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h143_confusion_graph.py)
+- **Log**: [h143_confusion_graph_output.txt](file:///home/mohit/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/results/h143_confusion_graph_output.txt)
+- **Model**: 9,267 / 10,000 correctly classified; FGSM = **70.2%**, PGD = **95.6%**, mean min ε = **0.0530**
+- **Class centrality** (betweenness in the confusion graph):
+  - Most central (most common FGSM target): Class 6 (Shirt) — centrality **3.26**
+  - Least central: Class 1 (Trouser) — centrality **0.10** (almost never a target)
+- **Univariate AUROC (vs PGD Flip)**:
+  - `class_centrality`: **0.7994** | `margin`: **0.9373**
+- **Implications**: Class confusion centrality (how often a class is the target of adversarial examples from other classes) is a **moderately strong predictor** (0.80 AUROC). Shirt (class 6) is the universal "confusion attractor" — attacked images overwhelmingly land on it. Trouser is almost never confused with anything. This class-level graph signal is pure model architecture / class geometry and requires no per-sample computation, making it an efficient coarse-grained vulnerability estimator.
+
+---
+
+## Updated AUROC Leaderboard (H107–H143)
+
+| Rank | Feature | Best AUROC | Target | Hypothesis |
+|------|---------|-----------|--------|------------|
+| 1 | `margin` (ZOO context) | **0.9976** | min_eps | H114 |
+| 2 | `predictive_entropy` (deep ensemble) | **0.9547** | PGD | H135 ⭐ |
+| 3 | `smoothgrad_l2_norm` | **0.9704** | PGD | H126 ⭐ |
+| 4 | `smoothgrad_max` | **0.9699** | PGD | H126 ⭐ |
+| 5 | `margin` (typical) | **~0.95** | PGD | most Hxxx |
+| 6 | `rfnn_margin` | **0.9367** | min_eps | H142 ⭐ |
+| 7 | `bnn_predictive_variance` (SWAG) | **0.9349** | min_eps | H134 |
+| 8 | `softmax_variance` (SGD noise) | **0.9243** | PGD | H141 |
+| 9 | `memorization_proxy` | **0.9284** | PGD | H131 |
+| 10 | `softmax_variance` (snapshot) | **0.8969** | PGD | H132 |
+| 11 | `pixel_sign_agreement` | **0.8864** | PGD | H137 |
+| 12 | `smoothgrad_entropy` | **0.8881** | PGD | H126 |
+| 13 | `class_centrality` (confusion graph) | **0.7994** | PGD | H143 |
+| 14 | `gradcam_max` | **0.8111** | PGD | H128 |
+| 15 | `deviation_from_class_mean` | **0.8607** | PGD | H136 |
+| 16 | `max_ablation_drop` | **0.7664** | min_eps | H138 |
+| 17 | `IG_l2_norm` | **0.7554** | PGD | H127 |
+| 18 | `IBP_certified_radius` | **0.8755** | PGD | H117 |
+| 19 | `ViT margin` | **0.8224** | PGD | H139 (weaker than CNN margin) |
+| 20 | `forgetting_event_count` | **0.5372** | PGD | H129 (≈ random) |
+| 21 | `c_score` | **0.5280** | PGD | H130 (≈ random) |
+| 22 | `vote_agreement` (hard ensemble) | **0.5265** | FGSM | H141 (≈ random) |
+
+**Updated Key Insights** (H107–H143):
+- **RFNN baseline** (H142) matches the full CNN margin — vulnerability is predictable from random feature projections, suggesting it is encoded in the input geometry, not deep representations.
+- **ViT margin predictability** (0.82 AUROC) is significantly weaker than CNN margin (0.94), indicating attention-based representations have a less monotone logit-boundary relationship.
+- **Confusion graph centrality** (H143) provides a cheap class-level vulnerability estimate (0.80 AUROC) — Shirt (class 6) is the universal confusion attractor in Fashion-MNIST.
+- Soft ensemble signals (softmax variance from SGD noise, snapshots, SWAG) consistently outperform hard vote-agreement signals across all hypotheses.
+- Transfer attacks achieve ~45% success cross-model vs ~65% self-attack, with target model margin being the dominant predictor of transferability.
 
