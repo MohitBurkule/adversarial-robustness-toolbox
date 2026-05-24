@@ -1,0 +1,37 @@
+============================================================
+Hypothesis H145: FAT (Friendly Adversarial Training)
+============================================================
+
+Training Vanilla CNN victim...
+Vanilla CNN trained in 37.0s
+
+Training FAT CNN victim...
+FAT CNN trained in 294.7s
+
+Evaluating Model: Vanilla CNN
+  Test Accuracy: 9248/10000 (92.48%)
+  FGSM flip rate = 0.7127
+  PGD-10 flip rate = 0.0074
+  Mean min_eps = 0.0519
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9311
+    mean_pix   AUROC = 0.5292
+    std_pix    AUROC = 0.5978
+  Target: flipped_PGD | Univariate AUROC
+Traceback (most recent call last):
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h145_friendly_at.py", line 267, in <module>
+    main()
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h145_friendly_at.py", line 262, in main
+    evaluate_victim(vanilla_model, test_x, test_y, "Vanilla CNN")
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h145_friendly_at.py", line 230, in evaluate_victim
+    a = roc_auc_score(y, x_i)
+        ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py", line 682, in roc_auc_score
+    y_true = check_array(y_true, ensure_2d=False, dtype=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/sklearn/utils/validation.py", line 1068, in check_array
+    raise ValueError(
+ValueError: Found array with dim 4, while dim <= 2 is required.
