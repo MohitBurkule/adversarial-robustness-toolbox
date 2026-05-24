@@ -1,0 +1,39 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h145_friendly_at.py
+============================================================
+Hypothesis H145: FAT (Friendly Adversarial Training)
+============================================================
+
+Training Vanilla CNN victim...
+Vanilla CNN trained in 25.0s
+
+Training FAT CNN victim...
+FAT CNN trained in 43.8s
+
+Evaluating Model: Vanilla CNN
+  Test Accuracy: 2062/3925 (52.54%)
+  FGSM flip rate = 0.9476
+  PGD-10 flip rate = 0.9748
+  Mean min_eps = 0.0232
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.8907
+    mean_pix   AUROC = 0.6742
+    std_pix    AUROC = 0.7770
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9287
+    mean_pix   AUROC = 0.7137
+    std_pix    AUROC = 0.8604
+
+Evaluating Model: FAT CNN
+  Test Accuracy: 1791/3925 (45.63%)
+  FGSM flip rate = 0.7046
+  PGD-10 flip rate = 0.7097
+  Mean min_eps = 0.0521
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9232
+    mean_pix   AUROC = 0.6651
+    std_pix    AUROC = 0.5569
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9291
+    mean_pix   AUROC = 0.6687
+    std_pix    AUROC = 0.5624
