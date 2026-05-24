@@ -1,0 +1,51 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h153_bn_sensitivity.py
+======================================================================
+Hypothesis H153: BatchNorm Running Stats Sensitivity
+======================================================================
+
+Training CNN model with BatchNorm...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 28.9s
+
+Using 1000 correctly classified samples for evaluation.
+
+Computing BN drift features (eval vs train mode at batch=1)...
+
+Evaluating attack outcomes...
+
+Target rates:
+  flipped_FGSM             : positive rate = 0.872
+  flipped_PGD              : positive rate = 0.958
+  min_eps_below_median     : positive rate = 0.500
+
+============================================================
+Univariate AUROC Evaluation
+============================================================
+
+--- Target: flipped_FGSM ---
+  bn_drift                  AUROC = 0.7265 (direction: -)
+  margin                    AUROC = 0.7438 (direction: -)
+  mean_pix                  AUROC = 0.8255 (direction: -)
+  std_pix                   AUROC = 0.7822 (direction: -)
+
+--- Target: flipped_PGD ---
+  bn_drift                  AUROC = 0.5443 (direction: -)
+  margin                    AUROC = 0.5526 (direction: -)
+  mean_pix                  AUROC = 0.8128 (direction: -)
+  std_pix                   AUROC = 0.8030 (direction: -)
+
+--- Target: min_eps_below_median ---
+  bn_drift                  AUROC = 0.6731 (direction: -)
+  margin                    AUROC = 0.8107 (direction: -)
+  mean_pix                  AUROC = 0.5975 (direction: -)
+  std_pix                   AUROC = 0.6243 (direction: -)
