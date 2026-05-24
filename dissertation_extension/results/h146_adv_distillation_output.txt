@@ -1,0 +1,40 @@
+============================================================
+Hypothesis H146: Reliable Saliency-Light Adversarial Distillation
+============================================================
+
+Training PGD-AT Teacher CNN...
+Teacher CNN trained in 85.5s
+
+Training Vanilla student victim...
+Vanilla CNN trained in 36.0s
+
+Training RSLAD student victim...
+RSLAD CNN trained in 96.8s
+
+Evaluating Model: Vanilla CNN
+  Test Accuracy: 9259/10000 (92.59%)
+  FGSM flip rate = 0.6962
+  PGD-10 flip rate = 0.0073
+  Mean min_eps = 0.0526
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9139
+    mean_pix   AUROC = 0.5311
+    std_pix    AUROC = 0.6024
+  Target: flipped_PGD | Univariate AUROC
+Traceback (most recent call last):
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h146_adv_distillation.py", line 284, in <module>
+    main()
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h146_adv_distillation.py", line 279, in main
+    evaluate_victim(vanilla_model, test_x, test_y, "Vanilla CNN")
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h146_adv_distillation.py", line 241, in evaluate_victim
+    a = roc_auc_score(y, x_i)
+        ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py", line 682, in roc_auc_score
+    y_true = check_array(y_true, ensure_2d=False, dtype=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/sklearn/utils/validation.py", line 1068, in check_array
+    raise ValueError(
+ValueError: Found array with dim 4, while dim <= 2 is required.
