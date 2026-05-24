@@ -1,0 +1,83 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: STL10
+[*] Executing script: dissertation_extension/hypotheses/h118_cure.py
+======================================================================
+Hypothesis H118: CURE Regularization vs Vanilla CNN
+======================================================================
+
+Training Vanilla model...
+  [vanilla] Epoch 1/10 completed
+  [vanilla] Epoch 2/10 completed
+  [vanilla] Epoch 3/10 completed
+  [vanilla] Epoch 4/10 completed
+  [vanilla] Epoch 5/10 completed
+  [vanilla] Epoch 6/10 completed
+  [vanilla] Epoch 7/10 completed
+  [vanilla] Epoch 8/10 completed
+  [vanilla] Epoch 9/10 completed
+  [vanilla] Epoch 10/10 completed
+
+Training CURE model...
+  [cure] Epoch 1/10 completed
+  [cure] Epoch 2/10 completed
+  [cure] Epoch 3/10 completed
+  [cure] Epoch 4/10 completed
+  [cure] Epoch 5/10 completed
+  [cure] Epoch 6/10 completed
+  [cure] Epoch 7/10 completed
+  [cure] Epoch 8/10 completed
+  [cure] Epoch 9/10 completed
+  [cure] Epoch 10/10 completed
+
+Evaluating Vanilla model...
+   Evaluating attacks...
+
+Evaluating CURE model...
+   Evaluating attacks...
+
+==================================================
+VANILLA MODEL RESULTS
+==================================================
+Accuracy: 0.4360
+FGSM Success: 0.9472
+PGD Success: 0.9748
+Mean min_eps: 0.0196
+
+Univariate AUROC vs FGSM Flip (Vanilla):
+  margin          : 0.9503
+  mean_pix        : 0.6549
+  std_pix         : 0.6071
+  sobel_mean      : 0.5952
+
+Univariate AUROC vs PGD Flip (Vanilla):
+  margin          : 0.9795
+  mean_pix        : 0.6323
+  std_pix         : 0.6909
+  sobel_mean      : 0.5084
+
+==================================================
+CURE MODEL RESULTS
+==================================================
+Accuracy: 0.4130
+FGSM Success: 0.8910
+PGD Success: 0.9322
+Mean min_eps: 0.0244
+
+Univariate AUROC vs FGSM Flip (CURE):
+  margin          : 0.9582
+  mean_pix        : 0.6389
+  std_pix         : 0.7124
+  sobel_mean      : 0.5971
+
+Univariate AUROC vs PGD Flip (CURE):
+  margin          : 0.9586
+  mean_pix        : 0.6334
+  std_pix         : 0.7687
+  sobel_mean      : 0.5995
+
+==================================================
+SUMMARY OF AUROC CHANGES (CURE vs Vanilla PGD)
+==================================================
+  margin          : CURE=0.9586  Vanilla=0.9795  Change=-0.0208
+  mean_pix        : CURE=0.6334  Vanilla=0.6323  Change=+0.0011
+  std_pix         : CURE=0.7687  Vanilla=0.6909  Change=+0.0778
+  sobel_mean      : CURE=0.5995  Vanilla=0.5084  Change=+0.0911
