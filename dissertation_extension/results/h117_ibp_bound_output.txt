@@ -1,0 +1,45 @@
+============================================================
+Hypothesis H117: certified IBP Robustness Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 35.6s
+Evaluating certified bounds and attacks on 1000 correctly classified test samples...
+Computing IBP certified robustness radii...
+IBP certification completed in 11.6s
+Running empirical attacks...
+
+Empirical Attack Success Rates:
+  FGSM Success Rate: 0.6960
+  PGD-10 Success Rate: 0.9380
+Certified Robustness Stats:
+  Mean IBP Certified Radius: 0.0005
+  Percentage certified robust at eps=0.0588: 0.00%
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: flipped_FGSM (Positive Rate = 0.6960) ---
+  Feature                   AUROC Direction 
+  margin                   0.9111  -
+  mean_pix                 0.5081  +
+  std_pix                  0.6170  -
+  IBP_certified_radius     0.8572  -
+
+--- Target: flipped_PGD (Positive Rate = 0.9380) ---
+  Feature                   AUROC Direction 
+  margin                   0.9210  -
+  mean_pix                 0.5266  -
+  std_pix                  0.6716  -
+  IBP_certified_radius     0.8755  -
