@@ -1,0 +1,61 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: STL10
+[*] Executing script: dissertation_extension/hypotheses/h150_confusion_ratio.py
+======================================================================
+Hypothesis H150: Confusion-Class Probability Ratio
+======================================================================
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 9.4s
+
+Using 1000 correctly classified samples for evaluation.
+
+Computing features...
+
+Evaluating attack outcomes...
+
+Target rates:
+  flipped_FGSM             : positive rate = 0.934
+  flipped_PGD              : positive rate = 0.983
+  min_eps_below_median     : positive rate = 0.500
+
+============================================================
+Univariate AUROC Evaluation
+============================================================
+
+--- Target: flipped_FGSM ---
+  confusion_ratio           AUROC = 0.9403 (direction: +)
+  top3_to_top1_ratio        AUROC = 0.8905 (direction: +)
+  margin                    AUROC = 0.9403 (direction: -)
+  mean_pix                  AUROC = 0.6146 (direction: -)
+  std_pix                   AUROC = 0.7094 (direction: -)
+
+--- Target: flipped_PGD ---
+  confusion_ratio           AUROC = 0.9651 (direction: +)
+  top3_to_top1_ratio        AUROC = 0.9351 (direction: +)
+  margin                    AUROC = 0.9651 (direction: -)
+  mean_pix                  AUROC = 0.7345 (direction: -)
+  std_pix                   AUROC = 0.6893 (direction: -)
+
+--- Target: min_eps_below_median ---
+  confusion_ratio           AUROC = 0.9420 (direction: +)
+  top3_to_top1_ratio        AUROC = 0.8604 (direction: +)
+  margin                    AUROC = 0.9420 (direction: -)
+  mean_pix                  AUROC = 0.5447 (direction: -)
+  std_pix                   AUROC = 0.6257 (direction: -)
+
+============================================================
+Do Softmax-Ratio Features Beat Absolute Margin?
+============================================================
+  Target flipped_FGSM             : Confusion Ratio AUROC=0.9403 vs Margin AUROC=0.9403 (Beat Margin? YES, delta=+0.0000)
+  Target flipped_PGD              : Confusion Ratio AUROC=0.9651 vs Margin AUROC=0.9651 (Beat Margin? YES, delta=+0.0000)
+  Target min_eps_below_median     : Confusion Ratio AUROC=0.9420 vs Margin AUROC=0.9420 (Beat Margin? NO, delta=+0.0000)
