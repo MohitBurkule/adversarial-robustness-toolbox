@@ -104,25 +104,26 @@ for script in "${HYPOTHESES[@]}"; do
     if PATCH_DATASET_NAME="$PATCH_DATASET_NAME" .venv/bin/python dissertation_extension/run_with_patch.py "$script_path" > "$out_file" 2>&1; then
         echo "Successfully finished $script!"
         
-        # Git stage, commit, and push automatically
-        git add "$out_file"
+        # Git stage, commit, and push automatically (safeguarded with || true)
+        git add "$out_file" || true
         
         # If the script generated output directories, stage them too (normally in hypotheses folder)
         output_dir="dissertation_extension/hypotheses/${base_name}_outputs"
         if [ -d "$output_dir" ]; then
-            git add "$output_dir"
+            git add "$output_dir" || true
         fi
         
-        git commit -m "run: patched $PATCH_DATASET_NAME results for $base_name"
-        git push origin dissertation-extension
+        git commit -m "run: patched $PATCH_DATASET_NAME results for $base_name" || true
+        git push origin dissertation-extension || true
         echo "Pushed results for $base_name to GitHub!"
     else
         echo "Error: $script failed! Storing error log in $out_file."
-        # Commit the error log anyway so we can inspect what failed
-        git add "$out_file"
-        git commit -m "run: patched $PATCH_DATASET_NAME error results for $base_name"
-        git push origin dissertation-extension
+        # Commit the error log anyway so we can inspect what failed (safeguarded with || true)
+        git add "$out_file" || true
+        git commit -m "run: patched $PATCH_DATASET_NAME error results for $base_name" || true
+        git push origin dissertation-extension || true
     fi
+
 done
 
 echo "=== Hypothesis Runner Loop for $PATCH_DATASET_NAME Complete ==="
