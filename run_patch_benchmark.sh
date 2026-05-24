@@ -74,7 +74,14 @@ HYPOTHESES=(
     "h154_representation_norm.py"
     "h155_meta_detector.py"
     "h156_multi_attack_metamodel.py"
+    "h157_training_trajectory.py"
+    "h158_confirmatory_examples.py"
+    "h159_post_at_misclassification.py"
+    "h160_grokking_hard_dataset.py"
+    "h161_checkpoint_gradient_consistency.py"
+    "h162_class_margin_shift_at.py"
 )
+
 
 echo "=== Starting Hypothesis Runner Loop for $PATCH_DATASET_NAME ==="
 echo "Results will be saved in $RESULTS_DIR and pushed to GitHub after each run."
