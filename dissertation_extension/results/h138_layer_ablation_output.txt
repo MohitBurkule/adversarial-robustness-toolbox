@@ -1,0 +1,54 @@
+============================================================
+Hypothesis H138: Layer Ablation Vulnerability Analysis
+============================================================
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 36.3s
+Using 9261/10000 correctly classified samples
+
+Computing layer ablation features...
+
+Running attacks...
+  FGSM flip rate = 0.7028
+  PGD-10 flip rate = 0.9381
+  Mean min_eps = 0.0533
+
+============================================================
+TARGET: flipped_FGSM | Univariate AUROC
+============================================================
+  max_ablation_drop         AUROC = 0.6906
+  mean_ablation_drop        AUROC = 0.6852
+  std_ablation_drop         AUROC = 0.5137
+  margin                    AUROC = 0.9235
+  mean_pix                  AUROC = 0.5155
+  std_pix                   AUROC = 0.6103
+
+============================================================
+TARGET: flipped_PGD | Univariate AUROC
+============================================================
+  max_ablation_drop         AUROC = 0.6780
+  mean_ablation_drop        AUROC = 0.6568
+  std_ablation_drop         AUROC = 0.5228
+  margin                    AUROC = 0.9517
+  mean_pix                  AUROC = 0.5349
+  std_pix                   AUROC = 0.6530
+
+============================================================
+TARGET: min_eps (continuous) | Univariate AUROC (above median)
+============================================================
+  max_ablation_drop         AUROC = 0.7664
+  mean_ablation_drop        AUROC = 0.7305
+  std_ablation_drop         AUROC = 0.5139
+  margin                    AUROC = 0.9468
+  mean_pix                  AUROC = 0.6020
+  std_pix                   AUROC = 0.5450
