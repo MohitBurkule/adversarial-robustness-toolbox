@@ -1,0 +1,44 @@
+======================================================================
+Hypothesis H155: Ensembled Meta-Detector for Adversaries
+======================================================================
+
+Training 3 ensemble models...
+  Model with seed 0 trained for 10 epochs.
+  Model with seed 1 trained for 10 epochs.
+  Model with seed 2 trained for 10 epochs.
+All models trained in 106.7s
+
+Using 1000 correctly classified samples from Model 0.
+
+Generating 50/50 clean/adversarial evaluation mix...
+
+Extracting reference representations from training set...
+  Fitting Kernel Density Estimator...
+  Calculating class-conditional covariance for Mahalanobis...
+
+Extracting 5 detection features on the 50/50 mix...
+
+============================================================
+Individual Detector AUROCs
+============================================================
+  Feature-Squeezing L1          : AUROC = 0.8928 (Adversarial has HIGHER values)
+  MC-Dropout Entropy            : AUROC = 0.8584 (Adversarial has HIGHER values)
+  Ensemble Disagreement         : AUROC = 0.8530 (Adversarial has HIGHER values)
+  KDE-Density Log-Likelihood    : AUROC = 0.7317 (Adversarial has LOWER values)
+  Mahalanobis Distance          : AUROC = 0.7465 (Adversarial has HIGHER values)
+
+============================================================
+Meta-Detector Logistic Regression Analysis
+============================================================
+  5-Fold Cross-Validated AUROC: 0.9478 +/- 0.0085
+
+  Logistic Regression Standardized Coefficients:
+    Feature-Squeezing L1          : +2.2712
+    MC-Dropout Entropy            : +1.3110
+    Ensemble Disagreement         : +0.6648
+    KDE-Density Log-Likelihood    : -0.2843
+    Mahalanobis Distance          : +0.4616
+
+Comparison Summary:
+  Best Individual Detector: Feature-Squeezing L1 (0.8928)
+  Meta-Detector (Ensemble): 0.9478
