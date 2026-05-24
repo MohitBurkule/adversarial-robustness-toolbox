@@ -1,0 +1,63 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: STL10
+[*] Executing script: dissertation_extension/hypotheses/h154_representation_norm.py
+======================================================================
+Hypothesis H154: Representation Distance / Feature Norm Growth Analysis
+======================================================================
+
+Training CNN model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 9.3s
+
+Using 1000 correctly classified samples for evaluation.
+
+Computing layer activation norms and growth features...
+
+Evaluating attack outcomes...
+
+Target rates:
+  flipped_FGSM             : positive rate = 0.947
+  flipped_PGD              : positive rate = 0.983
+  min_eps_below_median     : positive rate = 0.500
+
+============================================================
+Univariate AUROC Evaluation
+============================================================
+
+--- Target: flipped_FGSM ---
+  norm_layer1               AUROC = 0.7029 (direction: -)
+  norm_layer2               AUROC = 0.7578 (direction: -)
+  norm_layer3               AUROC = 0.7966 (direction: -)
+  norm_layer4               AUROC = 0.7694 (direction: -)
+  growth_rate               AUROC = 0.6689 (direction: -)
+  margin                    AUROC = 0.9388 (direction: -)
+  mean_pix                  AUROC = 0.6398 (direction: -)
+  std_pix                   AUROC = 0.6705 (direction: -)
+
+--- Target: flipped_PGD ---
+  norm_layer1               AUROC = 0.7868 (direction: -)
+  norm_layer2               AUROC = 0.8645 (direction: -)
+  norm_layer3               AUROC = 0.8970 (direction: -)
+  norm_layer4               AUROC = 0.8434 (direction: -)
+  growth_rate               AUROC = 0.6888 (direction: -)
+  margin                    AUROC = 0.9729 (direction: -)
+  mean_pix                  AUROC = 0.6790 (direction: -)
+  std_pix                   AUROC = 0.7328 (direction: -)
+
+--- Target: min_eps_below_median ---
+  norm_layer1               AUROC = 0.5924 (direction: -)
+  norm_layer2               AUROC = 0.6661 (direction: -)
+  norm_layer3               AUROC = 0.7041 (direction: -)
+  norm_layer4               AUROC = 0.6636 (direction: -)
+  growth_rate               AUROC = 0.6228 (direction: -)
+  margin                    AUROC = 0.9457 (direction: -)
+  mean_pix                  AUROC = 0.5436 (direction: -)
+  std_pix                   AUROC = 0.6206 (direction: -)
