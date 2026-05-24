@@ -1,0 +1,49 @@
+======================================================================
+Hypothesis H153: BatchNorm Running Stats Sensitivity
+======================================================================
+
+Training CNN model with BatchNorm...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 40.2s
+
+Using 1000 correctly classified samples for evaluation.
+
+Computing BN drift features (eval vs train mode at batch=1)...
+
+Evaluating attack outcomes...
+
+Target rates:
+  flipped_FGSM             : positive rate = 0.611
+  flipped_PGD              : positive rate = 0.911
+  min_eps_below_median     : positive rate = 0.500
+
+============================================================
+Univariate AUROC Evaluation
+============================================================
+
+--- Target: flipped_FGSM ---
+  bn_drift                  AUROC = 0.6525 (direction: -)
+  margin                    AUROC = 0.9267 (direction: -)
+  mean_pix                  AUROC = 0.6001 (direction: +)
+  std_pix                   AUROC = 0.5533 (direction: -)
+
+--- Target: flipped_PGD ---
+  bn_drift                  AUROC = 0.7429 (direction: -)
+  margin                    AUROC = 0.9415 (direction: -)
+  mean_pix                  AUROC = 0.5115 (direction: -)
+  std_pix                   AUROC = 0.6606 (direction: -)
+
+--- Target: min_eps_below_median ---
+  bn_drift                  AUROC = 0.6509 (direction: -)
+  margin                    AUROC = 0.9484 (direction: -)
+  mean_pix                  AUROC = 0.6420 (direction: +)
+  std_pix                   AUROC = 0.5147 (direction: -)
