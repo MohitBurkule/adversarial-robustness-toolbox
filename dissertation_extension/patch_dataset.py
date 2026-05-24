@@ -70,10 +70,38 @@ def get_patched_dataset(root, train=True, download=True, transform=None):
         base_dataset = datasets.ImageFolder(root=os.path.join(extracted_dir, split_dir), transform=None)
         return DatasetWrapper(base_dataset, transform=transform)
         
+    elif DATASET_NAME == "svhn":
+        # Street View House Numbers (10 classes of real-world digits)
+        split_name = "train" if train else "test"
+        base_dataset = datasets.SVHN(root=root, split=split_name, download=download, transform=None)
+        return DatasetWrapper(base_dataset, transform=transform)
+        
+    elif DATASET_NAME == "stl10":
+        # STL-10 (ImageNet-like animal/vehicle images, 10 classes, 96x96)
+        split_name = "train" if train else "test"
+        base_dataset = datasets.STL10(root=root, split=split_name, download=download, transform=None)
+        return DatasetWrapper(base_dataset, transform=transform)
+        
+    elif DATASET_NAME == "kmnist":
+        # Kuzushiji-MNIST (10 classes of ancient Japanese hiragana)
+        base_dataset = datasets.KMNIST(root=root, train=train, download=download, transform=None)
+        return DatasetWrapper(base_dataset, transform=transform)
+        
+    elif DATASET_NAME == "eurosat":
+        # EuroSAT (10 classes of satellite land cover classification)
+        base_dataset = datasets.EuroSAT(root=root, download=download, transform=None)
+        generator = torch.Generator().manual_seed(42)
+        train_len = int(0.8 * len(base_dataset))
+        test_len = len(base_dataset) - train_len
+        train_sub, test_sub = torch.utils.data.random_split(base_dataset, [train_len, test_len], generator=generator)
+        selected_subset = train_sub if train else test_sub
+        return DatasetWrapper(selected_subset, transform=transform)
+        
     else:
         # Fallback to Fashion-MNIST if not matched
         print(f"[!] Warning: Unknown patched dataset name '{DATASET_NAME}'. Falling back to original FashionMNIST.")
         return datasets.OriginalFashionMNIST(root=root, train=train, download=download, transform=transform)
+
 
 # Store the original class in case a script explicitly needs it or we need a fallback
 if not hasattr(datasets, "OriginalFashionMNIST"):

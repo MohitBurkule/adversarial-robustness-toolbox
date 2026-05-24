@@ -11,8 +11,8 @@ cd "$(dirname "$0")"
 DATASET="${1:-cifar10}"
 DATASET_LOWER=$(echo "$DATASET" | tr '[:upper:]' '[:lower:]')
 
-if [ "$DATASET_LOWER" != "cifar10" ] && [ "$DATASET_LOWER" != "imagenette" ]; then
-    echo "Error: Dataset must be either 'cifar10' or 'imagenette'"
+if [ "$DATASET_LOWER" != "cifar10" ] && [ "$DATASET_LOWER" != "imagenette" ] && [ "$DATASET_LOWER" != "svhn" ] && [ "$DATASET_LOWER" != "stl10" ] && [ "$DATASET_LOWER" != "kmnist" ] && [ "$DATASET_LOWER" != "eurosat" ]; then
+    echo "Error: Dataset must be one of: cifar10, imagenette, svhn, stl10, kmnist, eurosat"
     exit 1
 fi
 
