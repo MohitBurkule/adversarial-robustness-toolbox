@@ -1,0 +1,40 @@
+============================================================
+Hypothesis H115: NES Zeroth-Order PGD Attack Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 35.7s
+Evaluating NES and FGSM on 200 correctly classified test samples...
+Evaluations completed: NES (57.8s), FGSM (0.0s)
+
+NES Attack Success Rate:  0.5100
+FGSM Attack Success Rate: 0.7600
+Mean NES Queries used:    711.64
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: nes_flipped (Positive Rate = 0.5100) ---
+  Feature            AUROC Direction 
+  margin            0.9572  -
+  mean_pix          0.6314  +
+  std_pix           0.5084  -
+  sobel_mean        0.5193  -
+
+--- Target: flipped_FGSM (Positive Rate = 0.7600) ---
+  Feature            AUROC Direction 
+  margin            0.9139  -
+  mean_pix          0.5566  +
+  std_pix           0.5694  -
+  sobel_mean        0.5861  -
