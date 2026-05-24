@@ -1,0 +1,50 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h111_eot.py
+============================================================
+Hypothesis H111: Expectation Over Transformations (EOT) Attack
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 29.1s
+Evaluating attacks on 500 correctly classified test samples...
+Running plain PGD-10 attack (baseline)...
+  Plain PGD Success Rate: 0.9780
+Running EOT PGD-10 attack (K=8 rotation+translation)...
+  EOT Success Rate: 0.9460
+Evaluations completed: PGD (0.2s), EOT (1.4s)
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: flipped_PGD (Positive Rate = 0.9780) ---
+  Feature            AUROC Direction 
+  margin            0.9541  -
+  mean_pix          0.7531  -
+  std_pix           0.8905  -
+  sobel_mean        0.8684  -
+
+--- Target: flipped_EOT (Positive Rate = 0.9460) ---
+  Feature            AUROC Direction 
+  margin            0.9144  -
+  mean_pix          0.7277  -
+  std_pix           0.8133  -
+  sobel_mean        0.8351  -
+
+============================================================
+ATTACK CONSISTENCY COMPARISON
+============================================================
+  Both attacks succeeded:              0.9460
+  Only plain PGD succeeded:            0.0320
+  Only EOT succeeded:                  0.0000
+  Neither attack succeeded:            0.0220
