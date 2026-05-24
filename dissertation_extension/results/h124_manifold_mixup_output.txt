@@ -1,0 +1,66 @@
+======================================================================
+Hypothesis H124: Manifold Mixup Defense vs Vanilla CNN
+======================================================================
+
+Training Vanilla model...
+  [vanilla] Epoch 1/10 completed
+  [vanilla] Epoch 2/10 completed
+  [vanilla] Epoch 3/10 completed
+  [vanilla] Epoch 4/10 completed
+  [vanilla] Epoch 5/10 completed
+  [vanilla] Epoch 6/10 completed
+  [vanilla] Epoch 7/10 completed
+  [vanilla] Epoch 8/10 completed
+  [vanilla] Epoch 9/10 completed
+  [vanilla] Epoch 10/10 completed
+
+Training Manifold Mixup model...
+  [manifold_mixup] Epoch 1/10 completed
+  [manifold_mixup] Epoch 2/10 completed
+  [manifold_mixup] Epoch 3/10 completed
+  [manifold_mixup] Epoch 4/10 completed
+  [manifold_mixup] Epoch 5/10 completed
+  [manifold_mixup] Epoch 6/10 completed
+  [manifold_mixup] Epoch 7/10 completed
+  [manifold_mixup] Epoch 8/10 completed
+  [manifold_mixup] Epoch 9/10 completed
+  [manifold_mixup] Epoch 10/10 completed
+
+Evaluating Vanilla model...
+   Evaluating attacks...
+
+Evaluating Manifold Mixup model...
+   Evaluating attacks...
+
+==================================================
+VANILLA MODEL RESULTS
+==================================================
+Accuracy: 0.9310
+FGSM Success: 0.6907
+PGD Success: 0.9409
+Mean min_eps: 0.0312
+
+Univariate AUROC vs PGD Flip (Vanilla):
+  margin          : 0.9844
+  mean_pix        : 0.5070
+  std_pix         : 0.6511
+
+==================================================
+MANIFOLD MIXUP MODEL RESULTS
+==================================================
+Accuracy: 0.9250
+FGSM Success: 0.6411
+PGD Success: 0.8800
+Mean min_eps: 0.0371
+
+Univariate AUROC vs PGD Flip (Manifold Mixup):
+  margin          : 0.7734
+  mean_pix        : 0.5133
+  std_pix         : 0.5565
+
+==================================================
+SUMMARY OF AUROC CHANGES (Manifold Mixup vs Vanilla PGD)
+==================================================
+  margin          : Manifold Mixup=0.7734  Vanilla=0.9844  Change=-0.2110
+  mean_pix        : Manifold Mixup=0.5133  Vanilla=0.5070  Change=+0.0063
+  std_pix         : Manifold Mixup=0.5565  Vanilla=0.6511  Change=-0.0946
