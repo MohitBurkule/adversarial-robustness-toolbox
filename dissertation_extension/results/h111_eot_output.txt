@@ -1,0 +1,48 @@
+============================================================
+Hypothesis H111: Expectation Over Transformations (EOT) Attack
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 35.9s
+Evaluating attacks on 500 correctly classified test samples...
+Running plain PGD-10 attack (baseline)...
+  Plain PGD Success Rate: 0.9260
+Running EOT PGD-10 attack (K=8 rotation+translation)...
+  EOT Success Rate: 0.7280
+Evaluations completed: PGD (0.2s), EOT (1.6s)
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: flipped_PGD (Positive Rate = 0.9260) ---
+  Feature            AUROC Direction 
+  margin            0.9382  -
+  mean_pix          0.5027  +
+  std_pix           0.6255  -
+  sobel_mean        0.6758  -
+
+--- Target: flipped_EOT (Positive Rate = 0.7280) ---
+  Feature            AUROC Direction 
+  margin            0.9175  -
+  mean_pix          0.5645  +
+  std_pix           0.5636  -
+  sobel_mean        0.5897  -
+
+============================================================
+ATTACK CONSISTENCY COMPARISON
+============================================================
+  Both attacks succeeded:              0.7280
+  Only plain PGD succeeded:            0.1980
+  Only EOT succeeded:                  0.0000
+  Neither attack succeeded:            0.0740
