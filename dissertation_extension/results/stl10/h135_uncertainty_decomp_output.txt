@@ -1,0 +1,47 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: STL10
+[*] Executing script: dissertation_extension/hypotheses/h135_uncertainty_decomp.py
+Loading Fashion-MNIST dataset...
+Training model 1/5...
+Training model 2/5...
+Training model 3/5...
+Training model 4/5...
+Training model 5/5...
+Evaluating victim model correctness...
+Victim correctly classified samples: 3720/8000
+Evaluating models for uncertainty decomposition...
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: predictive_entropy
+  Target: flipped_fgsm  AUROC = 0.8788
+  Target: flipped_pgd   AUROC = 0.9311
+  Target: min_eps       AUROC = 0.8026
+
+Feature: aleatoric
+  Target: flipped_fgsm  AUROC = 0.8805
+  Target: flipped_pgd   AUROC = 0.9326
+  Target: min_eps       AUROC = 0.8037
+
+Feature: epistemic
+  Target: flipped_fgsm  AUROC = 0.6787
+  Target: flipped_pgd   AUROC = 0.7779
+  Target: min_eps       AUROC = 0.5812
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9314
+  Target: flipped_pgd   AUROC = 0.9622
+  Target: min_eps       AUROC = 0.9365
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.6143
+  Target: flipped_pgd   AUROC = 0.7134
+  Target: min_eps       AUROC = 0.5182
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.7128
+  Target: flipped_pgd   AUROC = 0.6900
+  Target: min_eps       AUROC = 0.6072
