@@ -1,0 +1,42 @@
+Loading Fashion-MNIST dataset...
+Training CNN model with SWAG tracking...
+Epoch 1/10 done
+Epoch 2/10 done
+Epoch 3/10 done
+Epoch 4/10 done
+Epoch 5/10 done
+Epoch 6/10 done
+Epoch 7/10 done
+Epoch 8/10 done
+Epoch 9/10 done
+Epoch 10/10 done
+Computing SWA mean and variance over 25 iterates...
+Evaluating SWA mean model correctness...
+Victim correctly classified samples: 9246/10000
+Drawing K=20 SWAG posterior weight samples...
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: bnn_predictive_variance
+  Target: flipped_fgsm  AUROC = 0.9074
+  Target: flipped_pgd   AUROC = 0.9232
+  Target: min_eps       AUROC = 0.9358
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9099
+  Target: flipped_pgd   AUROC = 0.9335
+  Target: min_eps       AUROC = 0.9371
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.5043
+  Target: flipped_pgd   AUROC = 0.5528
+  Target: min_eps       AUROC = 0.5919
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.6224
+  Target: flipped_pgd   AUROC = 0.6829
+  Target: min_eps       AUROC = 0.5536
