@@ -3,6 +3,7 @@
 ============================================================
 Hypothesis H138: Layer Ablation Vulnerability Analysis
 ============================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
 
 Training model...
   Epoch 1/10 completed
@@ -15,28 +16,42 @@ Training model...
   Epoch 8/10 completed
   Epoch 9/10 completed
   Epoch 10/10 completed
-Training completed in 65.1s
-Traceback (most recent call last):
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/run_with_patch.py", line 22, in <module>
-    runpy.run_path(target_script, run_name="__main__")
-  File "<frozen runpy>", line 287, in run_path
-  File "<frozen runpy>", line 98, in _run_module_code
-  File "<frozen runpy>", line 88, in _run_code
-  File "dissertation_extension/hypotheses/h138_layer_ablation.py", line 270, in <module>
-    main()
-  File "dissertation_extension/hypotheses/h138_layer_ablation.py", line 201, in main
-    pred = model(test_x).argmax(1)
-           ^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "dissertation_extension/hypotheses/h138_layer_ablation.py", line 61, in forward
-    x = F.relu(x)
-        ^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/functional.py", line 1704, in relu
-    result = torch.relu(input)
-             ^^^^^^^^^^^^^^^^^
-torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.58 GiB. GPU 0 has a total capacity of 7.92 GiB of which 2.48 GiB is free. Process 5520 has 612.51 MiB memory in use. Process 7047 has 328.33 MiB memory in use. Process 41336 has 134.83 MiB memory in use. Process 5162 has 7.96 MiB memory in use. Process 115518 has 50.08 MiB memory in use. Process 3740 has 7.96 MiB memory in use. Including non-PyTorch memory, this process has 3.86 GiB memory in use. Of the allocated memory 3.68 GiB is allocated by PyTorch, and 47.64 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Training completed in 56.4s
+Using 8618/10000 correctly classified samples
+
+Computing layer ablation features...
+
+Running attacks...
+  FGSM flip rate = 0.9363
+  PGD-10 flip rate = 0.9898
+  Mean min_eps = 0.0279
+
+============================================================
+TARGET: flipped_FGSM | Univariate AUROC
+============================================================
+  max_ablation_drop         AUROC = 0.6832
+  mean_ablation_drop        AUROC = 0.6596
+  std_ablation_drop         AUROC = 0.5727
+  margin                    AUROC = 0.8042
+  mean_pix                  AUROC = 0.6150
+  std_pix                   AUROC = 0.7324
+
+============================================================
+TARGET: flipped_PGD | Univariate AUROC
+============================================================
+  max_ablation_drop         AUROC = 0.5667
+  mean_ablation_drop        AUROC = 0.5368
+  std_ablation_drop         AUROC = 0.6924
+  margin                    AUROC = 0.6473
+  mean_pix                  AUROC = 0.5982
+  std_pix                   AUROC = 0.7485
+
+============================================================
+TARGET: min_eps (continuous) | Univariate AUROC (above median)
+============================================================
+  max_ablation_drop         AUROC = 0.8281
+  mean_ablation_drop        AUROC = 0.8112
+  std_ablation_drop         AUROC = 0.5205
+  margin                    AUROC = 0.8923
+  mean_pix                  AUROC = 0.5854
+  std_pix                   AUROC = 0.6817
