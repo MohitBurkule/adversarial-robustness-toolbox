@@ -1,0 +1,70 @@
+================================================================================
+Hypothesis H156: Multi-Attack Meta-Learner (FGSM, BIM, PGD, MIM)
+================================================================================
+
+Training 3 models for ensemble features...
+  Model with seed 0 trained for 10 epochs.
+  Model with seed 1 trained for 10 epochs.
+  Model with seed 2 trained for 10 epochs.
+All models trained in 91.5s
+
+Using 1000 correctly classified samples from Model 0.
+
+Extracting exactly 20 features...
+
+Generating attack outcomes...
+
+Multi-Attack Vulnerability Overlap:
+  Vulnerable to exactly 0 attacks: 1.9%
+  Vulnerable to exactly 1 attacks: 0.9%
+  Vulnerable to exactly 2 attacks: 1.1%
+  Vulnerable to exactly 3 attacks: 23.9%
+  Vulnerable to exactly 4 attacks: 72.2%
+  Vulnerable to AT LEAST ONE attack: 98.1%
+  Vulnerable to ALL FOUR attacks: 72.2%
+
+Fitting Multi-Output Meta-Learner...
+  Using RandomForestClassifier as the fallback base meta-learner.
+
+============================================================
+Top 5 Most Important Features per Attack
+============================================================
+
+--- Attack: FGSM ---
+  grad_l2_norm             : importance = 0.1459
+  grad_std                 : importance = 0.1358
+  margin                   : importance = 0.1089
+  top1_prob                : importance = 0.1033
+  confusion_ratio          : importance = 0.0753
+
+--- Attack: BIM ---
+  margin                   : importance = 0.1820
+  act_norm_layer4          : importance = 0.1486
+  act_norm_layer3          : importance = 0.0982
+  std_pix                  : importance = 0.0969
+  mean_pix                 : importance = 0.0827
+
+--- Attack: PGD ---
+  act_norm_layer4          : importance = 0.1467
+  margin                   : importance = 0.1287
+  std_pix                  : importance = 0.1138
+  act_norm_layer3          : importance = 0.0916
+  mc_entropy               : importance = 0.0823
+
+--- Attack: MIM ---
+  margin                   : importance = 0.1779
+  act_norm_layer4          : importance = 0.1358
+  act_norm_layer3          : importance = 0.1064
+  act_norm_layer2          : importance = 0.0825
+  std_pix                  : importance = 0.0809
+
+============================================================
+Cross-Attack Feature Importance Correlation Matrix
+============================================================
+      FGSM        BIM         PGD         MIM   
+FGSM : 1.0000      0.0360      -0.0597      0.0368
+BIM  : 0.0360      1.0000      0.9556      0.9679
+PGD  : -0.0597      0.9556      1.0000      0.9465
+MIM  : 0.0368      0.9679      0.9465      1.0000
+
+Correlation between FGSM-flip and PGD-flip feature importances: -0.0597
