@@ -1,0 +1,71 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: EUROSAT
+[*] Executing script: dissertation_extension/hypotheses/h119_alp.py
+======================================================================
+Hypothesis H119: ALP Regularization vs Vanilla CNN
+======================================================================
+
+Training Vanilla model...
+  [vanilla] Epoch 1/10 completed
+  [vanilla] Epoch 2/10 completed
+  [vanilla] Epoch 3/10 completed
+  [vanilla] Epoch 4/10 completed
+  [vanilla] Epoch 5/10 completed
+  [vanilla] Epoch 6/10 completed
+  [vanilla] Epoch 7/10 completed
+  [vanilla] Epoch 8/10 completed
+  [vanilla] Epoch 9/10 completed
+  [vanilla] Epoch 10/10 completed
+
+Training ALP model...
+  [alp] Epoch 1/10 completed
+  [alp] Epoch 2/10 completed
+  [alp] Epoch 3/10 completed
+  [alp] Epoch 4/10 completed
+  [alp] Epoch 5/10 completed
+  [alp] Epoch 6/10 completed
+  [alp] Epoch 7/10 completed
+  [alp] Epoch 8/10 completed
+  [alp] Epoch 9/10 completed
+  [alp] Epoch 10/10 completed
+
+Evaluating Vanilla model...
+   Evaluating attacks...
+
+Evaluating ALP model...
+   Evaluating attacks...
+
+==================================================
+VANILLA MODEL RESULTS
+==================================================
+Accuracy: 0.6920
+FGSM Success: 0.8338
+PGD Success: 0.9942
+Mean min_eps: 0.0099
+
+Univariate AUROC vs PGD Flip (Vanilla):
+  margin          : 1.0000
+  mean_pix        : 0.8281
+  std_pix         : 0.9804
+  sobel_mean      : 0.9833
+
+==================================================
+ALP MODEL RESULTS
+==================================================
+Accuracy: 0.4680
+FGSM Success: 0.1197
+PGD Success: 0.9551
+Mean min_eps: 0.0222
+
+Univariate AUROC vs PGD Flip (ALP):
+  margin          : 0.7661
+  mean_pix        : 0.9195
+  std_pix         : 0.6772
+  sobel_mean      : 0.7673
+
+==================================================
+SUMMARY OF AUROC CHANGES (ALP vs Vanilla PGD)
+==================================================
+  margin          : ALP=0.7661  Vanilla=1.0000  Change=-0.2339
+  mean_pix        : ALP=0.9195  Vanilla=0.8281  Change=+0.0913
+  std_pix         : ALP=0.6772  Vanilla=0.9804  Change=-0.3032
+  sobel_mean      : ALP=0.7673  Vanilla=0.9833  Change=-0.2159
