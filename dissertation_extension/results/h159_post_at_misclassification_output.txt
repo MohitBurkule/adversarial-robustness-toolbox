@@ -1,0 +1,69 @@
+======================================================================
+H159 - Post-AT Misclassification Prediction
+======================================================================
+Device: cuda
+EPS=0.0588  EPOCHS=10  N_TEST=2000  SEED=0
+
+--- Training Vanilla CNN ---
+  [Vanilla] Epoch 1/10  loss=0.5434
+  [Vanilla] Epoch 2/10  loss=0.3545
+  [Vanilla] Epoch 3/10  loss=0.3039
+  [Vanilla] Epoch 4/10  loss=0.2726
+  [Vanilla] Epoch 5/10  loss=0.2466
+  [Vanilla] Epoch 6/10  loss=0.2250
+  [Vanilla] Epoch 7/10  loss=0.2117
+  [Vanilla] Epoch 8/10  loss=0.1935
+  [Vanilla] Epoch 9/10  loss=0.1805
+  [Vanilla] Epoch 10/10  loss=0.1692
+
+--- Training PGD-AT CNN ---
+  [AT]      Epoch 1/10  loss=0.7601
+  [AT]      Epoch 2/10  loss=0.5653
+  [AT]      Epoch 3/10  loss=0.5228
+  [AT]      Epoch 4/10  loss=0.4910
+  [AT]      Epoch 5/10  loss=0.4753
+  [AT]      Epoch 6/10  loss=0.4568
+  [AT]      Epoch 7/10  loss=0.4425
+  [AT]      Epoch 8/10  loss=0.4297
+  [AT]      Epoch 9/10  loss=0.4228
+  [AT]      Epoch 10/10  loss=0.4127
+
+--- Evaluating on test subset ---
+
+Vanilla model accuracy on 2000 samples: 91.85%
+AT model accuracy on 2000 samples:      88.45%
+
+|S_vanilla|  (correct by vanilla): 1837
+|S_at|       (correct by AT):       1769
+
+Preserved   (S_vanilla ∩ S_at):  1732
+Newly wrong (S_vanilla \ S_at):  105
+Newly right (S_at \ S_vanilla):  37
+
+--- Computing vanilla features for S_vanilla samples ---
+
+--- Feature Comparison: Preserved vs Newly Wrong ---
+Feature           Preserved (mean±std)        Newly Wrong (mean±std)    
+------------------------------------------------------------------------
+margin            11.1136 ± 7.3912            1.7254 ± 1.3607           
+top1_prob         0.9733 ± 0.0777             0.7528 ± 0.1733           
+min_eps           0.0937 ± 0.1874             0.0347 ± 0.1500           
+grad_l2_norm      0.4541 ± 1.4415             3.9281 ± 3.2671           
+
+--- AUROC: predicting 'newly wrong' membership (higher = better predictor) ---
+Feature           AUROC       Note
+-------------------------------------------------------
+margin            0.9369      lower -> hurt
+top1_prob         0.9381      lower -> hurt
+min_eps           0.9117      lower -> hurt
+grad_l2_norm      0.9371      higher -> hurt
+
+--- Key Finding ---
+Newly wrong samples have lower vanilla margin:  1.7254 vs 11.1136  -> True
+Newly wrong samples have lower min_eps:        0.0347 vs 0.0937  -> True
+
+CONFIRMED: Samples that AT breaks have lower pre-AT margin AND
+           lower min_eps. The vanilla model's confidence predicts
+           which samples adversarial training will hurt.
+
+Done.
