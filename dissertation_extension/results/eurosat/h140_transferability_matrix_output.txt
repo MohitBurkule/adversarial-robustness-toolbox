@@ -1,0 +1,37 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: EUROSAT
+[*] Executing script: dissertation_extension/hypotheses/h140_transferability_matrix.py
+============================================================
+Hypothesis H140: Adversarial Transferability Matrix
+============================================================
+
+Training K=4 CNN models...
+  Model 0 trained in 32.7s
+  Model 1 trained in 33.0s
+  Model 2 trained in 32.9s
+  Model 3 trained in 33.0s
+
+Using 2851/5400 samples correctly classified by all 4 models
+
+Computing features on Model 0...
+
+Generating FGSM examples on all models...
+
+Evaluating pairwise transferability...
+
+============================================================
+TRANSFERABILITY MATRIX (Flip Rate)
+============================================================
+      To M0   To M1   To M2   To M3  
+From M0: 0.806  0.739  0.754  0.776
+From M1: 0.743  0.785  0.745  0.748
+From M2: 0.749  0.742  0.797  0.750
+From M3: 0.758  0.729  0.737  0.763
+
+Mean transfer rate (excluding self-attacks): 0.7473
+Binarization threshold (median score): 1.0000
+High-transferability rate: 0.000
+
+============================================================
+TARGET: High-Transferability | Univariate AUROC
+============================================================
+  Constant target, skipping.
