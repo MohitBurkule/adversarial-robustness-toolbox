@@ -1,0 +1,56 @@
+======================================================================
+Hypothesis H152: Nearest Other-Class Interpolation Boundary Distance
+======================================================================
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 32.2s
+
+Using 1000 evaluation samples and 2000 pool samples.
+
+Computing interpolation flip boundaries...
+  Calculating pixel L2 distances...
+  Running interpolation predictions...
+    processed 200/1000 samples
+    processed 400/1000 samples
+    processed 600/1000 samples
+    processed 800/1000 samples
+    processed 1000/1000 samples
+
+Evaluating attack outcomes...
+
+Target rates:
+  flipped_FGSM             : positive rate = 0.721
+  flipped_PGD              : positive rate = 0.976
+  min_eps_below_median     : positive rate = 0.500
+
+============================================================
+Univariate AUROC Evaluation
+============================================================
+
+--- Target: flipped_FGSM ---
+  t_flip                    AUROC = 0.5787 (direction: -)
+  margin                    AUROC = 0.9212 (direction: -)
+  mean_pix                  AUROC = 0.5729 (direction: +)
+  std_pix                   AUROC = 0.5741 (direction: -)
+
+--- Target: flipped_PGD ---
+  t_flip                    AUROC = 0.5064 (direction: +)
+  margin                    AUROC = 0.9856 (direction: -)
+  mean_pix                  AUROC = 0.5243 (direction: -)
+  std_pix                   AUROC = 0.6834 (direction: -)
+
+--- Target: min_eps_below_median ---
+  t_flip                    AUROC = 0.6239 (direction: -)
+  margin                    AUROC = 0.9428 (direction: -)
+  mean_pix                  AUROC = 0.6381 (direction: +)
+  std_pix                   AUROC = 0.5246 (direction: -)
