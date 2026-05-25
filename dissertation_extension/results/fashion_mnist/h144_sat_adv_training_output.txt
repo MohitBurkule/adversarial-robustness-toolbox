@@ -1,0 +1,37 @@
+============================================================
+Hypothesis H144: SAT (Curriculum Loss Smoothing)
+============================================================
+
+Training Vanilla CNN victim...
+Vanilla CNN trained in 30.6s
+
+Training SAT CNN victim...
+SAT CNN trained in 85.4s
+
+Evaluating Model: Vanilla CNN
+  Test Accuracy: 9255/10000 (92.55%)
+  FGSM flip rate = 0.7193
+  PGD-10 flip rate = 0.9347
+  Mean min_eps = 0.0554
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9259
+    mean_pix   AUROC = 0.5132
+    std_pix    AUROC = 0.6084
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9446
+    mean_pix   AUROC = 0.5288
+    std_pix    AUROC = 0.6480
+
+Evaluating Model: SAT CNN
+  Test Accuracy: 8780/10000 (87.80%)
+  FGSM flip rate = 0.0991
+  PGD-10 flip rate = 0.1092
+  Mean min_eps = 0.2124
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9443
+    mean_pix   AUROC = 0.5246
+    std_pix    AUROC = 0.6419
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9387
+    mean_pix   AUROC = 0.5445
+    std_pix    AUROC = 0.6634
