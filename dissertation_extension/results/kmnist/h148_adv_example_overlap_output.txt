@@ -1,0 +1,55 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: KMNIST
+[*] Executing script: dissertation_extension/hypotheses/h148_adv_example_overlap.py
+======================================================================
+Hypothesis H148: Adversarial Example Overlap (FGSM, BIM, PGD, MIM)
+======================================================================
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 39.4s
+
+Using 1000 correctly classified samples for evaluation.
+
+Generating attacks...
+
+==================================================
+Jaccard Similarity Matrix of Attack Success
+==================================================
+      FGSM    BIM     PGD     MIM   
+FGSM : 1.0000  0.5981  0.5906  0.6702
+BIM  : 0.5981  1.0000  0.9569  0.8924
+PGD  : 0.5906  0.9569  1.0000  0.8754
+MIM  : 0.6702  0.8924  0.8754  1.0000
+
+==================================================
+Mutual Information Matrix of Attack Success
+==================================================
+      FGSM    BIM     PGD     MIM   
+FGSM : 0.4848  0.2719  0.2682  0.3060
+BIM  : 0.2719  0.6238  0.5533  0.4869
+PGD  : 0.2682  0.5533  0.6269  0.4687
+MIM  : 0.3060  0.4869  0.4687  0.5948
+
+Attack Consensus Statistics (number of successful attacks per sample):
+  Vulnerable to 0 attacks: 67.5%
+  Vulnerable to 1 attacks: 1.3%
+  Vulnerable to 2 attacks: 3.1%
+  Vulnerable to 3 attacks: 9.2%
+  Vulnerable to 4 attacks: 18.9%
+
+==================================================
+Univariate AUROC for Target: flipped_by_all_4
+==================================================
+  attack_consensus   AUROC = 1.0000 (direction: +)
+  margin             AUROC = 0.9692 (direction: -)
+  mean_pix           AUROC = 0.5543 (direction: -)
+  std_pix            AUROC = 0.5777 (direction: -)
