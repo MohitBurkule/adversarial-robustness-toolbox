@@ -3,33 +3,46 @@
 ============================================================
 Hypothesis H142: Random Features Neural Network Baseline
 ============================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
 
 Training CNN victim...
-CNN trained in 57.2s
+CNN trained in 52.4s
 
 Training RFNN baseline...
-RFNN trained in 56.8s
-Traceback (most recent call last):
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/run_with_patch.py", line 22, in <module>
-    runpy.run_path(target_script, run_name="__main__")
-  File "<frozen runpy>", line 287, in run_path
-  File "<frozen runpy>", line 98, in _run_module_code
-  File "<frozen runpy>", line 88, in _run_code
-  File "dissertation_extension/hypotheses/h142_rfnn_baseline.py", line 284, in <module>
-    main()
-  File "dissertation_extension/hypotheses/h142_rfnn_baseline.py", line 198, in main
-    cnn_pred = cnn_model(test_x).argmax(1)
-               ^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "dissertation_extension/hypotheses/h142_rfnn_baseline.py", line 57, in forward
-    x = F.relu(self.c2(x))
-        ^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/functional.py", line 1704, in relu
-    result = torch.relu(input)
-             ^^^^^^^^^^^^^^^^^
-torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.58 GiB. GPU 0 has a total capacity of 7.92 GiB of which 386.12 MiB is free. Process 5520 has 615.01 MiB memory in use. Process 7047 has 328.33 MiB memory in use. Process 41336 has 134.83 MiB memory in use. Process 5162 has 7.96 MiB memory in use. Process 115518 has 50.08 MiB memory in use. Process 3740 has 7.96 MiB memory in use. Including non-PyTorch memory, this process has 5.96 GiB memory in use. Of the allocated memory 5.77 GiB is allocated by PyTorch, and 48.72 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+RFNN trained in 51.8s
+
+Using 8663/10000 correctly classified samples from victim (CNN)
+
+Computing features...
+
+Running attacks on CNN victim...
+  FGSM flip rate = 0.9459
+  PGD-10 flip rate = 0.9905
+  Mean min_eps = 0.0256
+
+============================================================
+TARGET: flipped_FGSM | Univariate AUROC
+============================================================
+  rfnn_margin          AUROC = 0.7603
+  rfnn_confidence      AUROC = 0.7833
+  cnn_margin           AUROC = 0.8388
+  mean_pix             AUROC = 0.6050
+  std_pix              AUROC = 0.7481
+
+============================================================
+TARGET: flipped_PGD | Univariate AUROC
+============================================================
+  rfnn_margin          AUROC = 0.7622
+  rfnn_confidence      AUROC = 0.7922
+  cnn_margin           AUROC = 0.7613
+  mean_pix             AUROC = 0.6160
+  std_pix              AUROC = 0.8341
+
+============================================================
+TARGET: min_eps (continuous) | Univariate AUROC (above median)
+============================================================
+  rfnn_margin          AUROC = 0.7196
+  rfnn_confidence      AUROC = 0.7548
+  cnn_margin           AUROC = 0.9047
+  mean_pix             AUROC = 0.5765
+  std_pix              AUROC = 0.6809
