@@ -3,33 +3,36 @@
 ============================================================
 Hypothesis H140: Adversarial Transferability Matrix
 ============================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
 
 Training K=4 CNN models...
-  Model 0 trained in 57.9s
-  Model 1 trained in 57.8s
-  Model 2 trained in 57.8s
-  Model 3 trained in 57.9s
-Traceback (most recent call last):
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/run_with_patch.py", line 22, in <module>
-    runpy.run_path(target_script, run_name="__main__")
-  File "<frozen runpy>", line 287, in run_path
-  File "<frozen runpy>", line 98, in _run_module_code
-  File "<frozen runpy>", line 88, in _run_code
-  File "dissertation_extension/hypotheses/h140_transferability_matrix.py", line 211, in <module>
-    main()
-  File "dissertation_extension/hypotheses/h140_transferability_matrix.py", line 120, in main
-    pred = model(test_x).argmax(dim=1)
-           ^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "dissertation_extension/hypotheses/h140_transferability_matrix.py", line 54, in forward
-    x = F.relu(self.c2(x))
-        ^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/functional.py", line 1704, in relu
-    result = torch.relu(input)
-             ^^^^^^^^^^^^^^^^^
-torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.58 GiB. GPU 0 has a total capacity of 7.92 GiB of which 370.44 MiB is free. Process 5520 has 612.70 MiB memory in use. Process 7047 has 328.33 MiB memory in use. Process 41336 has 134.83 MiB memory in use. Process 5162 has 7.96 MiB memory in use. Process 115518 has 50.08 MiB memory in use. Process 3740 has 7.96 MiB memory in use. Including non-PyTorch memory, this process has 5.98 GiB memory in use. Of the allocated memory 5.80 GiB is allocated by PyTorch, and 39.01 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+  Model 0 trained in 55.1s
+  Model 1 trained in 54.0s
+  Model 2 trained in 53.3s
+  Model 3 trained in 52.8s
+
+Using 7859/10000 samples correctly classified by all 4 models
+
+Computing features on Model 0...
+
+Generating FGSM examples on all models...
+
+Evaluating pairwise transferability...
+
+============================================================
+TRANSFERABILITY MATRIX (Flip Rate)
+============================================================
+      To M0   To M1   To M2   To M3  
+From M0: 0.931  0.847  0.844  0.865
+From M1: 0.838  0.918  0.820  0.831
+From M2: 0.874  0.855  0.919  0.859
+From M3: 0.881  0.859  0.848  0.925
+
+Mean transfer rate (excluding self-attacks): 0.8516
+Binarization threshold (median score): 1.0000
+High-transferability rate: 0.000
+
+============================================================
+TARGET: High-Transferability | Univariate AUROC
+============================================================
+  Constant target, skipping.
