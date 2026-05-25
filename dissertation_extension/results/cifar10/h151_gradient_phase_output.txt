@@ -17,23 +17,39 @@ Training model...
   Epoch 8/10 completed
   Epoch 9/10 completed
   Epoch 10/10 completed
-Training completed in 40.2s
+Training completed in 37.9s
 
 Using 1000 correctly classified samples for evaluation.
 
 Computing gradient FFT and baseline features...
-Traceback (most recent call last):
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/run_with_patch.py", line 22, in <module>
-    runpy.run_path(target_script, run_name="__main__")
-  File "<frozen runpy>", line 287, in run_path
-  File "<frozen runpy>", line 98, in _run_module_code
-  File "<frozen runpy>", line 88, in _run_code
-  File "dissertation_extension/hypotheses/h151_gradient_phase.py", line 333, in <module>
-    main()
-  File "dissertation_extension/hypotheses/h151_gradient_phase.py", line 265, in main
-    ) = compute_gradient_fft_features(x_c, y_c, model)
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "dissertation_extension/hypotheses/h151_gradient_phase.py", line 110, in compute_gradient_fft_features
-    G = torch.fft.fft2(grad_2d.to(torch.complex64))
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-RuntimeError: cuFFT error: CUFFT_INTERNAL_ERROR
+
+Evaluating attack outcomes...
+
+Target rates:
+  flipped_FGSM             : positive rate = 0.940
+  flipped_PGD              : positive rate = 1.000
+  min_eps_below_median     : positive rate = 0.499
+
+============================================================
+Univariate AUROC Evaluation
+============================================================
+
+--- Target: flipped_FGSM ---
+  low_freq_fraction         AUROC = 0.5519 (direction: +)
+  dominant_orientation      AUROC = 0.5978 (direction: -)
+  high_to_low_ratio         AUROC = 0.5546 (direction: -)
+  input_grad_l2_norm        AUROC = 0.6414 (direction: +)
+  margin                    AUROC = 0.7146 (direction: -)
+  mean_pix                  AUROC = 0.6596 (direction: +)
+  std_pix                   AUROC = 0.6979 (direction: +)
+
+Target flipped_PGD has no variance. Skipping AUROC.
+
+--- Target: min_eps_below_median ---
+  low_freq_fraction         AUROC = 0.5076 (direction: +)
+  dominant_orientation      AUROC = 0.5038 (direction: -)
+  high_to_low_ratio         AUROC = 0.5081 (direction: -)
+  input_grad_l2_norm        AUROC = 0.8921 (direction: +)
+  margin                    AUROC = 0.8995 (direction: -)
+  mean_pix                  AUROC = 0.5294 (direction: -)
+  std_pix                   AUROC = 0.5236 (direction: -)
