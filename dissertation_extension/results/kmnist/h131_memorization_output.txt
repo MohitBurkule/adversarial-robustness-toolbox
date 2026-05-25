@@ -1,0 +1,36 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: KMNIST
+[*] Executing script: dissertation_extension/hypotheses/h131_memorization.py
+Loading Fashion-MNIST dataset...
+Training model 1/5 on random 70% subset...
+Training model 2/5 on random 70% subset...
+Training model 3/5 on random 70% subset...
+Training model 4/5 on random 70% subset...
+Training model 5/5 on random 70% subset...
+Evaluating models for confidence variance...
+Victim correctly classified samples: 9384/10000
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: memorization_proxy
+  Target: flipped_fgsm  AUROC = 0.9531
+  Target: flipped_pgd   AUROC = 0.9471
+  Target: min_eps       AUROC = 0.8915
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9730
+  Target: flipped_pgd   AUROC = 0.9666
+  Target: min_eps       AUROC = 0.9044
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.5450
+  Target: flipped_pgd   AUROC = 0.5561
+  Target: min_eps       AUROC = 0.5499
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.5673
+  Target: flipped_pgd   AUROC = 0.5772
+  Target: min_eps       AUROC = 0.5670
