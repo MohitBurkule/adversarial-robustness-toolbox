@@ -3,37 +3,38 @@
 ============================================================
 Hypothesis H147: Margin-weighted Adversarial Training
 ============================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
 
 Training Standard PGD-AT victim...
-Standard PGD-AT trained in 98.1s
+Standard PGD-AT trained in 104.0s
 
 Training Margin-weighted PGD-AT victim...
-Margin-weighted PGD-AT trained in 109.7s
+Margin-weighted PGD-AT trained in 115.5s
 
 Evaluating Model: Standard PGD-AT
-Traceback (most recent call last):
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/run_with_patch.py", line 22, in <module>
-    runpy.run_path(target_script, run_name="__main__")
-  File "<frozen runpy>", line 287, in run_path
-  File "<frozen runpy>", line 98, in _run_module_code
-  File "<frozen runpy>", line 88, in _run_code
-  File "dissertation_extension/hypotheses/h147_margin_weighted_at.py", line 269, in <module>
-    main()
-  File "dissertation_extension/hypotheses/h147_margin_weighted_at.py", line 264, in main
-    evaluate_victim(std_at_model, test_x, test_y, "Standard PGD-AT")
-  File "dissertation_extension/hypotheses/h147_margin_weighted_at.py", line 182, in evaluate_victim
-    preds = model(x_test).argmax(1)
-            ^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "dissertation_extension/hypotheses/h147_margin_weighted_at.py", line 52, in forward
-    x = F.relu(self.c2(x))
-        ^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/functional.py", line 1704, in relu
-    result = torch.relu(input)
-             ^^^^^^^^^^^^^^^^^
-torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.58 GiB. GPU 0 has a total capacity of 7.92 GiB of which 374.75 MiB is free. Process 5520 has 622.39 MiB memory in use. Process 7047 has 328.33 MiB memory in use. Process 41336 has 134.83 MiB memory in use. Process 5162 has 7.96 MiB memory in use. Process 115518 has 50.08 MiB memory in use. Process 3740 has 7.96 MiB memory in use. Including non-PyTorch memory, this process has 5.96 GiB memory in use. Of the allocated memory 5.78 GiB is allocated by PyTorch, and 42.34 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+  Test Accuracy: 5731/10000 (57.31%)
+  FGSM flip rate = 0.5772
+  PGD-10 flip rate = 0.6491
+  Mean min_eps = 0.1109
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.8824
+    mean_pix   AUROC = 0.5639
+    std_pix    AUROC = 0.5505
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.8812
+    mean_pix   AUROC = 0.5786
+    std_pix    AUROC = 0.6047
+
+Evaluating Model: Margin-weighted PGD-AT
+  Test Accuracy: 1873/10000 (18.73%)
+  FGSM flip rate = 0.6044
+  PGD-10 flip rate = 0.6460
+  Mean min_eps = 0.0772
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9002
+    mean_pix   AUROC = 0.5189
+    std_pix    AUROC = 0.5678
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.8939
+    mean_pix   AUROC = 0.5023
+    std_pix    AUROC = 0.5855
