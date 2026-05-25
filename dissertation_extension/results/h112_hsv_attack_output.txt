@@ -1,0 +1,38 @@
+============================================================
+Hypothesis H112: Saturation/Value Gamma Attack Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 32.0s
+Evaluating gamma attacks on 1000 correctly classified test samples...
+Gamma attack evaluations completed in 0.2s
+
+Gamma Attack Success Rate: 0.0490
+Mean |log(gamma)| to flip (for flipped samples): 0.4431
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: flipped_any_gamma (Positive Rate = 0.0490) ---
+  Feature            AUROC Direction 
+  margin            0.9621  -
+  mean_pix          0.5051  -
+  std_pix           0.5799  -
+
+============================================================
+FEATURE COMPARISON BY FLIP STATUS
+============================================================
+  margin          -> Flipped Mean: 1.1022 | Non-Flipped Mean: 10.6576
+  mean_pix        -> Flipped Mean: 0.2858 | Non-Flipped Mean: 0.2861
+  std_pix         -> Flipped Mean: 0.2944 | Non-Flipped Mean: 0.3209
