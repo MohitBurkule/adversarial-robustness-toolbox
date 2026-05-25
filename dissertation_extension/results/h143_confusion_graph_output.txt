@@ -1,0 +1,69 @@
+============================================================
+Hypothesis H143: Confusion Graph Centrality Analysis
+============================================================
+
+Training CNN victim...
+CNN trained in 30.2s
+
+Using 9283/10000 correctly classified samples
+
+Running FGSM to build the confusion matrix...
+
+============================================================
+FGSM FLIPPED CONFUSION MATRIX
+============================================================
+True \ Adv 0     1     2     3     4     5     6     7     8     9    
+Class 0   : 0.000 0.002 0.041 0.061 0.002 0.000 0.886 0.000 0.007 0.000
+Class 1   : 0.218 0.000 0.048 0.473 0.186 0.000 0.064 0.000 0.011 0.000
+Class 2   : 0.044 0.000 0.000 0.003 0.301 0.000 0.648 0.000 0.003 0.000
+Class 3   : 0.313 0.102 0.020 0.000 0.122 0.001 0.425 0.000 0.016 0.000
+Class 4   : 0.006 0.001 0.258 0.088 0.000 0.000 0.645 0.000 0.002 0.000
+Class 5   : 0.008 0.000 0.000 0.003 0.000 0.000 0.002 0.532 0.159 0.296
+Class 6   : 0.308 0.003 0.151 0.025 0.495 0.000 0.000 0.000 0.018 0.000
+Class 7   : 0.001 0.000 0.000 0.000 0.000 0.421 0.001 0.000 0.089 0.488
+Class 8   : 0.149 0.005 0.034 0.120 0.060 0.029 0.595 0.010 0.000 0.000
+Class 9   : 0.005 0.000 0.000 0.002 0.000 0.554 0.002 0.412 0.024 0.000
+
+Class Centrality Metrics:
+  Class 0  - Centrality: 1.0524, Inverse Centrality: 0.9502
+  Class 1  - Centrality: 0.1134, Inverse Centrality: 8.8189
+  Class 2  - Centrality: 0.5517, Inverse Centrality: 1.8125
+  Class 3  - Centrality: 0.7762, Inverse Centrality: 1.2882
+  Class 4  - Centrality: 1.1655, Inverse Centrality: 0.8580
+  Class 5  - Centrality: 1.0053, Inverse Centrality: 0.9947
+  Class 6  - Centrality: 3.2682, Inverse Centrality: 0.3060
+  Class 7  - Centrality: 0.9530, Inverse Centrality: 1.0493
+  Class 8  - Centrality: 0.3306, Inverse Centrality: 3.0246
+  Class 9  - Centrality: 0.7837, Inverse Centrality: 1.2759
+
+Running PGD-10 and min_eps attacks...
+  FGSM flip rate = 0.7140
+  PGD-10 flip rate = 0.9604
+  Mean min_eps = 0.0510
+
+============================================================
+TARGET: flipped_FGSM | Univariate AUROC
+============================================================
+  class_centrality     AUROC = 0.7624
+  inverse_centrality   AUROC = 0.7624
+  margin               AUROC = 0.9232
+  mean_pix             AUROC = 0.5255
+  std_pix              AUROC = 0.5990
+
+============================================================
+TARGET: flipped_PGD | Univariate AUROC
+============================================================
+  class_centrality     AUROC = 0.8140
+  inverse_centrality   AUROC = 0.8140
+  margin               AUROC = 0.9514
+  mean_pix             AUROC = 0.5108
+  std_pix              AUROC = 0.6356
+
+============================================================
+TARGET: min_eps (continuous) | Univariate AUROC (above median)
+============================================================
+  class_centrality     AUROC = 0.7233
+  inverse_centrality   AUROC = 0.7233
+  margin               AUROC = 0.9448
+  mean_pix             AUROC = 0.6056
+  std_pix              AUROC = 0.5404
