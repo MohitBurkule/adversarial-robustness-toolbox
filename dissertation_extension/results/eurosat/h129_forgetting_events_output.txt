@@ -1,0 +1,41 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: EUROSAT
+[*] Executing script: dissertation_extension/hypotheses/h129_forgetting_events.py
+Loading Fashion-MNIST dataset...
+Training CNN model with forgetting tracking...
+Epoch 1/10 done
+Epoch 2/10 done
+Epoch 3/10 done
+Epoch 4/10 done
+Epoch 5/10 done
+Epoch 6/10 done
+Epoch 7/10 done
+Epoch 8/10 done
+Epoch 9/10 done
+Epoch 10/10 done
+Correctly classified samples at epoch 10: 3430/5400
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: forgetting_event_count
+  Target: flipped_fgsm  AUROC = 0.5786
+  Target: flipped_pgd   AUROC = 0.5609
+  Target: min_eps       AUROC = 0.5992
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.6807
+  Target: flipped_pgd   AUROC = 0.5902
+  Target: min_eps       AUROC = 0.6002
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.6558
+  Target: flipped_pgd   AUROC = 0.6757
+  Target: min_eps       AUROC = 0.6036
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.6903
+  Target: flipped_pgd   AUROC = 0.6298
+  Target: min_eps       AUROC = 0.6494
