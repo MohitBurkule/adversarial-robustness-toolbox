@@ -1,0 +1,132 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h165_multi_seed_stability.py
+======================================================================
+H165: Multi-seed AUROC stability of top vulnerability features
+======================================================================
+
+Training model for seed=0...
+  seed=0  epoch 1/10 done
+  seed=0  epoch 2/10 done
+  seed=0  epoch 3/10 done
+  seed=0  epoch 4/10 done
+  seed=0  epoch 5/10 done
+  seed=0  epoch 6/10 done
+  seed=0  epoch 7/10 done
+  seed=0  epoch 8/10 done
+  seed=0  epoch 9/10 done
+  seed=0  epoch 10/10 done
+  Snapshots at epochs: [5, 7, 10]
+
+Training model for seed=1...
+  seed=1  epoch 1/10 done
+  seed=1  epoch 2/10 done
+  seed=1  epoch 3/10 done
+  seed=1  epoch 4/10 done
+  seed=1  epoch 5/10 done
+  seed=1  epoch 6/10 done
+  seed=1  epoch 7/10 done
+  seed=1  epoch 8/10 done
+  seed=1  epoch 9/10 done
+  seed=1  epoch 10/10 done
+  Snapshots at epochs: [5, 7, 10]
+
+Training model for seed=2...
+  seed=2  epoch 1/10 done
+  seed=2  epoch 2/10 done
+  seed=2  epoch 3/10 done
+  seed=2  epoch 4/10 done
+  seed=2  epoch 5/10 done
+  seed=2  epoch 6/10 done
+  seed=2  epoch 7/10 done
+  seed=2  epoch 8/10 done
+  seed=2  epoch 9/10 done
+  seed=2  epoch 10/10 done
+  Snapshots at epochs: [5, 7, 10]
+
+Fixed evaluation set: 1000 samples (correctly classified by model_seed0)
+
+============================================================
+Evaluating seed=0 (model 1/3)
+============================================================
+
+  [seed=0] Computing features...
+    margin
+    smoothgrad_l2_norm
+    predictive_entropy
+    input_grad_l2_norm
+    memorization_proxy
+    softmax_variance (snapshot ensemble)
+    bnn_predictive_variance (SWAG-lite)
+    pixel_sign_agreement
+  [seed=0] Running PGD attack...
+  [seed=0] Computing min_eps...
+
+============================================================
+Evaluating seed=1 (model 2/3)
+============================================================
+
+  [seed=1] Computing features...
+    margin
+    smoothgrad_l2_norm
+    predictive_entropy
+    input_grad_l2_norm
+    memorization_proxy
+    softmax_variance (snapshot ensemble)
+    bnn_predictive_variance (SWAG-lite)
+    pixel_sign_agreement
+  [seed=1] Running PGD attack...
+  [seed=1] Computing min_eps...
+
+============================================================
+Evaluating seed=2 (model 3/3)
+============================================================
+
+  [seed=2] Computing features...
+    margin
+    smoothgrad_l2_norm
+    predictive_entropy
+    input_grad_l2_norm
+    memorization_proxy
+    softmax_variance (snapshot ensemble)
+    bnn_predictive_variance (SWAG-lite)
+    pixel_sign_agreement
+  [seed=2] Running PGD attack...
+  [seed=2] Computing min_eps...
+
+==========================================================================================
+AUROC TABLE — target: flipped_PGD
+==========================================================================================
+Feature                      seed0   seed1   seed2    mean     std  stability
+------------------------------------------------------------------------------------------
+margin                      0.9702  0.9072  0.9540  0.9438  0.0267  Moderate
+smoothgrad_l2_norm          0.9891  0.9849  0.9860  0.9867  0.0018  Stable
+predictive_entropy          0.9521  0.8886  0.9348  0.9252  0.0268  Moderate
+input_grad_l2_norm          0.9780  0.9622  0.9753  0.9718  0.0069  Stable
+memorization_proxy          0.9363  0.8325  0.8615  0.8768  0.0438  Unstable
+softmax_variance            0.8423  0.8100  0.8194  0.8239  0.0135  Moderate
+bnn_predictive_variance     0.9556  0.8511  0.9192  0.9086  0.0433  Unstable
+pixel_sign_agreement        0.6165  0.5231  0.5787  0.5728  0.0383  Unstable
+
+==========================================================================================
+AUROC TABLE — target: min_eps
+==========================================================================================
+Feature                      seed0   seed1   seed2    mean     std  stability
+------------------------------------------------------------------------------------------
+margin                      0.9436  0.9547  0.9480  0.9488  0.0045  Stable
+smoothgrad_l2_norm          0.7075  0.7230  0.7624  0.7310  0.0231  Moderate
+predictive_entropy          0.8925  0.8853  0.8814  0.8864  0.0046  Stable
+input_grad_l2_norm          0.9535  0.9367  0.9531  0.9478  0.0078  Stable
+memorization_proxy          0.5361  0.6165  0.5609  0.5712  0.0337  Unstable
+softmax_variance            0.5018  0.5580  0.5352  0.5317  0.0231  Moderate
+bnn_predictive_variance     0.6576  0.6293  0.6838  0.6569  0.0222  Moderate
+pixel_sign_agreement        0.5543  0.5197  0.5527  0.5422  0.0159  Moderate
+
+======================================================================
+STABILITY SUMMARY
+======================================================================
+Criteria: Stable = std < 0.01, Moderate = std < 0.03, Unstable = std >= 0.03
+
+Target=flipped_PGD: Stable=2/8  Moderate=3/8  Unstable=3/8
+Target=min_eps: Stable=3/8  Moderate=4/8  Unstable=1/8
+
+Done.
