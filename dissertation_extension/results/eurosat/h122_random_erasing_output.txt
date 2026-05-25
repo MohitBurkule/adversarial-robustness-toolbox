@@ -1,0 +1,68 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: EUROSAT
+[*] Executing script: dissertation_extension/hypotheses/h122_random_erasing.py
+======================================================================
+Hypothesis H122: Random Erasing Defense vs Vanilla CNN
+======================================================================
+
+Training Vanilla model...
+  [vanilla] Epoch 1/10 completed
+  [vanilla] Epoch 2/10 completed
+  [vanilla] Epoch 3/10 completed
+  [vanilla] Epoch 4/10 completed
+  [vanilla] Epoch 5/10 completed
+  [vanilla] Epoch 6/10 completed
+  [vanilla] Epoch 7/10 completed
+  [vanilla] Epoch 8/10 completed
+  [vanilla] Epoch 9/10 completed
+  [vanilla] Epoch 10/10 completed
+
+Training Random Erasing model...
+  [random_erasing] Epoch 1/10 completed
+  [random_erasing] Epoch 2/10 completed
+  [random_erasing] Epoch 3/10 completed
+  [random_erasing] Epoch 4/10 completed
+  [random_erasing] Epoch 5/10 completed
+  [random_erasing] Epoch 6/10 completed
+  [random_erasing] Epoch 7/10 completed
+  [random_erasing] Epoch 8/10 completed
+  [random_erasing] Epoch 9/10 completed
+  [random_erasing] Epoch 10/10 completed
+
+Evaluating Vanilla model...
+   Evaluating attacks...
+
+Evaluating Random Erasing model...
+   Evaluating attacks...
+
+==================================================
+VANILLA MODEL RESULTS
+==================================================
+Accuracy: 0.6490
+FGSM Success: 0.8536
+PGD Success: 0.9569
+Mean min_eps: 0.0104
+
+Univariate AUROC vs PGD Flip (Vanilla):
+  margin          : 0.6211
+  mean_pix        : 0.7488
+  std_pix         : 0.7040
+
+==================================================
+RANDOM ERASING MODEL RESULTS
+==================================================
+Accuracy: 0.6210
+FGSM Success: 0.7971
+PGD Success: 0.9839
+Mean min_eps: 0.0116
+
+Univariate AUROC vs PGD Flip (Random Erasing):
+  margin          : 0.5813
+  mean_pix        : 0.6209
+  std_pix         : 0.5087
+
+==================================================
+SUMMARY OF AUROC CHANGES (Random Erasing vs Vanilla PGD)
+==================================================
+  margin          : Random Erasing=0.5813  Vanilla=0.6211  Change=-0.0398
+  mean_pix        : Random Erasing=0.6209  Vanilla=0.7488  Change=-0.1279
+  std_pix         : Random Erasing=0.5087  Vanilla=0.7040  Change=-0.1954
