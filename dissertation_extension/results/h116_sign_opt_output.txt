@@ -1,0 +1,39 @@
+============================================================
+Hypothesis H116: Sign-OPT Decision Attack Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 32.0s
+Evaluating Sign-OPT on 200 correctly classified test samples...
+Sign-OPT evaluations completed in 42.8s
+
+Sign-OPT Median L2 Perturbation: 2.3281
+Mean L2 Perturbation: 3.1434
+Mean Queries used:     653.44
+
+============================================================
+UNIVARIATE AUROC ANALYSIS (Target: sign_opt_vulnerable)
+============================================================
+
+--- Target: sign_opt_vulnerable (Positive Rate = 0.4950) ---
+  Feature            AUROC Direction 
+  margin            0.8367  -
+  mean_pix          0.5700  -
+  std_pix           0.5768  -
+
+============================================================
+SPEARMAN CORRELATION WITH CONTINUOUS L2 BOUNDARY DISTANCE
+============================================================
+  margin          -> Correlation: +0.6997 (p-value: 9.76e-31)
+  mean_pix        -> Correlation: +0.1370 (p-value: 5.31e-02)
+  std_pix         -> Correlation: +0.1962 (p-value: 5.35e-03)
