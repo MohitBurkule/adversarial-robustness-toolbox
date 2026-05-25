@@ -3,30 +3,70 @@
 ============================================================
 Hypothesis H143: Confusion Graph Centrality Analysis
 ============================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
 
 Training CNN victim...
-CNN trained in 57.9s
-Traceback (most recent call last):
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/run_with_patch.py", line 22, in <module>
-    runpy.run_path(target_script, run_name="__main__")
-  File "<frozen runpy>", line 287, in run_path
-  File "<frozen runpy>", line 98, in _run_module_code
-  File "<frozen runpy>", line 88, in _run_code
-  File "dissertation_extension/hypotheses/h143_confusion_graph.py", line 287, in <module>
-    main()
-  File "dissertation_extension/hypotheses/h143_confusion_graph.py", line 154, in main
-    pred = model(test_x).argmax(1)
-           ^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "dissertation_extension/hypotheses/h143_confusion_graph.py", line 57, in forward
-    x = F.relu(self.c2(x))
-        ^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/functional.py", line 1704, in relu
-    result = torch.relu(input)
-             ^^^^^^^^^^^^^^^^^
-torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.58 GiB. GPU 0 has a total capacity of 7.92 GiB of which 385.81 MiB is free. Process 5520 has 615.32 MiB memory in use. Process 7047 has 328.33 MiB memory in use. Process 41336 has 134.83 MiB memory in use. Process 5162 has 7.96 MiB memory in use. Process 115518 has 50.08 MiB memory in use. Process 3740 has 7.96 MiB memory in use. Including non-PyTorch memory, this process has 5.96 GiB memory in use. Of the allocated memory 5.77 GiB is allocated by PyTorch, and 49.50 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+CNN trained in 52.9s
+
+Using 8646/10000 correctly classified samples
+
+Running FGSM to build the confusion matrix...
+
+============================================================
+FGSM FLIPPED CONFUSION MATRIX
+============================================================
+True \ Adv 0     1     2     3     4     5     6     7     8     9    
+Class 0   : 0.000 0.062 0.106 0.293 0.072 0.171 0.118 0.005 0.043 0.130
+Class 1   : 0.045 0.000 0.125 0.406 0.193 0.046 0.059 0.054 0.049 0.022
+Class 2   : 0.006 0.050 0.000 0.549 0.064 0.109 0.087 0.078 0.031 0.028
+Class 3   : 0.020 0.046 0.242 0.000 0.189 0.176 0.098 0.010 0.109 0.111
+Class 4   : 0.014 0.219 0.106 0.415 0.000 0.069 0.105 0.009 0.041 0.025
+Class 5   : 0.003 0.025 0.116 0.546 0.038 0.000 0.187 0.001 0.065 0.019
+Class 6   : 0.018 0.024 0.200 0.324 0.122 0.155 0.000 0.005 0.129 0.023
+Class 7   : 0.005 0.173 0.362 0.239 0.089 0.045 0.020 0.000 0.044 0.023
+Class 8   : 0.022 0.043 0.067 0.300 0.096 0.130 0.271 0.013 0.000 0.058
+Class 9   : 0.099 0.052 0.276 0.281 0.076 0.054 0.074 0.007 0.081 0.000
+
+Class Centrality Metrics:
+  Class 0  - Centrality: 0.2310, Inverse Centrality: 4.3295
+  Class 1  - Centrality: 0.6921, Inverse Centrality: 1.4448
+  Class 2  - Centrality: 1.6013, Inverse Centrality: 0.6245
+  Class 3  - Centrality: 3.3522, Inverse Centrality: 0.2983
+  Class 4  - Centrality: 0.9398, Inverse Centrality: 1.0640
+  Class 5  - Centrality: 0.9547, Inverse Centrality: 1.0474
+  Class 6  - Centrality: 1.0178, Inverse Centrality: 0.9825
+  Class 7  - Centrality: 0.1815, Inverse Centrality: 5.5082
+  Class 8  - Centrality: 0.5911, Inverse Centrality: 1.6918
+  Class 9  - Centrality: 0.4384, Inverse Centrality: 2.2812
+
+Running PGD-10 and min_eps attacks...
+  FGSM flip rate = 0.9362
+  PGD-10 flip rate = 0.9887
+  Mean min_eps = 0.0270
+
+============================================================
+TARGET: flipped_FGSM | Univariate AUROC
+============================================================
+  class_centrality     AUROC = 0.6110
+  inverse_centrality   AUROC = 0.6110
+  margin               AUROC = 0.8285
+  mean_pix             AUROC = 0.5866
+  std_pix              AUROC = 0.7158
+
+============================================================
+TARGET: flipped_PGD | Univariate AUROC
+============================================================
+  class_centrality     AUROC = 0.7838
+  inverse_centrality   AUROC = 0.7838
+  margin               AUROC = 0.7335
+  mean_pix             AUROC = 0.6272
+  std_pix              AUROC = 0.7541
+
+============================================================
+TARGET: min_eps (continuous) | Univariate AUROC (above median)
+============================================================
+  class_centrality     AUROC = 0.5524
+  inverse_centrality   AUROC = 0.5524
+  margin               AUROC = 0.8976
+  mean_pix             AUROC = 0.5708
+  std_pix              AUROC = 0.6824
