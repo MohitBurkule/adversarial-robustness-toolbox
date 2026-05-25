@@ -1,0 +1,76 @@
+/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torchvision/datasets/cifar.py:83: VisibleDeprecationWarning: dtype(): align should be passed as Python or NumPy boolean but got `align=0`. Did you mean to pass a tuple to create a subarray type? (Deprecated NumPy 2.4)
+  entry = pickle.load(f, encoding="latin1")
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: CIFAR10
+[*] Executing script: dissertation_extension/hypotheses/h160_grokking_hard_dataset.py
+H160: Grokking-Like Delayed Robustness on CIFAR-100
+======================================================================
+Device       : cuda
+Epochs       : 60  (checkpoints every 5)
+Eval samples : 300 test + 1000 train per checkpoint
+EPS          : 0.03137  (8/255)
+Binary hi    : 0.15  iters=8
+
+  Evaluating epoch  5... train=0.390  clean=0.400  fgsm_sr=0.783  pgd_sr=0.867  min_eps=0.0268
+  Evaluating epoch 10... train=0.475  clean=0.503  fgsm_sr=0.775  pgd_sr=0.894  min_eps=0.0277
+  Evaluating epoch 15... train=0.583  clean=0.600  fgsm_sr=0.811  pgd_sr=0.922  min_eps=0.0213
+  Evaluating epoch 20... train=0.618  clean=0.610  fgsm_sr=0.814  pgd_sr=0.896  min_eps=0.0227
+  Evaluating epoch 25... train=0.690  clean=0.633  fgsm_sr=0.800  pgd_sr=0.932  min_eps=0.0226
+  Evaluating epoch 30... train=0.722  clean=0.640  fgsm_sr=0.792  pgd_sr=0.932  min_eps=0.0232
+  Evaluating epoch 35... train=0.759  clean=0.647  fgsm_sr=0.773  pgd_sr=0.938  min_eps=0.0232
+  Evaluating epoch 40... train=0.780  clean=0.650  fgsm_sr=0.815  pgd_sr=0.938  min_eps=0.0226
+  Evaluating epoch 45... train=0.802  clean=0.657  fgsm_sr=0.807  pgd_sr=0.949  min_eps=0.0226
+  Evaluating epoch 50... train=0.809  clean=0.657  fgsm_sr=0.817  pgd_sr=0.954  min_eps=0.0217
+  Evaluating epoch 55... train=0.821  clean=0.660  fgsm_sr=0.788  pgd_sr=0.955  min_eps=0.0228
+  Evaluating epoch 60... train=0.819  clean=0.660  fgsm_sr=0.798  pgd_sr=0.949  min_eps=0.0241
+
+Full Trajectory Table — CIFAR-100 Standard Training
+---------------------------------------------------
+Epoch  TrainAcc  CleanAcc  FGSM_SR  PGD_SR   MinEps
+---------------------------------------------------
+    5     0.390     0.400    0.783   0.867   0.0268
+   10     0.475     0.503    0.775   0.894   0.0277
+   15     0.583     0.600    0.811   0.922   0.0213
+   20     0.618     0.610    0.814   0.896   0.0227
+   25     0.690     0.633    0.800   0.932   0.0226
+   30     0.722     0.640    0.792   0.932   0.0232
+   35     0.759     0.647    0.773   0.938   0.0232
+   40     0.780     0.650    0.815   0.938   0.0226
+   45     0.802     0.657    0.807   0.949   0.0226
+   50     0.809     0.657    0.817   0.954   0.0217
+   55     0.821     0.660    0.788   0.955   0.0228
+   60     0.819     0.660    0.798   0.949   0.0241
+---------------------------------------------------
+
+Grokking-Like Delayed Robustness Analysis
+-------------------------------------------------------
+  Clean accuracy plateau at epoch  : 35
+  Robustness onset (20% max) epoch : 5
+  Delay (onset - plateau)          : -30 epochs
+  => ROBUSTNESS LEADS: robustness onset precedes clean accuracy plateau (unusual).
+
+Robustness Growth Ratio (epoch 60 vs epoch 5)
+-------------------------------------------------------
+  Mean min_eps at epoch  5 : 0.0268
+  Mean min_eps at epoch 60 : 0.0241
+  Ratio (final / early)    : 0.899x
+  => Robustness is relatively stable across training; no strong late-phase growth.
+
+Spearman Rank Correlations (Epoch vs Metric)
+-------------------------------------------------------
+  Epoch vs clean accuracy   : rho = +1.0000
+  Epoch vs mean min_eps     : rho = -0.2308
+  => Robustness grows LESS monotonically than clean accuracy — consistent with delayed / non-uniform robustness emergence.
+
+Summary
+======================================================================
+  Dataset               : CIFAR-100 (100 classes)
+  Epochs trained        : 60
+  Max clean accuracy    : 0.660
+  Max mean min_eps      : 0.0277
+  Clean plateau epoch   : 35
+  Robustness onset epoch: 5
+  Delay                 : -30 epochs
+  Robustness growth ratio (ep60/ep5): 0.899x
+  Spearman rho (epoch vs min_eps)   : -0.2308
+
+  CONCLUSION: No clear grokking-like delayed robustness observed. Robustness and clean accuracy evolve similarly over training.
