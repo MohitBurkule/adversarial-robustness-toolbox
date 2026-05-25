@@ -3,33 +3,49 @@
 ============================================================
 Hypothesis H139: Attention (ViT) vs CNN Adversarial Vulnerability
 ============================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
 
 Training CNN model...
-CNN trained in 58.2s
+CNN trained in 53.1s
 
 Training ViT model...
-ViT trained in 89.0s
-Traceback (most recent call last):
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/run_with_patch.py", line 22, in <module>
-    runpy.run_path(target_script, run_name="__main__")
-  File "<frozen runpy>", line 287, in run_path
-  File "<frozen runpy>", line 98, in _run_module_code
-  File "<frozen runpy>", line 88, in _run_code
-  File "dissertation_extension/hypotheses/h139_vit_vs_cnn.py", line 353, in <module>
-    main()
-  File "dissertation_extension/hypotheses/h139_vit_vs_cnn.py", line 254, in main
-    cnn_pred = cnn_model(test_x).argmax(1)
-               ^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "dissertation_extension/hypotheses/h139_vit_vs_cnn.py", line 61, in forward
-    x = F.relu(self.c2(x))
-        ^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/functional.py", line 1704, in relu
-    result = torch.relu(input)
-             ^^^^^^^^^^^^^^^^^
-torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.58 GiB. GPU 0 has a total capacity of 7.92 GiB of which 384.50 MiB is free. Process 5520 has 612.64 MiB memory in use. Process 7047 has 328.33 MiB memory in use. Process 41336 has 134.83 MiB memory in use. Process 5162 has 7.96 MiB memory in use. Process 115518 has 50.08 MiB memory in use. Process 3740 has 7.96 MiB memory in use. Including non-PyTorch memory, this process has 5.96 GiB memory in use. Of the allocated memory 5.78 GiB is allocated by PyTorch, and 51.91 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+ViT trained in 92.2s
+
+Using 7650/10000 samples correctly classified by both models
+
+Running attacks on CNN...
+Running attacks on ViT...
+
+CNN: FGSM=0.939, PGD-10=0.990, mean min_eps=0.028
+ViT: FGSM=0.989, PGD-10=1.000, mean min_eps=0.015
+
+Cross-correlation of FGSM vulnerability (flip status): 0.1067
+
+============================================================
+CNN VULNERABILITY ANALYSIS (Univariate AUROC)
+============================================================
+
+Target: flipped_FGSM
+  margin          AUROC = 0.8276
+  mean_pix        AUROC = 0.5964
+  std_pix         AUROC = 0.7655
+  sobel_mean      AUROC = 0.7462
+
+Target: flipped_PGD
+  margin          AUROC = 0.7943
+  mean_pix        AUROC = 0.6244
+  std_pix         AUROC = 0.8631
+  sobel_mean      AUROC = 0.8541
+
+============================================================
+ViT VULNERABILITY ANALYSIS (Univariate AUROC)
+============================================================
+
+Target: flipped_FGSM
+  margin          AUROC = 0.8527
+  mean_pix        AUROC = 0.5446
+  std_pix         AUROC = 0.6261
+  sobel_mean      AUROC = 0.6034
+
+Target: flipped_PGD
+  Constant target, skipping.
