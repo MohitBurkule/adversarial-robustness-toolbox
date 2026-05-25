@@ -3,37 +3,38 @@
 ============================================================
 Hypothesis H145: FAT (Friendly Adversarial Training)
 ============================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
 
 Training Vanilla CNN victim...
-Vanilla CNN trained in 58.1s
+Vanilla CNN trained in 53.5s
 
 Training FAT CNN victim...
-FAT CNN trained in 341.6s
+FAT CNN trained in 367.5s
 
 Evaluating Model: Vanilla CNN
-Traceback (most recent call last):
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/run_with_patch.py", line 22, in <module>
-    runpy.run_path(target_script, run_name="__main__")
-  File "<frozen runpy>", line 287, in run_path
-  File "<frozen runpy>", line 98, in _run_module_code
-  File "<frozen runpy>", line 88, in _run_code
-  File "dissertation_extension/hypotheses/h145_friendly_at.py", line 269, in <module>
-    main()
-  File "dissertation_extension/hypotheses/h145_friendly_at.py", line 264, in main
-    evaluate_victim(vanilla_model, test_x, test_y, "Vanilla CNN")
-  File "dissertation_extension/hypotheses/h145_friendly_at.py", line 182, in evaluate_victim
-    preds = model(x_test).argmax(1)
-            ^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "dissertation_extension/hypotheses/h145_friendly_at.py", line 52, in forward
-    x = F.relu(self.c2(x))
-        ^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/functional.py", line 1704, in relu
-    result = torch.relu(input)
-             ^^^^^^^^^^^^^^^^^
-torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.58 GiB. GPU 0 has a total capacity of 7.92 GiB of which 384.00 MiB is free. Process 5520 has 617.14 MiB memory in use. Process 7047 has 328.33 MiB memory in use. Process 41336 has 134.83 MiB memory in use. Process 5162 has 7.96 MiB memory in use. Process 115518 has 50.08 MiB memory in use. Process 3740 has 7.96 MiB memory in use. Including non-PyTorch memory, this process has 5.96 GiB memory in use. Of the allocated memory 5.78 GiB is allocated by PyTorch, and 40.22 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+  Test Accuracy: 8680/10000 (86.80%)
+  FGSM flip rate = 0.9396
+  PGD-10 flip rate = 0.9940
+  Mean min_eps = 0.0262
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.8464
+    mean_pix   AUROC = 0.6429
+    std_pix    AUROC = 0.7482
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9610
+    mean_pix   AUROC = 0.7474
+    std_pix    AUROC = 0.8990
+
+Evaluating Model: FAT CNN
+  Test Accuracy: 7712/10000 (77.12%)
+  FGSM flip rate = 0.6828
+  PGD-10 flip rate = 0.7596
+  Mean min_eps = 0.0806
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9180
+    mean_pix   AUROC = 0.5844
+    std_pix    AUROC = 0.6953
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9252
+    mean_pix   AUROC = 0.6036
+    std_pix    AUROC = 0.7484
