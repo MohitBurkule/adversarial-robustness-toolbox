@@ -3,6 +3,7 @@
 ======================================================================
 Hypothesis H148: Adversarial Example Overlap (FGSM, BIM, PGD, MIM)
 ======================================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
 
 Training model...
   Epoch 1/10 completed
@@ -15,28 +16,41 @@ Training model...
   Epoch 8/10 completed
   Epoch 9/10 completed
   Epoch 10/10 completed
-Training completed in 65.3s
-Traceback (most recent call last):
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/dissertation_extension/run_with_patch.py", line 22, in <module>
-    runpy.run_path(target_script, run_name="__main__")
-  File "<frozen runpy>", line 287, in run_path
-  File "<frozen runpy>", line 98, in _run_module_code
-  File "<frozen runpy>", line 88, in _run_code
-  File "dissertation_extension/hypotheses/h148_adv_example_overlap.py", line 296, in <module>
-    main()
-  File "dissertation_extension/hypotheses/h148_adv_example_overlap.py", line 190, in main
-    logits = model(test_x)
-             ^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "dissertation_extension/hypotheses/h148_adv_example_overlap.py", line 50, in forward
-    x = F.relu(self.c2(x))
-        ^^^^^^^^^^^^^^^^^^
-  File "/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torch/nn/functional.py", line 1704, in relu
-    result = torch.relu(input)
-             ^^^^^^^^^^^^^^^^^
-torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.58 GiB. GPU 0 has a total capacity of 7.92 GiB of which 369.00 MiB is free. Process 5520 has 621.64 MiB memory in use. Process 7047 has 328.33 MiB memory in use. Process 41336 has 134.83 MiB memory in use. Process 5162 has 7.96 MiB memory in use. Process 115518 has 50.08 MiB memory in use. Process 3740 has 7.96 MiB memory in use. Including non-PyTorch memory, this process has 5.96 GiB memory in use. Of the allocated memory 5.77 GiB is allocated by PyTorch, and 49.50 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Training completed in 55.1s
+
+Using 1000 correctly classified samples for evaluation.
+
+Generating attacks...
+
+==================================================
+Jaccard Similarity Matrix of Attack Success
+==================================================
+      FGSM    BIM     PGD     MIM   
+FGSM : 1.0000  0.9438  0.9427  0.9438
+BIM  : 0.9438  1.0000  0.9910  1.0000
+PGD  : 0.9427  0.9910  1.0000  0.9910
+MIM  : 0.9438  1.0000  0.9910  1.0000
+
+==================================================
+Mutual Information Matrix of Attack Success
+==================================================
+      FGSM    BIM     PGD     MIM   
+FGSM : 0.2242  0.0086  0.0108  0.0086
+BIM  : 0.0086  0.0204  0.0075  0.0204
+PGD  : 0.0108  0.0075  0.0560  0.0075
+MIM  : 0.0086  0.0204  0.0075  0.0204
+
+Attack Consensus Statistics (number of successful attacks per sample):
+  Vulnerable to 0 attacks: 0.2%
+  Vulnerable to 1 attacks: 0.1%
+  Vulnerable to 2 attacks: 0.4%
+  Vulnerable to 3 attacks: 5.6%
+  Vulnerable to 4 attacks: 93.7%
+
+==================================================
+Univariate AUROC for Target: flipped_by_all_4
+==================================================
+  attack_consensus   AUROC = 1.0000 (direction: +)
+  margin             AUROC = 0.7783 (direction: -)
+  mean_pix           AUROC = 0.6169 (direction: -)
+  std_pix            AUROC = 0.6897 (direction: -)
