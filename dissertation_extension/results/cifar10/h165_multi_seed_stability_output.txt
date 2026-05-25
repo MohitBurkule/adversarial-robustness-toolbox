@@ -1,0 +1,134 @@
+/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torchvision/datasets/cifar.py:83: VisibleDeprecationWarning: dtype(): align should be passed as Python or NumPy boolean but got `align=0`. Did you mean to pass a tuple to create a subarray type? (Deprecated NumPy 2.4)
+  entry = pickle.load(f, encoding="latin1")
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: CIFAR10
+[*] Executing script: dissertation_extension/hypotheses/h165_multi_seed_stability.py
+======================================================================
+H165: Multi-seed AUROC stability of top vulnerability features
+======================================================================
+
+Training model for seed=0...
+  seed=0  epoch 1/10 done
+  seed=0  epoch 2/10 done
+  seed=0  epoch 3/10 done
+  seed=0  epoch 4/10 done
+  seed=0  epoch 5/10 done
+  seed=0  epoch 6/10 done
+  seed=0  epoch 7/10 done
+  seed=0  epoch 8/10 done
+  seed=0  epoch 9/10 done
+  seed=0  epoch 10/10 done
+  Snapshots at epochs: [5, 7, 10]
+
+Training model for seed=1...
+  seed=1  epoch 1/10 done
+  seed=1  epoch 2/10 done
+  seed=1  epoch 3/10 done
+  seed=1  epoch 4/10 done
+  seed=1  epoch 5/10 done
+  seed=1  epoch 6/10 done
+  seed=1  epoch 7/10 done
+  seed=1  epoch 8/10 done
+  seed=1  epoch 9/10 done
+  seed=1  epoch 10/10 done
+  Snapshots at epochs: [5, 7, 10]
+
+Training model for seed=2...
+  seed=2  epoch 1/10 done
+  seed=2  epoch 2/10 done
+  seed=2  epoch 3/10 done
+  seed=2  epoch 4/10 done
+  seed=2  epoch 5/10 done
+  seed=2  epoch 6/10 done
+  seed=2  epoch 7/10 done
+  seed=2  epoch 8/10 done
+  seed=2  epoch 9/10 done
+  seed=2  epoch 10/10 done
+  Snapshots at epochs: [5, 7, 10]
+
+Fixed evaluation set: 1000 samples (correctly classified by model_seed0)
+
+============================================================
+Evaluating seed=0 (model 1/3)
+============================================================
+
+  [seed=0] Computing features...
+    margin
+    smoothgrad_l2_norm
+    predictive_entropy
+    input_grad_l2_norm
+    memorization_proxy
+    softmax_variance (snapshot ensemble)
+    bnn_predictive_variance (SWAG-lite)
+    pixel_sign_agreement
+  [seed=0] Running PGD attack...
+  [seed=0] Computing min_eps...
+
+============================================================
+Evaluating seed=1 (model 2/3)
+============================================================
+
+  [seed=1] Computing features...
+    margin
+    smoothgrad_l2_norm
+    predictive_entropy
+    input_grad_l2_norm
+    memorization_proxy
+    softmax_variance (snapshot ensemble)
+    bnn_predictive_variance (SWAG-lite)
+    pixel_sign_agreement
+  [seed=1] Running PGD attack...
+  [seed=1] Computing min_eps...
+
+============================================================
+Evaluating seed=2 (model 3/3)
+============================================================
+
+  [seed=2] Computing features...
+    margin
+    smoothgrad_l2_norm
+    predictive_entropy
+    input_grad_l2_norm
+    memorization_proxy
+    softmax_variance (snapshot ensemble)
+    bnn_predictive_variance (SWAG-lite)
+    pixel_sign_agreement
+  [seed=2] Running PGD attack...
+  [seed=2] Computing min_eps...
+
+==========================================================================================
+AUROC TABLE — target: flipped_PGD
+==========================================================================================
+Feature                      seed0   seed1   seed2    mean     std  stability
+------------------------------------------------------------------------------------------
+margin                      0.5000  1.0000  0.5000  0.6667  0.2357  Unstable
+smoothgrad_l2_norm          0.5000  1.0000  0.5000  0.6667  0.2357  Unstable
+predictive_entropy          0.5000  0.9930  0.5000  0.6643  0.2324  Unstable
+input_grad_l2_norm          0.5000  1.0000  0.5000  0.6667  0.2357  Unstable
+memorization_proxy          0.5000  1.0000  0.5000  0.6667  0.2357  Unstable
+softmax_variance            0.5000  0.9990  0.5000  0.6663  0.2352  Unstable
+bnn_predictive_variance     0.5000  1.0000  0.5000  0.6667  0.2357  Unstable
+pixel_sign_agreement        0.5000  0.6737  0.5000  0.5579  0.0819  Unstable
+
+==========================================================================================
+AUROC TABLE — target: min_eps
+==========================================================================================
+Feature                      seed0   seed1   seed2    mean     std  stability
+------------------------------------------------------------------------------------------
+margin                      0.8984  0.9111  0.9233  0.9109  0.0102  Moderate
+smoothgrad_l2_norm          0.7101  0.7274  0.7522  0.7299  0.0173  Moderate
+predictive_entropy          0.8563  0.8124  0.8413  0.8367  0.0182  Moderate
+input_grad_l2_norm          0.9049  0.9051  0.9248  0.9116  0.0093  Stable
+memorization_proxy          0.6392  0.7089  0.7001  0.6827  0.0310  Unstable
+softmax_variance            0.6828  0.5368  0.6139  0.6111  0.0596  Unstable
+bnn_predictive_variance     0.7983  0.7387  0.7679  0.7683  0.0243  Moderate
+pixel_sign_agreement        0.5827  0.6020  0.5921  0.5923  0.0078  Stable
+
+======================================================================
+STABILITY SUMMARY
+======================================================================
+Criteria: Stable = std < 0.01, Moderate = std < 0.03, Unstable = std >= 0.03
+
+Target=flipped_PGD: Stable=0/8  Moderate=0/8  Unstable=8/8
+Target=min_eps: Stable=2/8  Moderate=4/8  Unstable=2/8
+
+Done.
