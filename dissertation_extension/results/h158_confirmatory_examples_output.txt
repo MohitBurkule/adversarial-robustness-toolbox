@@ -1,0 +1,115 @@
+==============================================================================
+Hypothesis H158: Anti-Adversarial (Confirmatory) Examples
+==============================================================================
+Device: cuda  |  Epochs: 10  |  Batch: 128  |  EPS: 0.05882
+
+--- Training: Vanilla ---
+  [vanilla] epoch 1/10
+  [vanilla] epoch 2/10
+  [vanilla] epoch 3/10
+  [vanilla] epoch 4/10
+  [vanilla] epoch 5/10
+  [vanilla] epoch 6/10
+  [vanilla] epoch 7/10
+  [vanilla] epoch 8/10
+  [vanilla] epoch 9/10
+  [vanilla] epoch 10/10
+  Done in 30.7s
+
+  Evaluating [Vanilla]...
+    Clean accuracy (full test set): 92.68%
+    Using 1000 correctly-classified samples for adversarial evaluation.
+    FGSM success rate: 73.1%
+    PGD-10 success rate: 97.1%
+    Computing min_eps_to_flip (binary search, 8 iters)...
+    Mean min_eps_to_flip: 0.0532
+    AUROC margin (vs PGD flip):   0.9430
+    AUROC top1_prob (vs PGD flip):0.8851
+
+--- Training: Anti-Adv Augmented ---
+  [anti-adv] epoch 1/10
+  [anti-adv] epoch 2/10
+  [anti-adv] epoch 3/10
+  [anti-adv] epoch 4/10
+  [anti-adv] epoch 5/10
+  [anti-adv] epoch 6/10
+  [anti-adv] epoch 7/10
+  [anti-adv] epoch 8/10
+  [anti-adv] epoch 9/10
+  [anti-adv] epoch 10/10
+  Done in 79.0s
+
+  Evaluating [Anti-Adv Aug]...
+    Clean accuracy (full test set): 92.22%
+    Using 1000 correctly-classified samples for adversarial evaluation.
+    FGSM success rate: 85.4%
+    PGD-10 success rate: 99.4%
+    Computing min_eps_to_flip (binary search, 8 iters)...
+    Mean min_eps_to_flip: 0.0399
+    AUROC margin (vs PGD flip):   0.9961
+    AUROC top1_prob (vs PGD flip):0.9251
+
+--- Training: PGD Adversarial Training ---
+  [pgd-at]   epoch 1/10
+  [pgd-at]   epoch 2/10
+  [pgd-at]   epoch 3/10
+  [pgd-at]   epoch 4/10
+  [pgd-at]   epoch 5/10
+  [pgd-at]   epoch 6/10
+  [pgd-at]   epoch 7/10
+  [pgd-at]   epoch 8/10
+  [pgd-at]   epoch 9/10
+  [pgd-at]   epoch 10/10
+  Done in 290.1s
+
+  Evaluating [PGD-AT]...
+    Clean accuracy (full test set): 86.40%
+    Using 1000 correctly-classified samples for adversarial evaluation.
+    FGSM success rate: 5.1%
+    PGD-10 success rate: 6.5%
+    Computing min_eps_to_flip (binary search, 8 iters)...
+    Mean min_eps_to_flip: 0.2429
+    AUROC margin (vs PGD flip):   0.9434
+    AUROC top1_prob (vs PGD flip):0.9503
+
+--- Training: PGD-AT + Anti-Adv ---
+  [pgd+anti] epoch 1/10
+  [pgd+anti] epoch 2/10
+  [pgd+anti] epoch 3/10
+  [pgd+anti] epoch 4/10
+  [pgd+anti] epoch 5/10
+  [pgd+anti] epoch 6/10
+  [pgd+anti] epoch 7/10
+  [pgd+anti] epoch 8/10
+  [pgd+anti] epoch 9/10
+  [pgd+anti] epoch 10/10
+  Done in 343.0s
+
+  Evaluating [PGD-AT+Anti]...
+    Clean accuracy (full test set): 89.29%
+    Using 1000 correctly-classified samples for adversarial evaluation.
+    FGSM success rate: 9.9%
+    PGD-10 success rate: 12.0%
+    Computing min_eps_to_flip (binary search, 8 iters)...
+    Mean min_eps_to_flip: 0.2186
+    AUROC margin (vs PGD flip):   0.9653
+    AUROC top1_prob (vs PGD flip):0.9670
+
+==============================================================================
+SUMMARY TABLE — H158 Confirmatory Examples
+==============================================================================
+Model               CleanAcc   FGSM%    PGD%   MinEps  AUROC-M  AUROC-P
+------------------------------------------------------------------------------
+Vanilla               92.68%   73.1%   97.1%   0.0532   0.9430   0.8851
+Anti-Adv Aug          92.22%   85.4%   99.4%   0.0399   0.9961   0.9251
+PGD-AT                86.40%    5.1%    6.5%   0.2429   0.9434   0.9503
+PGD-AT+Anti           89.29%    9.9%   12.0%   0.2186   0.9653   0.9670
+==============================================================================
+
+Key comparisons:
+  Anti-adv aug  vs Vanilla  — clean acc delta: -0.46%
+  Anti-adv aug  vs Vanilla  — FGSM rate delta: +12.3%
+  PGD-AT        vs Vanilla  — clean acc delta: -6.28%  (robustness-accuracy trade-off)
+  PGD-AT+Anti   vs PGD-AT   — clean acc delta: +2.89%  (confirmatory recovery?)
+  PGD-AT+Anti   vs PGD-AT   — PGD rate delta:  +5.5%  (robustness cost of mixing?)
+==============================================================================
