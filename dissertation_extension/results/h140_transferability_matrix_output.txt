@@ -1,0 +1,37 @@
+============================================================
+Hypothesis H140: Adversarial Transferability Matrix
+============================================================
+
+Training K=4 CNN models...
+  Model 0 trained in 30.5s
+  Model 1 trained in 30.0s
+  Model 2 trained in 30.2s
+  Model 3 trained in 30.2s
+
+Using 8826/10000 samples correctly classified by all 4 models
+
+Computing features on Model 0...
+
+Generating FGSM examples on all models...
+
+Evaluating pairwise transferability...
+
+============================================================
+TRANSFERABILITY MATRIX (Flip Rate)
+============================================================
+      To M0   To M1   To M2   To M3  
+From M0: 0.705  0.439  0.489  0.504
+From M1: 0.472  0.652  0.483  0.482
+From M2: 0.490  0.443  0.652  0.489
+From M3: 0.515  0.438  0.480  0.686
+
+Mean transfer rate (excluding self-attacks): 0.4770
+Binarization threshold (median score): 0.4167
+High-transferability rate: 0.490
+
+============================================================
+TARGET: High-Transferability | Univariate AUROC
+============================================================
+  margin          AUROC = 0.9097
+  mean_pix        AUROC = 0.5758
+  std_pix         AUROC = 0.5639
