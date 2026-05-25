@@ -1,0 +1,117 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: KMNIST
+[*] Executing script: dissertation_extension/hypotheses/h158_confirmatory_examples.py
+==============================================================================
+Hypothesis H158: Anti-Adversarial (Confirmatory) Examples
+==============================================================================
+Device: cuda  |  Epochs: 10  |  Batch: 128  |  EPS: 0.05882
+
+--- Training: Vanilla ---
+  [vanilla] epoch 1/10
+  [vanilla] epoch 2/10
+  [vanilla] epoch 3/10
+  [vanilla] epoch 4/10
+  [vanilla] epoch 5/10
+  [vanilla] epoch 6/10
+  [vanilla] epoch 7/10
+  [vanilla] epoch 8/10
+  [vanilla] epoch 9/10
+  [vanilla] epoch 10/10
+  Done in 37.7s
+
+  Evaluating [Vanilla]...
+    Clean accuracy (full test set): 95.04%
+    Using 1000 correctly-classified samples for adversarial evaluation.
+    FGSM success rate: 20.7%
+    PGD-10 success rate: 35.1%
+    Computing min_eps_to_flip (binary search, 8 iters)...
+    Mean min_eps_to_flip: 0.1448
+    AUROC margin (vs PGD flip):   0.9265
+    AUROC top1_prob (vs PGD flip):0.9267
+
+--- Training: Anti-Adv Augmented ---
+  [anti-adv] epoch 1/10
+  [anti-adv] epoch 2/10
+  [anti-adv] epoch 3/10
+  [anti-adv] epoch 4/10
+  [anti-adv] epoch 5/10
+  [anti-adv] epoch 6/10
+  [anti-adv] epoch 7/10
+  [anti-adv] epoch 8/10
+  [anti-adv] epoch 9/10
+  [anti-adv] epoch 10/10
+  Done in 78.7s
+
+  Evaluating [Anti-Adv Aug]...
+    Clean accuracy (full test set): 94.86%
+    Using 1000 correctly-classified samples for adversarial evaluation.
+    FGSM success rate: 42.2%
+    PGD-10 success rate: 72.9%
+    Computing min_eps_to_flip (binary search, 8 iters)...
+    Mean min_eps_to_flip: 0.1110
+    AUROC margin (vs PGD flip):   0.9310
+    AUROC top1_prob (vs PGD flip):0.9056
+
+--- Training: PGD Adversarial Training ---
+  [pgd-at]   epoch 1/10
+  [pgd-at]   epoch 2/10
+  [pgd-at]   epoch 3/10
+  [pgd-at]   epoch 4/10
+  [pgd-at]   epoch 5/10
+  [pgd-at]   epoch 6/10
+  [pgd-at]   epoch 7/10
+  [pgd-at]   epoch 8/10
+  [pgd-at]   epoch 9/10
+  [pgd-at]   epoch 10/10
+  Done in 288.8s
+
+  Evaluating [PGD-AT]...
+    Clean accuracy (full test set): 94.61%
+    Using 1000 correctly-classified samples for adversarial evaluation.
+    FGSM success rate: 5.5%
+    PGD-10 success rate: 6.0%
+    Computing min_eps_to_flip (binary search, 8 iters)...
+    Mean min_eps_to_flip: 0.2379
+    AUROC margin (vs PGD flip):   0.9926
+    AUROC top1_prob (vs PGD flip):0.9868
+
+--- Training: PGD-AT + Anti-Adv ---
+  [pgd+anti] epoch 1/10
+  [pgd+anti] epoch 2/10
+  [pgd+anti] epoch 3/10
+  [pgd+anti] epoch 4/10
+  [pgd+anti] epoch 5/10
+  [pgd+anti] epoch 6/10
+  [pgd+anti] epoch 7/10
+  [pgd+anti] epoch 8/10
+  [pgd+anti] epoch 9/10
+  [pgd+anti] epoch 10/10
+  Done in 341.3s
+
+  Evaluating [PGD-AT+Anti]...
+    Clean accuracy (full test set): 95.33%
+    Using 1000 correctly-classified samples for adversarial evaluation.
+    FGSM success rate: 7.8%
+    PGD-10 success rate: 8.7%
+    Computing min_eps_to_flip (binary search, 8 iters)...
+    Mean min_eps_to_flip: 0.2539
+    AUROC margin (vs PGD flip):   0.9949
+    AUROC top1_prob (vs PGD flip):0.9937
+
+==============================================================================
+SUMMARY TABLE — H158 Confirmatory Examples
+==============================================================================
+Model               CleanAcc   FGSM%    PGD%   MinEps  AUROC-M  AUROC-P
+------------------------------------------------------------------------------
+Vanilla               95.04%   20.7%   35.1%   0.1448   0.9265   0.9267
+Anti-Adv Aug          94.86%   42.2%   72.9%   0.1110   0.9310   0.9056
+PGD-AT                94.61%    5.5%    6.0%   0.2379   0.9926   0.9868
+PGD-AT+Anti           95.33%    7.8%    8.7%   0.2539   0.9949   0.9937
+==============================================================================
+
+Key comparisons:
+  Anti-adv aug  vs Vanilla  — clean acc delta: -0.18%
+  Anti-adv aug  vs Vanilla  — FGSM rate delta: +21.5%
+  PGD-AT        vs Vanilla  — clean acc delta: -0.43%  (robustness-accuracy trade-off)
+  PGD-AT+Anti   vs PGD-AT   — clean acc delta: +0.72%  (confirmatory recovery?)
+  PGD-AT+Anti   vs PGD-AT   — PGD rate delta:  +2.7%  (robustness cost of mixing?)
+==============================================================================
