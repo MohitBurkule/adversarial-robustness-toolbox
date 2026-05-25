@@ -1,0 +1,38 @@
+======================================================================
+Hypothesis H127: Integrated Gradients Attribution vs Vulnerability
+======================================================================
+
+Training CNN model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Using 936 correctly classified test samples
+   Computing Integrated Gradients attributions...
+   Evaluating attacks...
+
+==================================================
+MODEL PERFORMANCE & ROBUSTNESS
+==================================================
+Clean Accuracy: 0.9360
+FGSM Success: 0.7115
+PGD Success: 0.9594
+Mean min_eps: 0.0310
+
+==================================================
+UNIVARIATE AUROC SCORES
+==================================================
+Feature                | vs FGSM Flip | vs PGD Flip 
+--------------------------------------------------
+margin                 | 0.9229       | 0.9642
+mean_pix               | 0.5668       | 0.5839
+std_pix                | 0.5734       | 0.6306
+IG_total_attribution   | 0.5223       | 0.6556
+IG_entropy             | 0.6839       | 0.5196
+IG_l2_norm             | 0.5615       | 0.7240
