@@ -80,6 +80,10 @@ HYPOTHESES=(
     "h160_grokking_hard_dataset.py"
     "h161_checkpoint_gradient_consistency.py"
     "h162_class_margin_shift_at.py"
+    "h163_cifar10_low_eps.py"
+    "h165_multi_seed_stability.py"
+    "h169_smoothgrad_at_models.py"
+    "h173_at_variants_clean.py"
 )
 
 
