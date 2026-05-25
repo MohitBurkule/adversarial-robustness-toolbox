@@ -1,0 +1,40 @@
+============================================================
+Hypothesis H146: Reliable Saliency-Light Adversarial Distillation
+============================================================
+
+Training PGD-AT Teacher CNN...
+Teacher CNN trained in 84.3s
+
+Training Vanilla student victim...
+Vanilla CNN trained in 30.1s
+
+Training RSLAD student victim...
+RSLAD CNN trained in 92.4s
+
+Evaluating Model: Vanilla CNN
+  Test Accuracy: 9260/10000 (92.60%)
+  FGSM flip rate = 0.7149
+  PGD-10 flip rate = 0.9550
+  Mean min_eps = 0.0494
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9109
+    mean_pix   AUROC = 0.5303
+    std_pix    AUROC = 0.6102
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9325
+    mean_pix   AUROC = 0.5457
+    std_pix    AUROC = 0.6990
+
+Evaluating Model: RSLAD CNN
+  Test Accuracy: 8723/10000 (87.23%)
+  FGSM flip rate = 0.0989
+  PGD-10 flip rate = 0.1148
+  Mean min_eps = 0.1818
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9526
+    mean_pix   AUROC = 0.5060
+    std_pix    AUROC = 0.6249
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9474
+    mean_pix   AUROC = 0.5264
+    std_pix    AUROC = 0.6394
