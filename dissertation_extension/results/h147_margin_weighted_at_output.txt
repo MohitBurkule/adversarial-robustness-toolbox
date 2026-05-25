@@ -1,0 +1,35 @@
+============================================================
+Hypothesis H147: Margin-weighted Adversarial Training
+============================================================
+
+Training Standard PGD-AT victim...
+Standard PGD-AT trained in 84.2s
+
+Training Margin-weighted PGD-AT victim...
+Margin-weighted PGD-AT trained in 93.5s
+
+Evaluating Model: Standard PGD-AT
+  Test Accuracy: 8849/10000 (88.49%)
+  FGSM flip rate = 0.0890
+  PGD-10 flip rate = 0.1031
+  Mean min_eps = 0.2243
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9502
+    mean_pix   AUROC = 0.5130
+    std_pix    AUROC = 0.6320
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9436
+    mean_pix   AUROC = 0.5352
+    std_pix    AUROC = 0.6543
+
+Evaluating Model: Margin-weighted PGD-AT
+  Test Accuracy: 1963/10000 (19.63%)
+  FGSM flip rate = 0.0000
+  PGD-10 flip rate = 0.0005
+  Mean min_eps = 0.3000
+  Target: flipped_FGSM | Univariate AUROC
+    Constant target, skipping.
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9975
+    mean_pix   AUROC = 0.8953
+    std_pix    AUROC = 0.9694
