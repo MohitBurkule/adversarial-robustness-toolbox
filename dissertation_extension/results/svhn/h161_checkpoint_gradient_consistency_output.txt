@@ -1,0 +1,72 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: SVHN
+[*] Executing script: dissertation_extension/hypotheses/h161_checkpoint_gradient_consistency.py
+H161: Checkpoint Gradient Consistency vs Adversarial Vulnerability
+======================================================================
+Device : cuda
+Epochs : 15  (checkpoints every 3)
+Eval N : 1000 correctly-classified test samples
+EPS    : 0.05882  (15.0/255)
+
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
+Training CNN ...
+  epoch  3 -- checkpoint saved (1/5)
+  epoch  6 -- checkpoint saved (2/5)
+  epoch  9 -- checkpoint saved (3/5)
+  epoch 12 -- checkpoint saved (4/5)
+  epoch 15 -- checkpoint saved (5/5)
+
+Total checkpoints saved: 5
+
+Collected 1000 correctly-classified test samples.
+
+Computing FGSM gradients at each checkpoint ...
+    checkpoint 1/5 gradients computed
+    checkpoint 2/5 gradients computed
+    checkpoint 3/5 gradients computed
+    checkpoint 4/5 gradients computed
+    checkpoint 5/5 gradients computed
+
+Deriving gradient consistency features ...
+  grad_consistency : mean=0.8503  std=0.0188  min=0.7492  max=0.9043
+  grad_stability   : mean=0.8492  std=0.0768  min=0.0077  max=0.9569
+
+Computing vulnerability targets on final model ...
+  FGSM flip rate : 0.926
+  PGD  flip rate : 0.991
+  mean min_eps   : 0.0331
+  mean margin    : 5.0513
+
+AUROC Results  (direction-agnostic: max(a, 1-a))
+--------------------------------------------------------------
+Feature                 FGSM_flip  PGD_flip  min_eps  margin_bin
+--------------------------------------------------------------
+grad_consistency            0.572     0.647    0.527       0.598
+grad_stability              0.577     0.701    0.521       0.552
+margin                      0.812     0.734    0.869       1.000
+--------------------------------------------------------------
+
+Interpretation
+======================================================================
+  grad_consistency is a MODERATE predictor of FGSM flip (AUROC=0.572)
+  grad_consistency is a MODERATE predictor of PGD  flip (AUROC=0.647)
+  grad_consistency shows WEAK/NO predictive signal for min_eps (AUROC=0.527)
+  grad_stability is a MODERATE predictor of FGSM flip (AUROC=0.577)
+  grad_stability is a STRONG predictor of PGD  flip (AUROC=0.701)
+  grad_stability shows WEAK/NO predictive signal for min_eps (AUROC=0.521)
+
+  Baseline (margin) AUROC for FGSM flip: 0.812
+
+Hypothesis H161 Verdict:
+----------------------------------------------------------------------
+  PARTIALLY SUPPORTED: Gradient consistency shows moderate predictive
+  power for adversarial vulnerability.
+
+  NOTE: grad_stability (cosine similarity between consecutive
+  checkpoint gradients) outperforms grad_consistency, suggesting that
+  the *magnitude* of gradient drift -- not just sign agreement -- is
+  more informative.
+
+Summary statistics:
+  grad_consistency AUROC (FGSM flip): 0.572
+  grad_stability   AUROC (FGSM flip): 0.577
+  margin           AUROC (FGSM flip): 0.812
