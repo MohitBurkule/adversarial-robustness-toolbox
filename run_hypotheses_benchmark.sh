@@ -8,7 +8,7 @@ set -e
 cd "$(dirname "$0")"
 
 # Create results directory if it doesn't exist
-RESULTS_DIR="dissertation_extension/results"
+RESULTS_DIR="dissertation_extension/results/fashion_mnist"
 mkdir -p "$RESULTS_DIR"
 
 # List of hypothesis scripts to run (H107 to H156)
