@@ -1,0 +1,40 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: KMNIST
+[*] Executing script: dissertation_extension/hypotheses/h132_snapshot_ensemble.py
+Loading Fashion-MNIST dataset...
+Training CNN model with Cosine Annealing scheduler (3 cycles of 10 epochs)...
+Cycle completed at epoch 10. Saving snapshot 1.
+Cycle completed at epoch 20. Saving snapshot 2.
+Cycle completed at epoch 30. Saving snapshot 3.
+Evaluating snapshot ensemble on test set...
+Victim correctly classified samples: 9568/10000
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: snap_disagreement
+  Target: flipped_fgsm  AUROC = 0.5437
+  Target: flipped_pgd   AUROC = 0.5253
+  Target: min_eps       AUROC = 0.5148
+
+Feature: softmax_variance
+  Target: flipped_fgsm  AUROC = 0.9483
+  Target: flipped_pgd   AUROC = 0.9309
+  Target: min_eps       AUROC = 0.8655
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9631
+  Target: flipped_pgd   AUROC = 0.9483
+  Target: min_eps       AUROC = 0.8828
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.5502
+  Target: flipped_pgd   AUROC = 0.5841
+  Target: min_eps       AUROC = 0.5799
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.5721
+  Target: flipped_pgd   AUROC = 0.6028
+  Target: min_eps       AUROC = 0.5935
