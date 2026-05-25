@@ -1,0 +1,39 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: KMNIST
+[*] Executing script: dissertation_extension/hypotheses/h144_sat_adv_training.py
+============================================================
+Hypothesis H144: SAT (Curriculum Loss Smoothing)
+============================================================
+
+Training Vanilla CNN victim...
+Vanilla CNN trained in 37.2s
+
+Training SAT CNN victim...
+SAT CNN trained in 83.7s
+
+Evaluating Model: Vanilla CNN
+  Test Accuracy: 9484/10000 (94.84%)
+  FGSM flip rate = 0.1691
+  PGD-10 flip rate = 0.2368
+  Mean min_eps = 0.1476
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9630
+    mean_pix   AUROC = 0.5477
+    std_pix    AUROC = 0.5702
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9535
+    mean_pix   AUROC = 0.5699
+    std_pix    AUROC = 0.5907
+
+Evaluating Model: SAT CNN
+  Test Accuracy: 9509/10000 (95.09%)
+  FGSM flip rate = 0.0692
+  PGD-10 flip rate = 0.0745
+  Mean min_eps = 0.2037
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9881
+    mean_pix   AUROC = 0.5066
+    std_pix    AUROC = 0.5372
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9881
+    mean_pix   AUROC = 0.5066
+    std_pix    AUROC = 0.5382
