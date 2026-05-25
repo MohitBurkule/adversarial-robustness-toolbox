@@ -1,0 +1,44 @@
+======================================================================
+Hypothesis H173: Clean AT Variants Comparison (SAT, FAT, RSLAD, MarginWT)
+Bug fix: pgd_eval() now returns bool flip tensor, not raw adversarial images.
+======================================================================
+
+--- Training Vanilla ---
+  Trained in 30.3s
+  Evaluating Vanilla on 1000 correct test samples...
+  CleanAcc=0.9261  FGSM=0.7070  PGD=0.9450  MinEps=0.0530  MarginAUROC-PGD=0.9459  (n=1000)
+
+--- Training SAT ---
+  Trained in 81.7s
+  Evaluating SAT on 1000 correct test samples...
+  CleanAcc=0.8794  FGSM=0.0870  PGD=0.1010  MinEps=0.2069  MarginAUROC-PGD=0.9454  (n=1000)
+
+--- Training FAT ---
+  Trained in 331.3s
+  Evaluating FAT on 1000 correct test samples...
+  CleanAcc=0.8870  FGSM=0.0860  PGD=0.1050  MinEps=0.2291  MarginAUROC-PGD=0.9575  (n=1000)
+
+--- Training RSLAD ---
+  [RSLAD] Training teacher (PGD-AT)...
+  [RSLAD] Training student (distillation)...
+  Trained in 303.9s
+  Evaluating RSLAD on 1000 correct test samples...
+  CleanAcc=0.8749  FGSM=0.0730  PGD=0.0870  MinEps=0.2183  MarginAUROC-PGD=0.9395  (n=1000)
+
+--- Training MarginWeighted ---
+  Trained in 91.2s
+  Evaluating MarginWeighted on 1000 correct test samples...
+  CleanAcc=0.1999  FGSM=0.0000  PGD=0.0000  MinEps=0.3000  MarginAUROC-PGD=nan  (n=1000)
+
+
+======================================================================
+Final Comparison Table
+======================================================================
+Model               CleanAcc   FGSM%    PGD%   MinEps  MarginAUROC-PGD
+----------------------------------------------------------------------
+Vanilla               0.9261  0.7070  0.9450   0.0530           0.9459
+SAT                   0.8794  0.0870  0.1010   0.2069           0.9454
+FAT                   0.8870  0.0860  0.1050   0.2291           0.9575
+RSLAD                 0.8749  0.0730  0.0870   0.2183           0.9395
+MarginWeighted        0.1999  0.0000  0.0000   0.3000             N/A 
+======================================================================

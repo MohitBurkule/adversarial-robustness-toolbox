@@ -1,0 +1,130 @@
+======================================================================
+H165: Multi-seed AUROC stability of top vulnerability features
+======================================================================
+
+Training model for seed=0...
+  seed=0  epoch 1/10 done
+  seed=0  epoch 2/10 done
+  seed=0  epoch 3/10 done
+  seed=0  epoch 4/10 done
+  seed=0  epoch 5/10 done
+  seed=0  epoch 6/10 done
+  seed=0  epoch 7/10 done
+  seed=0  epoch 8/10 done
+  seed=0  epoch 9/10 done
+  seed=0  epoch 10/10 done
+  Snapshots at epochs: [5, 7, 10]
+
+Training model for seed=1...
+  seed=1  epoch 1/10 done
+  seed=1  epoch 2/10 done
+  seed=1  epoch 3/10 done
+  seed=1  epoch 4/10 done
+  seed=1  epoch 5/10 done
+  seed=1  epoch 6/10 done
+  seed=1  epoch 7/10 done
+  seed=1  epoch 8/10 done
+  seed=1  epoch 9/10 done
+  seed=1  epoch 10/10 done
+  Snapshots at epochs: [5, 7, 10]
+
+Training model for seed=2...
+  seed=2  epoch 1/10 done
+  seed=2  epoch 2/10 done
+  seed=2  epoch 3/10 done
+  seed=2  epoch 4/10 done
+  seed=2  epoch 5/10 done
+  seed=2  epoch 6/10 done
+  seed=2  epoch 7/10 done
+  seed=2  epoch 8/10 done
+  seed=2  epoch 9/10 done
+  seed=2  epoch 10/10 done
+  Snapshots at epochs: [5, 7, 10]
+
+Fixed evaluation set: 1000 samples (correctly classified by model_seed0)
+
+============================================================
+Evaluating seed=0 (model 1/3)
+============================================================
+
+  [seed=0] Computing features...
+    margin
+    smoothgrad_l2_norm
+    predictive_entropy
+    input_grad_l2_norm
+    memorization_proxy
+    softmax_variance (snapshot ensemble)
+    bnn_predictive_variance (SWAG-lite)
+    pixel_sign_agreement
+  [seed=0] Running PGD attack...
+  [seed=0] Computing min_eps...
+
+============================================================
+Evaluating seed=1 (model 2/3)
+============================================================
+
+  [seed=1] Computing features...
+    margin
+    smoothgrad_l2_norm
+    predictive_entropy
+    input_grad_l2_norm
+    memorization_proxy
+    softmax_variance (snapshot ensemble)
+    bnn_predictive_variance (SWAG-lite)
+    pixel_sign_agreement
+  [seed=1] Running PGD attack...
+  [seed=1] Computing min_eps...
+
+============================================================
+Evaluating seed=2 (model 3/3)
+============================================================
+
+  [seed=2] Computing features...
+    margin
+    smoothgrad_l2_norm
+    predictive_entropy
+    input_grad_l2_norm
+    memorization_proxy
+    softmax_variance (snapshot ensemble)
+    bnn_predictive_variance (SWAG-lite)
+    pixel_sign_agreement
+  [seed=2] Running PGD attack...
+  [seed=2] Computing min_eps...
+
+==========================================================================================
+AUROC TABLE — target: flipped_PGD
+==========================================================================================
+Feature                      seed0   seed1   seed2    mean     std  stability
+------------------------------------------------------------------------------------------
+margin                      0.9651  0.9808  0.9711  0.9723  0.0064  Stable
+smoothgrad_l2_norm          0.9572  0.9288  0.8635  0.9165  0.0392  Unstable
+predictive_entropy          0.9132  0.9444  0.9309  0.9295  0.0128  Moderate
+input_grad_l2_norm          0.9681  0.9821  0.9725  0.9743  0.0058  Stable
+memorization_proxy          0.9427  0.9573  0.9450  0.9483  0.0064  Stable
+softmax_variance            0.9632  0.9670  0.9548  0.9617  0.0051  Stable
+bnn_predictive_variance     0.9002  0.9297  0.9262  0.9187  0.0132  Moderate
+pixel_sign_agreement        0.8671  0.8829  0.8826  0.8776  0.0074  Stable
+
+==========================================================================================
+AUROC TABLE — target: min_eps
+==========================================================================================
+Feature                      seed0   seed1   seed2    mean     std  stability
+------------------------------------------------------------------------------------------
+margin                      0.9447  0.9482  0.9425  0.9451  0.0023  Stable
+smoothgrad_l2_norm          0.8346  0.7316  0.7430  0.7697  0.0461  Unstable
+predictive_entropy          0.9296  0.9267  0.9177  0.9247  0.0051  Stable
+input_grad_l2_norm          0.9470  0.9525  0.9465  0.9487  0.0027  Stable
+memorization_proxy          0.9347  0.9317  0.9362  0.9342  0.0019  Stable
+softmax_variance            0.9446  0.9320  0.9302  0.9356  0.0064  Stable
+bnn_predictive_variance     0.9447  0.9473  0.9402  0.9441  0.0029  Stable
+pixel_sign_agreement        0.7887  0.7896  0.7899  0.7894  0.0005  Stable
+
+======================================================================
+STABILITY SUMMARY
+======================================================================
+Criteria: Stable = std < 0.01, Moderate = std < 0.03, Unstable = std >= 0.03
+
+Target=flipped_PGD: Stable=5/8  Moderate=2/8  Unstable=1/8
+Target=min_eps: Stable=7/8  Moderate=0/8  Unstable=1/8
+
+Done.
