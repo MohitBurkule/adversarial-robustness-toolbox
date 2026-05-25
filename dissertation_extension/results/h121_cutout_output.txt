@@ -1,0 +1,69 @@
+======================================================================
+Hypothesis H121: Cutout Defense vs Vanilla CNN
+======================================================================
+
+Training Vanilla model...
+  [vanilla] Epoch 1/10 completed
+  [vanilla] Epoch 2/10 completed
+  [vanilla] Epoch 3/10 completed
+  [vanilla] Epoch 4/10 completed
+  [vanilla] Epoch 5/10 completed
+  [vanilla] Epoch 6/10 completed
+  [vanilla] Epoch 7/10 completed
+  [vanilla] Epoch 8/10 completed
+  [vanilla] Epoch 9/10 completed
+  [vanilla] Epoch 10/10 completed
+
+Training Cutout model...
+  [cutout] Epoch 1/10 completed
+  [cutout] Epoch 2/10 completed
+  [cutout] Epoch 3/10 completed
+  [cutout] Epoch 4/10 completed
+  [cutout] Epoch 5/10 completed
+  [cutout] Epoch 6/10 completed
+  [cutout] Epoch 7/10 completed
+  [cutout] Epoch 8/10 completed
+  [cutout] Epoch 9/10 completed
+  [cutout] Epoch 10/10 completed
+
+Evaluating Vanilla model...
+   Evaluating attacks...
+
+Evaluating Cutout model...
+   Evaluating attacks...
+
+==================================================
+VANILLA MODEL RESULTS
+==================================================
+Accuracy: 0.9440
+FGSM Success: 0.7182
+PGD Success: 0.9502
+Mean min_eps: 0.0304
+
+Univariate AUROC vs PGD Flip (Vanilla):
+  margin          : 0.9645
+  mean_pix        : 0.5283
+  std_pix         : 0.6533
+  sobel_mean      : 0.7109
+
+==================================================
+CUTOUT MODEL RESULTS
+==================================================
+Accuracy: 0.9300
+FGSM Success: 0.6473
+PGD Success: 0.9624
+Mean min_eps: 0.0314
+
+Univariate AUROC vs PGD Flip (Cutout):
+  margin          : 0.9552
+  mean_pix        : 0.5671
+  std_pix         : 0.6750
+  sobel_mean      : 0.7408
+
+==================================================
+SUMMARY OF AUROC CHANGES (Cutout vs Vanilla PGD)
+==================================================
+  margin          : Cutout=0.9552  Vanilla=0.9645  Change=-0.0093
+  mean_pix        : Cutout=0.5671  Vanilla=0.5283  Change=+0.0388
+  std_pix         : Cutout=0.6750  Vanilla=0.6533  Change=+0.0217
+  sobel_mean      : Cutout=0.7408  Vanilla=0.7109  Change=+0.0298
