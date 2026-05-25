@@ -1,0 +1,39 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: KMNIST
+[*] Executing script: dissertation_extension/hypotheses/h147_margin_weighted_at.py
+============================================================
+Hypothesis H147: Margin-weighted Adversarial Training
+============================================================
+
+Training Standard PGD-AT victim...
+Standard PGD-AT trained in 84.0s
+
+Training Margin-weighted PGD-AT victim...
+Margin-weighted PGD-AT trained in 93.0s
+
+Evaluating Model: Standard PGD-AT
+  Test Accuracy: 9493/10000 (94.93%)
+  FGSM flip rate = 0.0637
+  PGD-10 flip rate = 0.0658
+  Mean min_eps = 0.2051
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9927
+    mean_pix   AUROC = 0.5316
+    std_pix    AUROC = 0.5620
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9929
+    mean_pix   AUROC = 0.5290
+    std_pix    AUROC = 0.5587
+
+Evaluating Model: Margin-weighted PGD-AT
+  Test Accuracy: 1243/10000 (12.43%)
+  FGSM flip rate = 0.0233
+  PGD-10 flip rate = 0.0322
+  Mean min_eps = 0.2641
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9995
+    mean_pix   AUROC = 0.6386
+    std_pix    AUROC = 0.6332
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9982
+    mean_pix   AUROC = 0.6877
+    std_pix    AUROC = 0.6790
