@@ -1,0 +1,68 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: EUROSAT
+[*] Executing script: dissertation_extension/hypotheses/h120_awp.py
+======================================================================
+Hypothesis H120: AWP Regularization vs Vanilla CNN
+======================================================================
+
+Training Vanilla model...
+  [vanilla] Epoch 1/10 completed
+  [vanilla] Epoch 2/10 completed
+  [vanilla] Epoch 3/10 completed
+  [vanilla] Epoch 4/10 completed
+  [vanilla] Epoch 5/10 completed
+  [vanilla] Epoch 6/10 completed
+  [vanilla] Epoch 7/10 completed
+  [vanilla] Epoch 8/10 completed
+  [vanilla] Epoch 9/10 completed
+  [vanilla] Epoch 10/10 completed
+
+Training AWP model...
+  [awp] Epoch 1/10 completed
+  [awp] Epoch 2/10 completed
+  [awp] Epoch 3/10 completed
+  [awp] Epoch 4/10 completed
+  [awp] Epoch 5/10 completed
+  [awp] Epoch 6/10 completed
+  [awp] Epoch 7/10 completed
+  [awp] Epoch 8/10 completed
+  [awp] Epoch 9/10 completed
+  [awp] Epoch 10/10 completed
+
+Evaluating Vanilla model...
+   Evaluating attacks...
+
+Evaluating AWP model...
+   Evaluating attacks...
+
+==================================================
+VANILLA MODEL RESULTS
+==================================================
+Accuracy: 0.6630
+FGSM Success: 0.8401
+PGD Success: 0.9683
+Mean min_eps: 0.0103
+
+Univariate AUROC vs PGD Flip (Vanilla):
+  margin          : 0.6367
+  mean_pix        : 0.7066
+  std_pix         : 0.6342
+
+==================================================
+AWP MODEL RESULTS
+==================================================
+Accuracy: 0.2390
+FGSM Success: 0.1925
+PGD Success: 0.1213
+Mean min_eps: 0.2165
+
+Univariate AUROC vs PGD Flip (AWP):
+  margin          : 0.7351
+  mean_pix        : 0.5034
+  std_pix         : 0.5043
+
+==================================================
+SUMMARY OF AUROC CHANGES (AWP vs Vanilla PGD)
+==================================================
+  margin          : AWP=0.7351  Vanilla=0.6367  Change=+0.0984
+  mean_pix        : AWP=0.5034  Vanilla=0.7066  Change=-0.2032
+  std_pix         : AWP=0.5043  Vanilla=0.6342  Change=-0.1299
