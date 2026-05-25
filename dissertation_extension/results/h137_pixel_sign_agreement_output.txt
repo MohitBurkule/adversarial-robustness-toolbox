@@ -1,0 +1,35 @@
+Loading Fashion-MNIST dataset...
+Training model 1/5...
+Training model 2/5...
+Training model 3/5...
+Training model 4/5...
+Training model 5/5...
+Evaluating victim model correctness...
+Victim correctly classified samples: 9247/10000
+Computing gradient sign agreement across models...
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: pixel_sign_agreement
+  Target: flipped_fgsm  AUROC = 0.7971
+  Target: flipped_pgd   AUROC = 0.8518
+  Target: min_eps       AUROC = 0.7683
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9148
+  Target: flipped_pgd   AUROC = 0.9511
+  Target: min_eps       AUROC = 0.9390
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.5174
+  Target: flipped_pgd   AUROC = 0.5239
+  Target: min_eps       AUROC = 0.6027
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.6099
+  Target: flipped_pgd   AUROC = 0.6572
+  Target: min_eps       AUROC = 0.5385
