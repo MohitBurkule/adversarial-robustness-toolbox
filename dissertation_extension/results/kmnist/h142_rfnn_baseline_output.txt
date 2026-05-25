@@ -1,0 +1,47 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: KMNIST
+[*] Executing script: dissertation_extension/hypotheses/h142_rfnn_baseline.py
+============================================================
+Hypothesis H142: Random Features Neural Network Baseline
+============================================================
+
+Training CNN victim...
+CNN trained in 37.5s
+
+Training RFNN baseline...
+RFNN trained in 37.4s
+
+Using 9503/10000 correctly classified samples from victim (CNN)
+
+Computing features...
+
+Running attacks on CNN victim...
+  FGSM flip rate = 0.1866
+  PGD-10 flip rate = 0.2800
+  Mean min_eps = 0.1415
+
+============================================================
+TARGET: flipped_FGSM | Univariate AUROC
+============================================================
+  rfnn_margin          AUROC = 0.8615
+  rfnn_confidence      AUROC = 0.8675
+  cnn_margin           AUROC = 0.9611
+  mean_pix             AUROC = 0.5393
+  std_pix              AUROC = 0.5604
+
+============================================================
+TARGET: flipped_PGD | Univariate AUROC
+============================================================
+  rfnn_margin          AUROC = 0.8618
+  rfnn_confidence      AUROC = 0.8689
+  cnn_margin           AUROC = 0.9482
+  mean_pix             AUROC = 0.5763
+  std_pix              AUROC = 0.5947
+
+============================================================
+TARGET: min_eps (continuous) | Univariate AUROC (above median)
+============================================================
+  rfnn_margin          AUROC = 0.8336
+  rfnn_confidence      AUROC = 0.8390
+  cnn_margin           AUROC = 0.8837
+  mean_pix             AUROC = 0.5615
+  std_pix              AUROC = 0.5769
