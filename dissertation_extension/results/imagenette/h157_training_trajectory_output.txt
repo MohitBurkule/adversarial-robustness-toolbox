@@ -1,0 +1,89 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h157_training_trajectory.py
+H157: Training Trajectory — Adversarial Vulnerability Over Time
+======================================================================
+Device: cuda
+Epochs: 30, Checkpoints every 3 epochs
+Eval samples per checkpoint: 500
+
+--- Training: STANDARD ---
+  Evaluating epoch  3... clean=0.532 fgsm_sr=0.947 pgd_sr=0.974 min_eps=0.0234
+  Evaluating epoch  6... clean=0.610 fgsm_sr=0.944 pgd_sr=0.970 min_eps=0.0233
+  Evaluating epoch  9... clean=0.574 fgsm_sr=0.976 pgd_sr=0.990 min_eps=0.0189
+  Evaluating epoch 12... clean=0.644 fgsm_sr=0.972 pgd_sr=0.994 min_eps=0.0177
+  Evaluating epoch 15... clean=0.616 fgsm_sr=0.981 pgd_sr=1.000 min_eps=0.0162
+  Evaluating epoch 18... clean=0.672 fgsm_sr=0.982 pgd_sr=0.997 min_eps=0.0160
+  Evaluating epoch 21... clean=0.658 fgsm_sr=0.982 pgd_sr=1.000 min_eps=0.0163
+  Evaluating epoch 24... clean=0.658 fgsm_sr=0.982 pgd_sr=1.000 min_eps=0.0153
+  Evaluating epoch 27... clean=0.680 fgsm_sr=0.988 pgd_sr=1.000 min_eps=0.0150
+  Evaluating epoch 30... clean=0.682 fgsm_sr=0.985 pgd_sr=1.000 min_eps=0.0154
+
+--- Training: PGDAT ---
+  Evaluating epoch  3... clean=0.004 fgsm_sr=1.000 pgd_sr=1.000 min_eps=0.0041
+  Evaluating epoch  6... clean=0.110 fgsm_sr=0.727 pgd_sr=0.727 min_eps=0.0481
+  Evaluating epoch  9... clean=0.178 fgsm_sr=0.562 pgd_sr=0.652 min_eps=0.0715
+  Evaluating epoch 12... clean=0.188 fgsm_sr=0.564 pgd_sr=0.628 min_eps=0.0731
+  Evaluating epoch 15... clean=0.224 fgsm_sr=0.571 pgd_sr=0.634 min_eps=0.0705
+  Evaluating epoch 18... clean=0.236 fgsm_sr=0.508 pgd_sr=0.636 min_eps=0.0727
+  Evaluating epoch 21... clean=0.200 fgsm_sr=0.500 pgd_sr=0.570 min_eps=0.0747
+  Evaluating epoch 24... clean=0.208 fgsm_sr=0.577 pgd_sr=0.606 min_eps=0.0767
+  Evaluating epoch 27... clean=0.222 fgsm_sr=0.577 pgd_sr=0.613 min_eps=0.0681
+  Evaluating epoch 30... clean=0.228 fgsm_sr=0.570 pgd_sr=0.588 min_eps=0.0711
+
+Trajectory Table — STANDARD Model
+-----------------------------------------
+Epoch  CleanAcc  FGSM_SR  PGD_SR   MinEps
+-----------------------------------------
+    3     0.532    0.947   0.974   0.0234
+    6     0.610    0.944   0.970   0.0233
+    9     0.574    0.976   0.990   0.0189
+   12     0.644    0.972   0.994   0.0177
+   15     0.616    0.981   1.000   0.0162
+   18     0.672    0.982   0.997   0.0160
+   21     0.658    0.982   1.000   0.0163
+   24     0.658    0.982   1.000   0.0153
+   27     0.680    0.988   1.000   0.0150
+   30     0.682    0.985   1.000   0.0154
+-----------------------------------------
+
+Trajectory Table — PGD-AT Model
+-----------------------------------------
+Epoch  CleanAcc  FGSM_SR  PGD_SR   MinEps
+-----------------------------------------
+    3     0.004    1.000   1.000   0.0041
+    6     0.110    0.727   0.727   0.0481
+    9     0.178    0.562   0.652   0.0715
+   12     0.188    0.564   0.628   0.0731
+   15     0.224    0.571   0.634   0.0705
+   18     0.236    0.508   0.636   0.0727
+   21     0.200    0.500   0.570   0.0747
+   24     0.208    0.577   0.606   0.0767
+   27     0.222    0.577   0.613   0.0681
+   30     0.228    0.570   0.588   0.0711
+-----------------------------------------
+
+Spearman Rank Correlation: Epoch vs Mean Min-Eps-to-Flip
+-------------------------------------------------------
+  Standard: rho = -0.9273
+  PGD-AT  : rho = +0.4182
+
+Delayed Robustness Onset Analysis (Standard Model)
+-------------------------------------------------------
+  Max min_eps observed : 0.0234
+  10% threshold        : 0.0023
+  Robustness onset at  : epoch 3 (10% through training)
+  => EARLY onset: robustness begins to emerge early in training.
+
+Summary
+======================================================================
+  Standard model Spearman rho (epoch vs min_eps): -0.9273
+  PGD-AT   model Spearman rho (epoch vs min_eps): +0.4182
+
+  Standard model shows a NEGATIVE trend: longer training may reduce robustness (overfitting?).
+  PGD-AT yields a STRONGER monotonic robustness trend than standard training.
+
+  Final mean min_eps (standard): 0.0154
+  Final mean min_eps (PGD-AT)  : 0.0711
+
+AUROC proxy (mean min_eps at final epoch):
+  standard=0.0154  pgdat=0.0711
