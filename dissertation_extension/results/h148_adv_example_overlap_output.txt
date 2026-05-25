@@ -1,0 +1,53 @@
+======================================================================
+Hypothesis H148: Adversarial Example Overlap (FGSM, BIM, PGD, MIM)
+======================================================================
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 32.4s
+
+Using 1000 correctly classified samples for evaluation.
+
+Generating attacks...
+
+==================================================
+Jaccard Similarity Matrix of Attack Success
+==================================================
+      FGSM    BIM     PGD     MIM   
+FGSM : 1.0000  0.7096  0.7111  0.7206
+BIM  : 0.7096  1.0000  0.9919  0.9848
+PGD  : 0.7111  0.9919  1.0000  0.9807
+MIM  : 0.7206  0.9848  0.9807  1.0000
+
+==================================================
+Mutual Information Matrix of Attack Success
+==================================================
+      FGSM    BIM     PGD     MIM   
+FGSM : 0.6117  0.0183  0.0208  0.0371
+BIM  : 0.0183  0.0779  0.0472  0.0571
+PGD  : 0.0208  0.0472  0.0861  0.0451
+MIM  : 0.0371  0.0571  0.0451  0.1347
+
+Attack Consensus Statistics (number of successful attacks per sample):
+  Vulnerable to 0 attacks: 1.2%
+  Vulnerable to 1 attacks: 0.5%
+  Vulnerable to 2 attacks: 1.6%
+  Vulnerable to 3 attacks: 26.8%
+  Vulnerable to 4 attacks: 69.9%
+
+==================================================
+Univariate AUROC for Target: flipped_by_all_4
+==================================================
+  attack_consensus   AUROC = 1.0000 (direction: +)
+  margin             AUROC = 0.9125 (direction: -)
+  mean_pix           AUROC = 0.5698 (direction: +)
+  std_pix            AUROC = 0.5765 (direction: -)
