@@ -211,3 +211,33 @@ Noise-averaged attribution norms (SmoothGrad) achieve strong AUROC on standard m
 [9] N. Carlini and D. Wagner, "Towards evaluating the robustness of neural networks," in *Proc. IEEE S&P*, 2017.
 
 [10] A. Power, Y. Burda, H. Edwards, I. Babuschkin, and V. Misra, "Grokking: Generalisation beyond overfitting on small algorithmic datasets," *arXiv:2201.02177*, 2022.
+
+---
+
+## Appendix A: Why GradCAM is Not Suitable for Vulnerability Prediction
+
+A natural question is whether GradCAM — the most widely used attribution method in practice — could replace or supplement the gradient-based predictors evaluated in this paper.
+
+**GradCAM computes gradients of the output with respect to the last convolutional layer's feature maps**, then spatially upsamples to produce a class-discriminative heatmap. It was designed to answer "where is the model looking?" — a visualisation tool for human interpretation of spatial attention.
+
+**The fundamental mismatch:** adversarial perturbations under L∞ are *global* — a perturbation of ε=15/255 touches every pixel simultaneously. Adversarial vulnerability is a property of how close a sample sits to the decision boundary in the full high-dimensional input space, not a spatial locality property. GradCAM collapses the high-dimensional gradient signal into a 2D spatial heatmap, discarding the very information that encodes boundary proximity.
+
+Our results support this indirectly. Integrated Gradients — a spatial attribution method that preserves more information than GradCAM — achieved only AUROC=0.76, far below plain input gradient L2 norm (AUROC=0.94). Since GradCAM discards more information than IG (via the spatial pooling and upsampling steps), we would expect GradCAM to perform no better than IG and likely worse.
+
+**The formal hypothesis** (not yet tested, H174 candidate):
+
+> Does the magnitude of GradCAM activations (summed over the spatial heatmap, L2-normalised) predict adversarial vulnerability at AUROC comparable to plain gradient L2 norm?
+
+Predicted answer: no. The spatial aggregation step is a lossy projection that destroys the boundary-distance information.
+
+**Summary comparison:**
+
+| Method | AUROC (FM, PGD) | Passes | Spatial? | Boundary-sensitive? |
+|--------|----------------|--------|----------|---------------------|
+| Input gradient L2 norm | 0.974 | 1 | No | Yes |
+| SmoothGrad L2 | 0.917 | 50 | No | Partial (collapses under AT) |
+| Integrated Gradients | 0.760 | ~50 | Yes | Partially |
+| GradCAM (predicted) | <0.76 | 1 | Yes | No |
+| Logit margin (baseline) | 0.972 | 0 | No | Yes |
+
+**Recommendation:** Use GradCAM for explaining model decisions to humans. Do not use it for per-sample adversarial vulnerability prediction. The plain input gradient L2 norm achieves superior performance at a fraction of the computational cost.
