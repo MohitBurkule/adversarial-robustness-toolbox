@@ -1,0 +1,40 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: KMNIST
+[*] Executing script: dissertation_extension/hypotheses/h112_hsv_attack.py
+============================================================
+Hypothesis H112: Saturation/Value Gamma Attack Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 39.3s
+Evaluating gamma attacks on 1000 correctly classified test samples...
+Gamma attack evaluations completed in 0.2s
+
+Gamma Attack Success Rate: 0.0260
+Mean |log(gamma)| to flip (for flipped samples): 0.3934
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: flipped_any_gamma (Positive Rate = 0.0260) ---
+  Feature            AUROC Direction 
+  margin            0.9844  -
+  mean_pix          0.5912  -
+  std_pix           0.6271  -
+
+============================================================
+FEATURE COMPARISON BY FLIP STATUS
+============================================================
+  margin          -> Flipped Mean: 1.1304 | Non-Flipped Mean: 12.5579
+  mean_pix        -> Flipped Mean: 0.1664 | Non-Flipped Mean: 0.1839
+  std_pix         -> Flipped Mean: 0.3012 | Non-Flipped Mean: 0.3316
