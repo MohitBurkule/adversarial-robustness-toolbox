@@ -1,0 +1,65 @@
+============================================================
+Hypothesis H107: Targeted FGSM Vulnerability Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 32.2s
+
+Computing features...
+Using 9062/10000 correctly classified samples
+
+Running targeted FGSM attacks (9 target classes per sample)...
+Completed in 6.3s
+
+Targeted attack statistics:
+  Flipped to at least one target: 0.790
+  Mean success rate across 9 targets: 0.228
+
+Comparing with untargeted FGSM (single step)...
+Untargeted attack success rate: 0.680
+
+============================================================
+TARGETED FGSM: Univariate AUROC
+============================================================
+  margin          AUROC = 0.8817 (raw = 0.1183)
+  mean_pix        AUROC = 0.5043 (raw = 0.5043)
+  std_pix         AUROC = 0.6252 (raw = 0.3748)
+
+============================================================
+UNTARGETED FGSM: Univariate AUROC (baseline)
+============================================================
+Untargeted FGSM: 0.680 flip rate
+  feature            AUROC Direction 
+  margin          AUROC = 0.8805 (raw = 0.1195)
+  mean_pix        AUROC = 0.5344 (raw = 0.5344)
+  std_pix         AUROC = 0.5922 (raw = 0.4078)
+
+============================================================
+SUMMARY
+============================================================
+Number of correctly classified samples: 9062
+Targeted FGSM - flipped to at least one target: 0.790
+Targeted FGSM - high success rate (>median): 0.346
+Untargeted FGSM (baseline): 0.680
+
+Key finding:
+  Success rate distribution:
+    0 targets flipped: 1905 (21.0%)
+    1 targets flipped: 1495 (16.5%)
+    2 targets flipped: 2531 (27.9%)
+    3 targets flipped: 1474 (16.3%)
+    4 targets flipped: 939 (10.4%)
+    5 targets flipped: 486 (5.4%)
+    6 targets flipped: 171 (1.9%)
+    7 targets flipped: 53 (0.6%)
+    8 targets flipped: 8 (0.1%)
