@@ -1,0 +1,37 @@
+============================================================
+Hypothesis H145: FAT (Friendly Adversarial Training)
+============================================================
+
+Training Vanilla CNN victim...
+Vanilla CNN trained in 30.6s
+
+Training FAT CNN victim...
+FAT CNN trained in 302.1s
+
+Evaluating Model: Vanilla CNN
+  Test Accuracy: 9253/10000 (92.53%)
+  FGSM flip rate = 0.7278
+  PGD-10 flip rate = 0.9657
+  Mean min_eps = 0.0475
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9128
+    mean_pix   AUROC = 0.5091
+    std_pix    AUROC = 0.6125
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9215
+    mean_pix   AUROC = 0.6104
+    std_pix    AUROC = 0.6628
+
+Evaluating Model: FAT CNN
+  Test Accuracy: 8881/10000 (88.81%)
+  FGSM flip rate = 0.1021
+  PGD-10 flip rate = 0.1137
+  Mean min_eps = 0.1922
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9556
+    mean_pix   AUROC = 0.5009
+    std_pix    AUROC = 0.6189
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9526
+    mean_pix   AUROC = 0.5141
+    std_pix    AUROC = 0.6382
