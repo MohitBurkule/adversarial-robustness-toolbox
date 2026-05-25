@@ -1,0 +1,44 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: KMNIST
+[*] Executing script: dissertation_extension/hypotheses/h136_class_margin_stats.py
+Loading Fashion-MNIST dataset...
+Training CNN model...
+Evaluating model correctness...
+Correctly classified samples: 9506/10000
+Computing margins...
+Computing per-class margin distributions...
+Class 0: Mean=12.4244, Std=6.2641, Q25=8.0309, Q50=11.8142, Q75=16.2691
+Class 1: Mean=15.7013, Std=7.9591, Q25=9.7691, Q50=15.8365, Q75=21.3307
+Class 2: Mean=12.1986, Std=6.0711, Q25=7.8308, Q50=12.5116, Q75=16.4863
+Class 3: Mean=12.3306, Std=5.2202, Q25=8.4518, Q50=12.4899, Q75=16.1651
+Class 4: Mean=11.2439, Std=5.8648, Q25=6.6158, Q50=11.0177, Q75=15.6336
+Class 5: Mean=13.3308, Std=7.0691, Q25=8.0230, Q50=12.9676, Q75=17.8766
+Class 6: Mean=10.1537, Std=4.8638, Q25=6.4767, Q50=10.0835, Q75=13.6654
+Class 7: Mean=12.9620, Std=8.0801, Q25=7.0915, Q50=11.5054, Q75=17.6658
+Class 8: Mean=12.9849, Std=6.4732, Q25=7.8233, Q50=12.7161, Q75=17.8182
+Class 9: Mean=15.9200, Std=8.4570, Q25=9.4200, Q50=14.9062, Q75=21.5350
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: deviation_from_class_mean
+  Target: flipped_fgsm  AUROC = 0.9642
+  Target: flipped_pgd   AUROC = 0.9532
+  Target: min_eps       AUROC = 0.8960
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9661
+  Target: flipped_pgd   AUROC = 0.9562
+  Target: min_eps       AUROC = 0.8963
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.5472
+  Target: flipped_pgd   AUROC = 0.5616
+  Target: min_eps       AUROC = 0.5584
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.5709
+  Target: flipped_pgd   AUROC = 0.5837
+  Target: min_eps       AUROC = 0.5746
