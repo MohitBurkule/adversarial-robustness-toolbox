@@ -1,0 +1,13 @@
+Theme B | learning rule vs gradient descent | B_cifar10_advtrain_cnn_s0
+dataset=cifar10 learner=advtrain_cnn kind=torch seed=0 eps=0.031
+
+clean_acc           = 0.4183
+whitebox PGD ASR    = 0.3765  (differentiable only)
+blackbox RS ASR     = 0.0139  (shared random-search L-inf, comparable across all)
+margin/conf AUROC   = 0.9965  (does confidence predict which flip?)
+
+Interpretation: if non-GD learners (knn/gbm/rfnn/forward_forward) also show
+high blackbox ASR and margin AUROC > 0.5, adversarial vulnerability is a
+property of the data geometry, not of gradient descent.
+
+[runtime 2.4s]
