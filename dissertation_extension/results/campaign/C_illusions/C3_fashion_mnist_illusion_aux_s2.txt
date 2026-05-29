@@ -1,0 +1,11 @@
+Theme C/C3 | illusion-auxiliary multitask robustness | dataset=fashion_mnist aug=illusion_aux seed=2
+
+clean_acc    = 0.8500
+pgd_asr      = 0.8451
+margin_auroc = 0.9742
+
+Compare aug=baseline vs aug=illusion_aux: lower pgd_asr with the human
+illusion auxiliary => making the machine share human confusion regularises
+toward robustness.
+
+[runtime 1.8s]
