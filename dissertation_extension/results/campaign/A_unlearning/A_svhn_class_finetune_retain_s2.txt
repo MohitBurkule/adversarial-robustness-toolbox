@@ -1,0 +1,19 @@
+Theme A | unlearning x adversarial | A_svhn_class_finetune_retain_s2
+dataset=svhn forget_kind=class method=finetune_retain seed=2 eps=0.031 n_forget=561 class=8
+
+split    phase        acc   pgd_asr    margin
+forget   before    0.8681    0.9938     3.741
+forget   after     0.1515    1.0000    -2.439
+retain   before    0.9243    0.9825     5.017
+retain   after     0.9499    0.9776     6.084
+test     before    0.8453    0.9771     3.946
+test     after     0.8107    0.9786     4.279
+
+forget_acc_drop = +0.7166  (unlearning effectiveness: higher = more forgotten)
+retain_acc_drop = -0.0255  (collateral damage)
+test_acc_drop   = +0.0347
+forget_asr_rise = +0.0062  (adversarial hole on forget set?)
+test_asr_rise   = +0.0015  (global robustness change)
+forget_margin_drop = +6.180
+
+[runtime 1.4s]
