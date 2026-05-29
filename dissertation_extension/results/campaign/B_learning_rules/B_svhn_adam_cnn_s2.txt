@@ -1,0 +1,13 @@
+Theme B | learning rule vs gradient descent | B_svhn_adam_cnn_s2
+dataset=svhn learner=adam_cnn kind=torch seed=2 eps=0.031
+
+clean_acc           = 0.7842
+whitebox PGD ASR    = 0.9989  (differentiable only)
+blackbox RS ASR     = 0.0903  (shared random-search L-inf, comparable across all)
+margin/conf AUROC   = 0.9789  (does confidence predict which flip?)
+
+Interpretation: if non-GD learners (knn/gbm/rfnn/forward_forward) also show
+high blackbox ASR and margin AUROC > 0.5, adversarial vulnerability is a
+property of the data geometry, not of gradient descent.
+
+[runtime 0.6s]
