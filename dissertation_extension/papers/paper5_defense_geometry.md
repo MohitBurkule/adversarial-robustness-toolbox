@@ -2,7 +2,7 @@
 
 **Abstract**
 
-Adversarial defenses are routinely evaluated on two metrics: clean accuracy and adversarial accuracy. We argue that a third diagnostic—*margin predictability*, quantified as the AUROC of a model's decision margin as a predictor of per-sample attack success—provides orthogonal and complementary information about how a defense reshapes the classification geometry. A defense that simply randomizes boundary placement can achieve acceptable adversarial accuracy while producing a margin that no longer correlates with vulnerability, concealing pathological behavior. We conduct systematic experiments across Fashion-MNIST, CIFAR-10, and SVHN, evaluating four defenses: Soft Adversarial Training (SAT), Friendly Adversarial Training (FAT), RSLAD (robust distillation), and a novel MarginWeighted loss. Results reveal a consistent hierarchy: FAT achieves the best clean-robustness tradeoff, MarginWeighted collapses on every dataset, and augmentation-based defenses substantially reduce margin AUROC (as low as −0.246 for Adversarial Logit Pairing) even when adversarial accuracy appears adequate. We propose margin AUROC as a standard third diagnostic for adversarial defense benchmarking.
+Adversarial defenses are routinely evaluated on two metrics: clean accuracy and adversarial accuracy. We argue that a third diagnostic—*margin predictability*, quantified as the AUROC of a model's decision margin as a predictor of per-sample attack success—provides orthogonal and complementary information about how a defense reshapes the classification geometry. A defense that simply randomizes boundary placement can achieve acceptable adversarial accuracy while producing a margin that no longer correlates with vulnerability, concealing pathological behavior. We conduct systematic experiments across Fashion-MNIST, CIFAR-10, and SVHN, evaluating four defenses: Soft Adversarial Training (SAT), Friendly Adversarial Training (FAT), RSLAD (robust distillation), and a novel MarginWeighted loss. Results reveal a consistent hierarchy: FAT achieves the best clean-robustness tradeoff, MarginWeighted collapses on every dataset, and augmentation-based defenses substantially reduce margin AUROC (Adversarial Logit Pairing drops it from 0.960 to 0.714, a 0.246 decrease) even when adversarial accuracy appears adequate. We propose margin AUROC as a standard third diagnostic for adversarial defense benchmarking.
 
 ---
 
@@ -12,7 +12,7 @@ The adversarial robustness literature has converged on a two-dimensional evaluat
 
 This paper introduces *margin predictability* as a third diagnostic. We define it operationally as the area under the ROC curve (AUROC) when the model's signed distance to the nearest decision boundary—the *margin*—is used as a ranking score to predict whether a given sample will be successfully attacked. A defense that uniformly expands margins will preserve or increase this AUROC; a defense that scrambles boundary placement will reduce it, even if average adversarial accuracy is acceptable.
 
-We validate the diagnostic on Fashion-MNIST (FM) with a standard CNN at epsilon budget ε = 15/255 and 10 training epochs, then extend to CIFAR-10 and SVHN. Our vanilla FM baseline achieves CleanAcc = 92.6%, PGD adversarial accuracy = 94.5% (attack success 5.5%), and margin AUROC = 0.946. All four defenses we study reduce clean accuracy; the question is whether they preserve or destroy the geometry encoded in the margin.
+We validate the diagnostic on Fashion-MNIST (FM) with a standard CNN at epsilon budget ε = 15/255 and 10 training epochs, then extend to CIFAR-10 and SVHN. Our vanilla FM baseline achieves CleanAcc = 92.6%, PGD adversarial accuracy = 5.5% (attack success 94.5%), and margin AUROC = 0.946. All four defenses we study reduce clean accuracy; the question is whether they preserve or destroy the geometry encoded in the margin.
 
 The key contributions of this work are:
 
@@ -79,13 +79,13 @@ We define a binary label for each test sample: attacked = 1 if PGD (20 steps, st
 
 ### 4.1 Fashion-MNIST
 
-Table 1 summarizes all Fashion-MNIST results. The vanilla baseline achieves CleanAcc = 92.6%, PGD adversarial accuracy = 94.5% (i.e., attack success rate 5.5%), and margin AUROC = 0.946.
+Table 1 summarizes all Fashion-MNIST results. The vanilla baseline achieves CleanAcc = 92.6%, PGD adversarial accuracy = 5.5% (i.e., attack success rate 94.5%), and margin AUROC = 0.946.
 
 **Table 1: Fashion-MNIST results (ε = 15/255, 10 epochs)**
 
 | Defense        | Clean Acc | FGSM Succ | PGD Succ | Min-ε  | Margin AUROC |
 |----------------|-----------|-----------|----------|--------|--------------|
-| Vanilla        | 92.6%     | —         | 5.5%     | —      | 0.946        |
+| Vanilla        | 92.6%     | 70.7%     | 94.5%    | 0.053  | 0.946        |
 | SAT            | 87.9%     | 8.7%      | 10.1%    | 0.207  | 0.945        |
 | FAT            | 88.7%     | 8.6%      | 10.5%    | 0.229  | 0.958        |
 | RSLAD          | 87.5%     | 7.3%      | 8.7%     | 0.218  | 0.940        |
