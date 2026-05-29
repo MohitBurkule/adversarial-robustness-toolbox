@@ -2,7 +2,7 @@
 
 **Abstract**
 
-A widely-held intuition in adversarial machine learning is that inputs difficult to learn — those requiring more training, susceptible to forgetting, or inconsistently classified across training runs — should also be more adversarially vulnerable. We test this hypothesis directly by evaluating forgetting events [3], C-score [4], and a memorization proxy against adversarial vulnerability labels on Fashion-MNIST and related datasets. Forgetting events achieve AUROC = 0.54 for FGSM vulnerability prediction — statistically indistinguishable from random. C-score achieves AUROC = 0.53. However, the memorization proxy achieves AUROC = 0.9427 ± 0.006 with high stability. We argue that this distinction is explained by the different mechanisms of each predictor: forgetting events and C-score capture oscillation and inconsistency in the training dynamics, which do not correlate with boundary proximity in the converged model; the memorization proxy captures inter-subset disagreement, which does correlate with boundary proximity independent of training difficulty. We further document a training trajectory analysis (H157) showing that per-sample robustness does not grow monotonically with training on standard models (Spearman rho = −0.006), while PGD-AT models exhibit robust overfitting (rho = −0.66) and SVHN shows monotonic convergence (rho = +0.92). These findings clarify when training-dynamics signals encode adversarial vulnerability and when they do not.
+A widely-held intuition in adversarial machine learning is that inputs difficult to learn — those requiring more training, susceptible to forgetting, or inconsistently classified across training runs — should also be more adversarially vulnerable. We test this hypothesis directly by evaluating forgetting events [3], C-score [4], and a memorization proxy against adversarial vulnerability labels on Fashion-MNIST and related datasets. Forgetting events achieve AUROC = 0.54 for FGSM vulnerability prediction — statistically indistinguishable from random. C-score achieves AUROC = 0.53. However, the memorization proxy achieves AUROC = 0.9427 ± 0.006 with high stability. We additionally test the Area Under the Margin (AUM) [11], a *margin*-trajectory signal, and find AUROC = 0.896 — far from chance, unlike the accuracy-trajectory signals — yet it adds no information once the final margin is known (5-fold incremental ΔAUROC = −0.003; Spearman 0.98 with final margin). This sharpens our thesis: a training-dynamics signal predicts vulnerability if and only if it proxies the converged boundary distance. We argue that this distinction is explained by the different mechanisms of each predictor: forgetting events and C-score capture oscillation and inconsistency in the training dynamics, which do not correlate with boundary proximity in the converged model; the memorization proxy captures inter-subset disagreement, which does correlate with boundary proximity independent of training difficulty. We further document a training trajectory analysis (H157) showing that per-sample robustness does not grow monotonically with training on standard models (Spearman rho = −0.006), while PGD-AT models exhibit robust overfitting (rho = −0.66) and SVHN shows monotonic convergence (rho = +0.92). These findings clarify when training-dynamics signals encode adversarial vulnerability and when they do not.
 
 ---
 
@@ -112,6 +112,22 @@ The table below summarises all training-dynamics predictors alongside the gradie
 
 The table illustrates the key distinction: forgetting events and C-score measure properties of the training trajectory, while the memorization proxy measures a property of the converged boundary geometry. Only the latter correlates with adversarial vulnerability.
 
+### 4.3a Area Under the Margin: Not at Chance, but Redundant (H178)
+
+Forgetting events and C-score are *accuracy-trajectory* signals (they track whether the prediction is correct over epochs). A sharper test of the training-dynamics hypothesis uses a *margin-trajectory* signal: the Area Under the Margin (AUM) of Pleiss et al. [11], defined as the mean logit margin of the true class across training epochs. We recorded per-epoch eval margins over 15 epochs and computed AUM for each finally-correct sample (n=1836, PGD ASR=0.966).
+
+**Table 3: Margin-trajectory vs accuracy-trajectory dynamics (Fashion-MNIST, PGD target)**
+
+| Predictor | AUROC | Spearman vs final margin |
+|-----------|-------|--------------------------|
+| AUM (mean-margin trajectory) | 0.8959 | 0.983 |
+| final_margin (single snapshot) | 0.9154 | — |
+| forget_count (accuracy trajectory) | 0.5595 | — |
+
+AUM is emphatically **not** at chance (0.896), unlike forgetting (0.560) — a result that could be read as contradicting our thesis. It does not. AUM correlates with the final margin at Spearman 0.983: it is a smoothed estimate of the same boundary-distance quantity, averaged over the last epochs of training. The decisive test is incremental signal. A 5-fold cross-validated logistic regression on [final_margin] scores CV-AUROC 0.9168 ± 0.0366; adding AUM gives 0.9135 ± 0.0359 — a change of **−0.0033**, i.e. AUM adds nothing once the final margin is known.
+
+The pattern across all four dynamics predictors is now coherent: a training-dynamics signal predicts adversarial vulnerability *if and only if* it is a proxy for the converged boundary distance. Margin-based dynamics (AUM) inherit the margin's predictive power but contribute no independent information; accuracy-based dynamics (forgetting, C-score) capture optimisation oscillation orthogonal to boundary geometry and sit at chance. Training difficulty per se remains orthogonal to vulnerability.
+
 ### 4.4 Training Trajectory Analysis (H157)
 
 [Figure 4: Per-sample min_eps vs. training epoch for three conditions. Standard FM: flat; Standard SVHN: monotonically increasing; PGD-AT FM: inverted-U shape.]
@@ -196,3 +212,7 @@ Training difficulty is orthogonal to adversarial vulnerability. Forgetting event
 [9] N. Carlini and D. Wagner, "Towards evaluating the robustness of neural networks," in *Proc. IEEE S&P*, 2017.
 
 [10] A. Power, Y. Burda, H. Edwards, I. Babuschkin, and V. Misra, "Grokking: Generalisation beyond overfitting on small algorithmic datasets," *arXiv:2201.02177*, 2022.
+
+[11] G. Pleiss, T. Zhang, E. R. Elenberg, and K. Q. Weinberger, "Identifying mislabeled data using the area under the margin ranking," in *Proc. NeurIPS*, 2020.
+
+[12] S. Swayamdipta, R. Schwartz, N. Lourie, Y. Wang, H. Hajishirzi, N. A. Smith, and Y. Choi, "Dataset cartography: mapping and diagnosing datasets with training dynamics," in *Proc. EMNLP*, 2020.

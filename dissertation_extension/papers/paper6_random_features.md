@@ -184,6 +184,24 @@ Removing layers from the top of the CNN and retraining the linear head produces 
 
 Vulnerability prediction degrades gracefully: removing all convolutional training (equivalent to RFNN) only drops AUROC from 0.938 to 0.919. No single layer accounts for a large share of the vulnerability information, and the information is present even with all learned convolutional features removed.
 
+### 4.9 Decisive Controls: Conv Prior vs Pure Input Geometry (H180)
+
+A frozen random *CNN* is not a clean test of the input-geometry hypothesis. Its random convolutional features still carry strong **architectural priors** — locality, weight sharing, ReLU, pooling — so "RFNN ≈ CNN" could equally be read as "input geometry *plus* the convolutional prior is sufficient", not "input geometry alone". The decisive missing controls are a frozen random *MLP* (no convolutional prior) and a raw *Gaussian random projection* of the pixels (no architecture whatsoever). We add both, fitting only a linear readout (logistic regression on 8000 training samples) on each frozen feature map, and measure AUROC against the reference trained-CNN's PGD vulnerability (Fashion-MNIST, n=1000, reference ASR=0.96).
+
+**Table 6: Frozen-feature controls vs reference-CNN PGD vulnerability (Fashion-MNIST)**
+
+| Predictor | Architectural prior | AUROC |
+|-----------|---------------------|-------|
+| Trained-CNN margin | learned | 0.9432 (reference) |
+| Random-CNN (frozen conv + linear readout) | convolution | 0.8673 |
+| Gaussian projection (random matrix on raw pixels) | **none** | 0.8680 |
+| Random-MLP (frozen dense + linear readout) | none (no conv) | 0.8479 |
+| Raw pixels (logistic on pixels) | none | 0.8296 |
+
+The result directly answers the objection. A Gaussian random projection — which has **no architecture at all** — matches the random *CNN* (0.8680 vs 0.8673) and even slightly exceeds the random MLP. The convolutional prior therefore contributes essentially nothing to vulnerability ranking beyond what a structureless random projection of the raw pixels already captures. The ordering is: raw pixels (0.830) < random projection ≈ random CNN ≈ random MLP (0.85–0.87) ≪ a single jump to trained features (0.943). Almost all of the non-trained signal is pure input geometry, not the conv prior. This refutes the "conv prior is doing the work" reading and supports the paper's central claim in its strong form: per-sample vulnerability is encoded in input-space geometry, recoverable by an architecture-free random projection, with learned representations adding a further ~0.07 AUROC of refinement.
+
+(Note: these absolute AUROCs are slightly lower than §4.1's because the readout is a multinomial logistic regression on a fixed 8k-sample fit rather than the closed-form ridge head; the *relative* ordering across feature types is the load-bearing result.)
+
 ---
 
 ## 5. Discussion

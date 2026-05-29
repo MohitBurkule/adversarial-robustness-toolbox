@@ -1,0 +1,27 @@
+==========================================================================
+H178 - AUM (Area Under the Margin) as a vulnerability predictor
+==========================================================================
+Device=cuda  EPOCHS=15  EVAL_N=2000  EPS=0.0588
+
+--- Training + recording per-epoch eval margins ---
+  trained in 19.2s
+
+  finally-correct eval samples: 1836 / 2000
+  PGD ASR on finally-correct: 0.9662
+
+--- Univariate AUROC (predicting PGD flip) ---
+  predictor           AUROC
+  AUM                0.8959
+  final_margin       0.9154
+  forget_count       0.5595
+
+  Spearman corr(AUM, final_margin) = 0.9830
+
+--- Incremental signal: 5-fold CV logistic regression ---
+  [final_margin]          CV-AUROC = 0.9168 +/- 0.0366
+  [final_margin + AUM]    CV-AUROC = 0.9135 +/- 0.0359
+  delta AUROC (AUM adds)  = -0.0033
+
+  Interpretation: delta ~ 0 => AUM is redundant with final margin (like forgetting);
+  delta > a few sigma => AUM carries genuinely incremental vulnerability signal.
+==========================================================================

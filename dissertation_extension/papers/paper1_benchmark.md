@@ -2,7 +2,7 @@
 
 **Abstract**
 
-Understanding which input samples are most susceptible to adversarial perturbations remains a central open problem in trustworthy machine learning. Existing work has proposed dozens of candidate predictors — from confidence margins to attribution norms to training dynamics — yet systematic, controlled comparisons are scarce. We present a large-scale empirical benchmark evaluating over 50 candidate per-sample vulnerability predictors on a fixed 5-layer CNN across four datasets (Fashion-MNIST, CIFAR-10, Imagenette-160, SVHN) and eight attacks spanning white-box and black-box threat models. We adopt AUROC as a direction-agnostic evaluation metric. Our principal finding is that the logit margin is the dominant predictor, achieving AUROC 0.87–0.9976 across all experimental contexts. Input gradient L2 norm provides a complementary signal — occasionally surpassing margin at stricter epsilon budgets — while noise-averaged attribution norms (SmoothGrad) offer marginal gains at substantially greater computational cost and reduced seed stability. Training-dynamics predictors such as forgetting events (AUROC 0.54) and C-score (AUROC 0.53) perform at chance. Monotone reparameterisations of the margin are empirically indistinguishable from the margin itself. We further document a PGD saturation artefact at large epsilon that renders AUROC undefined, and provide recommendations for reproducible vulnerability benchmarking.
+Understanding which input samples are most susceptible to adversarial perturbations remains a central open problem in trustworthy machine learning. Existing work has proposed dozens of candidate predictors — from confidence margins to attribution norms to training dynamics — yet systematic, controlled comparisons are scarce. We present a large-scale empirical benchmark evaluating over 50 candidate per-sample vulnerability predictors on a fixed 5-layer CNN across four datasets (Fashion-MNIST, CIFAR-10, Imagenette-160, SVHN) and eight attacks spanning white-box and black-box threat models. We adopt AUROC as a direction-agnostic evaluation metric. Our principal finding is that the logit margin is the dominant predictor, achieving AUROC 0.87–0.9976 across all experimental contexts. Input gradient L2 norm provides a complementary signal — occasionally surpassing margin at stricter epsilon budgets — while noise-averaged attribution norms (SmoothGrad) offer marginal gains at substantially greater computational cost and reduced seed stability. Training-dynamics predictors such as forgetting events (AUROC 0.54) and C-score (AUROC 0.53) perform at chance. Monotone reparameterisations of the margin are empirically indistinguishable from the margin itself. With bootstrap confidence intervals, the headline ranking among boundary-proximity predictors collapses: the top five are statistically indistinguishable (paired-bootstrap P=0.20), and a gradient-boosted combination of all features adds no head-room (−0.003 AUROC) over the best single feature — the signal is essentially one-dimensional. We verify margin dominance is not a saturation artefact via matched-attack-success-rate controls, survives AutoAttack-grade labels (AUROC 0.994), and on a native-resolution ResNet-18 (CIFAR-10, 94% clean accuracy) the gradient norm overtakes the margin (0.921 vs 0.889). We further document a PGD saturation artefact at large epsilon that renders AUROC undefined, and provide recommendations for reproducible vulnerability benchmarking.
 
 ---
 
@@ -109,7 +109,7 @@ The full leaderboard from the multi-seed stability experiment (H165) is presente
 
 *Stability: Stable = std < 0.01, Moderate < 0.03, Unstable ≥ 0.03 (H165, seeds 0–2)*
 
-Notably, input_grad_l2_norm marginally exceeds margin (0.9743 vs. 0.9651) on this task, suggesting that gradient information adds independent signal beyond the margin in some regimes.
+Notably, input_grad_l2_norm marginally exceeds margin (0.9743 vs. 0.9651) on this task. We caution, however, against over-interpreting such ranking differences: as we show in Section 4.8, bootstrap 95% confidence intervals on these AUROCs overlap heavily, and a paired-bootstrap test cannot distinguish the top features from one another. The apparent ordering of near-tied predictors is not statistically reliable; what is robust is the gross separation between boundary-proximity features (~0.87–0.97) and training-dynamics features (~0.53).
 
 **Figure 1: AUROC distribution of 50 features (Fashion-MNIST, PGD target)**
 
@@ -176,6 +176,46 @@ Forgetting events achieve AUROC = 0.54 for FGSM vulnerability prediction on Fash
 
 As a baseline for all predictors, we note that adversarial vulnerability exhibits strong structural consistency across attacks (detailed in Paper 2). On Fashion-MNIST, 73% of test samples are vulnerable to all four white-box attacks simultaneously. This structural consistency provides an informative prior and inflates AUROC values for any predictor that captures the dominant axis of variation in the data.
 
+### 4.8 Statistical Rigour: Confidence Intervals and the Learned Ceiling (H182)
+
+Earlier drafts of this benchmark reported point AUROC differences such as 0.9743 (input gradient norm) vs. 0.9723 (margin) as if meaningful. They are not. We re-ran the top six predictors on a held-out Fashion-MNIST evaluation set (n=2000, PGD ASR=0.954) with 1000-sample bootstrap 95% confidence intervals (Table 5).
+
+**Table 5: Univariate AUROC with bootstrap 95% CIs (Fashion-MNIST, PGD-10, n=2000)**
+
+| Feature | AUROC | 95% CI |
+|---------|-------|--------|
+| min_eps (FGSM-direction) | 0.9706 | [0.9635, 0.9783] |
+| smoothgrad_norm | 0.9649 | [0.9498, 0.9781] |
+| input_grad_norm | 0.9591 | [0.9441, 0.9712] |
+| margin | 0.9575 | [0.9422, 0.9694] |
+| logit_entropy | 0.9572 | [0.9419, 0.9694] |
+| softmax_confidence | 0.9214 | [0.9081, 0.9338] |
+
+The CIs of the top five predictors overlap almost entirely. A paired-bootstrap test of the best predictor (min_eps) against the second (smoothgrad_norm) gives a mean AUROC difference of +0.0058 with P(best not better) = 0.202 — **statistically indistinguishable**. The headline ranking among boundary-proximity predictors is therefore not significant; they are interchangeable measurements of the same underlying quantity (distance to the decision boundary).
+
+**Learned ceiling and calibration.** A gradient-boosted meta-predictor over all six features (5-fold CV) reaches AUROC 0.9679 — a head-room of **−0.0027** over the single best feature (min_eps). A learned non-linear combination of every predictor does *not* beat the best single feature: the vulnerability signal is essentially one-dimensional. The meta-predictor's Expected Calibration Error is 0.0206, i.e. its probabilities are usable for downstream selective prediction without further calibration.
+
+### 4.9 Margin Dominance is Not a Saturation Artefact (H175)
+
+A central methodological objection is that margin AUROC ~0.97 at eps=15/255 partly reflects label saturation (PGD ASR=0.976: an almost-constant positive label, a near-degenerate ROC problem). We control for this by binary-searching the L-inf budget so that PGD-10 ASR hits matched targets, then recomputing margin AUROC at each matched difficulty (Table 6).
+
+**Table 6: Margin AUROC at matched attack-success rate (Fashion-MNIST, n=1000)**
+
+| Condition | eps | ASR | margin AUROC |
+|-----------|-----|-----|--------------|
+| saturated (15/255) | 0.0588 | 0.976 | 0.9720 |
+| matched ASR=30% | 0.0170 | 0.301 | 0.9649 |
+| matched ASR=50% | 0.0261 | 0.494 | 0.9683 |
+| matched ASR=70% | 0.0361 | 0.690 | 0.9602 |
+
+Margin AUROC stays at 0.96–0.97 even at ASR≈50%, where the label is balanced and the ROC problem is hardest. The high AUROC is genuine, not an artefact of saturation.
+
+### 4.10 Gold-Standard Labels and External Validity (H174, H181)
+
+**AutoAttack labels (H174).** PGD-10 understates vulnerability. Relabelling the Fashion-MNIST evaluation set with an APGD-CE + APGD-DLR + Square ensemble raises ASR from 0.943 (PGD-10) to 0.995, and 5.2% of samples PGD-10 calls robust are flipped by the ensemble. Margin AUROC against the AutoAttack label is 0.9936 (vanilla) — margin dominance survives the gold-standard label.
+
+**ResNet-18 at native resolution (H181).** To address the threat to external validity from a single 28×28 CNN, we trained a CIFAR-style ResNet-18 on native 32×32 RGB CIFAR-10 (94.05% clean accuracy) and re-tested the predictors at a matched-ASR eps (0.85/255, PGD ASR≈0.49). Here **input gradient norm (0.921) exceeds margin (0.889)** and softmax confidence (0.874). This is consistent with §4.2–4.3: on harder, curvier decision boundaries (CIFAR at small eps, ResNet at matched eps) the second-order gradient signal overtakes the first-order margin. Margin dominance is thus dataset/architecture-contingent at the top of the leaderboard, even though both predictors remain strong everywhere.
+
 ---
 
 ## 5. Discussion
@@ -192,7 +232,7 @@ As a baseline for all predictors, we note that adversarial vulnerability exhibit
 
 ## 6. Conclusion
 
-We have benchmarked over 50 per-sample adversarial vulnerability predictors in a controlled multi-dataset, multi-attack setting. The logit margin is the single most robust and computationally inexpensive predictor, achieving AUROC 0.87–0.9976 across all conditions. Input gradient L2 norm provides a complementary signal, occasionally surpassing margin at strict epsilon budgets. Training-dynamics features (forgetting events, C-score) are uninformative. SmoothGrad offers marginal gains at great computational cost and poor seed stability. We provide a benchmark protocol — including guidance on the PGD saturation artefact — intended to enable reproducible future comparisons.
+We have benchmarked over 50 per-sample adversarial vulnerability predictors in a controlled multi-dataset, multi-attack setting. The logit margin is the single most robust and computationally inexpensive predictor, achieving AUROC 0.87–0.9976 across all conditions; input gradient L2 norm is its equal, surpassing it at strict epsilon budgets and on a native-resolution ResNet-18. Crucially, once bootstrap CIs are reported the top boundary-proximity predictors are statistically indistinguishable from one another, and a learned combination of all features adds no head-room over the best single feature — the vulnerability signal is effectively one-dimensional (distance to the decision boundary). Margin dominance is not a saturation artefact (it persists at matched ASR≈50%) and survives AutoAttack-grade labels. Training-dynamics features (forgetting events, C-score) are uninformative. SmoothGrad offers marginal gains at great computational cost and poor seed stability. We provide a benchmark protocol — including guidance on the PGD saturation artefact, matched-ASR evaluation, and bootstrap CIs — intended to enable reproducible future comparisons.
 
 ---
 
@@ -217,3 +257,9 @@ We have benchmarked over 50 per-sample adversarial vulnerability predictors in a
 [9] N. Carlini and D. Wagner, "Towards evaluating the robustness of neural networks," in *Proc. IEEE S&P*, 2017.
 
 [10] A. Power, Y. Burda, H. Edwards, I. Babuschkin, and V. Misra, "Grokking: Generalisation beyond overfitting on small algorithmic datasets," *arXiv:2201.02177*, 2022.
+
+[11] F. Croce and M. Hein, "Reliable evaluation of adversarial robustness with an ensemble of diverse parameter-free attacks (AutoAttack)," in *Proc. ICML*, 2020.
+
+[12] G. Pleiss, T. Zhang, E. R. Elenberg, and K. Q. Weinberger, "Identifying mislabeled data using the area under the margin ranking," in *Proc. NeurIPS*, 2020.
+
+[13] K. He, X. Zhang, S. Ren, and J. Sun, "Deep residual learning for image recognition," in *Proc. CVPR*, 2016.

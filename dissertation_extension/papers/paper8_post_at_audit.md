@@ -2,7 +2,7 @@
 
 **Abstract**
 
-Adversarial training (AT) consistently reduces clean accuracy, but its per-sample impact is nonuniform: some samples that the vanilla model classifies correctly become misclassified by the AT model. We ask whether these "AT-hurt" samples can be identified *before* AT begins, using only the vanilla model's outputs. On Fashion-MNIST, we identify 98 samples (5.4% of vanilla-correct) that are correctly classified by the vanilla model (91.55% clean accuracy) but misclassified by the AT model (88.40% clean accuracy). These samples have 6.1× lower pre-AT margin (1.84 ± 1.51 vs 11.18 ± 7.36 for preserved samples) and 8.8× lower min-ε (0.010 ± 0.006 vs 0.087 ± 0.177). Four features extracted from the vanilla model — margin, top-1 probability, min-ε, and gradient L2 norm — all achieve AUROC ≈ 0.935 in predicting "AT-hurt" membership. AT's clean accuracy loss is therefore not random: it is a systematic, predictable function of pre-AT boundary proximity. This "double jeopardy" effect — AT hurts the samples that are already most adversarially vulnerable — has direct implications for designing targeted interventions such as sample reweighting and curriculum adversarial training.
+Adversarial training (AT) consistently reduces clean accuracy, but its per-sample impact is nonuniform: some samples that the vanilla model classifies correctly become misclassified by the AT model. We ask whether these "AT-hurt" samples can be identified *before* AT begins, using only the vanilla model's outputs. On Fashion-MNIST, we identify 98 samples (5.4% of vanilla-correct) that are correctly classified by the vanilla model (91.55% clean accuracy) but misclassified by the AT model (88.40% clean accuracy). These samples have 6.1× lower pre-AT margin (1.84 ± 1.51 vs 11.18 ± 7.36 for preserved samples) and 8.8× lower min-ε (0.010 ± 0.006 vs 0.087 ± 0.177). Four features extracted from the vanilla model — margin, top-1 probability, min-ε, and gradient L2 norm — all achieve AUROC ≈ 0.935 in predicting "AT-hurt" membership. AT's clean accuracy loss is therefore not random: it is a systematic, predictable function of pre-AT boundary proximity. This "double jeopardy" effect — AT hurts the samples that are already most adversarially vulnerable — enables targeted intervention. We test three: reweighting the fragile bottom-10% in either direction backfires (up-weighting is worst, +41% hurt samples, −1.15 pp clean), but *excluding* the fragile set from adversarial augmentation recovers +0.65 pp clean accuracy and reduces hurt samples from 103 to 93, at a modest robustness cost. The actionable lever is to withhold adversarial pressure from low-margin samples, not to intensify it.
 
 ---
 
@@ -158,6 +158,25 @@ At a decision threshold that controls false positive rate at 10% (90% specificit
 
 [Figure 4: Precision-recall curve for margin-based AT-hurt prediction. Precision remains above 0.5 until recall exceeds 0.70, indicating that a targeted intervention based on pre-AT margin would have useful precision across the most relevant operating range.]
 
+### 4.6 Testing the Interventions: Reweight, Upweight, Exclude (H177)
+
+The prediction in §4.4 is only useful if it enables an intervention that actually reduces AT's clean-accuracy cost. We test this directly. Using the vanilla model's *training-set* margins, we flag the bottom 10% (n=6,000, margin ≤ 1.47) as the "fragile" set, then run four AT variants that differ only in how they treat that set: **uniform** (standard PGD-AT, control), **downweight** (fragile samples' AT loss × 0.5), **upweight** (fragile × 2.0), and **exclude** (fragile samples trained on clean examples only, no adversarial augmentation). All variants use ε = 0.0588, 10 epochs, identical seeds.
+
+**Table 4: Targeted Intervention on the Fragile Set (H177, Fashion-MNIST, Δ vs uniform AT)**
+
+| Mode | Clean Acc | ΔClean | PGD-ASR | min-ε | Hurt | ΔHurt | Gained |
+|------|-----------|--------|---------|-------|------|-------|--------|
+| uniform (control) | 0.8800 | +0.0000 | 0.1960 | 0.1845 | 103 | +0 | 33 |
+| downweight | 0.8730 | −0.0070 | 0.1975 | 0.1655 | 111 | +8 | 27 |
+| upweight | 0.8685 | −0.0115 | 0.2105 | 0.1753 | 145 | +42 | 52 |
+| **exclude** | **0.8865** | **+0.0065** | 0.2025 | 0.1631 | **93** | **−10** | 36 |
+
+*Excluding the fragile set from adversarial augmentation is the only intervention that helps: +0.65 pp clean accuracy and 10 fewer hurt samples, at the cost of slightly weaker robustness (PGD-ASR +0.65 pp, min-ε −0.021). Upweighting the fragile set — the natural "try harder on hard samples" instinct — is the worst option, increasing hurt samples by 42 (+41%) and dropping clean accuracy 1.15 pp.*
+
+The intervention experiment confirms the mechanism and inverts a common intuition. Down/up-weighting the fragile set in the AT loss both *hurt* clean accuracy; upweighting is decisively worst (hurt 145 vs 103, −1.15 pp clean). The only intervention that helps is **exclude** — withholding adversarial augmentation from the fragile samples entirely. This is consistent with §5.1's double-jeopardy mechanism: fragile samples cross the boundary trivially under PGD, so their adversarial gradients are large and destabilizing; the fix is not to weight those gradients but to *not generate them*. Excluding the bottom 10% recovers +0.65 pp clean accuracy and reduces the hurt count from 103 to 93, while costing only +0.65 pp PGD-ASR.
+
+The symmetry probe (bottom of the H177 log) sharpens the picture: AT-hurt samples have low pre-AT margin (1.74), but AT-*gained* samples have even lower pre-AT margin (0.69) — the vanilla model was already nearly wrong on them. The intervention therefore operates on a population (low-but-nonzero margin, correctly classified) that is distinct from the gains population (near-zero margin, already misclassified), which is why excluding fragile samples reduces hurt without sacrificing the gains.
+
 ---
 
 ## 5. Discussion
@@ -174,13 +193,13 @@ Toneva et al. [6] showed that forgettable examples — those that transition fro
 
 ### 5.3 Implications for Targeted Interventions
 
-The AUROC of 0.935 at AT-hurt prediction enables practical interventions. Three are particularly well-motivated:
+The AUROC of 0.935 at AT-hurt prediction enables practical interventions. We tested three (§4.6) and found that the obvious ones backfire:
 
-**Sample reweighting in AT.** Down-weight samples with low vanilla margin in the AT loss, preventing the adversarial gradient updates for these samples from dominating training. This is distinct from MarginWeighted (Paper 5), which up-weights hard samples — here we propose the opposite: protect hard samples by reducing their AT pressure.
+**Sample reweighting in AT (tested — both directions fail).** We tried both down-weighting and up-weighting the fragile set in the AT loss. Both *hurt* clean accuracy relative to uniform AT (−0.70 pp and −1.15 pp respectively), and up-weighting was decisively worst, increasing the hurt count by 41%. The "try harder on hard samples" instinct (MarginWeighted, Paper 5) is exactly wrong for protecting clean accuracy under AT: applying more adversarial pressure to already-fragile samples destabilizes them further.
 
-**Curriculum AT scheduling.** Introduce at-risk samples (low vanilla margin) to AT augmentation late in training, after the model has consolidated its representation of harder samples using clean examples. This is consistent with the curriculum learning principle [10].
+**Selective AT mixing — exclude (tested — the one that works).** Withholding adversarial augmentation from the fragile set entirely (train them on clean examples only) was the only intervention that helped: +0.65 pp clean accuracy and 10 fewer hurt samples, at a modest robustness cost (+0.65 pp PGD-ASR, −0.021 min-ε). This isolates the most vulnerable samples from the primary source of AT-induced harm, confirming that the fix is to *not generate* the destabilizing gradients rather than to reweight them.
 
-**Selective AT mixing.** For samples with min_eps < 0.020 (roughly the 6th percentile), do not generate adversarial examples; train on clean examples only. For the remaining 94%, use normal PGD-AT mixing. This isolates the most vulnerable samples from the primary source of AT-induced harm.
+**Curriculum AT scheduling (untested, motivated).** Introducing at-risk samples to AT augmentation late in training is a natural extension of the successful exclude variant — a soft, time-varying version of exclusion rather than a binary one. We leave a curriculum schedule to future work, but the exclude result suggests the right direction is *less* early adversarial pressure on fragile samples, not more.
 
 ### 5.4 Why All Four Features Achieve the Same AUROC
 
@@ -194,7 +213,7 @@ All results are on Fashion-MNIST with a specific CNN architecture. The mechanism
 
 ## 6. Conclusion
 
-We have shown that adversarial training's clean accuracy cost is not random: it concentrates systematically on the pre-existing hard samples — those with low vanilla model margin, low confidence, low min-ε, and high gradient norm. On Fashion-MNIST, 98 samples (5.4% of vanilla-correct) are hurt by AT, and all four tested vanilla model features predict this outcome with AUROC ≈ 0.935. This "double jeopardy" effect — hard samples are most vulnerable to attacks and most likely to be broken by AT — has direct implications for targeted interventions: by auditing the pre-AT vanilla model's margin distribution, practitioners can identify at-risk samples before training begins and apply sample reweighting, curriculum scheduling, or selective AT mixing to protect them. The margin's predictive power (AUROC 0.935) is consistent across attack vulnerability prediction (Papers 5, 6) and AT-hurt prediction, suggesting that margin is a fundamental and transferable property of per-sample boundary proximity.
+We have shown that adversarial training's clean accuracy cost is not random: it concentrates systematically on the pre-existing hard samples — those with low vanilla model margin, low confidence, low min-ε, and high gradient norm. On Fashion-MNIST, 98 samples (5.4% of vanilla-correct) are hurt by AT, and all four tested vanilla model features predict this outcome with AUROC ≈ 0.935. This "double jeopardy" effect — hard samples are most vulnerable to attacks and most likely to be broken by AT — has direct implications for targeted interventions. We tested three: by auditing the pre-AT vanilla model's margin distribution, practitioners can identify the fragile bottom-10% and choose how to treat them under AT. Reweighting in either direction backfires (up-weighting worst, +41% hurt, −1.15 pp clean), but *excluding* the fragile set from adversarial augmentation recovers +0.65 pp clean accuracy and reduces hurt samples from 103 to 93, at a modest robustness cost. The margin's predictive power (AUROC 0.935) is consistent across attack vulnerability prediction (Papers 5, 6) and AT-hurt prediction, suggesting that margin is a fundamental and transferable property of per-sample boundary proximity — and that the actionable lever is to withhold adversarial pressure from low-margin samples, not to intensify it.
 
 ---
 

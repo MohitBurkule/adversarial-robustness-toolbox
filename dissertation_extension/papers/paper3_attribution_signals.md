@@ -2,7 +2,7 @@
 
 **Abstract**
 
-Attribution methods, originally developed to explain which input features drive model predictions, have been proposed as potential indicators of adversarial vulnerability. We systematically evaluate three attribution-based vulnerability predictors — plain input gradient L2 norm, SmoothGrad L2 norm [5], and Integrated Gradients norm [6] — across four datasets and multiple attack configurations, benchmarking against the logit margin baseline. SmoothGrad achieves strong AUROC on standard models (0.9704 on Fashion-MNIST, 0.9847–0.9975 on Imagenette), marginally exceeding the margin in some conditions. Plain input gradient norm achieves AUROC = 0.9408 on Fashion-MNIST, also marginally exceeding the margin (0.9366). Integrated Gradients achieves only AUROC = 0.76, performing substantially worse than both. However, a critical robustness evaluation (H169) reveals that SmoothGrad's advantage entirely collapses on adversarially trained models: SmoothGrad decreases relative to margin by 0.026–0.416 AUROC units on FGSM-AT and PGD-AT models. Furthermore, SmoothGrad exhibits 4x greater seed variance than plain gradient norm. We conclude that plain input gradient norm (single forward-backward pass) is the preferred attribution-based predictor: it is computationally inexpensive, empirically stable, and robust to adversarial training.
+Attribution methods, originally developed to explain which input features drive model predictions, have been proposed as potential indicators of adversarial vulnerability. We systematically evaluate three attribution-based vulnerability predictors — plain input gradient L2 norm, SmoothGrad L2 norm [5], and Integrated Gradients norm [6] — across four datasets and multiple attack configurations, benchmarking against the logit margin baseline. SmoothGrad achieves strong AUROC on standard models (0.9704 on Fashion-MNIST, 0.9847–0.9975 on Imagenette), marginally exceeding the margin in some conditions. Plain input gradient norm achieves AUROC = 0.9408 on Fashion-MNIST, also marginally exceeding the margin (0.9366). Integrated Gradients achieves only AUROC = 0.76, performing substantially worse than both. However, a critical robustness evaluation (H169) reveals that SmoothGrad's advantage entirely collapses on adversarially trained models: SmoothGrad decreases relative to margin by 0.026–0.416 AUROC units on FGSM-AT and PGD-AT models. A direct σ/K sweep (H176) pins down the mechanism: by measuring the gradient norm *inside* the SmoothGrad neighbourhood we find PGD-AT compresses it 9–22× relative to a vanilla model, and at σ=0.2 PGD-AT SmoothGrad AUROC collapses to near-chance (0.586); AUROC is also flat in K beyond K≈10, so the customary 50–100 passes are wasted. Furthermore, SmoothGrad exhibits 4x greater seed variance than plain gradient norm. We conclude that plain input gradient norm (single forward-backward pass) is the preferred attribution-based predictor: it is computationally inexpensive, empirically stable, and robust to adversarial training.
 
 ---
 
@@ -146,6 +146,33 @@ Adversarial training reshapes the loss landscape to reduce gradient magnitudes n
 By contrast, the margin is not directly penalised by adversarial training — it is increased for robust samples (the defence goal) and remains low for vulnerable samples. The margin thus maintains its discriminative signal under AT, while SmoothGrad loses it.
 
 Plain input gradient norm occupies an intermediate position: it is computed at the original input, not in the noisy neighbourhood, and partially retains its signal. However, on CIFAR-10 PGD-AT (Delta = −0.161 for SmoothGrad), input gradient norm also decreases, though less severely.
+
+### 4.3a Direct σ/K Sweep and In-Ball Gradient-Norm Measurement (H176)
+
+The mechanistic claim in §4.3 — that AT compresses the gradient norm *inside* the SmoothGrad neighbourhood — was previously inferred, not measured. H176 sweeps the SmoothGrad bandwidth σ ∈ {0.025, 0.05, 0.1, 0.2} and sample count K ∈ {5, 10, 25, 50, 100}, and at each σ directly measures the mean gradient L2 norm sampled within the σ-ball, separately for a vanilla and a PGD-AT model (Fashion-MNIST, n=500).
+
+**Table 3: SmoothGrad σ-sweep — AUROC and mean in-ball gradient norm (K=50)**
+
+| σ | Vanilla SG-AUROC | Vanilla ‖g‖ in-ball | PGD-AT SG-AUROC | PGD-AT ‖g‖ in-ball |
+|------|------|------|------|------|
+| 0.025 | 0.9636 | 0.0070 | 0.9692 | 0.0012 |
+| 0.050 | 0.9667 | 0.0125 | 0.9677 | 0.0013 |
+| 0.100 | 0.9720 | 0.0475 | 0.9463 | 0.0022 |
+| 0.200 | 0.9591 | 0.1147 | **0.5861** | 0.0133 |
+
+The direct measurement confirms the mechanism. At σ=0.1 the vanilla in-ball gradient norm (0.0475) is **22× larger** than PGD-AT's (0.0022); at σ=0.2 the gap is 9× (0.1147 vs 0.0133). As AT flattens the loss inside the ball, the SmoothGrad signal degrades, and at σ=0.2 PGD-AT SG-AUROC collapses to near-chance (0.586) — precisely where the vanilla model still scores 0.959. The plain-gradient baselines (K=1, σ=0) are 0.9586 (vanilla) and 0.9698 (PGD-AT), so on PGD-AT *no* SmoothGrad setting beats the single-pass gradient.
+
+**Table 4: SmoothGrad K-sweep at σ=0.1 (AUROC)**
+
+| K | Vanilla | PGD-AT |
+|----|---------|--------|
+| 5 | 0.9706 | 0.9447 |
+| 10 | 0.9736 | 0.9457 |
+| 25 | 0.9719 | 0.9478 |
+| 50 | 0.9693 | 0.9460 |
+| 100 | 0.9704 | 0.9464 |
+
+AUROC is flat in K beyond K≈10 — the 50–100 passes commonly used buy nothing over K=10. Combined with the σ result, the recommendation sharpens: there is no σ/K operating point at which SmoothGrad justifies its cost over the plain gradient, and under AT the best σ for a vanilla model (0.1–0.2) is actively harmful.
 
 ### 4.4 Multi-Seed Stability (H165)
 

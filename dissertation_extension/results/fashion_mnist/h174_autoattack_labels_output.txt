@@ -1,0 +1,26 @@
+==========================================================================
+H174 - AutoAttack-style ensemble (APGD-CE + APGD-DLR + Square) vulnerability labels
+==========================================================================
+Device=cuda  EPS=0.0588  EVAL_N=1000
+
+--- Training Vanilla ---
+  18.5s
+--- Training PGD-AT ---
+  63.3s
+
+=== Vanilla (n=1000) ===
+  ASR  PGD10=0.9430  APGD-CE=0.9950  APGD-DLR=0.9930  Square=0.5580  AA-ensemble=0.9950
+  samples PGD10 calls robust but AA flips: 52 (5.20% of eval)
+  margin AUROC vs PGD10 label = 0.9370
+  margin AUROC vs AA    label = 0.9936
+
+=== PGD-AT (n=1000) ===
+  ASR  PGD10=0.0820  APGD-CE=0.1050  APGD-DLR=0.1030  Square=0.0590  AA-ensemble=0.1090
+  samples PGD10 calls robust but AA flips: 27 (2.70% of eval)
+  margin AUROC vs PGD10 label = 0.9496
+  margin AUROC vs AA    label = 0.9370
+
+==========================================================================
+Key check: does margin AUROC survive the gold-standard AA ensemble, and how badly
+does PGD-10 alone over-estimate robustness (the 'PGD robust but AA flips' count)?
+==========================================================================
