@@ -1,0 +1,13 @@
+Theme B | learning rule vs gradient descent | B_kmnist_logreg_s2
+dataset=kmnist learner=logreg kind=sklearn seed=2 eps=0.100
+
+clean_acc           = 0.6300
+whitebox PGD ASR    = nan  (differentiable only)
+blackbox RS ASR     = 0.1799  (shared random-search L-inf, comparable across all)
+margin/conf AUROC   = 0.9749  (does confidence predict which flip?)
+
+Interpretation: if non-GD learners (knn/gbm/rfnn/forward_forward) also show
+high blackbox ASR and margin AUROC > 0.5, adversarial vulnerability is a
+property of the data geometry, not of gradient descent.
+
+[runtime 19.6s]
