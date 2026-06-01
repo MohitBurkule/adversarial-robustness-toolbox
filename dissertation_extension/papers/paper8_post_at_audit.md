@@ -217,6 +217,22 @@ All results are on Fashion-MNIST with a specific CNN architecture. The mechanism
 
 ---
 
+## 5.6 Limitations and Future Work
+
+**Scope.** All results are on Fashion-MNIST with a single CNN architecture. The double-jeopardy mechanism (AT concentrates clean accuracy cost on pre-existing hard samples) is data-geometry-driven, but the specific AUROC values (0.935) and intervention effect sizes (+0.65 pp for exclude) will vary with dataset complexity and architecture capacity. CIFAR-10/ImageNet replication is needed before practitioner recommendations can be generalised.
+
+**Single seed on interventions.** The three interventions (exclude, up-weight worst, up-weight best) are each run once. The exclude condition's +0.65 pp clean accuracy gain is within ~0.8 Poisson SE of zero (as noted in §4.6) — a multi-seed ablation is needed to confirm significance. The up-weight worst condition's −1.15 pp is larger and more likely to be real, but remains unverified.
+
+**AutoAttack not evaluated.** We use FGSM and PGD-10 to characterise robustness. The exclude condition may incur a larger robustness cost under AutoAttack (which includes square attack, a black-box component that bypasses gradient masking). Reporting only PGD-10 robustness cost may understate the tradeoff.
+
+**AT-hurt AUROC near-tautology at high AUROC.** As discussed in §4.4, AUROC 0.935 for margin predicting AT-hurt is informative but partially definitional: margin is what AT aims to increase, and hurt samples are likely those for which AT failed. A structural validation (e.g. threshold-based precision/recall at the fragile bottom-10%) would strengthen the actionability claim.
+
+**No curriculum AT baseline.** The exclude intervention is compared only against vanilla AT. A curriculum AT baseline — e.g. starting all samples with adversarial augmentation and gradually reducing it for low-margin samples — would be a natural comparator, and may achieve a better robustness-accuracy tradeoff than hard exclusion.
+
+**Future work.** (1) Multi-seed ablation on all three interventions. (2) AutoAttack evaluation of the exclude condition. (3) CIFAR-10 replication. (4) DyART [14] as a soft version of exclude: instead of binary exclusion, margin-adaptive ε scheduling for low-margin samples. (5) Direct estimation of whether the residual 0.065 AUROC gap requires multi-feature or curvature-aware predictors.
+
+---
+
 ## 6. Conclusion
 
 We have shown that adversarial training's clean accuracy cost is not random: it concentrates systematically on the pre-existing hard samples — those with low vanilla model margin, low confidence, low min-ε, and high gradient norm. On Fashion-MNIST, 98 samples (5.4% of vanilla-correct) are hurt by AT, and all four tested vanilla model features predict this outcome with AUROC ≈ 0.935. This "double jeopardy" effect — hard samples are most vulnerable to attacks and most likely to be broken by AT — has direct implications for targeted interventions. We tested three: by auditing the pre-AT vanilla model's margin distribution, practitioners can identify the fragile bottom-10% and choose how to treat them under AT. Reweighting in either direction backfires (up-weighting worst, +41% hurt, −1.15 pp clean), but *excluding* the fragile set from adversarial augmentation recovers +0.65 pp clean accuracy and reduces hurt samples from 103 to 93, at a modest robustness cost. The margin's predictive power (AUROC 0.935) is consistent across attack vulnerability prediction (Papers 5, 6) and AT-hurt prediction, suggesting that margin is a fundamental and transferable property of per-sample boundary proximity — and that the actionable lever is to withhold adversarial pressure from low-margin samples, not to intensify it.

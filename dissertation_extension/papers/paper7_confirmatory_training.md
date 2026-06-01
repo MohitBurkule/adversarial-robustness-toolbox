@@ -178,6 +178,22 @@ The margin AUROC of 0.996 appears to be near the ceiling achievable given the da
 
 ---
 
+## 5.5 Limitations and Future Work
+
+**Scope.** All experiments use Fashion-MNIST (28×28 grayscale, 10 classes). The boundary-curvature mechanism — confirmatory training sharpens rather than expands — is geometrically motivated and not specific to MNIST-class data, but quantitative transfer to CIFAR-10, SVHN, or ImageNet-scale architectures is untested. CIFAR-10 has substantially higher intrinsic adversarial complexity; the 0.996 margin AUROC ceiling observed here is unlikely to replicate.
+
+**Attack coverage.** We evaluate with FGSM and PGD-10 (L∞). AutoAttack (which includes CW, DLR, and square components) is not evaluated; PGD-10 may under-estimate attack success for well-defended models. The confirmatory training condition shows worsened robustness under PGD, but AutoAttack might reveal a larger gap or uncover gradient masking in the combined PGD-AT + Anti condition.
+
+**Mechanism is inferred, not measured.** The claim that confirmatory training "sharpens boundary curvature" is supported by the dissociation between margin AUROC and attack success, but curvature is not directly measured (e.g. via Hessian eigenspectra or local Lipschitz estimation). A direct curvature audit would be required to confirm this as the mechanistic cause.
+
+**Single seed and architecture.** Main results (Table 1) use a single random seed and a fixed CNN architecture. The AUROC differences between confirmatory and vanilla conditions (0.996 vs 0.897) are large enough that seed variance is unlikely to invert the ordering, but confidence intervals are not computed.
+
+**No label-smoothing or FAT baselines.** Friendly adversarial training [1] and label smoothing both push softmax distributions toward lower-confidence outputs. These are natural comparators to Anti-Adv Aug for robustness-accuracy tradeoffs and are not evaluated.
+
+**Future work.** (1) Multi-step confirmatory examples (larger ε, more PGD steps for the confirmatory perturbation) may reduce the curvature-sharpening side-effect. (2) Extend to CIFAR-10 and confirm whether the AUROC ceiling shifts. (3) Direct boundary curvature measurement (local Lipschitz or Hessian trace) to confirm the proposed mechanism. (4) Combine confirmatory training with curriculum AT schedules that interleave confirmatory and adversarial pressure as a function of epoch.
+
+---
+
 ## 6. Conclusion
 
 We have studied confirmatory examples — gradient-descent perturbations that push training samples deeper into their correct-class interior — as a training augmentation strategy. Our key findings are: (1) confirmatory training worsens robustness despite increasing margin AUROC to 0.996, because it sharpens boundary curvature rather than expanding margins; (2) when combined with PGD-AT, confirmatory examples recover +2.89 pp clean accuracy at a cost of +5.5 pp PGD attack success; and (3) the dissociation between margin AUROC (geometric separation) and functional robustness (attack success at fixed ε) reveals that high margin AUROC is necessary but not sufficient for robustness — the curvature structure of the boundary matters equally. Future work should investigate whether multi-step confirmatory examples reduce the robustness penalty, and whether the PGD-AT + Anti combination generalizes to CIFAR-10 and other datasets.
