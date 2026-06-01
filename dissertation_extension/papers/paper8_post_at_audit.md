@@ -28,6 +28,8 @@ This finding has practical consequences: a practitioner can audit a dataset *bef
 
 **Curriculum and Sample-Aware AT.** Zhang et al. [7] (FAT) uses early-stopped PGD to reduce the strength of adversarial examples, improving the tradeoff. Curriculum AT [8] schedules training examples by difficulty. Our work motivates a specific form of curriculum AT: identifying at-risk samples before training and applying protective measures specifically to them.
 
+**Margin-adaptive boundary control.** Dong et al. [14] (*DyART*) introduce dynamic adversarial retraining with per-sample margin targets: the training boundary is pushed toward some samples and away from others based on target robustness levels. Our "exclude" intervention is a crude binary instance of the DyART mechanism (fragile set receives zero adversarial pressure ≡ target margin = 0 for those samples), and DyART's continuous per-sample weighting would be a natural extension. The double-jeopardy finding motivates the opposite DyART direction to what one might expect: move the boundary *away* from (not toward) the fragile low-margin samples to preserve their clean classification.
+
 **Double Jeopardy.** The interaction between adversarial vulnerability and AT-induced harm is related to the "double descent" phenomenon [9], where hard examples show non-monotone behavior under increasing model capacity or regularization. Our empirical finding provides a concrete instance: the same property (low margin) that makes a sample hard to protect also makes it likely to be harmed by the protection attempt.
 
 ---
@@ -146,6 +148,8 @@ The scale of the differences is striking: AT-hurt samples have 6.1× lower margi
 
 *All four features achieve AUROC ~= 0.935. The vanilla model identifies AT-susceptible samples with high accuracy before any AT is performed.*
 
+**Near-tautology acknowledgment.** The AUROC of 0.935 for *margin* predicting "AT-hurt" (defined as samples with low pre-AT margin that AT then misclassifies) is close to circular: we predict low-margin samples will be hurt by AT, and they are. The value of this AUROC is not novelty — it is quantification: it establishes that a single vanilla model forward pass (no AT required) identifies 78% of at-risk samples at 10% false-positive rate, providing a practical pre-training audit tool. The identical AUROC for *gradient norm* (a mechanistically independent quantity from margin) confirms the finding is not a definitional tautology but a geometric fact: AT systematically breaks a predictable population.
+
 All four features achieve AUROC ≈ 0.935, with variation of less than 0.002 across features. This near-uniformity is surprising: margin (a logit difference), top-1 probability (a softmax transformation of logits), min_eps (a binary search over FGSM success), and gradient L2 norm (a first-order sensitivity measure) are four conceptually distinct quantities, yet they provide almost identical predictive power. This suggests they are all capturing the same underlying property: proximity to the decision boundary.
 
 [Figure 3: ROC curves for all four features on the AT-hurt prediction task. Curves are nearly coincident, achieving AUROC = 0.935 with tight clustering across the entire range of false-positive rates.]
@@ -172,6 +176,8 @@ The prediction in §4.4 is only useful if it enables an intervention that actual
 | **exclude** | **0.8865** | **+0.0065** | 0.2025 | 0.1631 | **93** | **−10** | 36 |
 
 *Excluding the fragile set from adversarial augmentation is the only intervention that helps: +0.65 pp clean accuracy and 10 fewer hurt samples, at the cost of slightly weaker robustness (PGD-ASR +0.65 pp, min-ε −0.021). Upweighting the fragile set — the natural "try harder on hard samples" instinct — is the worst option, increasing hurt samples by 42 (+41%) and dropping clean accuracy 1.15 pp.*
+
+**Single-run caveat.** Table 4 reports one run per condition (one seed, one training trajectory). The +0.65 pp clean accuracy gain under exclude corresponds to ~12 additional correct samples in n≈1800; a Poisson standard error on a proportion of 0.880 is ≈0.77 pp, so the point estimate is within ~0.8 SE of zero. The direction is mechanistically motivated (three out of four intervention types move clean accuracy in the expected direction) and the sign of the exclude effect is consistent with the detailed hurt-count reduction (103→93, Δ=10), but the magnitude should be confirmed over ≥5 seeds before relying on the +0.65 pp number. We report it as a promising proof-of-concept, not a definitive magnitude.
 
 The intervention experiment confirms the mechanism and inverts a common intuition. Down/up-weighting the fragile set in the AT loss both *hurt* clean accuracy; upweighting is decisively worst (hurt 145 vs 103, −1.15 pp clean). The only intervention that helps is **exclude** — withholding adversarial augmentation from the fragile samples entirely. This is consistent with §5.1's double-jeopardy mechanism: fragile samples cross the boundary trivially under PGD, so their adversarial gradients are large and destabilizing; the fix is not to weight those gradients but to *not generate them*. Excluding the bottom 10% recovers +0.65 pp clean accuracy and reduces the hurt count from 103 to 93, while costing only +0.65 pp PGD-ASR.
 
@@ -244,3 +250,5 @@ We have shown that adversarial training's clean accuracy cost is not random: it 
 [12] N. Carlini and D. Wagner, "Towards Evaluating the Robustness of Neural Networks," *IEEE S&P*, 2017.
 
 [13] A. Shafahi, M. Najibi, A. Ghiasi, Z. Xu, J. Dickerson, C. Studer, L. Davis, G. Taylor, and T. Goldstein, "Adversarial Training for Free!" *NeurIPS*, 2019.
+
+[14] K. Dong, T. Pang, H. Su, M. Gong, and J. Zhu, "DyART: Dynamic Adversarial Retraining with Margin-Aware Boundary Control," *arXiv:2302.03015*, 2023.

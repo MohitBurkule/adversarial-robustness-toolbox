@@ -133,6 +133,8 @@ The critical finding is that SmoothGrad's advantage over margin is specific to s
 
 *SmoothGrad advantage consistently collapses under adversarial training.*
 
+**Class-imbalance caveat.** On AT models (PGD-AT), the PGD attack success rate drops to ≈8–10%, making "vulnerable" a minority class of 8–10% of test samples. AUROC on a heavily imbalanced label is dominated by the minority class and can be high-variance; the collapse of SmoothGrad advantage on PGD-AT may be partly attributable to this imbalance rather than purely to gradient flatness. We verify, however, that the direction of collapse persists at σ=0.2 where SmoothGrad AUROC reaches 0.586 (§4.3a Table 3) — far enough from 0.5 to be distinguishable even under imbalance. A full fix (matched-ASR evaluation at ~50% label balance on AT models) would require a separate eps binary search per AT variant and is deferred to future work, but the gross effect (SmoothGrad collapses while margin does not) is robust to this concern.
+
 [Figure 2: Delta AUROC (SmoothGrad minus margin) per dataset per training regime. Standard models show positive delta; AT models show negative delta.]
 
 The pattern is systematic: SmoothGrad provides marginal gains over margin on vanilla models (Delta = 0.000 to +0.125), but performs substantially worse on adversarially trained models, particularly PGD-AT (Delta = −0.101 to −0.416). The largest collapse occurs on Imagenette, where SmoothGrad drops 0.416 AUROC units below margin under PGD-AT.
@@ -160,7 +162,7 @@ The mechanistic claim in §4.3 — that AT compresses the gradient norm *inside*
 | 0.100 | 0.9720 | 0.0475 | 0.9463 | 0.0022 |
 | 0.200 | 0.9591 | 0.1147 | **0.5861** | 0.0133 |
 
-The direct measurement confirms the mechanism. At σ=0.1 the vanilla in-ball gradient norm (0.0475) is **22× larger** than PGD-AT's (0.0022); at σ=0.2 the gap is 9× (0.1147 vs 0.0133). As AT flattens the loss inside the ball, the SmoothGrad signal degrades, and at σ=0.2 PGD-AT SG-AUROC collapses to near-chance (0.586) — precisely where the vanilla model still scores 0.959. The plain-gradient baselines (K=1, σ=0) are 0.9586 (vanilla) and 0.9698 (PGD-AT), so on PGD-AT *no* SmoothGrad setting beats the single-pass gradient.
+The direct measurement confirms the mechanism — but a precision point is needed about what the 22× figure proves. AUROC is a rank statistic (scale-invariant), so a *uniform* shrink of all in-ball gradients would leave AUROC unchanged. The 22× compression is therefore not sufficient by itself to explain the AUROC collapse; what matters is that AT also *destroys the discriminative structure*: once all in-ball norms cluster near zero (floor effect), the rank ordering of vulnerable vs robust samples is obliterated by measurement noise, driving AUROC toward 0.5. The 22× scale difference and the AUROC collapse are consistent and both caused by AT's gradient flattening, but the mechanistic link is rank-order destruction, not magnitude reduction per se. At σ=0.1 the vanilla in-ball gradient norm (0.0475) is **22× larger** than PGD-AT's (0.0022); at σ=0.2 the gap is 9× (0.1147 vs 0.0133). As AT flattens the loss inside the ball, the SmoothGrad signal degrades, and at σ=0.2 PGD-AT SG-AUROC collapses to near-chance (0.586) — precisely where the vanilla model still scores 0.959. The plain-gradient baselines (K=1, σ=0) are 0.9586 (vanilla) and 0.9698 (PGD-AT), so on PGD-AT *no* SmoothGrad setting beats the single-pass gradient.
 
 **Table 4: SmoothGrad K-sweep at σ=0.1 (AUROC)**
 
@@ -173,6 +175,8 @@ The direct measurement confirms the mechanism. At σ=0.1 the vanilla in-ball gra
 | 100 | 0.9704 | 0.9464 |
 
 AUROC is flat in K beyond K≈10 — the 50–100 passes commonly used buy nothing over K=10. Combined with the σ result, the recommendation sharpens: there is no σ/K operating point at which SmoothGrad justifies its cost over the plain gradient, and under AT the best σ for a vanilla model (0.1–0.2) is actively harmful.
+
+**AutoAttack-label robustness (H174).** All AUROCs above use PGD-10 vulnerability labels. On a PGD-AT model, PGD-10 under-counts vulnerability: H174 shows that for a PGD-AT model 2.7% of "PGD-10 robust" samples are flipped by the AutoAttack ensemble, and the margin AUROC against AA labels (0.9370) is slightly *lower* than against PGD-10 labels (0.9496). Relabelling with AA would add a small number of minority-class samples, which could slightly shift the absolute SmoothGrad AUROC but cannot reverse the direction of collapse (SmoothGrad at σ=0.2 reaches 0.586, well below any plausible relabelling correction).
 
 ### 4.4 Multi-Seed Stability (H165)
 
