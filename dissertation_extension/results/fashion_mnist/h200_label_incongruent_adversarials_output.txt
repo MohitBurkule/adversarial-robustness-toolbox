@@ -1,0 +1,93 @@
+==========================================================================
+H200 - Label-Incongruent Adversarial Examples on Fashion-MNIST
+==========================================================================
+Device=cuda  eps=0.1  pgd_steps=10  n_eval=500  epochs=10  width=32
+
+Loading dataset …
+  train=60000  eval=500
+
+Training model_A (seed=0) …
+  model_A test acc = 0.9340
+
+Training model_B (seed=1) …
+  model_B test acc = 0.9280
+
+Computing clean softmax margins from model_A …
+  mean margin = 0.8556  std = 0.4284  min = -1.0000
+
+Generating PGD adversarials (eps=0.1, steps=10) on model_A …
+  Total eval samples : 500
+  Fooled model_A     : 500  (ASR = 1.000)
+
+==========================================================================
+1. OVERALL LABEL-INCONGRUENCE RESULTS
+==========================================================================
+  Fooling adversarials    : 500
+  Label-incongruent       : 309  (61.8%)
+  Label-congruent         : 191  (38.2%)
+  (DUCAT CIFAR-10 baseline: ~40%)
+
+==========================================================================
+2. PER-CLASS LABEL-INCONGRUENCE RATE
+==========================================================================
+  Class                  Fooled    Incon     Rate
+  --------------------  -------  -------  -------
+  T-shirt/top                56       50    0.893
+  Trouser                    51        6    0.118
+  Pullover                   55       54    0.982
+  Dress                      55       33    0.600
+  Coat                       48       44    0.917
+  Sandal                     47       20    0.426
+  Shirt                      38       36    0.947
+  Sneaker                    45       34    0.756
+  Bag                        47       12    0.255
+  Ankle boot                 58       20    0.345
+
+==========================================================================
+3. MOST COMMON ADVERSARIAL TARGET CLASSES (label-incongruent only)
+==========================================================================
+  Target class            Count     Frac
+  --------------------  -------  -------
+  Shirt                     106    0.343
+  Coat                       48    0.155
+  Pullover                   32    0.104
+  T-shirt/top                30    0.097
+  Ankle boot                 23    0.074
+  Sneaker                    21    0.068
+  Sandal                     20    0.065
+  Dress                      15    0.049
+  Bag                         9    0.029
+  Trouser                     5    0.016
+
+  Model_B predicted classes for incongruent adversarials:
+  Target class (B)        Count     Frac
+  --------------------  -------  -------
+  Shirt                     107    0.346
+  Coat                       48    0.155
+  Pullover                   32    0.104
+  T-shirt/top                31    0.100
+  Ankle boot                 24    0.078
+  Sneaker                    21    0.068
+  Sandal                     18    0.058
+  Dress                      14    0.045
+  Bag                         9    0.029
+  Trouser                     5    0.016
+
+==========================================================================
+4. MARGIN vs LABEL-INCONGRUENCE CORRELATION
+==========================================================================
+  Pearson r (clean margin vs incongruent): -0.2566
+  Interpretation: negative r means lower-margin samples are MORE likely to be label-incongruent.
+  Low margin  (< p33): n= 165  incon_rate=0.958
+  Mid margin  (p33-p67): n= 170  incon_rate=0.735
+  High margin (> p67): n= 165  incon_rate=0.158
+
+==========================================================================
+VERDICT
+==========================================================================
+  Fashion-MNIST label-incongruence rate: 61.8%
+  Classification: HIGH — comparable to CIFAR-10 DUCAT findings (~40%).
+  Total runtime: 118.3s
+==========================================================================
+
+Results written to: /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h200_label_incongruent_adversarials_output.txt

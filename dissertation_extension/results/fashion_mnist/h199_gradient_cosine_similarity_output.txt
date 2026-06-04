@@ -1,0 +1,47 @@
+==========================================================================
+H199 - Gradient cosine similarity predicts attack success &
+       adversarial transferability on Fashion-MNIST
+==========================================================================
+Device=cuda  dataset=fashion_mnist  N_eval=300  eps=0.1  pgd_steps=10
+Dataset loaded. Xte subset: torch.Size([300, 1, 28, 28])
+  Model seed=0 trained.
+  Model seed=1 trained.
+
+Clean accuracy — model_A: 0.933   model_B: 0.937
+
+Computing clean input gradients (model_A) ...
+Running FGSM on model_A ...
+  FGSM success rate on model_A: 0.753  (226/300)
+  Transfer success (A→B, FGSM): 0.427  (128/300)
+Running PGD on model_A ...
+  PGD success rate on model_A:  0.933  (280/300)
+
+Computing cosine similarities ...
+
+==========================================================================
+AUROC RESULTS (higher = better predictor)
+==========================================================================
+Predictor                                           AUROC
+---------------------------------------------------------
+(1) cos(grad_A, PGD_delta) → PGD success (model_A)   0.5089
+(2) cos(grad_A, FGSM_delta) → transfer success (A→B)   0.5765
+(3) neg-margin(model_A) → transfer success [baseline]   0.7505
+(4) cos(grad_A, PGD_delta) → transfer success (A→B)   0.4846
+
+==========================================================================
+MEAN COSINE SIM: grad_A vs FGSM_delta (by transfer outcome)
+==========================================================================
+  Successful transfer (n=128): mean cos = 0.6553
+  Failed transfer    (n=172): mean cos = 0.6281
+  Mann-Whitney U (greater): stat=12693.0  p=1.1702e-02
+
+==========================================================================
+INTERPRETATION
+==========================================================================
+  Verdict: PARTIALLY SUPPORTED
+  Cosine alignment predicts one of the two outcomes (PGD success or transfer) but not both.
+  neg-margin (baseline) is at least as good as cosine similarity
+  for predicting transfer success.
+
+Total runtime: 103.6s
+==========================================================================

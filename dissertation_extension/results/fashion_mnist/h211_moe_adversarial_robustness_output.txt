@@ -1,0 +1,41 @@
+H211: Mixture of Experts — Adversarial Robustness
+============================================================
+
+[Part 1] Scaling: K = 1, 2, 4, 8 experts
+  Training K=1...   clean=0.902  PGD_ASR=0.972  AUROC=0.936  (19s)
+  Training K=2...   clean=0.914  PGD_ASR=0.920  AUROC=0.979  (16s)
+  Training K=4...   clean=0.924  PGD_ASR=0.986  AUROC=0.888  (21s)
+  Training K=8...   clean=0.914  PGD_ASR=0.938  AUROC=0.950  (33s)
+
+[Part 2] Expert ablation on K=4 model
+  Mean router weight per expert: ['0.022', '0.265', '0.286', '0.427']
+  Most used: expert 3 (0.427)
+  Least used: expert 0 (0.022)
+  Baseline: clean=0.918  PGD_ASR=0.986
+  Remove expert 0: clean=0.790  PGD_ASR=0.998  ΔPGD=+0.012
+  Remove expert 1: clean=0.872  PGD_ASR=0.992  ΔPGD=+0.006
+  Remove expert 2: clean=0.890  PGD_ASR=0.988  ΔPGD=+0.002
+  Remove expert 3: clean=0.914  PGD_ASR=0.988  ΔPGD=+0.002
+
+[Part 3] Expert specialisation on K=4 model
+  Expert 0 standalone PGD ASR: 0.9340
+  Expert 1 standalone PGD ASR: 0.9260
+  Expert 2 standalone PGD ASR: 1.0000
+  Expert 3 standalone PGD ASR: 0.9080
+
+  Full MoE PGD ASR: 0.9860
+  Expert standalone ASRs: ['0.934', '0.926', '1.000', '0.908']
+
+--- Scale Study Results ---
+   K  Clean Acc   FGSM ASR    PGD ASR    AUROC
+   1       0.9020     0.9100     0.9720   0.9359
+   2       0.9140     0.8020     0.9200   0.9786
+   4       0.9240     0.8700     0.9860   0.8881
+   8       0.9140     0.7980     0.9380   0.9496
+
+--- Interpretation ---
+SUPPORTED: More experts → lower PGD ASR (diversity improves robustness)
+
+Removing most-used expert 3: ΔPGD_ASR = +0.0020
+Removing least-used expert 0: ΔPGD_ASR = +0.0120
+NO IMPORTANCE EFFECT: Expert usage ≠ adversarial importance.

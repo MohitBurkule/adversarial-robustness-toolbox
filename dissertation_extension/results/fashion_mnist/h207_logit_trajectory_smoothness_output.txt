@@ -1,0 +1,30 @@
+H207: Logit Trajectory Smoothness during PGD
+============================================================
+Training CNN...
+Running PGD-20 with trajectory recording (N=200)...
+FGSM ASR: 0.7400
+PGD-20 ASR: 0.9200
+
+--- Trajectory Statistics ---
+Initial margin: mean=9.9194, std=7.1267
+Final margin:   mean=-24.8786, std=7.7864
+Monotonicity:   mean=0.9950 (1=perfectly decreasing)
+Total variation: mean=34.8065
+
+--- AUROC Results ---
+AUROC (−initial_margin → FGSM success):      0.6515  [baseline]
+AUROC (−initial_margin → PGD success):       0.0000  [baseline]
+AUROC (monotonicity    → PGD success):       0.5836
+AUROC (total_variation  → PGD success):       0.8128
+AUROC (−final_margin   → PGD success):       0.2418  [upper bound]
+
+Spearman rho (monotonicity vs initial_margin): 0.1596
+Spearman rho (total_variation vs initial_margin): 0.3561
+
+--- Mean Margin Trajectory (success N=184, fail N=16) ---
+Step:       0      5     10     15     20
+Succ:  11.145 -5.984 -18.636 -22.680 -24.302
+Fail:  -4.180 -18.512 -27.627 -30.464 -31.511
+
+--- Interpretation ---
+SUPPORTED: Trajectory smoothness adds predictive value beyond initial margin.

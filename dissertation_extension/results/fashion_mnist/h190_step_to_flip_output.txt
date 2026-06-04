@@ -1,0 +1,50 @@
+============================================================
+H190: Step-to-Flip (STF) as per-sample vulnerability predictor
+============================================================
+
+[1] Loading Fashion-MNIST …
+    Using 300 test samples  (X shape: (300, 1, 28, 28))
+
+[2] Building and training CNN …
+    Clean accuracy on eval subset: 0.927
+
+[3] Computing Step-to-Flip (max 20 PGD steps) …
+    STF computed. min=1, max=21, mean=3.50, median=2.0
+
+[4] Computing margin …
+    Margin computed. min=-11.0290, max=28.6327, mean=9.5042
+
+[5] Computing FGSM success labels (eps=0.1) …
+    FGSM attack success rate: 0.807
+
+[6] Computing PGD-20 success labels …
+    PGD-20 attack success rate: 0.927
+
+[7] AUROC calculations …
+    AUROC -STF → FGSM success: 0.8832
+    AUROC -margin → FGSM success: 0.9695
+    AUROC -STF → PGD-20 success: 1.0000
+
+[8] Spearman correlation: STF vs margin …
+    Spearman rho = 0.4794  (p = 1.1964e-18)
+
+[9] STF distribution …
+    flip at step 1: 103/300 (34.3%)
+    flip at step ≤5: 275/300 (91.7%)
+    flip at step ≤10: 278/300 (92.7%)
+    flip at step ≤20: 278/300 (92.7%)
+    never flipped (STF=21): 22/300 (7.3%)
+
+============================================================
+SUMMARY
+============================================================
+  AUROC -STF   → FGSM success : 0.8832
+  AUROC -margin→ FGSM success : 0.9695
+  AUROC -STF   → PGD-20 success: 1.0000
+  Spearman rho (STF vs margin) : 0.4794  p=1.20e-18
+
+  VERDICT: margin OUTPERFORMS STF as FGSM vulnerability predictor.
+
+Total runtime: 61.3s
+
+Output saved to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h190_step_to_flip_output.txt

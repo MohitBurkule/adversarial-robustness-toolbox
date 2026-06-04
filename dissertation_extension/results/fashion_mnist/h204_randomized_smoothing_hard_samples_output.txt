@@ -1,0 +1,41 @@
+==========================================================================
+H204 - Randomized smoothing discards hard (low-margin) samples
+==========================================================================
+sigma=0.25  M=100  N_test=300  seed=0  device=cuda
+Data loaded: Xtr=(60000, 1, 28, 28)  Xte=(300, 1, 28, 28)
+Vanilla clean accuracy: 0.9400
+Vanilla margin  mean=9.500  min=-13.782  max=30.691
+
+Running randomised smoothing (M=100 draws per sample)...
+  done in 16.4s
+
+Smoothed model clean accuracy (majority vote): 0.3333
+ACR (avg certified radius):                   inf
+Global abstain rate (r=0):                    0.0400
+
+Spearman rho (margin vs radius): 0.0515  p=3.74e-01
+
+Margin quartile analysis:
+  Q1 (low margin  <= 5.08): n=75  abstain rate=0.0267
+  Q4 (high margin >= 14.08): n=75  abstain rate=0.0133
+  Ratio Q1/Q4 abstain: 2.0x
+
+AUROC (margin -> certifiable): 0.5263
+
+==========================================================================
+SUMMARY
+==========================================================================
+  Vanilla clean acc:          0.9400
+  Smoothed clean acc:         0.3333
+  ACR:                        inf
+  Global abstain rate:        0.0400
+  Spearman rho (margin/r):    0.0515  (p=3.74e-01)
+  Q1 abstain rate:            0.0267
+  Q4 abstain rate:            0.0133
+  AUROC margin->certifiable:  0.5263
+  Total runtime:              106.4s
+==========================================================================
+INTERPRETATION
+  [INCONCLUSIVE] Weak or non-significant Spearman rho.  The margin-
+  radius link is not clearly established on this model/dataset.
+==========================================================================

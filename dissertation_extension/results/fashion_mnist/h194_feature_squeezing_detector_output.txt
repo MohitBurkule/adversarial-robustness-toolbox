@@ -1,0 +1,48 @@
+============================================================
+H194  Feature-squeezing as vulnerability predictor
+============================================================
+Dataset : fashion_mnist  |  test subset : 500
+Clean accuracy : 0.9300
+Fraction class-change after 2-bit squeeze : 0.0800
+Fraction class-change after 4-bit squeeze : 0.0240
+Running FGSM …
+Running PGD …
+FGSM attack success rate : 0.8160
+PGD  attack success rate : 1.0000
+
+── AUROCs (higher = better predictor of vulnerability) ──
+FGSM success prediction:
+  2-bit squeeze score → FGSM: 0.9421
+  4-bit squeeze score → FGSM: 0.9647
+  Neg-margin          → FGSM: 0.9657
+PGD success prediction:
+  2-bit squeeze score → PGD : n/a (degenerate labels)
+  4-bit squeeze score → PGD : n/a (degenerate labels)
+  Neg-margin          → PGD : n/a (degenerate labels)
+
+── Per-decile FGSM success rate (by 2-bit squeeze score) ──
+  Decile  1  (sq2 ≥ 0.0000): n= 50  FGSM-success=0.060
+  Decile  2  (sq2 ≥ 0.0000): n= 50  FGSM-success=0.520
+  Decile  3  (sq2 ≥ 0.0000): n= 50  FGSM-success=0.780
+  Decile  4  (sq2 ≥ 0.0000): n= 50  FGSM-success=0.860
+  Decile  5  (sq2 ≥ 0.0002): n= 50  FGSM-success=1.000
+  Decile  6  (sq2 ≥ 0.0016): n= 50  FGSM-success=0.980
+  Decile  7  (sq2 ≥ 0.0065): n= 50  FGSM-success=0.960
+  Decile  8  (sq2 ≥ 0.0311): n= 50  FGSM-success=1.000
+  Decile  9  (sq2 ≥ 0.1865): n= 50  FGSM-success=1.000
+  Decile 10  (sq2 ≥ 0.6812): n= 50  FGSM-success=1.000
+
+── Squeeze score statistics ──
+  2-bit: mean=0.1756  std=0.3995  min=0.0000  max=1.9994
+  4-bit: mean=0.0586  std=0.1785  min=0.0000  max=1.7449
+
+── Summary ──
+  AUROC sq2→FGSM : 0.9421  |  sq4→FGSM : 0.9647
+  AUROC sq2→PGD  : nan  |  sq4→PGD  : nan
+  AUROC margin→FGSM : 0.9657  |  margin→PGD : nan
+
+Verdict: PARTIAL — squeezing score is above-chance but does not beat margin.
+
+Elapsed: 64.1s
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h194_feature_squeezing_detector_output.txt

@@ -1,0 +1,53 @@
+======================================================================
+H187: Per-sample Gaussian noise sensitivity vs adversarial vulnerability
+======================================================================
+Dataset: fashion_mnist | N=500 | eps=0.1 | sigma=0.1 | repeats=20
+
+Loading dataset...
+Test subset: torch.Size([500, 1, 28, 28])
+
+Building and training model (CNN width=32, seed=0, 10 epochs)...
+
+Clean accuracy on test subset: 0.9320
+
+Computing FGSM successes...
+Computing PGD successes...
+Computing Gaussian noise successes (20 trials)...
+
+Samples correctly classified (all methods): 466 / 500
+
+======================================================================
+AUROC Results (on correctly-classified samples only)
+======================================================================
+  Gaussian -> FGSM  : 0.6770  (predicts FGSM success from Gaussian)
+  Gaussian -> PGD   : nan  (predicts PGD success from Gaussian)
+  FGSM -> PGD       : nan  (baseline: FGSM predicts PGD)
+
+Attack success rates (on correctly-classified samples):
+  FGSM ASR  : 0.8305
+  PGD ASR   : 1.0000
+  Gaussian  : 0.2940
+
+Contingency fractions - FGSM vs Gaussian (on correctly-classified):
+  Both fail (robust to both)   : 0.1695
+  Both succeed (vulnerable)    : 0.2940
+  Only FGSM succeeds           : 0.5365
+  Only Gaussian succeeds       : 0.0000
+
+Contingency fractions - PGD vs Gaussian (on correctly-classified):
+  Both fail (robust to both)   : 0.0000
+  Both succeed (vulnerable)    : 0.2940
+  Only PGD succeeds            : 0.7060
+  Only Gaussian succeeds       : 0.0000
+
+======================================================================
+Interpretation
+======================================================================
+  Gaussian -> FGSM: 0.6770 — moderate-to-strong correlation (per-sample linkage exists)
+  Gaussian -> PGD : NaN (degenerate — check class balance)
+  FGSM     -> PGD : NaN (degenerate — check class balance)
+
+Elapsed: 86.7s
+DONE
+
+Output saved to: /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h187_gaussian_vs_adversarial_output.txt
