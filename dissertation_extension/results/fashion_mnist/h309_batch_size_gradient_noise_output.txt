@@ -1,0 +1,8 @@
+H309: Batch Size vs Gradient Noise and Robustness
+============================================================
+batch=  16 (epochs=  1): clean_acc=0.7835, fgsm_asr=0.6565, pgd_asr=0.7180, mean_margin=3.7903
+batch=  32 (epochs=  2): clean_acc=0.7955, fgsm_asr=0.6880, pgd_asr=0.7800, mean_margin=3.5038
+batch=  64 (epochs=  4): clean_acc=0.8770, fgsm_asr=0.7045, pgd_asr=0.8155, mean_margin=5.0330
+batch= 128 (epochs= 10): clean_acc=0.8835, fgsm_asr=0.7780, pgd_asr=0.9205, mean_margin=6.0048
+batch= 256 (epochs= 20): clean_acc=0.8810, fgsm_asr=0.7930, pgd_asr=0.9560, mean_margin=6.8645
+batch= 512 (epochs= 41): clean_acc=0.8790, fgsm_asr=0.8020, pgd_asr=0.9810, mean_margin=7.5010

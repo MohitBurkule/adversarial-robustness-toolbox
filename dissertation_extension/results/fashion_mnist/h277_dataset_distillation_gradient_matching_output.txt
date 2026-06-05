@@ -1,0 +1,32 @@
+Loading data...
+  train=60000  eval=300
+
+--- Baseline (full real data, 10 epochs) ---
+  [baseline_full] clean=0.9333  FGSM_ASR=0.8200  PGD_ASR=0.9900  margin=9.4559
+
+--- Distilling dataset (clean gradient matching, 200 steps) ---
+    outer step 50/200  match_loss=0.6931
+    outer step 100/200  match_loss=0.5892
+    outer step 150/200  match_loss=0.5222
+    outer step 200/200  match_loss=0.5449
+  Synthetic image pixel stats (mean, std per image):
+    class 0: mean=0.5214  std=0.2883
+    class 1: mean=0.3989  std=0.3126
+    class 2: mean=0.5837  std=0.2765
+    class 3: mean=0.4376  std=0.2963
+    class 4: mean=0.5916  std=0.3059
+    class 5: mean=0.3157  std=0.2688
+    class 6: mean=0.5183  std=0.2343
+    class 7: mean=0.3424  std=0.2807
+    class 8: mean=0.5314  std=0.3092
+    class 9: mean=0.4888  std=0.3471
+
+--- Training on clean-distilled data (50 epochs) ---
+    train-on-syn epoch 10/50  loss=2.0008
+    train-on-syn epoch 20/50  loss=2.0622
+    train-on-syn epoch 30/50  loss=1.5902
+    train-on-syn epoch 40/50  loss=1.3085
+    train-on-syn epoch 50/50  loss=1.1257
+  [clean_distilled] clean=0.2200  FGSM_ASR=0.9167  PGD_ASR=0.9267  margin=-0.3620
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h277_dataset_distillation_gradient_matching_output.txt

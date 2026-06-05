@@ -1,0 +1,6 @@
+H367: Gradient Penalty with Mixup (AugMax-style)
+==================================================
+mode=std_mixup | clean=0.879 fgsm_asr=0.720 pgd_asr=0.966 margin=3.128
+mode=adv_mixup | clean=0.845 fgsm_asr=0.336 pgd_asr=0.364 margin=3.470
+mode=std_gradpen | clean=0.881 fgsm_asr=0.797 pgd_asr=0.946 margin=6.031
+mode=adv_mixup_gradpen | clean=0.842 fgsm_asr=0.341 pgd_asr=0.363 margin=3.497

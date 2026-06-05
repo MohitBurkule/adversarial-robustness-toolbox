@@ -1,0 +1,5 @@
+H361: Perceptually Aligned Gradient (PAG)
+==================================================
+lambda=0.000 | clean=0.885 fgsm_asr=0.767 pgd_asr=0.915 margin=6.075
+lambda=0.010 | clean=0.882 fgsm_asr=0.763 pgd_asr=0.913 margin=6.118
+lambda=0.100 | clean=0.878 fgsm_asr=0.766 pgd_asr=0.907 margin=6.270

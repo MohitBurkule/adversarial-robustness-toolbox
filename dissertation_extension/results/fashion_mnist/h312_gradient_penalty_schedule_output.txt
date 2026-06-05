@@ -1,0 +1,7 @@
+H312: Gradient Penalty Schedule vs Robustness
+============================================================
+schedule=none           : clean_acc=0.8830, fgsm_asr=0.7585, pgd_asr=0.9215, mean_margin=6.0770
+schedule=fixed          : clean_acc=0.8760, fgsm_asr=0.7705, pgd_asr=0.9305, mean_margin=6.0769
+schedule=linear_warmup  : clean_acc=0.8800, fgsm_asr=0.7880, pgd_asr=0.9330, mean_margin=5.9623
+schedule=cosine         : clean_acc=0.8805, fgsm_asr=0.7730, pgd_asr=0.9205, mean_margin=5.9849
+schedule=step           : clean_acc=0.8805, fgsm_asr=0.7705, pgd_asr=0.9275, mean_margin=5.9093

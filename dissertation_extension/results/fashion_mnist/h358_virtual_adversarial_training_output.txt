@@ -1,0 +1,6 @@
+H358: Virtual Adversarial Training (VAT)
+==================================================
+lambda=  0.0 | clean=0.876 fgsm_asr=0.752 pgd_asr=0.911 margin=5.968
+lambda=  0.1 | clean=0.873 fgsm_asr=0.750 pgd_asr=0.907 margin=6.079
+lambda=  1.0 | clean=0.879 fgsm_asr=0.743 pgd_asr=0.892 margin=6.078
+lambda= 10.0 | clean=0.874 fgsm_asr=0.657 pgd_asr=0.771 margin=5.068

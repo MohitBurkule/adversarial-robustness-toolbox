@@ -1,0 +1,47 @@
+========================================================================
+H268 - Certified vs Empirical Robustness
+========================================================================
+
+Loading fashion_mnist ...
+  Train: torch.Size([60000, 1, 28, 28])  Eval: torch.Size([200, 1, 28, 28])
+
+[1] Training model ...
+    Done in 25.1s  clean_acc=0.9150
+
+[2] Randomised smoothing (sigma=0.1, K=100) ...
+    Done in 1.1s
+    Certified robust (radius>0): 198/200
+    Certified radius stats: mean=0.3522  median=0.4753
+    Smooth accuracy (agrees with clean pred): 0.8650
+
+[3] Binary-search empirical min_eps (k=10) ...
+    Done in 18.3s
+    193/200 samples empirically flippable
+    min_eps stats (finite): mean=0.0565  median=0.0373
+
+[4] Correlation analysis ...
+  Valid samples for correlation: 166
+  Spearman rho(cert_radius, min_eps) = 0.6805  p=6.3993e-24
+  (Positive rho = certified robust samples also empirically robust)
+
+[5] Certified vs Empirical subset analysis ...
+  Certified robust: 198  Empirically robust (min_eps>0.1): 34
+  Of 171 certified-robust samples, 34 (19.9%) are also empirically robust
+  (Certified ⊆ Empirical: NO, only 20%)
+
+========================================================================
+SUMMARY
+========================================================================
+  clean_acc             = 0.9150
+  n_certified_robust    = 198/200
+  n_empirically_robust  = 34/200
+  Spearman rho(CR, ME)  = 0.6805  p=6.3993e-24
+
+INTERPRETATION
+------------------------------------------------------------------------
+  Verdict: SUPPORTED: certified and empirical robustness rank samples similarly
+
+Total time: 48.2s
+========================================================================
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h268_noise_certified_vs_empirical_robustness_output.txt

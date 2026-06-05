@@ -1,0 +1,31 @@
+H232 - Random Noise Padding Budget
+======================================================================
+Dataset: fashion_mnist, N_EVAL=300, EPS=0.1, PGD_STEPS=10
+   B   clean_acc   clean_acc_nop       ASR   core_energy   pad_energy
+----------------------------------------------------------------------
+  Training CNN with B=0 ...
+   0      0.8500          0.8500    0.9490        1.0000       0.0000
+  Training CNN with B=2 ...
+   2      0.8600          0.8200    0.9457        0.7195       0.2805
+  Training CNN with B=4 ...
+   4      0.8733          0.8133    0.9656        0.5582       0.4418
+  Training CNN with B=8 ...
+   8      0.8600          0.8167    0.9729        0.3671       0.6329
+
+Summary Table:
+   B   clean_acc   clean_acc_nop       ASR   core_energy   pad_energy
+----------------------------------------------------------------------
+   0      0.8500          0.8500    0.9490 (baseline)        1.0000       0.0000
+   2      0.8600          0.8200    0.9457    (1.00x)        0.7195       0.2805
+   4      0.8733          0.8133    0.9656    (1.02x)        0.5582       0.4418
+   8      0.8600          0.8167    0.9729    (1.03x)        0.3671       0.6329
+
+Interpretation:
+  core_energy: fraction of adversarial perturbation energy on 28x28 core
+  pad_energy:  fraction on padding pixels (wasted budget)
+  Hypothesis: larger B -> lower core_energy -> attacker wastes budget -> lower ASR
+
+  B=0 ASR=0.9490, B=8 ASR=0.9729
+  B=0 core_energy=1.0000, B=8 core_energy=0.3671
+  -> NOT CONFIRMED: padding did not reduce ASR
+  -> CONFIRMED: attacker wastes energy on padding pixels

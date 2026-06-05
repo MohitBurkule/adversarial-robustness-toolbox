@@ -1,0 +1,5 @@
+H370: FGSM-AT + ELLE Local Linearity Penalty
+==================================================
+lambda=0.000 | clean=0.803 fgsm_asr=0.311 pgd_asr=0.333 margin=2.571
+lambda=0.010 | clean=0.804 fgsm_asr=0.304 pgd_asr=0.334 margin=2.551
+lambda=0.100 | clean=0.798 fgsm_asr=0.312 pgd_asr=0.337 margin=2.576

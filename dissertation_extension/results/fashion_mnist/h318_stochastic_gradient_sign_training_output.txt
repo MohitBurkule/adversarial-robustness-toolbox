@@ -1,0 +1,6 @@
+H318: Stochastic Gradient Sign Flipping vs Robustness
+============================================================
+p_flip=0.00: clean_acc=0.8770, fgsm_asr=0.7715, pgd_asr=0.9235, mean_margin=6.1075
+p_flip=0.05: clean_acc=0.8825, fgsm_asr=0.7545, pgd_asr=0.9135, mean_margin=5.9067
+p_flip=0.10: clean_acc=0.8745, fgsm_asr=0.7560, pgd_asr=0.9165, mean_margin=5.8232
+p_flip=0.20: clean_acc=0.8775, fgsm_asr=0.7590, pgd_asr=0.9225, mean_margin=5.3758

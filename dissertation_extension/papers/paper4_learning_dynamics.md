@@ -187,6 +187,20 @@ The grokking phenomenon [10] — where generalisation emerges suddenly after ext
 
 ---
 
+## 6. Limitations and Future Work
+
+**Eval-set AUM.** Our AUM is computed over evaluation-set margins across 15 training epochs — not the training-set quantity of Pleiss et al. [11]. This non-standard definition biases AUM toward the final eval margin (Spearman 0.983), making redundancy partly definitional. A training-set AUM, requiring per-checkpoint per-sample margin storage over the full training set, would be a cleaner comparison but was computationally prohibitive.
+
+**Scope of null results.** Forgetting events and C-score are evaluated on Fashion-MNIST. SVHN, where robustness grows monotonically (rho=+0.92), is a counter-example — trajectory signals are informative on unconverged models. The "orthogonal" claim is scoped to converged standard models on simple datasets; practitioners should verify convergence before dismissing trajectory signals.
+
+**Single-seed trajectory analysis.** H157 training trajectories (rho values) are from one model per condition. Trajectory shape (especially the PGD-AT rho=−0.66 robust overfitting) may vary across seeds, though the directional finding is consistent with Rice et al. [7].
+
+**No multi-task signal.** All predictors are univariate. A multi-epoch margin sequence as a time-series feature (capturing trajectory *shape* not just mean) could recover signal beyond the final snapshot; this is unexplored.
+
+**Future work.** Compute training-set AUM for a proper Pleiss comparison. Extend forgetting-event analysis to SVHN and CIFAR-10 at matched convergence. Investigate per-sample robust overfitting trajectories under data augmentation (RandAugment, CutMix) to test whether augmentation stabilises the trajectory.
+
+---
+
 ## 6. Conclusion
 
 Training difficulty is orthogonal to adversarial vulnerability. Forgetting events (AUROC = 0.54) and C-score (AUROC = 0.53) predict adversarial vulnerability at chance levels on Fashion-MNIST, despite their utility for characterising learning-difficult samples in other contexts. The memorization proxy achieves AUROC = 0.9427 ± 0.006, but this success is explained by its indirect measurement of boundary proximity via ensemble disagreement, not by any capture of training difficulty. Training trajectory analysis confirms that per-sample robustness is flat across epochs on converged standard models (Spearman rho = −0.006), monotonically increasing on unconverged models like SVHN (rho = +0.92), and non-monotone with robust overfitting on PGD-AT models (rho = −0.66). These findings establish a clear conceptual distinction: boundary proximity and training difficulty are different properties of neural networks, and conflating them leads to predictors that fail despite intuitive appeal. Vulnerability prediction requires measures of the converged model's geometry, not its optimisation history.

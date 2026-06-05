@@ -1,0 +1,12 @@
+H300: Gradient Clipping Robustness
+============================================================
+mode=none T=None: clean=0.882 fgsm_asr=0.772 pgd_asr=0.925 margin=6.096 time=1.0s
+mode=global_norm T=0.5: clean=0.878 fgsm_asr=0.722 pgd_asr=0.966 margin=4.159 time=0.8s
+mode=per_layer_norm T=0.5: clean=0.879 fgsm_asr=0.773 pgd_asr=0.942 margin=5.411 time=1.5s
+mode=value T=0.5: clean=0.880 fgsm_asr=0.749 pgd_asr=0.920 margin=5.992 time=0.7s
+mode=global_norm T=1.0: clean=0.883 fgsm_asr=0.756 pgd_asr=0.968 margin=5.372 time=0.8s
+mode=per_layer_norm T=1.0: clean=0.882 fgsm_asr=0.759 pgd_asr=0.940 margin=6.116 time=1.5s
+mode=value T=1.0: clean=0.879 fgsm_asr=0.759 pgd_asr=0.921 margin=6.031 time=0.7s
+mode=global_norm T=5.0: clean=0.886 fgsm_asr=0.762 pgd_asr=0.934 margin=6.055 time=0.8s
+mode=per_layer_norm T=5.0: clean=0.884 fgsm_asr=0.762 pgd_asr=0.921 margin=5.810 time=1.4s
+mode=value T=5.0: clean=0.882 fgsm_asr=0.780 pgd_asr=0.922 margin=6.002 time=0.8s

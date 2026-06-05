@@ -1,0 +1,72 @@
+======================================================================
+H255  Label Smoothing vs Adversarial Robustness
+======================================================================
+
+[1] Loading fashion_mnist ...
+    Train: torch.Size([60000, 1, 28, 28])  Eval: torch.Size([300, 1, 28, 28])
+
+[2] Training 4 CNNs with label_smooth in [0.0, 0.05, 0.1, 0.2] ...
+
+  --- label_smooth=0.0 ---
+    clean acc   = 0.9267
+    FGSM ASR    = 0.8500
+    PGD  ASR    = 1.0000
+    mean margin = 9.5016
+    mean conf   = 0.9655
+
+  --- label_smooth=0.05 ---
+    clean acc   = 0.9233
+    FGSM ASR    = 0.7233
+    PGD  ASR    = 1.0000
+    mean margin = 3.8828
+    mean conf   = 0.9043
+
+  --- label_smooth=0.1 ---
+    clean acc   = 0.9267
+    FGSM ASR    = 0.6867
+    PGD  ASR    = 0.9967
+    mean margin = 3.3629
+    mean conf   = 0.8594
+
+  --- label_smooth=0.2 ---
+    clean acc   = 0.9367
+    FGSM ASR    = 0.6767
+    PGD  ASR    = 1.0000
+    mean margin = 2.7227
+    mean conf   = 0.7662
+
+[3] Summary Table
+------------------------------------------------------------------------------
+  Smooth   CleanAcc   FGSM_ASR   PGD_ASR   MeanMargin   MeanConf
+------------------------------------------------------------------------------
+    0.00     0.9267     0.8500    1.0000       9.5016     0.9655
+    0.05     0.9233     0.7233    1.0000       3.8828     0.9043
+    0.10     0.9267     0.6867    0.9967       3.3629     0.8594
+    0.20     0.9367     0.6767    1.0000       2.7227     0.7662
+------------------------------------------------------------------------------
+
+[4] Delta relative to baseline (alpha=0.0)
+      Smooth   dCleanAcc   dFGSM_ASR   dPGD_ASR   dMeanMargin
+        0.05     -0.0033     -0.1267    +0.0000       -5.6188
+        0.10     +0.0000     -0.1633    -0.0033       -6.1387
+        0.20     +0.0100     -0.1733    +0.0000       -6.7789
+
+[5] Spearman Correlations (smoothing alpha vs metrics)
+    rho(alpha, FGSM_ASR)   = -1.0000  (p=0.0000)
+    rho(alpha, PGD_ASR)    = -0.2582  (p=0.7418)
+    rho(alpha, mean_margin)= -1.0000  (p=0.0000)
+    rho(alpha, clean_acc)  = +0.6325  (p=0.3675)
+
+[6] Interpretation
+    Smoothing vs PGD ASR: rho=-0.258 -> robustness IMPROVES with smoothing
+    Effect on PGD robustness: not significant at alpha=0.05
+    Clean accuracy impact: minimal or positive.
+
+    At alpha=0.2 vs baseline:
+      Clean acc change: +0.0100
+      PGD ASR change:   -0.0000  (negative = more robust)
+
+Total time: 64.0s
+======================================================================
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h255_label_smoothing_robustness_output.txt

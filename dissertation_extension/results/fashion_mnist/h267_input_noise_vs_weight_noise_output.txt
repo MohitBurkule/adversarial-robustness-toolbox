@@ -1,0 +1,45 @@
+========================================================================
+H267 - Input Noise vs Weight Noise vs Dropout
+========================================================================
+
+Loading fashion_mnist ...
+  Train: torch.Size([60000, 1, 28, 28])  Test: torch.Size([2000, 1, 28, 28])
+
+[1] Training BASELINE (no noise) ...
+    Done in 24.5s  clean_acc=0.9300  PGD_ASR=1.0000
+
+[2] Training INPUT NOISE (sigma=0.15) ...
+    Done in 15.7s  clean_acc=0.8880  PGD_ASR=0.8960
+
+[3] Training WEIGHT NOISE (sigma=0.02) ...
+    Done in 13.4s  clean_acc=0.9260  PGD_ASR=0.9940
+
+[4] Training DROPOUT (p=0.3) ...
+    Done in 11.0s  clean_acc=0.9120  PGD_ASR=0.9920
+
+========================================================================
+SUMMARY TABLE
+========================================================================
+         Model   clean_acc    FGSM_ASR    PGD_ASR   mean_margin
+---------------------------------------------------------------
+      baseline      0.9300      0.8620     1.0000        9.6525
+   input_noise      0.8880      0.6700     0.8960        8.0331
+  weight_noise      0.9260      0.7920     0.9940        7.8170
+       dropout      0.9120      0.8100     0.9920        7.3127
+
+DELTA vs BASELINE
+         Model    dCleanAcc    dFGSM_ASR    dPGD_ASR     dMargin
+   input_noise      -0.0420      -0.1920     -0.1040     -1.6193
+  weight_noise      -0.0040      -0.0700     -0.0060     -1.8355
+       dropout      -0.0180      -0.0520     -0.0080     -2.3397
+
+INTERPRETATION
+------------------------------------------------------------------------
+  Most PGD-robust noise type: input_noise (PGD_ASR=0.8960)
+  Parameter notes: input_sigma=0.15, weight_sigma=0.02, dropout_p=0.3
+  Note: sigma values not calibrated to identical accuracy — interpret delta clean_acc
+
+Total time: 68.0s
+========================================================================
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h267_input_noise_vs_weight_noise_output.txt

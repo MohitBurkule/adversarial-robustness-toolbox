@@ -1,0 +1,16 @@
+H344: Input Jacobian Spectral Penalty
+============================================================
+Settings: N_TRAIN=6000, EPOCHS=10, LR=0.05, BATCH=128
+Penalty = σ_max(J)² estimated via random projection ||J^T u||² for u~N(0,I)
+Hypothesis: smaller Lipschitz constant → smoother model → more robust.
+
+lam=0: clean=0.8845 fgsm_asr=0.7780 pgd_asr=0.9235 margin=5.9505 spectral_norm=6.0313±1.7571
+lam=0.001: clean=0.8780 fgsm_asr=0.7170 pgd_asr=0.8590 margin=5.2648 spectral_norm=4.4381±1.4907
+lam=0.01: clean=0.8770 fgsm_asr=0.6115 pgd_asr=0.6845 margin=3.9972 spectral_norm=2.1871±0.6248
+
+============================================================
+SUMMARY
+Condition       Clean   FGSM_ASR    PGD_ASR     Margin   SpectralNorm
+lam=0          0.8845     0.7780     0.9235     5.9505         6.0313
+lam=0.001      0.8780     0.7170     0.8590     5.2648         4.4381
+lam=0.01       0.8770     0.6115     0.6845     3.9972         2.1871

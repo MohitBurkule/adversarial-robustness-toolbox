@@ -1,0 +1,30 @@
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py:1830: FutureWarning: Using a non-full backward hook when the forward contains multiple autograd Nodes is deprecated and will be removed in future versions. This hook will be missing some grad_input. Please use register_full_backward_hook to get the documented behavior.
+  self._maybe_warn_non_full_backward_hook(args, result, grad_fn)
+======================================================================
+H224 - Subject vs Background adversarial perturbation targeting
+======================================================================
+Device=cuda  N_eval=300  eps=0.1
+Training done in 50.9s
+Computing FGSM perturbations...
+FGSM ASR=0.823
+Computing GradCAM saliency...
+GradCAM done in 0.7s
+
+======================================================================
+RESULTS
+  Mean subject_energy (top 30% salient pixels): 0.2857
+  Mean background_energy (bot 30% salient px):  0.3053
+  Subject/background energy ratio:              0.936
+
+  AUROC(subject_energy -> FGSM_success):    0.5961
+  AUROC(background_energy -> FGSM_success): 0.5355
+  Spearman rho(subject_energy, margin):     -0.1672
+
+  Subject energy: success=0.2871  fail=0.2795
+  Background energy: success=0.3060  fail=0.3019
+
+INTERPRETATION
+  Perturbations concentrate MORE on background pixels.
+  Adversarial attacks may exploit low-saliency texture/background features.
+  Subject energy is a better predictor of FGSM success (AUROC diff=0.0607).
+======================================================================

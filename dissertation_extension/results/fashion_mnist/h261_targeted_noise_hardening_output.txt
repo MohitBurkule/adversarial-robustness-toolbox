@@ -1,0 +1,64 @@
+========================================================================
+H261 - Targeted Noise Hardening for Vulnerable Samples
+========================================================================
+
+[1] Loading fashion_mnist ...
+    Train: torch.Size([60000, 1, 28, 28])  Test: torch.Size([2000, 1, 28, 28])
+
+[2] Training BASELINE model (standard, no extra noise) ...
+    Done in 25.3s
+
+[3] Computing per-sample margin on training set ...
+    Margin computed for 60000 training samples in 1.2s
+    Margin stats: mean=10.3156  min=-7.7446  p25=5.5113  max=35.1248
+
+[4] Identifying bottom 25% most vulnerable training samples ...
+    Vulnerability threshold (margin <= 5.5113): 15000 samples (25.0%)
+
+[5] Training ADAPTIVE-NOISE model (vulnerable: sigma=0.15, rest: sigma=0.02) ...
+    Done in 46.5s
+
+[6] Training UNIFORM-NOISE model (all samples: sigma=0.1) ...
+    Done in 13.2s
+
+[7] Evaluating all 3 models on test set (N=500) ...
+  [baseline] clean_acc=0.9300  FGSM_ASR=0.8420  PGD_ASR=1.0000  mean_margin=9.6446  (0.1s)
+  [adaptive] clean_acc=0.9100  FGSM_ASR=0.7080  PGD_ASR=0.9540  mean_margin=9.2039  (0.0s)
+  [uniform] clean_acc=0.9160  FGSM_ASR=0.6840  PGD_ASR=0.9420  mean_margin=7.2393  (0.0s)
+
+[8] Per-group margin analysis: vulnerable vs non-vulnerable training samples ...
+    (Using train-set margin from BASELINE vs ADAPTIVE model)
+    Group           | Baseline margin | Adaptive margin | Delta
+    ----------------+-----------------+-----------------+--------
+    Vulnerable      |          3.0751 |          2.4326 | -0.6425
+    Non-vulnerable  |         12.7291 |         11.7452 | -0.9839
+
+    Targeted lift (delta_vuln - delta_nonvuln): +0.3414
+    (Positive = vulnerable samples benefited MORE from adaptive noise)
+
+[9] Summary Table
+--------------------------------------------------------------------------------
+       Model    CleanAcc    FGSM_ASR    PGD_ASR    MeanMargin
+--------------------------------------------------------------------------------
+    baseline      0.9300      0.8420     1.0000        9.6446
+    adaptive      0.9100      0.7080     0.9540        9.2039
+     uniform      0.9160      0.6840     0.9420        7.2393
+--------------------------------------------------------------------------------
+
+[10] Delta vs BASELINE
+       Model    dCleanAcc    dFGSM_ASR    dPGD_ASR    dMeanMargin
+    adaptive      -0.0200      -0.1340     -0.0460        -0.4408
+     uniform      -0.0140      -0.1580     -0.0580        -2.4054
+
+[11] Interpretation
+    Adaptive vs Baseline: PGD_ASR -0.0460, CleanAcc -0.0200
+    Uniform  vs Baseline: PGD_ASR -0.0580
+
+    Verdict: SUPPORTED: targeted noise hardening improves robustness with minimal clean accuracy cost
+    Targeted lift on vulnerable group: +0.3414 (positive — targeted samples improved more)
+    Adaptive better than uniform noise: False
+
+Total time: 90.4s
+========================================================================
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h261_targeted_noise_hardening_output.txt

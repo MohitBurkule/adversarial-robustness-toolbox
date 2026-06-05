@@ -1,0 +1,6 @@
+H328: Input Gradient Clipping Training
+baseline: clean=0.8805 fgsm_asr=0.7730 pgd_asr=0.9245 margin=5.9701
+tau=0(all): clean=0.8765 fgsm_asr=0.7560 pgd_asr=0.9045 margin=6.1782
+tau=0.5: clean=0.8810 fgsm_asr=0.7705 pgd_asr=0.9215 margin=6.0138
+tau=1.0: clean=0.8805 fgsm_asr=0.7785 pgd_asr=0.9265 margin=6.1522
+tau=2.0: clean=0.8780 fgsm_asr=0.7785 pgd_asr=0.9315 margin=5.9565

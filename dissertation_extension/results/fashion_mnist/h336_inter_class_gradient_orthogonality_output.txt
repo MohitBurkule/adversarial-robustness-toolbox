@@ -1,0 +1,15 @@
+H336: Inter-Class Gradient Orthogonality Penalty
+============================================================
+Settings: N_TRAIN=6000, EPOCHS=10, LR=0.05, BATCH=128
+Penalty = sum_{c≠c'} |cosine(g_c, g_c')| where g_c = per-class mean gradient
+
+lam=0: clean=0.8815 fgsm_asr=0.7660 pgd_asr=0.9175 margin=5.8962
+lam=0.001: clean=0.8805 fgsm_asr=0.7695 pgd_asr=0.9175 margin=6.2345
+lam=0.01: clean=0.8810 fgsm_asr=0.7625 pgd_asr=0.9190 margin=6.2451
+
+============================================================
+SUMMARY
+Condition          Clean   FGSM_ASR    PGD_ASR     Margin
+lam=0             0.8815     0.7660     0.9175     5.8962
+lam=0.001         0.8805     0.7695     0.9175     6.2345
+lam=0.01          0.8810     0.7625     0.9190     6.2451

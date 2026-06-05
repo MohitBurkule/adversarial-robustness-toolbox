@@ -1,0 +1,44 @@
+==========================================================================
+=== H215: L-Ball Region Training — margin calibration ===
+==========================================================================
+Device=cuda  dataset=fashion_mnist  eps=0.1  sigma=0.1  N_EVAL=300
+
+--- 1. Training: standard ---
+  clean_acc = 0.850
+  FGSM ASR = 0.702  PGD ASR = 0.945
+  margin mean=6.276 std=6.067
+  Computing certified-radius proxy (50 MC samples)...
+  cert_radius mean=0.2259 std=0.1253
+  Spearman rho(margin, cert_radius) = 0.7510  p=1.1720e-55
+  (6.7s)
+
+--- 1. Training: smooth_at ---
+  clean_acc = 0.853
+  FGSM ASR = 0.602  PGD ASR = 0.871
+  margin mean=6.234 std=6.035
+  Computing certified-radius proxy (50 MC samples)...
+  cert_radius mean=0.2479 std=0.1153
+  Spearman rho(margin, cert_radius) = 0.7164  p=1.6743e-48
+  (5.9s)
+
+--- 1. Training: fgsm_at ---
+  clean_acc = 0.793
+  FGSM ASR = 0.130  PGD ASR = 0.231
+  margin mean=2.747 std=3.162
+  Computing certified-radius proxy (50 MC samples)...
+  cert_radius mean=0.2409 std=0.1258
+  Spearman rho(margin, cert_radius) = 0.7298  p=3.9077e-51
+  (10.3s)
+
+==========================================================================
+--- Summary ---
+Regime          CleanAcc  FGSM_ASR  PGD_ASR  Mgn_mean  CR_mean  Spearman_ρ
+standard           0.850     0.702    0.945     6.276   0.2259      0.7510
+smooth_at          0.853     0.602    0.871     6.234   0.2479      0.7164
+fgsm_at            0.793     0.130    0.231     2.747   0.2409      0.7298
+==========================================================================
+Interpretation: higher Spearman ρ(margin, cert_radius) indicates better
+margin calibration — margin predicts certified robustness. Smooth-AT is
+expected to show tighter correlation than baseline; FGSM-AT may widen
+margins overall but may not improve calibration versus smoothed model.
+==========================================================================

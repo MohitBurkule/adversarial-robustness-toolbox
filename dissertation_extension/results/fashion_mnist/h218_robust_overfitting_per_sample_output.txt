@@ -1,0 +1,47 @@
+==========================================================================
+=== H218: Robust Overfitting — per-sample margin dynamics ===
+==========================================================================
+Device=cuda  dataset=fashion_mnist  N_EVAL=200  eps=0.1
+Checkpoints: [5, 10, 15, 20, 25, 30, 35, 40]
+
+--- 1. Training (PGD-AT, 40 epochs with margin snapshots) ---
+  epoch  5: clean=0.805  margin mean=2.108 std=2.633  AUROC=0.882  PGD_ASR=0.224
+  epoch 10: clean=0.735  margin mean=2.248 std=2.731  AUROC=0.897  PGD_ASR=0.163
+  epoch 15: clean=0.795  margin mean=2.655 std=2.950  AUROC=0.940  PGD_ASR=0.157
+  epoch 20: clean=0.820  margin mean=2.906 std=3.040  AUROC=0.925  PGD_ASR=0.171
+  epoch 25: clean=0.820  margin mean=3.205 std=3.447  AUROC=0.900  PGD_ASR=0.134
+  epoch 30: clean=0.835  margin mean=3.302 std=3.451  AUROC=0.909  PGD_ASR=0.156
+  epoch 35: clean=0.820  margin mean=3.381 std=3.592  AUROC=0.911  PGD_ASR=0.152
+  epoch 40: clean=0.825  margin mean=3.337 std=3.528  AUROC=0.915  PGD_ASR=0.145
+  Total training time: 95.4s
+
+--- 2. Per-sample overfit analysis ---
+  Fraction of overfit victims (delta > 0.1): 0.825
+  Spearman ρ(early_margin@ep5, delta): -0.0863  p=2.2410e-01
+  (negative ρ: low-margin samples at ep5 tend to overfit more)
+
+--- 3. Overfit fraction by initial-margin quartile ---
+  Q1 (margin -1.180..0.221): n=50  overfit_frac=0.780
+  Q2 (margin 0.221..1.176): n=50  overfit_frac=0.880
+  Q3 (margin 1.176..3.222): n=50  overfit_frac=0.980
+  Q4 (margin 3.222..9.436): n=50  overfit_frac=0.660
+
+==========================================================================
+--- Summary ---
+ Epoch  Mgn_mean  Mgn_std   AUROC
+     5      2.108     2.633    0.882
+    10      2.248     2.731    0.897
+    15      2.655     2.950    0.940
+    20      2.906     3.040    0.925
+    25      3.205     3.447    0.900
+    30      3.302     3.451    0.909
+    35      3.381     3.592    0.911
+    40      3.337     3.528    0.915
+
+  Overfit victim fraction: 0.825
+  Spearman ρ(early_margin, delta): -0.0863
+==========================================================================
+Interpretation: if low-margin samples at epoch 5 show larger delta,
+robust overfitting preferentially harms initially-hard samples — those
+that the model barely learned to classify robustly before overfitting.
+==========================================================================

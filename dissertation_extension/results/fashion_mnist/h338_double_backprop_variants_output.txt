@@ -1,0 +1,24 @@
+H338: Double Backprop Variants
+============================================================
+Settings: N_TRAIN=6000, EPOCHS=10, LR=0.05, BATCH=128, λ=0.01
+Variants: baseline, standard, correct_only, incorrect_only, loss_weighted
+
+(a) No penalty
+  clean=0.8810 fgsm_asr=0.7665 pgd_asr=0.9235 margin=6.1031
+(b) ||∇_x L||² on all samples
+  clean=0.8795 fgsm_asr=0.7670 pgd_asr=0.9245 margin=6.0043
+(c) ||∇_x L||² on correct samples only
+  clean=0.8770 fgsm_asr=0.7590 pgd_asr=0.9165 margin=5.9325
+(d) ||∇_x L||² on incorrect samples only
+  clean=0.8800 fgsm_asr=0.7750 pgd_asr=0.9225 margin=6.0299
+(e) ||∇_x L||² weighted by loss magnitude
+  clean=0.8795 fgsm_asr=0.7695 pgd_asr=0.9290 margin=5.9624
+
+============================================================
+SUMMARY
+Variant                 Clean   FGSM_ASR    PGD_ASR     Margin
+baseline               0.8810     0.7665     0.9235     6.1031
+standard               0.8795     0.7670     0.9245     6.0043
+correct_only           0.8770     0.7590     0.9165     5.9325
+incorrect_only         0.8800     0.7750     0.9225     6.0299
+loss_weighted          0.8795     0.7695     0.9290     5.9624

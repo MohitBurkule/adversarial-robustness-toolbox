@@ -1,0 +1,47 @@
+========================================================================
+H264 - Curriculum Noise Hardening
+========================================================================
+
+Loading fashion_mnist ...
+  Train: torch.Size([60000, 1, 28, 28])  Test: torch.Size([2000, 1, 28, 28])
+
+--- baseline ---
+  schedule: ['0.000', '0.000', '0.000', '0.000', '0.000', '0.000', '0.000', '0.000', '0.000', '0.000']
+  clean_acc=0.9200  FGSM_ASR=0.8420  PGD_ASR=1.0000  mean_margin=9.6254  (23.8s)
+
+--- constant_0.15 ---
+  schedule: ['0.150', '0.150', '0.150', '0.150', '0.150', '0.150', '0.150', '0.150', '0.150', '0.150']
+  clean_acc=0.9060  FGSM_ASR=0.6500  PGD_ASR=0.8960  mean_margin=7.9084  (16.2s)
+
+--- anneal_hi_to_lo ---
+  schedule: ['0.300', '0.270', '0.240', '0.210', '0.180', '0.150', '0.120', '0.090', '0.060', '0.030']
+  clean_acc=0.9240  FGSM_ASR=0.7240  PGD_ASR=0.9260  mean_margin=7.3175  (11.4s)
+
+--- reverse_lo_to_hi ---
+  schedule: ['0.000', '0.030', '0.060', '0.090', '0.120', '0.150', '0.180', '0.210', '0.240', '0.270']
+  clean_acc=0.8640  FGSM_ASR=0.5920  PGD_ASR=0.8660  mean_margin=7.6628  (11.2s)
+
+========================================================================
+SUMMARY TABLE
+========================================================================
+               Model   clean_acc    FGSM_ASR    PGD_ASR   mean_margin
+---------------------------------------------------------------------
+            baseline      0.9200      0.8420     1.0000        9.6254
+       constant_0.15      0.9060      0.6500     0.8960        7.9084
+     anneal_hi_to_lo      0.9240      0.7240     0.9260        7.3175
+    reverse_lo_to_hi      0.8640      0.5920     0.8660        7.6628
+
+DELTA vs BASELINE
+               Model    dCleanAcc    dFGSM_ASR    dPGD_ASR     dMargin
+       constant_0.15      -0.0140      -0.1920     -0.1040     -1.7169
+     anneal_hi_to_lo      +0.0040      -0.1180     -0.0740     -2.3079
+    reverse_lo_to_hi      -0.0560      -0.2500     -0.1340     -1.9626
+
+INTERPRETATION
+------------------------------------------------------------------------
+  Verdict: REFUTED: reverse curriculum (lo-to-hi) is better — fine-to-coarse learning
+
+Total time: 65.5s
+========================================================================
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h264_noise_curriculum_hardening_output.txt

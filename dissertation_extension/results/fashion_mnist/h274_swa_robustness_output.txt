@@ -1,0 +1,48 @@
+Loading data...
+  train=10000  test=500
+
+--- (a) Baseline (epoch 20) ---
+    epoch 5/20  loss=20.702
+    epoch 10/20  loss=10.158
+    epoch 15/20  loss=6.387
+    epoch 20/20  loss=2.049
+  [baseline_ep20] clean=0.8740  FGSM_ASR=0.8220  PGD_ASR=0.9780  margin=8.3126
+  Measuring sharpness...
+  sharpness=0.0215±0.0135
+
+--- (b) SWA-trajectory (mean of epochs 10,12,14,16,18,20) ---
+  [swa_trajectory] clean=0.8980  FGSM_ASR=0.7640  PGD_ASR=0.9400  margin=8.3255
+  Measuring sharpness...
+  sharpness=0.0070±0.0026
+
+--- (c) SWA-multiseed (5 seeds, 20 epochs each) ---
+  Training seed=0...
+    epoch 5/20  loss=20.419
+    epoch 10/20  loss=10.091
+    epoch 15/20  loss=5.778
+    epoch 20/20  loss=2.110
+  Training seed=1...
+    epoch 5/20  loss=21.462
+    epoch 10/20  loss=11.002
+    epoch 15/20  loss=6.705
+    epoch 20/20  loss=2.249
+  Training seed=2...
+    epoch 5/20  loss=20.419
+    epoch 10/20  loss=9.973
+    epoch 15/20  loss=5.948
+    epoch 20/20  loss=3.640
+  Training seed=3...
+    epoch 5/20  loss=21.350
+    epoch 10/20  loss=14.500
+    epoch 15/20  loss=6.245
+    epoch 20/20  loss=3.100
+  Training seed=4...
+    epoch 5/20  loss=22.498
+    epoch 10/20  loss=10.617
+    epoch 15/20  loss=4.957
+    epoch 20/20  loss=2.574
+  [swa_multiseed] clean=0.0860  FGSM_ASR=0.9540  PGD_ASR=1.0000  margin=-0.3613
+  Measuring sharpness...
+  sharpness=0.0017±0.0101
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h274_swa_robustness_output.txt

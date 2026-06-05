@@ -1,0 +1,12 @@
+Variant       CleanAcc  FGSM_ASR  PGD_ASR   Margin  GradNorm
+------------------------------------------------------------
+baseline        0.9320    0.8090   0.9936  10.0538    0.0050
+noise_b1        0.9075    0.8689   0.9785   6.3230    0.0042
+noise_b2        0.9245    0.8129   0.9886   9.2048    0.0054
+noise_b3        0.9230    0.8348   0.9930   9.0639    0.0056
+
+
+Key Findings (delta vs baseline):
+  noise_b1: ΔFGSM_ASR=+0.0599  ΔPGD_ASR=-0.0150  ΔGradNorm=-0.0008  ΔMargin=-3.7308
+  noise_b2: ΔFGSM_ASR=+0.0039  ΔPGD_ASR=-0.0049  ΔGradNorm=+0.0004  ΔMargin=-0.8490
+  noise_b3: ΔFGSM_ASR=+0.0258  ΔPGD_ASR=-0.0006  ΔGradNorm=+0.0006  ΔMargin=-0.9899

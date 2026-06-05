@@ -1,0 +1,48 @@
+H234 - LSB Bit-Plane Randomisation as Adversarial Smoothing
+================================================================================
+Dataset: fashion_mnist, N_EVAL=300, EPS=0.1, PGD_STEPS=10, EPOCHS=10
+VOTE_RUNS=10 (for majority vote test-time defence)
+eps=0.1 = 25/255 ≈ 5 bits
+
+  Training CNN with K=0 LSB flipping...
+  K=0: clean=0.8567, fgsm_asr=0.7121, pgd_asr=0.9572, mv_clean=0.8567, mv_fgsm_asr=0.7160
+
+  Training CNN with K=1 LSB flipping...
+  K=1: clean=0.8533, fgsm_asr=0.7109, pgd_asr=0.9609, mv_clean=0.8533, mv_fgsm_asr=0.7148
+
+  Training CNN with K=2 LSB flipping...
+  K=2: clean=0.8500, fgsm_asr=0.6471, pgd_asr=0.9529, mv_clean=0.8500, mv_fgsm_asr=0.6431
+
+  Training CNN with K=3 LSB flipping...
+  K=3: clean=0.8533, fgsm_asr=0.6836, pgd_asr=0.9688, mv_clean=0.8533, mv_fgsm_asr=0.6875
+
+  Training CNN with K=4 LSB flipping...
+  K=4: clean=0.8533, fgsm_asr=0.6641, pgd_asr=0.9492, mv_clean=0.8433, mv_fgsm_asr=0.5977
+
+================================================================================
+RESULTS TABLE
+  K   clean_acc   fgsm_asr   pgd_asr   mv_clean_acc   mv_fgsm_asr
+--------------------------------------------------------------------------------
+  0      0.8567     0.7121    0.9572         0.8567        0.7160
+  1      0.8533     0.7109    0.9609         0.8533        0.7148
+  2      0.8500     0.6471    0.9529         0.8500        0.6431
+  3      0.8533     0.6836    0.9688         0.8533        0.6875
+  4      0.8533     0.6641    0.9492         0.8433        0.5977
+
+Hypothesis check: K=1-2 bit flipping reduces ASR
+  Baseline (K=0): FGSM ASR=0.7121, PGD ASR=0.9572
+  K=1: FGSM drop=+0.0011, PGD drop=-0.0037, clean drop=+0.0033
+  K=2: FGSM drop=+0.0650, PGD drop=+0.0043, clean drop=+0.0067
+  K=3: FGSM drop=+0.0285, PGD drop=-0.0116, clean drop=+0.0033
+  K=4: FGSM drop=+0.0480, PGD drop=+0.0080, clean drop=+0.0033
+
+Majority vote effect (test-time K-flip, VOTE_RUNS=10)
+  K=1: mv_clean_delta=+0.0000, mv_fgsm_asr_delta=+0.0039
+  K=2: mv_clean_delta=+0.0000, mv_fgsm_asr_delta=-0.0039
+  K=3: mv_clean_delta=+0.0000, mv_fgsm_asr_delta=+0.0039
+  K=4: mv_clean_delta=-0.0100, mv_fgsm_asr_delta=-0.0664
+
+Conclusion:
+  Best PGD robustness at K=4 (PGD ASR=0.9492)
+  Best clean acc at K=0 (clean=0.8567)
+  -> K=4 best, outside K=1-2 prediction

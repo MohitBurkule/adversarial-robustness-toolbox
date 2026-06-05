@@ -1,0 +1,4 @@
+H360: Class-Conditional Gradient Alignment
+==================================================
+condition=baseline lam1=0 lam2=0 | clean=0.877 fgsm_asr=0.756 pgd_asr=0.914 margin=6.007
+condition=ccga lam1=0.01 lam2=0.001 | clean=0.884 fgsm_asr=0.752 pgd_asr=0.914 margin=6.057

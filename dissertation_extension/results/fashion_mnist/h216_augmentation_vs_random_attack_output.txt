@@ -1,0 +1,35 @@
+==========================================================================
+=== H216: Augmentation vs Random-Direction Attack ===
+==========================================================================
+Device=cuda  dataset=fashion_mnist  eps=0.1  N_EVAL=300
+
+--- Training: baseline ---
+  clean_acc=0.863  FGSM=0.691  RandFGSM=0.042  PGD=0.961  ratio=0.061  (6.9s)
+
+--- Training: hflip_crop ---
+  clean_acc=0.880  FGSM=0.701  RandFGSM=0.167  PGD=0.924  ratio=0.238  (32.8s)
+
+--- Training: cutout ---
+  clean_acc=0.853  FGSM=0.641  RandFGSM=0.105  PGD=0.961  ratio=0.165  (8.2s)
+
+--- Training: brightness ---
+  clean_acc=0.843  FGSM=0.692  RandFGSM=0.043  PGD=0.960  ratio=0.063  (6.2s)
+
+--- Training: gaussian_noise ---
+  clean_acc=0.843  FGSM=0.668  RandFGSM=0.032  PGD=0.949  ratio=0.047  (6.1s)
+
+==========================================================================
+--- Summary ---
+Augmentation        CleanAcc  FGSM_ASR  Rand_ASR  PGD_ASR  Rand/FGSM
+baseline               0.863     0.691     0.042    0.961      0.061
+hflip_crop             0.880     0.701     0.167    0.924      0.238
+cutout                 0.853     0.641     0.105    0.961      0.165
+brightness             0.843     0.692     0.043    0.960      0.063
+gaussian_noise         0.843     0.668     0.032    0.949      0.047
+==========================================================================
+Interpretation: ratio < 1 means augmented model is proportionally MORE
+robust to random attacks than to gradient attacks — augmentation diversity
+may confuse random directions more than targeted gradient steps.
+A ratio closer to 1.0 for augmented models vs baseline indicates that
+augmentation does NOT specifically confer extra defence vs random attacks.
+==========================================================================

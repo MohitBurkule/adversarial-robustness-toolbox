@@ -1,0 +1,16 @@
+Variant             CleanAcc  FGSM_ASR  PGD_ASR   Margin
+--------------------------------------------------------
+baseline              0.9215    0.7596   0.9978  10.0179
+fixed_noise           0.9200    0.7783   0.9978  10.1825
+learned_noise         0.9200    0.7875   0.9886  10.9464
+learned_noise_at      0.9180    0.0485   0.7663   7.1154
+
+
+Learned sigma values:
+  learned_noise: block1=0.0005  block2=0.0026  block3=0.0155
+  learned_noise_at: block1=0.0015  block2=0.0001  block3=0.0152
+
+Key Findings (delta vs baseline):
+  fixed_noise: ΔFGSM_ASR=+0.0186  ΔPGD_ASR=-0.0000  ΔMargin=+0.1646
+  learned_noise: ΔFGSM_ASR=+0.0279  ΔPGD_ASR=-0.0092  ΔMargin=+0.9285
+  learned_noise_at: ΔFGSM_ASR=-0.7112  ΔPGD_ASR=-0.2315  ΔMargin=-2.9026

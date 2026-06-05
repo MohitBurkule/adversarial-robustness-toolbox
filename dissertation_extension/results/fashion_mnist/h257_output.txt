@@ -1,0 +1,37 @@
+============================================================
+H257 — Batch Norm Statistics Shift vs Vulnerability
+============================================================
+
+[1] Found 3 BatchNorm2d layers:
+     features.1
+     features.5
+     features.9
+
+[2] Generating adversarial examples (PGD) ...
+
+[3] Collecting BN activations for clean and adversarial inputs ...
+     Layer features.1: clean=(300, 32), adv=(300, 32)
+     Layer features.5: clean=(300, 64), adv=(300, 64)
+     Layer features.9: clean=(300, 128), adv=(300, 128)
+
+[4] Computing per-sample BN shift ...
+  BN shift: mean=0.082450  std=0.014915  min=0.026753  max=0.146232
+
+[5] Computing vulnerability (PGD success) and clean margin ...
+  PGD ASR  : 0.9233  (277/300)
+  Margin   : mean=9.3468  std=6.5196
+
+[6] Per-layer BN shift statistics
+-------------------------------------------------------
+  features.1                      shift_mean=0.03295  rho_vs_pgd=+0.1284(p=0.026)  rho_vs_margin=-0.4037(p=0.000)
+  features.5                      shift_mean=0.09040  rho_vs_pgd=+0.0027(p=0.963)  rho_vs_margin=+0.1432(p=0.013)
+  features.9                      shift_mean=0.12401  rho_vs_pgd=+0.0326(p=0.574)  rho_vs_margin=-0.0112(p=0.847)
+
+[7] Aggregate BN shift correlation and AUROC
+-------------------------------------------------------
+  Spearman rho (BN shift vs PGD success): +0.0322  p=0.5787
+  Spearman rho (BN shift vs -margin):     -0.0279  p=0.6307
+  AUROC (BN shift -> PGD success):        0.5349
+
+Done in 0.7s
+============================================================

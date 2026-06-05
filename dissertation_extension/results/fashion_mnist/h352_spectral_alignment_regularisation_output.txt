@@ -1,0 +1,14 @@
+========================================================================
+H352 - Spectral Alignment Regularisation via FFT
+========================================================================
+Device=cuda  dataset=fashion_mnist  N_TRAIN=6000  eps=0.1
+lambda grid: [0, 0.01, 0.1, 1.0]
+  lambda=0      clean=0.882  fgsm_asr=0.769  pgd_asr=0.923  margin=6.046  (1.5s)
+  lambda=0.01   clean=0.887  fgsm_asr=0.762  pgd_asr=0.915  margin=5.996  (1.6s)
+  lambda=0.1    clean=0.882  fgsm_asr=0.779  pgd_asr=0.935  margin=5.974  (1.7s)
+  lambda=1.0    clean=0.879  fgsm_asr=0.750  pgd_asr=0.917  margin=6.168  (1.5s)
+
+Interpretation: Spectral alignment penalises frequency-domain differences
+between clean and adversarial inputs during training, encouraging the model
+to be invariant to high-frequency perturbations introduced by FGSM.
+========================================================================

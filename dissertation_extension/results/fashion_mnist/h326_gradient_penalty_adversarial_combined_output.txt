@@ -1,0 +1,7 @@
+H326: FGSM-AT + Gradient Penalty Combined
+baseline: clean=0.8800 fgsm_asr=0.7715 pgd_asr=0.9215 margin=6.0452
+FGSM-AT: clean=0.8070 fgsm_asr=0.2945 pgd_asr=0.3305 margin=3.0678
+FGSM-AT+gp(0.001): clean=0.8045 fgsm_asr=0.3010 pgd_asr=0.3375 margin=2.8797
+FGSM-AT+gp(0.01): clean=0.8085 fgsm_asr=0.3055 pgd_asr=0.3340 margin=2.8992
+FGSM-AT+gp(0.1): clean=0.8045 fgsm_asr=0.2985 pgd_asr=0.3310 margin=2.9319
+gp_only(0.01): clean=0.8825 fgsm_asr=0.7550 pgd_asr=0.9135 margin=6.0106

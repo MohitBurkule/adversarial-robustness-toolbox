@@ -382,6 +382,24 @@ def margin_of(logits, Y):
     return (correct - other).numpy()
 
 
+def margin(model, X, Y=None, batch=512):
+    """Convenience wrapper: compute per-sample margin for samples X.
+    Returns numpy array of shape (N,).
+    If Y is None, uses argmax of clean logits as the reference class.
+    """
+    model.eval()
+    with torch.no_grad():
+        parts = []
+        for i in range(0, X.size(0), batch):
+            parts.append(model(X[i:i + batch]).cpu())
+        logits = torch.cat(parts)
+    if Y is None:
+        Y_use = logits.argmax(1)
+    else:
+        Y_use = Y.cpu() if hasattr(Y, 'cpu') else torch.tensor(Y)
+    return margin_of(logits, Y_use)
+
+
 def safe_auroc(label, score):
     label = np.asarray(label).astype(int)
     if roc_auc_score is None or label.min() == label.max():

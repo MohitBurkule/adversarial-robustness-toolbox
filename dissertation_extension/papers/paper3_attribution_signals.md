@@ -215,6 +215,20 @@ The instability of SmoothGrad is somewhat surprising given that it averages over
 
 ---
 
+## 6. Limitations and Future Work
+
+**Class imbalance on AT models.** PGD-AT reduces ASR to ~8–10%, making "vulnerable" a minority class. AUROC is dominated by minority-class ranking and can be high-variance. A matched-ASR analysis (eps binary search per AT variant to achieve ~50% ASR) would give cleaner comparisons; we defer this.
+
+**Gradient masking not ruled out.** SmoothGrad collapse on PGD-AT is measured against PGD-10 labels. If PGD-AT exhibits gradient masking, both the labels and the SmoothGrad predictor are corrupted simultaneously. AutoAttack labels (H174) show a 2.7% miss rate on AT models, too small to reverse the collapse direction, but a full masking audit on AT models is recommended for any deployment use.
+
+**Single dataset for AT sweep.** Table 2's systematic AT × dataset sweep includes CIFAR-10, Imagenette, and SVHN, but the σ/K sweep (Table 3–4) is Fashion-MNIST only. Optimal sigma may differ on harder datasets where the boundary is less sharp.
+
+**GradCAM empirical result missing.** The Appendix argues by analogy that GradCAM should perform worse than IG; a direct measurement is absent. Future work should empirically close this gap.
+
+**Future work.** Measure SmoothGrad AUROC at matched ASR on AT models. Extend σ/K sweep to CIFAR-10. Evaluate GradCAM empirically. Test attribution predictors on certified-robust models (randomised smoothing) where in-ball flatness is maximised by design.
+
+---
+
 ## 6. Conclusion
 
 Noise-averaged attribution norms (SmoothGrad) achieve strong AUROC on standard models, reaching 0.9975 on Imagenette with PGD as the target attack. However, this advantage entirely collapses on adversarially trained models: SmoothGrad falls 0.026–0.416 AUROC units below the margin on FGSM-AT and PGD-AT models. SmoothGrad also exhibits 4x higher seed variance than plain gradient norm (std = 0.039 vs. 0.006), making single-run results unreliable. Integrated Gradients achieves only AUROC = 0.76, confirming that semantic attribution does not capture boundary proximity. We recommend plain input gradient L2 norm as the default attribution-based vulnerability predictor: it is computationally inexpensive (single pass), empirically stable, and partially robust to adversarial training. These findings constrain the theoretical account of SmoothGrad's advantage, pointing to an artefact of standard model gradient landscapes that does not generalise to adversarially trained models.

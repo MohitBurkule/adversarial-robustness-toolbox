@@ -1,0 +1,6 @@
+H362: Gradient Diversity Ensemble
+==================================================
+single_model | clean=0.879 fgsm_asr=0.773 pgd_asr=0.928 margin=6.237
+lambda=0.000 (ensemble) | clean=0.890 fgsm_asr=0.652 pgd_asr=0.758 margin=5.677
+lambda=0.010 (ensemble) | clean=0.891 fgsm_asr=0.656 pgd_asr=0.758 margin=5.607
+lambda=0.100 (ensemble) | clean=0.888 fgsm_asr=0.610 pgd_asr=0.741 margin=5.666

@@ -234,6 +234,20 @@ The near-identical AUROC of BNN uncertainty and RFNN margin (both approximately 
 
 ---
 
+## 6. Limitations and Future Work
+
+**Label and readout circularity.** All AUROCs in §4.9 (Table 6) score against the trained CNN's PGD vulnerability, and the readout is a supervised logistic classifier. The claim is "input geometry predicts the deployed model's vulnerability," not "random features are intrinsically robust." A label-free baseline (k-NN distance or distance-to-class-mean in pixel space) would isolate geometry from any fitted decision rule; this is the cleanest remaining control.
+
+**Single dataset, small eps.** §4.1–§4.2 use Fashion-MNIST and Imagenette; §4.9 uses Fashion-MNIST at ε=15/255. The Imagenette gap (0.038) suggests learned features matter more on harder datasets; this trend should be measured more finely (CIFAR-10, ImageNet, text/audio domains).
+
+**Three mismatched eps references.** The trained-CNN AUROC appears as 0.938 (§4.1, ε=8/255), 0.943 (§4.9, ε=15/255), and 0.972 (§4.2/H175, saturated). These are not inconsistencies but different experimental conditions; future tables should always annotate eps, readout, and step count.
+
+**Conv prior vs pure geometry.** §4.9 shows GaussProj ≈ RandomCNN ≈ RandomMLP (0.85–0.87), ruling out the conv prior as the decisive factor. However, the trained model still adds ~0.07 AUROC over these projections. Understanding what learned feature adds this refinement (class-boundary alignment? data-space curvature?) is the open question.
+
+**Future work.** Run label-free k-NN baseline. Extend to CIFAR-10 native resolution with a multi-seed matched-ASR evaluation. Investigate the 0.07 AUROC gap between random projections and trained features via probing classifiers on intermediate layers.
+
+---
+
 ## 6. Conclusion
 
 We have shown that per-sample adversarial vulnerability is primarily encoded in input-space geometry rather than learned representations. An RFNN with frozen random convolutional features achieves margin AUROC within 0.019 of a fully trained CNN on Fashion-MNIST (gap growing to 0.038 on Imagenette), while raw pixel statistics perform near chance. Bayesian uncertainty, gradient phase, and layer ablation experiments provide converging evidence. These results suggest that vulnerability-aware training curricula can be designed cheaply using random feature networks, and that improving per-sample adversarial robustness likely requires addressing the underlying data geometry rather than solely refining the learned representation.

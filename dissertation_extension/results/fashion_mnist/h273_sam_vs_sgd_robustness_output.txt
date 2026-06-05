@@ -1,0 +1,25 @@
+Loading data...
+  train=10000  test=500
+
+--- Training sgd_baseline ---
+    SGD epoch 5/10  loss=20.858
+    SGD epoch 10/10  loss=11.107
+  [sgd_baseline] clean=0.8880  FGSM_ASR=0.7260  PGD_ASR=0.8780  margin=6.5916
+  Measuring sharpness...
+  [sgd_baseline] sharpness=0.0195±0.0127
+
+--- Training sam_rho005 ---
+    SAM(rho=0.05) epoch 5/10  loss=22.224
+    SAM(rho=0.05) epoch 10/10  loss=12.985
+  [sam_rho005] clean=0.8820  FGSM_ASR=0.7080  PGD_ASR=0.9040  margin=5.5697
+  Measuring sharpness...
+  [sam_rho005] sharpness=0.0133±0.0059
+
+--- Training sam_rho020 ---
+    SAM(rho=0.2) epoch 5/10  loss=28.589
+    SAM(rho=0.2) epoch 10/10  loss=19.489
+  [sam_rho020] clean=0.8760  FGSM_ASR=0.6720  PGD_ASR=0.8140  margin=4.2262
+  Measuring sharpness...
+  [sam_rho020] sharpness=0.0063±0.0057
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h273_sam_vs_sgd_robustness_output.txt

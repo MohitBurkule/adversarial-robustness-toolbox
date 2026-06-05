@@ -1,0 +1,5 @@
+H363: Reverse-KL TRADES
+==================================================
+beta=1 | clean=0.835 fgsm_asr=0.326 pgd_asr=0.324 margin=4.055
+beta=3 | clean=0.798 fgsm_asr=0.334 pgd_asr=0.331 margin=3.542
+beta=6 | clean=0.723 fgsm_asr=0.386 pgd_asr=0.383 margin=2.654

@@ -1,0 +1,48 @@
+Device: cuda
+Generating FGSM adversarials...
+Generating PGD adversarials...
+
+Baseline  clean=0.860  fgsm=0.277  pgd=0.097
+
+   T  Exp        Acc    Margin   RecRate
+-----------------------------------------
+   0  clean    0.860    6.7397     0.860
+   0  fgsm     0.277    4.0286     0.277
+   0  pgd      0.097    5.5638     0.097
+   5  clean    0.860   10.6220     0.860
+   5  fgsm     0.713    4.3029     0.713
+   5  pgd      0.770    4.2517     0.770
+  10  clean    0.860   11.9068     0.860
+  10  fgsm     0.967    6.2382     0.967
+  10  pgd      0.997    7.3297     0.997
+  20  clean    0.860   12.8813     0.860
+  20  fgsm     0.997    8.1309     0.997
+  20  pgd      0.997    8.9066     0.997
+  50  clean    0.860   13.5230     0.860
+  50  fgsm     1.000    9.0125     1.000
+  50  pgd      1.000    9.5504     1.000
+
+--- Recovery rate (correct prediction after opt) vs T for adversarials ---
+
+FGSM adversarials:
+  T= 0  acc=0.277  margin=4.0286
+  T= 5  acc=0.713  margin=4.3029
+  T=10  acc=0.967  margin=6.2382
+  T=20  acc=0.997  margin=8.1309
+  T=50  acc=1.000  margin=9.0125
+
+PGD adversarials:
+  T= 0  acc=0.097  margin=5.5638
+  T= 5  acc=0.770  margin=4.2517
+  T=10  acc=0.997  margin=7.3297
+  T=20  acc=0.997  margin=8.9066
+  T=50  acc=1.000  margin=9.5504
+
+--- Clean margin vs T (does optimisation improve margin?) ---
+  T= 0  acc=0.860  margin=6.7397
+  T= 5  acc=0.860  margin=10.6220
+  T=10  acc=0.860  margin=11.9068
+  T=20  acc=0.860  margin=12.8813
+  T=50  acc=0.860  margin=13.5230
+
+Done in 176.2s

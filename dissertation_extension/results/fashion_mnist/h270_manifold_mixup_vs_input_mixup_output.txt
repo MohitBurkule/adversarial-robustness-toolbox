@@ -1,0 +1,15 @@
+Variant           CleanAcc  FGSM_ASR  PGD_ASR   Margin
+------------------------------------------------------
+baseline            0.9285    0.7480   0.9995  10.4660
+input_mixup         0.9230    0.6739   0.9957   2.8387
+manifold_mixup      0.9210    0.7041   1.0000   2.8767
+adv_mixup           0.8920    0.1362   0.2180   5.7492
+
+
+Key Findings (delta vs baseline):
+  input_mixup: ΔFGSM_ASR=-0.0741  ΔPGD_ASR=-0.0038  ΔMargin=-7.6273
+  manifold_mixup: ΔFGSM_ASR=-0.0439  ΔPGD_ASR=+0.0005  ΔMargin=-7.5893
+  adv_mixup: ΔFGSM_ASR=-0.6118  ΔPGD_ASR=-0.7814  ΔMargin=-4.7168
+
+Manifold Mixup vs Input Mixup — ΔFGSM_ASR=+0.0302
+Any variant beats baseline PGD_ASR: True

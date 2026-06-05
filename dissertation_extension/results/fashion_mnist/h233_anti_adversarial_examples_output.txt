@@ -1,0 +1,41 @@
+H233 - Anti-Adversarial Examples Training
+======================================================================
+Dataset: fashion_mnist, N_EVAL=300, EPS=0.1, PGD_STEPS=10, EPOCHS=10
+
+[1/4] Training baseline model...
+  Baseline: clean=0.8567, fgsm_asr=0.6965, pgd_asr=0.9416, margin=6.3217
+
+[2/4] Computing anti-adversarial training images...
+  Training anti-adversarial model on x_anti only...
+  Anti-adv:  clean=0.7833, fgsm_asr=0.9702, pgd_asr=1.0000, margin=5.3491
+
+[3/4] Training mixed model on concat(x, x_anti)...
+  Mixed:     clean=0.8600, fgsm_asr=0.8178, pgd_asr=0.9922, margin=7.3292
+
+[4/4] Selecting top-20% highest-margin training samples...
+  Using 1200 samples (from 6000 total)
+  Top20pct:  clean=0.4600, fgsm_asr=0.1739, pgd_asr=0.4275, margin=-8.9610
+
+======================================================================
+RESULTS TABLE
+Model                  clean_acc   fgsm_asr   pgd_asr   mean_margin
+----------------------------------------------------------------------
+baseline                  0.8567     0.6965    0.9416        6.3217
+anti_adversarial          0.7833     0.9702    1.0000        5.3491
+mixed                     0.8600     0.8178    0.9922        7.3292
+top20pct                  0.4600     0.1739    0.4275       -8.9610
+
+Hypothesis A: anti-adversarial training improves clean acc, reduces robustness
+  Clean acc: anti=0.7833 vs base=0.8567 -> NOT higher
+  PGD ASR:   anti=1.0000 vs base=0.9416 -> higher ASR = less robust (Hyp A partial)
+  -> Hypothesis A: NOT SUPPORTED
+
+Hypothesis B: top-20% has highest clean acc but worst robustness
+  Top20pct clean_acc=0.4600 (highest? False)
+  Top20pct PGD ASR=0.4275 (worst robustness? False)
+  -> Hypothesis B: NOT SUPPORTED
+
+Margin distribution shift (model 2 anti_adversarial vs baseline):
+  Baseline:       mean=6.3217, std=6.2054, pct_neg=0.1433
+  Anti-adversarial: mean=5.3491, std=6.5891, pct_neg=0.2167
+  Margin shift: -0.9726 (negative = anti-adv decreases margins)

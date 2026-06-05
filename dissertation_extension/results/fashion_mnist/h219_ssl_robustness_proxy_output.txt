@@ -1,0 +1,38 @@
+==========================================================================
+=== H219: SSL vs Supervised — robustness of representations ===
+==========================================================================
+Device=cuda  dataset=fashion_mnist  eps=0.1  N_EVAL=300
+
+--- 1. Supervised CNN ---
+  clean=0.850  FGSM=0.727  PGD=0.897  mgn=6.442±6.272  (1.1s)
+
+--- 2. SimCLR-lite pretraining ---
+    SimCLR epoch 5/20  loss=3.769
+    SimCLR epoch 10/20  loss=3.721
+    SimCLR epoch 15/20  loss=3.702
+    SimCLR epoch 20/20  loss=3.689
+  Training linear head...
+  clean=0.833  FGSM=0.773  PGD=0.943  mgn=2.451±2.578  (6.5s)
+
+--- 3. Rotation-prediction SSL ---
+    RotSSL epoch 5/20
+    RotSSL epoch 10/20
+    RotSSL epoch 15/20
+    RotSSL epoch 20/20
+  Training linear head...
+  clean=0.820  FGSM=0.903  PGD=1.000  mgn=3.671±3.915  (3.1s)
+
+==========================================================================
+--- Summary ---
+Model           CleanAcc  FGSM_ASR  PGD_ASR  Mgn_mean  Mgn_std
+supervised         0.850     0.727    0.897     6.442    6.272
+simclr_lite        0.833     0.773    0.943     2.451    2.578
+rotation_ssl       0.820     0.903    1.000     3.671    3.915
+==========================================================================
+Interpretation: if SSL-pretrained models (SimCLR/Rotation) show lower
+PGD ASR or higher margins than the supervised model — despite no label
+information during pretraining — this suggests that label-free feature
+learning can incidentally produce more robust representations.
+Note: SSL models here use a smaller encoder (width=8) vs supervised (32)
+to keep compute similar; capacity differences should be considered.
+==========================================================================

@@ -1,0 +1,75 @@
+Device: cuda
+Clean accuracy: 0.857
+
+Computing PGD-20 trajectories for 50 source images...
+Running trajectory transfer experiment...
+Running from-scratch PGD-20 on target images (upper bound)...
+Computing universal adversarial delta...
+Running random walk baseline...
+
+============================================================
+RESULTS
+============================================================
+
+ASR(trajectory_transfer)  = 0.162
+ASR(from_scratch PGD-20)  = 1.000  [upper bound]
+ASR(universal_delta)      = 0.100
+ASR(random_walk)          = 0.200
+
+Spearman rho (source_margin vs transfer_ASR): rho=-0.2162  p=0.1315
+  Negative rho => higher-margin sources yield lower transfer ASR (expected)
+
+--- Per-source transfer ASR (source_margin vs ASR) ---
+ Src    Margin   TransferASR
+        0.0489         0.150
+        0.5278         0.150
+        0.7487         0.150
+        0.7703         0.200
+        0.8437         0.150
+        1.4592         0.100
+        1.6058         0.200
+        1.6097         0.150
+        2.0175         0.200
+        2.4689         0.050
+        3.0699         0.250
+        3.2502         0.050
+        3.6826         0.150
+        3.9117         0.200
+        3.9405         0.200
+        4.0517         0.300
+        4.2587         0.200
+        4.5046         0.150
+        4.7150         0.200
+        5.0981         0.100
+        5.1377         0.200
+        5.2081         0.200
+        5.4159         0.300
+        5.9242         0.250
+        6.2465         0.100
+        6.2770         0.150
+        6.9939         0.200
+        7.3731         0.150
+        7.3764         0.200
+        7.5072         0.150
+        7.7178         0.150
+        7.8273         0.150
+        7.9576         0.250
+        8.6362         0.200
+        9.0173         0.100
+        9.2143         0.100
+       10.1848         0.150
+       10.6524         0.150
+       10.9003         0.200
+       11.9447         0.200
+       12.8428         0.100
+       13.2151         0.150
+       14.0118         0.150
+       14.7466         0.150
+       15.0641         0.200
+       15.1905         0.100
+       15.2405         0.150
+       15.9466         0.100
+       17.0955         0.050
+       20.0341         0.100
+
+Done in 6.5s

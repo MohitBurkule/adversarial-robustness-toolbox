@@ -1,0 +1,5 @@
+H314: Natural Gradient Robustness (SGD vs Adam vs Diagonal NG)
+============================================================
+SGD     : clean_acc=0.8850, fgsm_asr=0.7785, pgd_asr=0.9330, mean_margin=5.9716
+Adam    : clean_acc=0.8685, fgsm_asr=0.8220, pgd_asr=0.9925, mean_margin=5.6336
+DiagNG  : clean_acc=0.6370, fgsm_asr=0.3675, pgd_asr=0.4020, mean_margin=3737.3352

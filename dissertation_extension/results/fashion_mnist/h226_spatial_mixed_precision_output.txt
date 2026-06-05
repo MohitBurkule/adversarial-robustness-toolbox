@@ -1,0 +1,35 @@
+Loading Fashion-MNIST …
+Computing patch variance threshold on training set …
+Threshold (median patch var): 0.003869
+
+[Baseline 8-bit] Training …
+  clean=0.927  fgsm=0.831  pgd=1.000
+
+[Baseline 3-bit] Quantising training data …
+  clean=0.940  fgsm=0.801  pgd=1.000
+
+[Baseline 5-bit] Quantising training data …
+  clean=0.930  fgsm=0.814  pgd=1.000
+
+[Mixed precision 3/8-bit] Quantising training data …
+  clean=0.933  fgsm=0.814  pgd=1.000
+
+Analysing perturbation energy distribution (on 8-bit model, first 100 test samples) …
+  PGD energy in 3-bit (low-var) patches: 0.436
+  PGD energy in 8-bit (high-var) patches: 0.564
+
+======================================================================
+Condition                  Clean Acc   FGSM ASR    PGD ASR
+----------------------------------------------------------------------
+8bit_baseline                  0.927      0.831      1.000
+3bit_uniform                   0.940      0.801      1.000
+5bit_uniform                   0.930      0.814      1.000
+mixed_3_8bit                   0.933      0.814      1.000
+======================================================================
+
+Perturbation energy fractions (PGD vs 8-bit model, N=100):
+  3-bit (low-var) patches : 0.436
+  8-bit (high-var) patches: 0.564
+  Hypothesis: attacker forced to high-var patches → SUPPORTED
+
+Done.

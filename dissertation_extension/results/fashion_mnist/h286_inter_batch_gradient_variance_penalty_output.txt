@@ -1,0 +1,44 @@
+
+=== λ=0.0 ===
+  Training done in 5.3s
+  Mean batch variance: 1.3230
+  Computing Hutchinson trace proxy...
+  clean_acc=0.8855  fgsm_asr=0.4470  pgd_asr=0.5395  mean_margin=9.1992  hess_trace=2.8925
+
+=== λ=0.001 ===
+  Training done in 4.0s
+  Mean batch variance: 1.2298
+  Computing Hutchinson trace proxy...
+  clean_acc=0.8960  fgsm_asr=0.4240  pgd_asr=0.5335  mean_margin=9.0767  hess_trace=2.6229
+
+=== λ=0.01 ===
+  Training done in 3.4s
+  Mean batch variance: 1.3480
+  Computing Hutchinson trace proxy...
+  clean_acc=0.8880  fgsm_asr=0.5010  pgd_asr=0.5795  mean_margin=8.3499  hess_trace=2.3851
+
+=== λ=0.1 ===
+  Training done in 3.2s
+  Mean batch variance: 1.1421
+  Computing Hutchinson trace proxy...
+  clean_acc=0.8865  fgsm_asr=0.5360  pgd_asr=0.6190  mean_margin=8.3128  hess_trace=1.7073
+
+H286 Inter-Batch Gradient Variance Penalty — Results
+============================================================
+Dataset: fashion_mnist  N_train=10000  Epochs=15  Seed=0
+EPS_FGSM=0.1  EPS_PGD=0.1  PGD_STEPS=10
+
+     lam   clean_acc   fgsm_asr   pgd_asr   mean_margin   batch_var   hess_trace   time_s
+-----------------------------------------------------------------------------------------
+  0.0000      0.8855     0.4470    0.5395        9.1992      1.3230       2.8925      5.3
+  0.0010      0.8960     0.4240    0.5335        9.0767      1.2298       2.6229      4.0
+  0.0100      0.8880     0.5010    0.5795        8.3499      1.3480       2.3851      3.4
+  0.1000      0.8865     0.5360    0.6190        8.3128      1.1421       1.7073      3.2
+
+Analysis:
+- λ=0.0 is standard SGD baseline
+- Decreasing fgsm_asr/pgd_asr with increasing λ → penalty improves robustness
+- Hutchinson trace proxy should anti-correlate with robustness (lower = flatter)
+- Mean batch variance should decrease with higher λ (penalty achieves goal)
+
+Results saved to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h286_inter_batch_gradient_variance_penalty_output.txt

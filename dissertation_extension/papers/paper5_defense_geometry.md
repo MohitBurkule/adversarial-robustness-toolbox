@@ -232,6 +232,20 @@ The contrast between curvature regularization (CURE, AUROC +0.003) and represent
 
 ---
 
+## 6. Limitations and Future Work
+
+**Single seed and single model per defense.** Each defense result (SAT, FAT, RSLAD, ALP, CURE, MarginWeighted) is from one trained model, one seed. AUROC differences of 0.003–0.019 between defenses are within plausible seed variance. The gross hierarchy (AT-methods preserve AUROC; augmentation-methods destroy it; MarginWeighted collapses) is robust, but fine-grained within-group rankings should be treated as indicative.
+
+**Gradient masking not ruled out for ALP.** ALP's FGSM success rate drops to near 0 in some evaluations (appendix to H119), which is a canonical gradient masking signal. If ALP masks gradients, its low margin AUROC may reflect corrupted labels rather than boundary geometry scrambling. AutoAttack evaluation on ALP is the necessary check; we did not run it.
+
+**Augmentation-based defenses from earlier hypotheses.** CURE, AugMix, Manifold Mixup, and ALP results (Table 2) are from H118–H124, not re-run under the corrected evaluation protocol used for Table 1. Direct comparison across Tables 1 and 2 should be made cautiously.
+
+**Single epsilon.** All Fashion-MNIST results use ε=15/255; CIFAR-10/SVHN use ε=8/255. Margin AUROC at matched ASR (Paper 1, H175) shows AUROC is ε-stable for standard models, but this has not been verified for defended models, where the effective attack budget interacts with the defense geometry.
+
+**Future work.** Re-run augmentation-based defenses (ALP, CURE, AugMix) under the corrected protocol with AutoAttack labels and multi-seed CIs. Evaluate margin AUROC as a training signal (directly optimise margin AUROC as a regulariser). Extend to certified defenses (randomised smoothing) where margin AUROC should be highest by construction.
+
+---
+
 ## 6. Conclusion
 
 We have introduced margin predictability (margin AUROC) as a third diagnostic for adversarial defenses, complementing the standard clean/adversarial accuracy pair. Across Fashion-MNIST, CIFAR-10, and SVHN, we find that: (1) AT-based defenses (SAT, FAT, RSLAD) preserve margin AUROC relative to the vanilla baseline; (2) augmentation-based defenses (AugMix, Manifold Mixup, ALP) substantially reduce it; (3) extreme hard-sample weighting (MarginWeighted) causes complete model collapse on every dataset tested; and (4) FAT provides the best combination of clean accuracy, adversarial robustness, and geometric coherence. We recommend margin AUROC as a routine third metric in adversarial robustness benchmarking. Future work should investigate whether margin AUROC predicts performance under unseen attacks, and whether it can be used as a training signal to explicitly regularize boundary geometry.

@@ -1,0 +1,25 @@
+Loading data...
+  train=6000  test=500
+
+--- Training standard model ---
+    std epoch 5/10  loss=14.108
+    std epoch 10/10  loss=7.107
+
+--- Training PGD-AT model ---
+    AT epoch 5/10  loss=44.210
+    AT epoch 10/10  loss=39.277
+
+--- Interpolation sweep ---
+  alpha=0.0: train_loss=0.0978  clean=0.8760  FGSM_ASR=0.7480  PGD_ASR=0.9280  margin=5.8484
+  alpha=0.1: train_loss=0.1144  clean=0.8720  FGSM_ASR=0.6800  PGD_ASR=0.8720  margin=5.4509
+  alpha=0.2: train_loss=0.1511  clean=0.8700  FGSM_ASR=0.6320  PGD_ASR=0.7860  margin=4.9041
+  alpha=0.3: train_loss=0.2141  clean=0.8560  FGSM_ASR=0.5760  PGD_ASR=0.7060  margin=4.2563
+  alpha=0.4: train_loss=0.3024  clean=0.8500  FGSM_ASR=0.5200  PGD_ASR=0.6140  margin=3.5633
+  alpha=0.5: train_loss=0.4059  clean=0.8400  FGSM_ASR=0.4740  PGD_ASR=0.5500  margin=2.9141
+  alpha=0.6: train_loss=0.5045  clean=0.8140  FGSM_ASR=0.4180  PGD_ASR=0.4660  margin=2.3877
+  alpha=0.7: train_loss=0.5698  clean=0.7920  FGSM_ASR=0.3780  PGD_ASR=0.4020  margin=2.0328
+  alpha=0.8: train_loss=0.5828  clean=0.7920  FGSM_ASR=0.3460  PGD_ASR=0.3560  margin=1.8952
+  alpha=0.9: train_loss=0.5600  clean=0.7680  FGSM_ASR=0.3320  PGD_ASR=0.3320  margin=1.8975
+  alpha=1.0: train_loss=0.5533  clean=0.7640  FGSM_ASR=0.3320  PGD_ASR=0.3340  margin=1.7907
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h275_mode_connectivity_standard_vs_at_output.txt

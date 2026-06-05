@@ -1,0 +1,41 @@
+Loading data...
+  train=10000  test=500
+
+--- Training baseline (sn=False, wd=0.0005) ---
+    epoch 5/10  loss=20.495
+    epoch 10/10  loss=11.526
+  [baseline] clean=0.8720  FGSM_ASR=0.7360  PGD_ASR=0.8980  margin=5.6888
+  [baseline] mean_spectral_norm=2.2742
+
+--- Training sn_only (sn=True, wd=0.0005) ---
+    epoch 5/10  loss=23.774
+    epoch 10/10  loss=14.590
+  [sn_only] clean=0.8680  FGSM_ASR=0.7980  PGD_ASR=0.9640  margin=4.2695
+  [sn_only] mean_spectral_norm=1.0149
+
+--- Training wd_only (sn=False, wd=0.01) ---
+    epoch 5/10  loss=28.354
+    epoch 10/10  loss=27.117
+  [wd_only] clean=0.8440  FGSM_ASR=0.7240  PGD_ASR=0.8380  margin=2.6117
+  [wd_only] mean_spectral_norm=1.0961
+
+--- Training sn_and_wd (sn=True, wd=0.01) ---
+    epoch 5/10  loss=33.887
+    epoch 10/10  loss=30.808
+  [sn_and_wd] clean=0.8420  FGSM_ASR=0.8040  PGD_ASR=0.9020  margin=2.8882
+  [sn_and_wd] mean_spectral_norm=1.0631
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h276_spectral_norm_implicit_at_output.txt
+  features.8: 1.0024
+    head.1: 1.2099
+    head.3: 1.1019
+
+Elapsed: 31.8s
+
+ANALYSIS
+--------
+SN reduces mean spectral norm: True  (base=2.2742, sn=1.0149)
+SN-only PGD_ASR delta vs baseline:   +0.0660
+WD-only PGD_ASR delta vs baseline:   -0.0600
+SN+WD   PGD_ASR delta vs baseline:   +0.0040
+Verdict: Spectral norm alone does NOT provide meaningful adversarial robustness without AT.

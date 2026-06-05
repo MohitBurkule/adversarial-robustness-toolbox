@@ -1,0 +1,47 @@
+============================================================
+H256 — Input Complexity vs Adversarial Vulnerability
+============================================================
+
+[1] Computing per-sample complexity features ...
+  pixel_std  : mean=0.3227  std=0.0754
+  pixel_ent  : mean=1.9533  std=0.3984
+  jpeg_size  : mean=602.5  std=59.5
+
+[2] Computing clean margins ...
+  margin     : mean=9.5087  std=6.8650
+
+[3] Running FGSM attack ...
+  FGSM ASR   : 0.7567  (227/300)
+
+[4] Running PGD attack ...
+  PGD  ASR   : 0.9133  (274/300)
+
+[5] Correlation analysis
+-------------------------------------------------------
+
+  Feature: pixel_std
+    vs margin (neg)        : rho=+0.0941  p=0.1039
+    vs fgsm_success        : rho=-0.1124  p=0.0519
+    vs pgd_success         : rho=-0.0683  p=0.2385
+
+  Feature: pixel_entropy
+    vs margin (neg)        : rho=+0.3135  p=0.0000
+    vs fgsm_success        : rho=+0.0964  p=0.0956
+    vs pgd_success         : rho=-0.0877  p=0.1297
+
+  Feature: jpeg_size
+    vs margin (neg)        : rho=+0.2529  p=0.0000
+    vs fgsm_success        : rho=+0.0518  p=0.3717
+    vs pgd_success         : rho=-0.1214  p=0.0355
+
+[6] AUROC — complexity features as vulnerability predictors
+-------------------------------------------------------
+  AUROC(pixel_std -> fgsm_success): 0.4244
+  AUROC(pixel_std -> pgd_success): 0.4300
+  AUROC(pixel_entropy -> fgsm_success): 0.5648
+  AUROC(pixel_entropy -> pgd_success): 0.4100
+  AUROC(jpeg_size -> fgsm_success): 0.5348
+  AUROC(jpeg_size -> pgd_success): 0.3754
+
+Done in 0.2s
+============================================================

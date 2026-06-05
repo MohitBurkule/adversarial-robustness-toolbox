@@ -1,0 +1,49 @@
+========================================================================
+H263 - Noise vs Adversarial Training: Boundary Distance
+========================================================================
+
+Loading fashion_mnist ...
+  Train: torch.Size([60000, 1, 28, 28])  Eval: torch.Size([200, 1, 28, 28])
+
+[1] Training STANDARD model ...
+    Done in 24.5s
+
+[2] Training NOISE model (sigma=0.2) ...
+    Done in 15.5s
+
+[3] Training PGD-AT model (eps=0.1, steps=7) ...
+    Done in 46.3s
+
+[4] Binary-search min_eps for each model (N=200, k=10) ...
+  [standard] computing min_eps ...
+    Finite flips: 190/200  mean_min_eps=0.0642  median=0.0349  p25=0.0135  p75=0.0698
+    Spearman rho(min_eps, margin) = 0.9352  p=1.0265e-86
+    Done in 2.5s
+  [noise] computing min_eps ...
+    Finite flips: 188/200  mean_min_eps=0.1022  median=0.0904  p25=0.0400  p75=0.1338
+    Spearman rho(min_eps, margin) = 0.8530  p=2.0482e-54
+    Done in 2.2s
+  [pgd_at] computing min_eps ...
+    Finite flips: 185/200  mean_min_eps=0.1789  median=0.2086  p25=0.1287  p75=0.2478
+    Spearman rho(min_eps, margin) = 0.5597  p=1.2109e-16
+    Done in 2.0s
+
+========================================================================
+SUMMARY TABLE
+========================================================================
+     Model   mean_min_eps   median_min_eps   mean_margin   spearman_rho
+------------------------------------------------------------------------
+  standard         0.0642           0.0349        9.6644         0.9352
+     noise         0.1022           0.0904        7.4817         0.8530
+    pgd_at         0.1789           0.2086        3.0894         0.5597
+
+INTERPRETATION
+------------------------------------------------------------------------
+  noise vs standard: mean min_eps delta = +0.0473 (more robust)
+  pgd_at vs standard: mean min_eps delta = +0.1222 (more robust)
+  pgd_at vs noise: mean min_eps delta = +0.0763 (more robust)
+
+Total time: 96.6s
+========================================================================
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h263_noise_vs_at_boundary_distance_output.txt

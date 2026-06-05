@@ -1,0 +1,8 @@
+H329: Weight Decay vs Gradient Interaction
+wd | clean_acc | fgsm_asr | pgd_asr | mean_margin | inp_grad_norm | wt_grad_norm
+wd=0e+00: clean=0.8780 fgsm_asr=0.7715 pgd_asr=0.9225 margin=6.2710 inp_grad=0.0071 wt_grad=1.3207
+wd=1e-05: clean=0.8810 fgsm_asr=0.7595 pgd_asr=0.9165 margin=6.3507 inp_grad=0.0072 wt_grad=1.2672
+wd=1e-04: clean=0.8815 fgsm_asr=0.7510 pgd_asr=0.9085 margin=6.3173 inp_grad=0.0072 wt_grad=1.2517
+wd=5e-04: clean=0.8805 fgsm_asr=0.7780 pgd_asr=0.9265 margin=6.0725 inp_grad=0.0070 wt_grad=1.2695
+wd=1e-03: clean=0.8820 fgsm_asr=0.7715 pgd_asr=0.9435 margin=5.7823 inp_grad=0.0072 wt_grad=1.3288
+wd=1e-02: clean=0.8785 fgsm_asr=0.7840 pgd_asr=0.9355 margin=3.6058 inp_grad=0.0054 wt_grad=1.4151

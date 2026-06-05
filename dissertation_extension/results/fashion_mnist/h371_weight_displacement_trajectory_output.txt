@@ -1,0 +1,102 @@
+H371: Weight Displacement Trajectory — Standard vs Adversarial Training
+======================================================================
+N_TRAIN=6000, EPOCHS=10, LR=0.05, BATCH=128, SEED=0
+EPS=0.1, PGD_STEPS=10, PGD_ALPHA=0.01
+
+Per-epoch metrics:
+mode       epoch  displacement   step_length    grad_norm      cos_sim   
+standard   1      6.8239         6.8239         2.6465         0.1881    
+standard   2      7.7648         2.5650         1.6123         0.3060    
+standard   3      8.3495         1.9357         1.4241         0.2183    
+standard   4      8.8296         1.6956         1.3481         0.3019    
+standard   5      9.0906         1.1837         1.0825         0.1861    
+standard   6      9.2583         0.8965         1.0145         0.1241    
+standard   7      9.3669         0.6258         1.0129         0.0691    
+standard   8      9.4262         0.3685         0.9392         0.0912    
+standard   9      9.4527         0.1776         0.9192         0.1183    
+standard   10     9.4590         0.0616         0.8682         0.1644    
+fgsm       1      5.6688         5.6688         2.5718         0.1345    
+fgsm       2      6.6091         2.2411         1.6216         0.2762    
+fgsm       3      7.1430         1.5325         1.2953         0.2825    
+fgsm       4      7.5379         1.2085         1.1277         0.2576    
+fgsm       5      7.7945         0.8718         1.0648         0.2836    
+fgsm       6      7.9685         0.6795         1.0086         0.2007    
+fgsm       7      8.0706         0.4560         0.9091         0.1955    
+fgsm       8      8.1282         0.2636         0.8506         0.1081    
+fgsm       9      8.1526         0.1367         0.8222         0.0969    
+fgsm       10     8.1588         0.0530         0.8076         0.0327    
+pgd        1      5.7359         5.7359         2.6294         0.1788    
+pgd        2      6.6405         2.1335         1.6228         0.2559    
+pgd        3      7.2130         1.6285         1.4250         0.3686    
+pgd        4      7.5797         1.2402         1.1410         0.2181    
+pgd        5      7.8440         0.8942         1.0536         0.2665    
+pgd        6      8.0132         0.6665         1.0351         0.3046    
+pgd        7      8.1332         0.4688         1.1108         0.3464    
+pgd        8      8.1926         0.2721         0.9566         0.1680    
+pgd        9      8.2182         0.1499         0.8728         0.1061    
+pgd        10     8.2245         0.0475         0.8058         0.0163    
+
+Summary:
+  standard: total_path=16.3340, final_disp=9.4590, mean_cos_sim=0.1767, clean_acc=0.8840, pgd_asr=0.9463
+  fgsm: total_path=13.1115, final_disp=8.1588, mean_cos_sim=0.1868, clean_acc=0.8055, pgd_asr=0.2166
+  pgd: total_path=13.2372, final_disp=8.2245, mean_cos_sim=0.2229, clean_acc=0.7980, pgd_asr=0.1961
+
+Per-layer displacement (final):
+  standard:
+    features.0.weight: 1.1073
+    features.0.bias: 0.0101
+    features.1.weight: 0.3251
+    features.1.bias: 0.3032
+    features.4.weight: 3.1224
+    features.4.bias: 0.0033
+    features.5.weight: 0.2762
+    features.5.bias: 0.2095
+    features.8.weight: 4.4385
+    features.8.bias: 0.0033
+    features.9.weight: 0.4071
+    features.9.bias: 0.6885
+    head.1.weight: 6.4500
+    head.1.bias: 0.1044
+    head.3.weight: 4.0139
+    head.3.bias: 0.3420
+  fgsm:
+    features.0.weight: 1.3309
+    features.0.bias: 0.0101
+    features.1.weight: 0.3631
+    features.1.bias: 0.9016
+    features.4.weight: 2.8417
+    features.4.bias: 0.0033
+    features.5.weight: 0.3532
+    features.5.bias: 0.1969
+    features.8.weight: 3.7189
+    features.8.bias: 0.0033
+    features.9.weight: 0.7333
+    features.9.bias: 0.6654
+    head.1.weight: 5.3895
+    head.1.bias: 0.0914
+    head.3.weight: 3.4013
+    head.3.bias: 0.4215
+  pgd:
+    features.0.weight: 1.7866
+    features.0.bias: 0.0101
+    features.1.weight: 0.3613
+    features.1.bias: 1.1139
+    features.4.weight: 3.0260
+    features.4.bias: 0.0033
+    features.5.weight: 0.2788
+    features.5.bias: 0.2397
+    features.8.weight: 3.7386
+    features.8.bias: 0.0033
+    features.9.weight: 0.8598
+    features.9.bias: 0.6935
+    head.1.weight: 5.2513
+    head.1.bias: 0.0940
+    head.3.weight: 3.2878
+    head.3.bias: 0.4423
+
+Weight-space L2 distances:
+  standard <-> fgsm: 9.9708
+  standard <-> pgd:  10.4743
+  fgsm <-> pgd:      7.3656
+
+Elapsed: 19.7s

@@ -1,0 +1,44 @@
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h259_perturbation_detectability.py:177: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  rho, pval = spearmanr(combined, y_bin)
+============================================================
+H259 — Perturbation Detectability via Pixel Statistics
+============================================================
+
+[1] Generating adversarial examples ...
+  Clean acc:    0.9300
+  FGSM acc:     0.1600  (ASR ~ 0.8400)
+  PGD  acc:     0.0000  (ASR ~ 1.0000)
+
+[2] Computing pixel statistics features ...
+  Feature matrix shape: (300, 5)
+    pixel_mean    : clean_mean=0.29203  fgsm_delta=+0.02641  pgd_delta=+0.02219
+    pixel_std     : clean_mean=0.32291  fgsm_delta=-0.01364  pgd_delta=-0.01561
+    pixel_min     : clean_mean=0.00000  fgsm_delta=+0.00000  pgd_delta=+0.00000
+    pixel_max     : clean_mean=0.99974  fgsm_delta=-0.00207  pgd_delta=-0.00577
+    l2_norm       : clean_mean=12.32084  fgsm_delta=+0.19041  pgd_delta=+0.07255
+
+[3] Computing perturbation delta and gradient norm features ...
+  FGSM delta L2: mean=2.38603  std=0.11389
+  PGD  delta L2: mean=1.80182  std=0.06036
+  Gradient norm: mean=0.03642  std=0.10447
+
+[4] Building detection datasets ...
+  FGSM detection dataset: X=(600, 7), y=(600,)
+  PGD  detection dataset: X=(600, 7),  y=(600,)
+
+[5] Training logistic regression detector (5-fold CV) ...
+  FGSM detector AUROC (5-fold CV): 1.0000  ± 0.0000  per-fold=[1. 1. 1. 1. 1.]
+  PGD detector AUROC (5-fold CV): 1.0000  ± 0.0000  per-fold=[1. 1. 1. 1. 1.]
+
+[6] Univariate AUROC per feature (PGD vs clean)
+-------------------------------------------------------
+  pixel_mean    : AUROC=0.5513  rho=+0.0888  p=0.0296
+  pixel_std     : AUROC=0.4375  rho=-0.1082  p=0.0080
+  pixel_min     : AUROC=0.5000  rho=+nan  p=nan
+  pixel_max     : AUROC=0.4482  rho=-0.1630  p=0.0001
+  l2_norm       : AUROC=0.5060  rho=+0.0104  p=0.7995
+  delta_l2      : AUROC=1.0000  rho=+0.9258  p=0.0000
+  grad_norm     : AUROC=0.5000  rho=+0.0000  p=1.0000
+
+Done in 0.4s
+============================================================

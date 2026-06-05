@@ -1,0 +1,5 @@
+H332: Transfer Attack Robustness
+Surrogate model clean acc: 0.8845
+target=baseline: clean=0.8785 wb_fgsm_asr=0.7585 wb_pgd_asr=0.9200 transfer_fgsm_asr=0.4555 transfer_pgd_asr=0.4535 margin=6.0719
+target=gp(0.01): clean=0.8830 wb_fgsm_asr=0.7725 wb_pgd_asr=0.9190 transfer_fgsm_asr=0.4555 transfer_pgd_asr=0.4550 margin=6.1180
+target=FGSM-AT: clean=0.8075 wb_fgsm_asr=0.2910 wb_pgd_asr=0.3345 transfer_fgsm_asr=0.2115 transfer_pgd_asr=0.2150 margin=3.0674

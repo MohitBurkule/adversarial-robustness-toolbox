@@ -1,0 +1,7 @@
+H303: Adversarial Logit Pairing
+============================================================
+lam=fgsm_at: clean=0.804 fgsm_asr=0.302 pgd_asr=0.331 margin=2.609 time=1.4s
+lam=0: clean=0.877 fgsm_asr=0.767 pgd_asr=0.916 margin=6.169 time=1.6s
+lam=0.1: clean=0.859 fgsm_asr=0.348 pgd_asr=0.388 margin=2.264 time=1.6s
+lam=1.0: clean=0.807 fgsm_asr=0.301 pgd_asr=0.336 margin=1.416 time=1.6s
+lam=10.0: clean=0.689 fgsm_asr=0.381 pgd_asr=0.426 margin=0.457 time=1.8s

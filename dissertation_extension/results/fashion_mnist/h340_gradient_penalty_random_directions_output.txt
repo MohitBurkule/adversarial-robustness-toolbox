@@ -1,0 +1,15 @@
+H340: Gradient Penalty at Random Directions
+============================================================
+Settings: N_TRAIN=6000, EPOCHS=10, LR=0.05, BATCH=128
+Random perturbation ε=0.05, K=3 directions averaged
+
+lam=0: clean=0.8810 fgsm_asr=0.7700 pgd_asr=0.9285 margin=6.0555
+lam=0.01: clean=0.8770 fgsm_asr=0.7540 pgd_asr=0.9035 margin=6.1445
+lam=0.1: clean=0.8780 fgsm_asr=0.7575 pgd_asr=0.9090 margin=6.2662
+
+============================================================
+SUMMARY
+Condition       Clean   FGSM_ASR    PGD_ASR     Margin
+lam=0          0.8810     0.7700     0.9285     6.0555
+lam=0.01       0.8770     0.7540     0.9035     6.1445
+lam=0.1        0.8780     0.7575     0.9090     6.2662

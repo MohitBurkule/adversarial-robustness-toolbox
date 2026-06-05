@@ -1,0 +1,5 @@
+H368: Bregman Divergence AT (Itakura-Saito)
+==================================================
+beta=1 | clean=0.709 fgsm_asr=0.502 pgd_asr=0.478 margin=0.929
+beta=3 | clean=0.105 fgsm_asr=0.895 pgd_asr=0.895 margin=nan
+beta=6 | clean=0.105 fgsm_asr=0.895 pgd_asr=0.895 margin=nan

@@ -1,0 +1,8 @@
+H325: Confidence Regularisation
+baseline: clean=0.8765 fgsm_asr=0.7610 pgd_asr=0.9110 margin=6.1264
+conf(lam=0.01): clean=0.8810 fgsm_asr=0.7685 pgd_asr=0.9200 margin=6.0189
+conf(lam=0.1): clean=0.8835 fgsm_asr=0.7595 pgd_asr=0.9260 margin=5.7675
+conf(lam=1.0): clean=0.8875 fgsm_asr=0.7560 pgd_asr=0.9315 margin=3.0543
+entropy(lam=0.01): clean=0.8820 fgsm_asr=0.7435 pgd_asr=0.9120 margin=5.8922
+entropy(lam=0.1): clean=0.8815 fgsm_asr=0.7450 pgd_asr=0.9090 margin=5.3043
+entropy(lam=1.0): clean=0.8865 fgsm_asr=0.6370 pgd_asr=0.8955 margin=1.2683

@@ -1,0 +1,6 @@
+H308: Dropout Rate vs Gradient Structure and Robustness
+============================================================
+dropout=0.0: clean_acc=0.8795, fgsm_asr=0.7700, pgd_asr=0.9305, mean_margin=6.0255, grad_norm=0.0120
+dropout=0.1: clean_acc=0.8760, fgsm_asr=0.7550, pgd_asr=0.9220, mean_margin=6.0636, grad_norm=0.0111
+dropout=0.3: clean_acc=0.8775, fgsm_asr=0.7170, pgd_asr=0.8920, mean_margin=6.2245, grad_norm=0.0101
+dropout=0.5: clean_acc=0.8710, fgsm_asr=0.6825, pgd_asr=0.8420, mean_margin=6.2716, grad_norm=0.0085

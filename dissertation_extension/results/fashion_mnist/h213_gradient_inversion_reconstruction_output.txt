@@ -1,0 +1,39 @@
+H213: Gradient Inversion — Reconstruct Input from Gradient
+============================================================
+Flipped network: gradient is input, inversion is forward pass
+
+[1] Training base classifier...
+[2] Computing input gradients for 2000 training + 300 test samples...
+  Gradients computed in 0.2s
+  Gradient stats: mean=0.0000  std=0.0940  max=7.9178
+[3] Training inversion network G: gradient → image...
+  Epoch 5/20  MSE=0.1096
+  Epoch 10/20  MSE=0.1026
+  Epoch 15/20  MSE=0.0998
+  Epoch 20/20  MSE=0.0976
+  Inversion network trained in 1.5s
+[4] Evaluating reconstruction on test set...
+  Mean reconstruction MSE: 0.0958 ± 0.0406
+  Mean NCC (1=perfect):    0.4818 ± 0.1939
+  Baseline MSE (predict mean): 0.1259
+  Improvement over baseline: 24.0%
+[5] Correlating reconstruction quality with adversarial vulnerability...
+
+  AUROC (NCC  → FGSM success): 0.7355
+  AUROC (NCC  → PGD success):  0.6208
+  AUROC (-MSE → FGSM success): 0.6596
+  AUROC (-MSE → PGD success):  0.8523
+  AUROC (-margin → PGD):       0.9933  [baseline]
+
+  Spearman rho (NCC vs margin): -0.6377
+  Spearman rho (MSE vs margin): -0.3437
+  Spearman rho (grad_norm vs margin): -0.9818
+
+--- Gradient norm analysis ---
+  Gradient norm: mean=2.1856  std=6.2350
+  AUROC (grad_norm → PGD success): 0.9950
+
+--- Interpretation ---
+PARTIAL: Reconstruction quality predicts vulnerability (AUROC=0.852)
+  Below margin baseline (0.993) but meaningful signal exists.
+  Gradient inversion captures local boundary planarity, correlated with margin.

@@ -1,0 +1,40 @@
+=== H246: Robust Islands ===
+
+[1] PGD-AT training for 50 epochs, checkpoints every 5 epochs...
+    Epoch   5: loss=0.6695, margin_mean=2.9991, margin_std=2.6931, PGD_ASR=0.253
+    Epoch  10: loss=0.5936, margin_mean=3.1501, margin_std=2.8480, PGD_ASR=0.237
+    Epoch  15: loss=0.5570, margin_mean=3.6355, margin_std=3.1109, PGD_ASR=0.213
+    Epoch  20: loss=0.5323, margin_mean=3.7212, margin_std=3.1179, PGD_ASR=0.197
+    Epoch  25: loss=0.5080, margin_mean=4.1527, margin_std=3.7316, PGD_ASR=0.200
+    Epoch  30: loss=0.4931, margin_mean=3.8471, margin_std=3.3535, PGD_ASR=0.187
+    Epoch  35: loss=0.4797, margin_mean=4.0608, margin_std=3.7669, PGD_ASR=0.187
+    Epoch  40: loss=0.4723, margin_mean=4.3845, margin_std=3.8757, PGD_ASR=0.203
+    Epoch  45: loss=0.4627, margin_mean=4.3757, margin_std=4.1158, PGD_ASR=0.210
+    Epoch  50: loss=0.4560, margin_mean=4.4809, margin_std=3.8983, PGD_ASR=0.187
+
+[2] Peak robustness at epoch 50 (margin_mean=4.4809)
+[3] Margin mean and variance trajectory after peak...
+    Epoch   5: mean=2.9991, std=2.6931
+    Epoch  10: mean=3.1501, std=2.8480
+    Epoch  15: mean=3.6355, std=3.1109
+    Epoch  20: mean=3.7212, std=3.1179
+    Epoch  25: mean=4.1527, std=3.7316
+    Epoch  30: mean=3.8471, std=3.3535
+    Epoch  35: mean=4.0608, std=3.7669
+    Epoch  40: mean=4.3845, std=3.8757
+    Epoch  45: mean=4.3757, std=4.1158
+    Epoch  50: mean=4.4809, std=3.8983 <- PEAK
+
+[4] Robust island persistence analysis...
+    Top-10% island size: epoch 5=30, epoch 50=30
+    Overlap: 26
+    Persistence (overlap/final_island): 0.867
+
+--- Summary ---
+Peak robustness at epoch 50
+Margin mean at peak: 4.4809, at final: 4.4809
+Margin std at peak: 3.8983, at final: 3.8983
+Variance monotonically increases after peak: True
+Robust island persistence (epoch 5 → 50): 0.867
+Interpretation: persistence < 0.5 = island membership unstable; variance increasing after peak = robust overfitting spreading.
+Runtime: 302.4s

@@ -1,0 +1,62 @@
+Loading Fashion-MNIST …
+Preparing q=100 test images (reference) …
+
+[Train q=10] Compressing training set …
+  clean=0.910  fgsm=0.788  pgd=0.996
+
+[Train q=30] Compressing training set …
+  clean=0.913  fgsm=0.799  pgd=1.000
+
+[Train q=50] Compressing training set …
+  clean=0.923  fgsm=0.801  pgd=1.000
+
+[Train q=70] Compressing training set …
+  clean=0.920  fgsm=0.830  pgd=1.000
+
+[Train q=90] Compressing training set …
+  clean=0.933  fgsm=0.836  pgd=1.000
+
+[Train q=100] Compressing training set …
+  clean=0.930  fgsm=0.828  pgd=1.000
+
+[No-train-compress baseline] Training on original images …
+  [Test-time q=10]
+    clean=0.890  fgsm=0.933  pgd=1.000
+  [Test-time q=30]
+    clean=0.910  fgsm=0.905  pgd=1.000
+  [Test-time q=50]
+    clean=0.923  fgsm=0.870  pgd=1.000
+  [Test-time q=70]
+    clean=0.927  fgsm=0.878  pgd=1.000
+  [Test-time q=90]
+    clean=0.933  fgsm=0.846  pgd=1.000
+  [Test-time q=100]
+    clean=0.930  fgsm=0.835  pgd=1.000
+
+===========================================================================
+Condition              Mode             Quality    Clean   FGSM ASR   PGD ASR
+---------------------------------------------------------------------------
+train_q10              train_compress        10    0.910      0.788     0.996
+train_q30              train_compress        30    0.913      0.799     1.000
+train_q50              train_compress        50    0.923      0.801     1.000
+train_q70              train_compress        70    0.920      0.830     1.000
+train_q90              train_compress        90    0.933      0.836     1.000
+train_q100             train_compress       100    0.930      0.828     1.000
+test_only_q10          test_only             10    0.890      0.933     1.000
+test_only_q30          test_only             30    0.910      0.905     1.000
+test_only_q50          test_only             50    0.923      0.870     1.000
+test_only_q70          test_only             70    0.927      0.878     1.000
+test_only_q90          test_only             90    0.933      0.846     1.000
+test_only_q100         test_only            100    0.930      0.835     1.000
+===========================================================================
+
+Best PGD robustness: train_q10 (pgd_asr=0.996)
+Best FGSM robustness: train_q10 (fgsm_asr=0.788)
+
+Hypothesis check (q30-50 more robust than q100):
+  train_q30  PGD ASR: 1.000
+  train_q50  PGD ASR: 1.000
+  train_q100 PGD ASR: 1.000
+  → Hypothesis NOT SUPPORTED
+
+Done.

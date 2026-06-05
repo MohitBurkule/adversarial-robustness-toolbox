@@ -1,0 +1,6 @@
+H299: Gradient Sign Consistency Training
+============================================================
+lam=0: clean=0.878 fgsm_asr=0.775 pgd_asr=0.933 margin=5.998 time=0.9s
+lam=0.01: clean=0.877 fgsm_asr=0.769 pgd_asr=0.929 margin=5.968 time=2.6s
+lam=0.1: clean=0.879 fgsm_asr=0.765 pgd_asr=0.913 margin=6.124 time=2.5s
+lam=1.0: clean=0.882 fgsm_asr=0.766 pgd_asr=0.931 margin=6.088 time=2.5s

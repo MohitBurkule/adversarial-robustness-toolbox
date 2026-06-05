@@ -1,0 +1,36 @@
+Loading data...
+  train=60000  eval=300
+
+--- Baseline (full real data, 10 epochs) ---
+  [baseline_full] clean=0.9300  FGSM_ASR=0.8400  PGD_ASR=0.9933  margin=9.6523
+
+--- Clean-gradient distillation (200 steps) ---
+    [clean] outer step 50/200  match_loss=0.6820
+    [clean] outer step 100/200  match_loss=0.6015
+    [clean] outer step 150/200  match_loss=0.5212
+    [clean] outer step 200/200  match_loss=0.5280
+
+--- Training on clean-distilled data ---
+    train-on-syn epoch 10/50  loss=1.8481
+    train-on-syn epoch 20/50  loss=2.1803
+    train-on-syn epoch 30/50  loss=2.3697
+    train-on-syn epoch 40/50  loss=2.0738
+    train-on-syn epoch 50/50  loss=2.0209
+  [clean_distilled] clean=0.1400  FGSM_ASR=0.8967  PGD_ASR=0.8967  margin=-0.1335
+
+--- Adversarial-gradient distillation (200 steps) ---
+    [adversarial] outer step 50/200  match_loss=0.7391
+    [adversarial] outer step 100/200  match_loss=0.6833
+    [adversarial] outer step 150/200  match_loss=0.6126
+    [adversarial] outer step 200/200  match_loss=0.6191
+
+--- Training on adversarial-distilled data ---
+    train-on-syn epoch 10/50  loss=1.5334
+    train-on-syn epoch 20/50  loss=2.3693
+    train-on-syn epoch 30/50  loss=2.3177
+    train-on-syn epoch 40/50  loss=2.3034
+    train-on-syn epoch 50/50  loss=2.3033
+  [adv_distilled] clean=0.0933  FGSM_ASR=0.9067  PGD_ASR=0.9067  margin=-0.0532
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h278_adversarial_dataset_distillation_output.txt
+al gradient distillation does NOT improve robustness vs clean distillation; boundary-geometry encoding via gradient matching may require more steps or higher K.

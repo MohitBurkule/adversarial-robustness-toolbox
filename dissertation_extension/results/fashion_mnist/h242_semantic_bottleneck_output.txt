@@ -1,0 +1,29 @@
+=== H242: Semantic Bottleneck (VQ) ===
+
+[1] Training baseline CNN (no VQ)...
+    Baseline: clean=0.933, PGD_ASR=0.997
+    Feature dim before classifier: 10
+
+[2] Training VQ models...
+
+  Codebook size C=16...
+    ERROR: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)
+  C=16: clean=nan, PGD_ASR=nan
+
+  Codebook size C=64...
+    ERROR: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)
+  C=64: clean=nan, PGD_ASR=nan
+
+  Codebook size C=256...
+    ERROR: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)
+  C=256: clean=nan, PGD_ASR=nan
+
+--- Summary ---
+  Codebook |  Clean Acc |  PGD ASR
+------------------------------------
+      none  |      0.933 |    0.997
+        16  |        nan |      nan
+        64  |        nan |      nan
+       256  |        nan |      nan
+Interpretation: smaller codebook should reduce PGD ASR at cost of clean accuracy (Pareto trade-off).
+Runtime: 13.5s

@@ -1,0 +1,13 @@
+========================================================================
+H348 - Supervised Contrastive Adversarial Training (arXiv 2412.19747)
+========================================================================
+Device=cuda  dataset=fashion_mnist  N_TRAIN=6000  eps=0.1  tau=0.1
+  ce_baseline         clean=0.885  fgsm_asr=0.762  pgd_asr=0.921  margin=5.956  (1.1s)
+  fgsm_at             clean=0.807  fgsm_asr=0.289  pgd_asr=0.324  margin=3.037  (1.4s)
+  supcon_clean        clean=0.075  fgsm_asr=0.999  pgd_asr=1.000  margin=-0.357  (1.4s)
+  supcon_adv          clean=0.077  fgsm_asr=1.000  pgd_asr=1.000  margin=-0.390  (1.8s)
+
+Interpretation: SupCon on adversarial examples should improve robustness
+by clustering same-class adv representations and separating classes.
+SupCon-clean vs SupCon-adv isolates the adversarial training effect.
+========================================================================

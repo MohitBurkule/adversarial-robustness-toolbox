@@ -1,0 +1,55 @@
+======================================================================
+H252  Per-Class Adversarial Vulnerability Asymmetry
+======================================================================
+
+[1] Loading fashion_mnist ...
+    Eval set: torch.Size([300, 1, 28, 28]), classes distribution: [33 30 33 35 28 28 21 28 27 37]
+
+[2] Training CNN (seed=0, epochs=10) ...
+
+[3] Running FGSM (eps=0.1) ...
+    FGSM overall ASR: 0.8333
+
+[4] Running PGD (eps=0.1, steps=10) ...
+    PGD  overall ASR: 1.0000
+
+[5] Per-Class Statistics
+--------------------------------------------------------------------------------
+Class             N  CleanAcc  FGSM_ASR   PGD_ASR  PGD Bar
+--------------------------------------------------------------------------------
+T-shirt          33     0.848     1.000     1.000  [##############################]
+Trouser          30     1.000     0.300     1.000  [##############################]
+Pullover         33     0.939     1.000     1.000  [##############################]
+Dress            35     0.914     0.857     1.000  [##############################]
+Coat             28     0.821     1.000     1.000  [##############################]
+Sandal           28     0.929     0.643     1.000  [##############################]
+Shirt            21     0.857     1.000     1.000  [##############################]
+Sneaker          28     0.964     1.000     1.000  [##############################]
+Bag              27     1.000     0.667     1.000  [##############################]
+Ankle boot       37     0.973     0.865     1.000  [##############################]
+--------------------------------------------------------------------------------
+
+[6] Chi-Squared Test for Uniformity of Attack Successes
+    FGSM chi2=94.9544, dof=9, p=0.000000
+    PGD  chi2=0.1136,  dof=9,  p=1.000000
+    FGSM: attack success is NOT uniform across classes -> SIGNIFICANT
+    PGD:  attack success is NOT uniform across classes -> not significant
+
+[7] Class Rankings by PGD ASR
+    Most vulnerable (highest PGD ASR):
+      #1  T-shirt         PGD_ASR=1.0000  FGSM_ASR=1.0000
+      #2  Trouser         PGD_ASR=1.0000  FGSM_ASR=0.3000
+      #3  Pullover        PGD_ASR=1.0000  FGSM_ASR=1.0000
+    Most robust (lowest PGD ASR):
+      #1  Ankle boot      PGD_ASR=1.0000  FGSM_ASR=0.8649
+      #2  Bag             PGD_ASR=1.0000  FGSM_ASR=0.6667
+      #3  Sneaker         PGD_ASR=1.0000  FGSM_ASR=1.0000
+
+[8] Spearman rho(FGSM_ASR, PGD_ASR) across classes = +nan  (p=nan)
+
+[9] Interpretation
+    Chi-squared test does NOT reject uniformity: class differences may be
+    due to chance.
+
+Total time: 9.5s
+======================================================================

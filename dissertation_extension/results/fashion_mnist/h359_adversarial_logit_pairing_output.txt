@@ -1,0 +1,6 @@
+H359: Adversarial Logit Pairing (ALP)
+==================================================
+lambda=  0.0 | clean=0.879 fgsm_asr=0.774 pgd_asr=0.921 margin=5.939
+lambda=  0.1 | clean=0.742 fgsm_asr=0.700 pgd_asr=0.758 margin=2.082
+lambda=  1.0 | clean=0.108 fgsm_asr=0.892 pgd_asr=0.892 margin=-0.052
+lambda= 10.0 | clean=0.108 fgsm_asr=0.892 pgd_asr=0.892 margin=-0.052

@@ -1,0 +1,57 @@
+
+Training standard model ...
+
+Training PGD-AT model ...
+    AT ep 1/10  loss=1.4986
+    AT ep 5/10  loss=0.8847
+    AT ep 10/10  loss=0.7819
+==========================================================================
+H282 - Gradient sign consistency and FGSM effectiveness
+==========================================================================
+Device=cuda  dataset=fashion_mnist  N_train=6000  N_eval=300  eps=0.1
+
+Sign consistency analysis:
+
+  [standard] global sign consistency: 0.0801
+  [standard] per-class sign consistency:
+    class 0: 0.2414  (n=33)
+    class 1: 0.3889  (n=30)
+    class 2: 0.2351  (n=33)
+    class 3: 0.2824  (n=35)
+    class 4: 0.2302  (n=28)
+    class 5: 0.2801  (n=28)
+    class 6: 0.2607  (n=21)
+    class 7: 0.3530  (n=28)
+    class 8: 0.2192  (n=27)
+    class 9: 0.2599  (n=37)
+  [standard] Spearman rho(sign_alignment, FGSM_success)=-0.4369  p=0.0000
+  [standard] FGSM ASR overall: 0.7533
+  [standard] mean sign_alignment: vulnerable=0.0077  robust=0.0174
+
+  [PGD-AT] global sign consistency: 0.1076
+  [PGD-AT] per-class sign consistency:
+    class 0: 0.2681  (n=33)
+    class 1: 0.4900  (n=30)
+    class 2: 0.2692  (n=33)
+    class 3: 0.3090  (n=35)
+    class 4: 0.3246  (n=28)
+    class 5: 0.2506  (n=28)
+    class 6: 0.2530  (n=21)
+    class 7: 0.3237  (n=28)
+    class 8: 0.2811  (n=27)
+    class 9: 0.2984  (n=37)
+  [PGD-AT] Spearman rho(sign_alignment, FGSM_success)=-0.4576  p=0.0000
+  [PGD-AT] FGSM ASR overall: 0.2833
+  [PGD-AT] mean sign_alignment: vulnerable=0.0041  robust=0.0224
+
+==========================================================================
+Global sign consistency: standard=0.0801  AT=0.1076
+Total runtime: 15.5s
+==========================================================================
+Interpretation: if AT model has lower sign consistency, the model
+has learned gradients that are less sign-aligned across samples,
+making FGSM less effective (it moves in a less predictable direction).
+Positive Spearman rho = sign alignment predicts FGSM success.
+==========================================================================
+
+Results saved to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h282_gradient_sign_entropy_output.txt

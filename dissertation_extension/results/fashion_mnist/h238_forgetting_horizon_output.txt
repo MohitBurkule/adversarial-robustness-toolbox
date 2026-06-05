@@ -1,0 +1,24 @@
+=== H238: Forgetting Horizon ===
+
+[1] Training for 30 epochs, tracking forgetting on 3000 training samples...
+    Epoch   5: train_acc=0.853
+    Epoch  10: train_acc=0.887
+    Epoch  15: train_acc=0.965
+    Epoch  20: train_acc=1.000
+    Epoch  25: train_acc=1.000
+    Epoch  30: train_acc=1.000
+[2] Counting forgetting events...
+    Forgetting count: mean=0.70, max=6, zero-forgetting=1940/3000
+[3] Running PGD attack on tracked training samples...
+[4] Computing metrics...
+    Forgetting count quartiles: [0. 0. 1.]
+    Q3: n=1940, pgd_asr=0.931, margin=13.8007
+    Q4 (high): n=1060, pgd_asr=1.000, margin=8.7747
+
+--- Summary ---
+AUROC(forgetting_count → PGD success): 0.685
+Spearman ρ(forgetting_count, margin):  -0.567
+Spearman ρ(forgetting_count, pgd_succ):0.155
+Overall PGD ASR: 0.955
+Interpretation: AUROC>0.6 and negative Spearman(fc,margin) => more forgetting → more vulnerable.
+Runtime: 50.2s

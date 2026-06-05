@@ -1,0 +1,48 @@
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h253_feature_norm_vulnerability.py:123: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  rho_pgd,  p_pgd  = spearmanr(feat_norms, pgd_success)
+======================================================================
+H253  Penultimate Feature Norm vs Adversarial Vulnerability
+======================================================================
+
+[1] Loading fashion_mnist ...
+    Eval: torch.Size([300, 1, 28, 28])
+
+[2] Training CNN (seed=0, epochs=10) ...
+
+[3] Extracting penultimate (256-dim) features ...
+    Feature shape: torch.Size([300, 256])
+    Norm mean=12.9833  std=3.7817  min=6.0996  max=24.3038
+
+[4] Running FGSM (eps=0.1) ...
+    FGSM ASR: 0.8500
+
+[5] Running PGD (eps=0.1, steps=10) ...
+    PGD  ASR: 1.0000
+
+[6] Computing margins ...
+    Mean margin: 9.4106  Std: 6.3872
+
+[7] Correlations: feature norm vs adversarial metrics
+    Spearman rho(feat_norm, FGSM_success) = -0.4703  (p=0.0000)
+    Spearman rho(feat_norm, PGD_success)  = +nan  (p=nan)
+    Spearman rho(feat_norm, margin)       = +0.8188  (p=0.0000)
+    AUROC(feat_norm -> FGSM_success)      = 0.8802
+    AUROC(feat_norm -> PGD_success)       = nan
+
+[8] Quartile Analysis (feat_norm quartiles vs ASR)
+    Q1=10.005  median=12.354  Q3=15.388
+    Quartile       N   FGSM_ASR    PGD_ASR   Mean_Margin
+    Q1 (low)    75     0.9867     1.0000        3.5475
+    Q2          75     0.9733     1.0000        7.2252
+    Q3          75     0.8800     1.0000       10.4380
+    Q4(high)    75     0.5600     1.0000       16.4317
+
+[9] Interpretation
+    feat_norm vs FGSM_success: rho=-0.470 (negative), significant (p=0.0000)
+    feat_norm vs PGD_success: rho=+nan (negative), not significant (p=nan)
+    feat_norm vs margin: rho=+0.819 (positive), significant (p=0.0000)
+
+Total time: 34.5s
+======================================================================
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h253_feature_norm_vulnerability_output.txt

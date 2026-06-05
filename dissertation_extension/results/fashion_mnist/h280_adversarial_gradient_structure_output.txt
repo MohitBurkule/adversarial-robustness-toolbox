@@ -1,0 +1,60 @@
+==========================================================================
+H280 - Adversarial gradient structure: pointy vs broad
+==========================================================================
+Device=cuda  dataset=fashion_mnist  N_EVAL=300  eps=0.1
+
+Clean-correct: 282 / 300
+FGSM-vulnerable: 236  FGSM-robust: 46
+PGD-vulnerable: 282
+
+Gradient structure metrics (mean ± std over samples in group):
+
+  [clean-correct]
+    kurtosis            : mean=6.2743  std=2.5843  median=5.9195
+    gini                : mean=0.4931  std=0.0237  median=0.4910
+    topk_50             : mean=46.6241  std=21.5138  median=50.0000
+    topk_90             : mean=224.3156  std=92.8880  median=255.0000
+    hf_lf_ratio         : mean=2.6659  std=1.5171  median=2.4058
+    l1_l2_ratio         : mean=19.7831  std=1.2250  median=19.9869
+
+  [FGSM-vulnerable]
+    kurtosis            : mean=6.6125  std=2.4158  median=6.0549
+    gini                : mean=0.4963  std=0.0236  median=0.4937
+    topk_50             : mean=52.4746  std=14.6271  median=53.0000
+    topk_90             : mean=252.9958  std=48.6030  median=261.0000
+    hf_lf_ratio         : mean=2.9136  std=1.4623  median=2.5855
+    l1_l2_ratio         : mean=19.7311  std=0.8515  median=19.8736
+
+  [FGSM-robust]
+    kurtosis            : mean=4.5449  std=2.7254  median=4.5550
+    gini                : mean=0.4765  std=0.0164  median=0.4749
+    topk_50             : mean=16.5652  std=25.6622  median=1.0000
+    topk_90             : mean=77.1304  std=122.0046  median=1.0000
+    hf_lf_ratio         : mean=1.3962  std=1.1005  median=1.6570
+    l1_l2_ratio         : mean=20.0502  std=2.3217  median=20.3965
+
+  [PGD-vulnerable]
+    kurtosis            : mean=6.2743  std=2.5843  median=5.9195
+    gini                : mean=0.4931  std=0.0237  median=0.4910
+    topk_50             : mean=46.6241  std=21.5138  median=50.0000
+    topk_90             : mean=224.3156  std=92.8880  median=255.0000
+    hf_lf_ratio         : mean=2.6659  std=1.5171  median=2.4058
+    l1_l2_ratio         : mean=19.7831  std=1.2250  median=19.9869
+
+Vulnerable - Robust delta (positive = vulnerable is higher):
+  kurtosis            : Δ = +2.0676
+  gini                : Δ = +0.0198
+  topk_50             : Δ = +35.9094
+  topk_90             : Δ = +175.8653
+  hf_lf_ratio         : Δ = +1.5174
+  l1_l2_ratio         : Δ = -0.3191
+
+Total runtime: 12.7s
+==========================================================================
+Interpretation: high kurtosis / high Gini / low L1/L2 ratio in the
+FGSM-vulnerable group confirms that vulnerable samples have spiky
+(concentrated) input gradients — making sign-based attacks efficient.
+Robust samples with broad gradients spread perturbation budget thin.
+==========================================================================
+
+Results saved to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h280_adversarial_gradient_structure_output.txt

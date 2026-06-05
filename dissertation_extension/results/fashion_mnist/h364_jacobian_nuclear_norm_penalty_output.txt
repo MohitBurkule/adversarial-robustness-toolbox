@@ -1,0 +1,5 @@
+H364: Jacobian Nuclear Norm Penalty
+==================================================
+lambda=0.0000 | clean=0.880 fgsm_asr=0.769 pgd_asr=0.925 margin=6.076
+lambda=0.0010 | clean=0.886 fgsm_asr=0.738 pgd_asr=0.906 margin=5.963
+lambda=0.0100 | clean=0.882 fgsm_asr=0.681 pgd_asr=0.816 margin=5.185

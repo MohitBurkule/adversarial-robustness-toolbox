@@ -1,0 +1,57 @@
+==========================================================================
+H222 - Input dimensionality vs minimum epsilon (Simon-Gabriel √n test)
+==========================================================================
+Device=cuda  dataset=fashion_mnist  N_EVAL=300
+n_components: [10, 25, 50, 100, 200, 400, 784]
+eps_sweep: [0.01, 0.02, 0.05, 0.1, 0.15, 0.2, 0.3]
+
+[n_components=10]
+  clean_acc=0.840  grad_L1=0.1438  eps_50=0.05  (12.4s)
+  ASR by eps: eps=0.01:0.24  eps=0.02:0.44  eps=0.05:0.74  eps=0.1:0.88  eps=0.15:0.92  eps=0.2:0.93  eps=0.3:0.96
+
+[n_components=25]
+  clean_acc=0.883  grad_L1=0.1341  eps_50=0.05  (17.9s)
+  ASR by eps: eps=0.01:0.20  eps=0.02:0.43  eps=0.05:0.77  eps=0.1:0.94  eps=0.15:0.97  eps=0.2:0.99  eps=0.3:0.98
+
+[n_components=50]
+  clean_acc=0.903  grad_L1=0.1280  eps_50=0.05  (47.8s)
+  ASR by eps: eps=0.01:0.17  eps=0.02:0.41  eps=0.05:0.75  eps=0.1:0.94  eps=0.15:0.98  eps=0.2:0.99  eps=0.3:1.00
+
+[n_components=100]
+  clean_acc=0.900  grad_L1=0.1371  eps_50=0.05  (38.4s)
+  ASR by eps: eps=0.01:0.17  eps=0.02:0.37  eps=0.05:0.75  eps=0.1:0.93  eps=0.15:0.98  eps=0.2:0.99  eps=0.3:0.99
+
+[n_components=200]
+  clean_acc=0.917  grad_L1=0.1341  eps_50=0.05  (24.1s)
+  ASR by eps: eps=0.01:0.16  eps=0.02:0.35  eps=0.05:0.69  eps=0.1:0.88  eps=0.15:0.94  eps=0.2:0.96  eps=0.3:0.96
+
+[n_components=400]
+  clean_acc=0.923  grad_L1=0.1328  eps_50=0.05  (22.3s)
+  ASR by eps: eps=0.01:0.17  eps=0.02:0.32  eps=0.05:0.62  eps=0.1:0.85  eps=0.15:0.94  eps=0.2:0.95  eps=0.3:0.97
+
+[n_components=784]
+  clean_acc=0.933  grad_L1=0.1123  eps_50=0.05  (19.2s)
+  ASR by eps: eps=0.01:0.15  eps=0.02:0.29  eps=0.05:0.56  eps=0.1:0.85  eps=0.15:0.93  eps=0.2:0.95  eps=0.3:0.95
+
+==========================================================================
+  n_comp  clean_acc    grad_L1   eps_50
+----------------------------------------
+      10      0.840     0.1438     0.05
+      25      0.883     0.1341     0.05
+      50      0.903     0.1280     0.05
+     100      0.900     0.1371     0.05
+     200      0.917     0.1341     0.05
+     400      0.923     0.1328     0.05
+     784      0.933     0.1123     0.05
+
+==========================================================================
+Simon-Gabriel √n scaling test: log(eps_50) = a + b*log(n)
+  Fitted: b=0.0000  a=-2.9957
+  Simon-Gabriel prediction: b ≈ -0.5
+  Deviation from -0.5: +0.5000
+  => b deviates from -0.5: NOT fully consistent with Simon-Gabriel √n
+
+Grad L1 vs n_components log-log fit:
+  log(grad_L1) = -1.8662 + -0.0357*log(n)
+  Expected: b ≈ +0.5 (√n scaling of gradient L1 norm)
+==========================================================================

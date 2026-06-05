@@ -232,6 +232,18 @@ Margin AUROC stays at 0.96–0.97 even at ASR≈50%, where the label is balanced
 
 ---
 
+## 6. Limitations and Future Work
+
+**Scope.** Primary benchmark uses a single 5-layer CNN on inputs standardised to 28×28 grayscale; cross-dataset comparison holds architecture fixed rather than native resolution. External validity is partially addressed by a native-resolution ResNet-18 (§4.10) but not systematically replicated across architectures. All attacks are L-inf; L2 and decision-based transfer (Paper 2) show the structural claim weakens across norms, so predictor rankings under L2/Lp attacks are untested.
+
+**Labels.** PGD-10 vulnerability labels under-count true vulnerability by ~5% (H174); AutoAttack labels (§4.10) partially address this but are computed at a single eps. A matched-ASR per-dataset AutoAttack evaluation is deferred.
+
+**Statistical rigour.** Bootstrap CIs (§4.8) cover six features on one run. Table 1–4 are point estimates; multi-seed CIs for all tables would require ~10× more compute. min_eps is a near-oracle (§4.8 caveat) and excluded from the "best deployable predictor" ranking; readers should use margin or gradient norm as the practical recommendation.
+
+**Future work.** Extend to transformer architectures (ViT), where boundary geometry may differ fundamentally from CNNs. Evaluate predictors under certified robustness (randomised smoothing), where the margin analogue (certified radius) is explicitly computable. Test whether pre-training vulnerability scores transfer to fine-tuned models.
+
+---
+
 ## 6. Conclusion
 
 We have benchmarked over 50 per-sample adversarial vulnerability predictors in a controlled multi-dataset, multi-attack setting. The logit margin is the single most robust and computationally inexpensive predictor, achieving AUROC 0.87–0.9976 across all conditions; input gradient L2 norm is its equal, surpassing it at strict epsilon budgets and on a native-resolution ResNet-18. Crucially, once bootstrap CIs are reported the top boundary-proximity predictors are statistically indistinguishable from one another, and a learned combination of all features adds no head-room over the best single feature — the vulnerability signal is effectively one-dimensional (distance to the decision boundary). Margin dominance is not a saturation artefact (it persists at matched ASR≈50%) and survives AutoAttack-grade labels. Training-dynamics features (forgetting events, C-score) are uninformative. SmoothGrad offers marginal gains at great computational cost and poor seed stability. We provide a benchmark protocol — including guidance on the PGD saturation artefact, matched-ASR evaluation, and bootstrap CIs — intended to enable reproducible future comparisons.

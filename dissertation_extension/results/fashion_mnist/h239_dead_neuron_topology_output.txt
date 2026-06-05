@@ -1,0 +1,22 @@
+=== H239: Dead Neuron Topology ===
+
+[1] Training model...
+[2] Counting dead ReLU neurons per test sample...
+    Dead neuron count: mean=23245.0, std=2022.4, min=17757, max=27819
+[3] Computing margins...
+[4] Running FGSM and PGD attacks...
+    FGSM ASR: 0.820, PGD ASR: 0.993
+[5] Computing metrics...
+[6] Dead count quartile analysis (FGSM vs PGD discrepancy)...
+    Q1 (dead∈[17757,21646]): n=75, FGSM_ASR=0.720, PGD_ASR=1.000, discrepancy(FGSM-PGD)=-0.280
+    Q2 (dead∈[21646,23333]): n=75, FGSM_ASR=0.760, PGD_ASR=0.987, discrepancy(FGSM-PGD)=-0.227
+    Q3 (dead∈[23333,24816]): n=75, FGSM_ASR=0.840, PGD_ASR=1.000, discrepancy(FGSM-PGD)=-0.160
+    Q4 (dead∈[24816,27819]): n=75, FGSM_ASR=0.960, PGD_ASR=0.987, discrepancy(FGSM-PGD)=-0.027
+
+--- Summary ---
+Mean dead neurons: 23245.0
+Spearman ρ(dead_count, margin):     -0.353
+AUROC(dead_count → FGSM success):   0.666
+AUROC(dead_count → PGD success):    0.456
+Interpretation: high dead_count with FGSM≫PGD discrepancy in Q4 signals gradient masking (dead neurons zero out gradients).
+Runtime: 70.7s
