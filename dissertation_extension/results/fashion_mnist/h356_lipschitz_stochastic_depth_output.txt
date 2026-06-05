@@ -1,0 +1,14 @@
+========================================================================
+H356 - Lipschitz-Proportional Stochastic Depth (arXiv 2509.10298)
+========================================================================
+Device=cuda  dataset=fashion_mnist  N_TRAIN=6000
+p_max grid: [0, 0.1, 0.3]  fixed_p=0.1
+  no_drop               clean=0.878  fgsm_asr=0.773  pgd_asr=0.918  margin=6.082  (1.1s)
+  fixed_p0.1            clean=0.872  fgsm_asr=0.725  pgd_asr=0.865  margin=5.525  (0.8s)
+  lipschitz_p0.1        clean=0.885  fgsm_asr=0.719  pgd_asr=0.881  margin=5.325  (1.8s)
+  lipschitz_p0.3        clean=0.821  fgsm_asr=0.685  pgd_asr=0.795  margin=5.125  (1.8s)
+
+Interpretation: Dropping high-Lipschitz blocks more often regularises
+the model towards lower sensitivity layers, potentially improving
+adversarial robustness beyond fixed-probability stochastic depth.
+========================================================================

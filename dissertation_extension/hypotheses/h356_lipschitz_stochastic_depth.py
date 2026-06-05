@@ -62,18 +62,13 @@ class StochasticDepthCNN(nn.Module):
     def forward(self, x):
         h = x
         for k, block in enumerate([self.block1, self.block2, self.block3]):
+            h_block = block(h)
             if self.training and self.drop_probs[k] > 0:
-                if torch.rand(1).item() < self.drop_probs[k]:
-                    # Skip block (identity-ish — just pool for size)
-                    h = F.max_pool2d(h, 2)
-                    # Pad channels to match expected output
-                    # (crude: just pass through block but detach gradients to simulate skip)
-                    h2 = block(h.detach())
-                    h = h2 * 0  # drop = zero output
-                else:
-                    h = block(h)
-            else:
-                h = block(h)
+                # Bernoulli drop: zero out this block's contribution for whole batch
+                keep = (torch.rand(1, device=x.device).item() >= self.drop_probs[k])
+                if not keep:
+                    h_block = torch.zeros_like(h_block)
+            h = h_block
         return self.head(h)
 
 

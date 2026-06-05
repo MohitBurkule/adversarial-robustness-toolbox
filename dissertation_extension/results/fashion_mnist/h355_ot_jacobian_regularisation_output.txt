@@ -1,0 +1,13 @@
+========================================================================
+H355 - OT + Jacobian Regularisation (OTJR, CVPR 2023)
+========================================================================
+Device=cuda  dataset=fashion_mnist  N_TRAIN=6000  eps=0.1
+lambda_OT grid: [0, 0.1, 1.0]  lambda_J=0.001  K_proj=20
+  lam_ot=0     clean=0.880  fgsm_asr=0.612  pgd_asr=0.695  margin=4.026  (19.4s)
+  lam_ot=0.1   clean=0.865  fgsm_asr=0.611  pgd_asr=0.682  margin=4.149  (21.1s)
+  lam_ot=1.0   clean=0.873  fgsm_asr=0.623  pgd_asr=0.688  margin=3.888  (21.7s)
+
+Interpretation: Sliced Wasserstein aligns feature distributions for
+clean/adversarial inputs; Jacobian Frobenius term constrains sensitivity.
+Combined (OTJR) should outperform each alone.
+========================================================================

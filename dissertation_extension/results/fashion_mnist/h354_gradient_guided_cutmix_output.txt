@@ -1,0 +1,13 @@
+========================================================================
+H354 - Gradient-Guided CutMix
+========================================================================
+Device=cuda  dataset=fashion_mnist  N_TRAIN=6000  alpha=1.0
+  baseline              clean=0.877  fgsm_asr=0.759  pgd_asr=0.910  margin=6.115  (1.2s)
+  random_cutmix         clean=0.855  fgsm_asr=0.659  pgd_asr=0.884  margin=2.548  (1.0s)
+  grad_cutmix           clean=0.870  fgsm_asr=0.666  pgd_asr=0.903  margin=2.437  (2.1s)
+  grad_cutmix_pen       clean=0.867  fgsm_asr=0.650  pgd_asr=0.918  margin=2.436  (5.8s)
+
+Interpretation: Placing CutMix patches in high-gradient regions forces
+the model to attend to alternative features; gradient-guided CutMix
+should degrade fewer gradient-aligned features vs random CutMix.
+========================================================================

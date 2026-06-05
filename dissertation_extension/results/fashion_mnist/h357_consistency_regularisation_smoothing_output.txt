@@ -1,0 +1,15 @@
+========================================================================
+H357 - Consistency Regularisation for Randomized Smoothing (NeurIPS 2020)
+========================================================================
+Device=cuda  dataset=fashion_mnist  N_TRAIN=6000  sigma=0.1  K=4
+lambda grid: [0, 0.1, 1.0, 10.0]
+  lambda=0      clean=0.877  smoothed=0.839  fgsm_asr=0.765  pgd_asr=0.915  margin=6.058  (3.9s)
+  lambda=0.1    clean=0.869  smoothed=0.870  fgsm_asr=0.746  pgd_asr=0.899  margin=6.397  (5.3s)
+  lambda=1.0    clean=0.868  smoothed=0.869  fgsm_asr=0.738  pgd_asr=0.903  margin=6.350  (5.4s)
+  lambda=10.0   clean=0.877  smoothed=0.871  fgsm_asr=0.711  pgd_asr=0.882  margin=6.230  (5.3s)
+
+Interpretation: Consistency regularisation forces output distributions
+to be stable under Gaussian noise, which improves certified robustness
+via randomized smoothing. Higher lambda should raise smoothed_acc while
+also improving adversarial robustness (noise and adversarial correlation).
+========================================================================

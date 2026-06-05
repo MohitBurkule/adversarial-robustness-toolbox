@@ -83,15 +83,14 @@ def sliced_wasserstein(f_clean, f_adv, K=20):
 
 def jacobian_frobenius(model, x):
     """||J||_F² via sum of squared gradients (one-hot output trick)."""
-    n = x.size(0)
     x_req = x.clone().detach().requires_grad_(True)
     out = model(x_req)
     ncls = out.size(1)
     jf2 = torch.tensor(0.0, device=x.device)
     for c in range(ncls):
-        g = torch.autograd.grad(out[:, c].sum(), x_req, retain_graph=(c < ncls - 1),
+        g = torch.autograd.grad(out[:, c].sum(), x_req, retain_graph=True,
                                 create_graph=True)[0]
-        jf2 = jf2 + g.pow(2).sum(dim=(1, 2, 3)).mean()
+        jf2 = jf2 + g.flatten(1).pow(2).sum(dim=1).mean()
     return jf2
 
 

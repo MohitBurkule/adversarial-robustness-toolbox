@@ -1272,3 +1272,323 @@ All results are for Fashion-MNIST unless noted. Attacks: FGSM and PGD (eps=0.1) 
 **Conclusion:** Gradient penalty training (lam=0.01) provides no improvement in transfer attack robustness compared to the standard baseline: transfer FGSM_ASR (0.456) and transfer PGD_ASR (0.455) are identical to baseline (0.456/0.454). FGSM adversarial training reduces both white-box and transfer ASR substantially (transfer FGSM_ASR=0.212, transfer PGD_ASR=0.215).  
 **Key metric:** baseline: transfer_FGSM_ASR=0.456, transfer_PGD_ASR=0.454; gp(0.01): transfer_FGSM_ASR=0.456, transfer_PGD_ASR=0.455; FGSM-AT: transfer_FGSM_ASR=0.212, transfer_PGD_ASR=0.215  
 **Status:** NOT SUPPORTED (gradient penalty confers no transfer robustness advantage over standard training)
+
+---
+
+## H358 - Virtual Adversarial Training
+**Dataset:** Fashion-MNIST
+**Conclusion:** VAT with high regularisation strength (lambda=10) provides a moderate reduction in adversarial success rates (PGD ASR drops from 0.911 to 0.771, FGSM ASR from 0.752 to 0.657), but robustness remains high and clean accuracy is maintained near baseline. Low lambda values produce negligible benefit.
+**Key metric:** lambda=10: clean=0.874, FGSM_ASR=0.657, PGD_ASR=0.771; baseline: FGSM_ASR=0.752, PGD_ASR=0.911
+**Status:** PARTIALLY SUPPORTED
+
+---
+
+## H359 - Adversarial Logit Pairing
+**Dataset:** Fashion-MNIST
+**Conclusion:** ALP collapses the model at moderate-to-high lambda values: lambda=1.0 and 10.0 both drive clean accuracy to near-chance (0.108) with adversarial ASR of 0.892, indicating training instability and model failure rather than robustness. Only very weak regularisation (lambda=0.1) shows partial benefit while retaining reasonable clean accuracy.
+**Key metric:** lambda=0.1: clean=0.742, PGD_ASR=0.758; lambda=1.0: clean=0.108 (collapsed)
+**Status:** NOT SUPPORTED
+
+---
+
+## H360 - Class-Conditional Gradient Alignment
+**Dataset:** Fashion-MNIST
+**Conclusion:** Class-conditional gradient alignment (CCGA) produces no meaningful improvement over the baseline: FGSM ASR and PGD ASR remain essentially unchanged (0.914 in both conditions) and clean accuracy is nearly identical. The regularisation has no measurable effect on robustness.
+**Key metric:** baseline: clean=0.877, PGD_ASR=0.914; CCGA: clean=0.884, PGD_ASR=0.914
+**Status:** NOT SUPPORTED
+
+---
+
+## H361 - Perceptually Aligned Gradient
+**Dataset:** Fashion-MNIST
+**Conclusion:** Perceptually aligned gradient penalty produces negligible changes in adversarial success rates across all tested lambda values — PGD ASR decreases only marginally from 0.915 to 0.907 at lambda=0.1 while clean accuracy is maintained. The intervention offers no practically meaningful robustness improvement.
+**Key metric:** lambda=0.1: clean=0.878, FGSM_ASR=0.766, PGD_ASR=0.907; baseline: PGD_ASR=0.915
+**Status:** NOT SUPPORTED
+
+---
+
+## H362 - Gradient Diversity Ensemble
+**Dataset:** Fashion-MNIST
+**Conclusion:** Ensembling alone (without gradient diversity penalty) reduces PGD ASR from 0.928 to 0.758, and adding the diversity penalty provides additional FGSM reduction (ASR drops to 0.610 at lambda=0.1). The benefit appears to come primarily from the ensemble architecture rather than the diversity regularisation term itself.
+**Key metric:** ensemble+lambda=0.1: clean=0.888, FGSM_ASR=0.610, PGD_ASR=0.741; single model: PGD_ASR=0.928
+**Status:** PARTIALLY SUPPORTED
+
+---
+
+## H363 - Reverse-KL TRADES
+**Dataset:** Fashion-MNIST
+**Conclusion:** Reverse-KL TRADES achieves strong robustness: at beta=1, PGD ASR drops dramatically to 0.324 from the unregularised baseline, with clean accuracy of 0.835. Higher beta values trade further clean accuracy for diminishing robustness gains, suggesting beta=1 is the optimal operating point.
+**Key metric:** beta=1: clean=0.835, FGSM_ASR=0.326, PGD_ASR=0.324; beta=6: clean=0.723, PGD_ASR=0.383
+**Status:** SUPPORTED
+
+---
+
+## H364 - Jacobian Nuclear Norm Penalty
+**Dataset:** Fashion-MNIST
+**Conclusion:** Jacobian nuclear norm regularisation progressively reduces PGD ASR as lambda increases (0.925 → 0.816 at lambda=0.01), with FGSM ASR also falling from 0.769 to 0.681. Clean accuracy is well-preserved, but absolute robustness remains poor with the majority of adversarial examples still succeeding.
+**Key metric:** lambda=0.01: clean=0.882, FGSM_ASR=0.681, PGD_ASR=0.816; baseline: PGD_ASR=0.925
+**Status:** PARTIALLY SUPPORTED
+
+---
+
+## H365 - Confidence-Weighted Gradient Penalty
+**Dataset:** Fashion-MNIST
+**Conclusion:** Confidence-weighted gradient penalty provides substantial robustness improvement at lambda=0.1: PGD ASR falls from 0.913 to 0.653 and FGSM ASR from 0.767 to 0.584, while clean accuracy is maintained at 0.878. The regularisation scales effectively with strength without collapsing the model.
+**Key metric:** lambda=0.1: clean=0.878, FGSM_ASR=0.584, PGD_ASR=0.653; baseline: PGD_ASR=0.913
+**Status:** SUPPORTED
+
+---
+
+## H366 - Smooth Activation Swap (ReLU vs SiLU)
+**Dataset:** Fashion-MNIST
+**Conclusion:** Replacing ReLU with SiLU provides no robustness benefit without adversarial training — both have similar high PGD ASR (~0.924-0.926). With FGSM adversarial training, both activations achieve similar robustness (PGD ASR ~0.334), indicating that activation smoothness is not the limiting factor for adversarial robustness.
+**Key metric:** relu+AT: clean=0.802, PGD_ASR=0.334; silu+AT: clean=0.804, PGD_ASR=0.334; silu baseline: PGD_ASR=0.926
+**Status:** NOT SUPPORTED
+
+---
+
+## H367 - Gradient Penalty with Mixup (AugMax-style)
+**Dataset:** Fashion-MNIST
+**Conclusion:** Adversarial mixup (with or without gradient penalty) achieves strong robustness with PGD ASR of ~0.364, though at some cost to clean accuracy (~0.84). Standard mixup and gradient penalty alone provide no robustness benefit. The robustness gain is driven by the adversarial training component of the mixup strategy.
+**Key metric:** adv_mixup: clean=0.845, FGSM_ASR=0.336, PGD_ASR=0.364; std_mixup: PGD_ASR=0.966
+**Status:** PARTIALLY SUPPORTED
+
+---
+
+## H368 - Bregman Divergence AT (Itakura-Saito)
+**Dataset:** Fashion-MNIST
+**Conclusion:** Bregman divergence adversarial training with the Itakura-Saito divergence is highly unstable: beta=1 achieves partial robustness (PGD ASR=0.478) but with poor clean accuracy (0.709), while beta=3 and beta=6 collapse entirely to near-chance performance with undefined margin values. The approach is not viable in this form.
+**Key metric:** beta=1: clean=0.709, PGD_ASR=0.478; beta=3: clean=0.105 (collapsed, margin=nan)
+**Status:** NOT SUPPORTED
+
+---
+
+## H369 - Multi-Scale Gradient Penalty
+**Dataset:** Fashion-MNIST
+**Conclusion:** Multi-scale gradient penalty provides no robustness improvement over the baseline — PGD ASR remains near 0.922-0.930 across all lambda values, with FGSM ASR similarly unchanged or slightly worsening. The penalty marginally increases the decision margin but has no effect on attack success rates.
+**Key metric:** lambda=0.01: clean=0.871, FGSM_ASR=0.769, PGD_ASR=0.922; baseline: PGD_ASR=0.923
+**Status:** NOT SUPPORTED
+
+---
+
+## H370 - Adversarial Training with ELLE Local Linearity Penalty
+**Dataset:** Fashion-MNIST
+**Conclusion:** The ELLE local linearity penalty applied on top of FGSM adversarial training provides no additional robustness benefit: PGD ASR remains ~0.334 and FGSM ASR ~0.308 across all lambda values, essentially identical to the FGSM-AT baseline without the penalty. ELLE does not improve upon standard adversarial training.
+**Key metric:** lambda=0.0: clean=0.803, PGD_ASR=0.333; lambda=0.1: clean=0.798, PGD_ASR=0.337 (no improvement)
+**Status:** NOT SUPPORTED
+
+---
+
+## H333 - Gradient Similarity Across Classes
+**Dataset:** Fashion-MNIST
+**Conclusion:** Within-class gradient similarity is positive and higher in adversarially trained models (W-A=0.2135 vs 0.0961 baseline), confirming that adversarial training increases within-class gradient alignment rather than reducing it; across-class similarity remains near zero in both conditions, suggesting cross-class gradient repulsion is not the mechanism by which AT achieves robustness.
+**Key metric:** baseline: within_sim=0.0922, across_sim=-0.0040, W-A=0.0961; fgsm_at: within_sim=0.2027, across_sim=-0.0108, W-A=0.2135, PGD_ASR=0.3300
+**Status:** PARTIALLY SUPPORTED (within-class similarity correlates with robustness but direction is opposite to naive expectation)
+
+---
+
+## H334 - Gradient Penalty on Logit Margin Loss
+**Dataset:** Fashion-MNIST
+**Conclusion:** Penalising the gradient of the logit-margin loss provides no robustness benefit: all margin_lam and ce_lam conditions yield PGD_ASR in the range 0.91–0.94 and FGSM_ASR in 0.75–0.79, virtually identical to the unpenalised baseline (PGD_ASR=0.918).
+**Key metric:** baseline (margin_lam=0): FGSM_ASR=0.7530, PGD_ASR=0.9180; ce_lam=0.1: FGSM_ASR=0.7505, PGD_ASR=0.9115 (marginal)
+**Status:** NOT SUPPORTED (logit-margin gradient penalty does not improve adversarial robustness)
+
+---
+
+## H335 - Input Gradient Norm Normalisation
+**Dataset:** Fashion-MNIST
+**Conclusion:** Normalising input gradients during training and adding an explicit norm penalty produce no meaningful change in adversarial susceptibility: all three conditions give nearly identical FGSM_ASR (~0.757–0.768) and PGD_ASR (~0.918–0.930), with gradient norms essentially unchanged.
+**Key metric:** standard: FGSM_ASR=0.7680, PGD_ASR=0.9205, grad_norm=1.8448; normalised+penalty: FGSM_ASR=0.7575, PGD_ASR=0.9180, grad_norm=1.8671
+**Status:** NOT SUPPORTED (gradient norm normalisation does not reduce adversarial vulnerability)
+
+---
+
+## H336 - Inter-Class Gradient Orthogonality Penalty
+**Dataset:** Fashion-MNIST
+**Conclusion:** Penalising cosine similarity between per-class mean gradients (encouraging inter-class orthogonality) does not reduce attack success rates: FGSM_ASR and PGD_ASR are nearly identical across all lambda values, though the penalty slightly increases the logit margin.
+**Key metric:** lam=0: FGSM_ASR=0.7660, PGD_ASR=0.9175, margin=5.896; lam=0.01: FGSM_ASR=0.7625, PGD_ASR=0.9190, margin=6.245
+**Status:** NOT SUPPORTED (inter-class gradient orthogonality penalty yields no robustness improvement)
+
+---
+
+## H337 - Gradient Magnitude Entropy Penalty
+**Dataset:** Fashion-MNIST
+**Conclusion:** Encouraging high-entropy (diffuse) input gradient magnitudes provides a modest FGSM_ASR reduction at lam=1.0 (0.714 vs 0.784 baseline) and reduces PGD_ASR to 0.877 while maintaining clean accuracy (0.879), suggesting gradient diffusion weakly hampers first-order attacks.
+**Key metric:** lam=0: FGSM_ASR=0.7835, PGD_ASR=0.9280, grad_ent=6.195; lam=1.0: FGSM_ASR=0.7140, PGD_ASR=0.8770, grad_ent=6.324
+**Status:** PARTIALLY SUPPORTED (entropy penalty reduces ASR modestly at high lam, but effect is small relative to adversarial training)
+
+---
+
+## H338 - Double Backprop Variants
+**Dataset:** Fashion-MNIST
+**Conclusion:** All double-backpropagation variants (applying the input gradient norm penalty on all, correct-only, incorrect-only, or loss-weighted samples) fail to meaningfully reduce adversarial vulnerability compared to the baseline, with PGD_ASR remaining in 0.916–0.929 and FGSM_ASR in 0.759–0.775 across all conditions.
+**Key metric:** baseline: FGSM_ASR=0.7665, PGD_ASR=0.9235; correct_only (best): FGSM_ASR=0.7590, PGD_ASR=0.9165
+**Status:** NOT SUPPORTED (no double-backprop variant provides meaningful robustness gains)
+
+---
+
+## H339 - Curvature Regularisation (Input Hessian Trace)
+**Dataset:** Fashion-MNIST
+**Conclusion:** Regularising the input Hessian trace via Hutchinson estimator reduces estimated curvature (10.04 → 8.45 at lam=0.01) but does not translate to lower adversarial success rates; PGD_ASR and FGSM_ASR remain essentially unchanged across all lambda values, and clean accuracy drops slightly.
+**Key metric:** lam=0: FGSM_ASR=0.7685, PGD_ASR=0.9165, curvature=10.04; lam=0.01: FGSM_ASR=0.7630, PGD_ASR=0.9170, curvature=8.45
+**Status:** NOT SUPPORTED (reduced input curvature does not confer adversarial robustness)
+
+---
+
+## H340 - Gradient Penalty at Random Directions
+**Dataset:** Fashion-MNIST
+**Conclusion:** Penalising gradient sensitivity along random perturbation directions (eps=0.05, K=3) provides small but consistent reductions in FGSM_ASR (0.754–0.758 vs 0.770 baseline) and PGD_ASR (0.904–0.909 vs 0.929 baseline) at lam=0.01 and 0.1, though the improvement is modest and not comparable to adversarial training.
+**Key metric:** lam=0: FGSM_ASR=0.7700, PGD_ASR=0.9285; lam=0.1: FGSM_ASR=0.7575, PGD_ASR=0.9090
+**Status:** PARTIALLY SUPPORTED (random-direction gradient penalty gives marginal but consistent ASR reductions)
+
+---
+
+## H341 - Manifold Gradient Penalty (PCA Projection)
+**Dataset:** Fashion-MNIST
+**Conclusion:** Penalising the component of the input gradient lying on the data manifold (top-K PCA eigenvectors) does not reduce adversarial success rates; PGD_ASR stays in 0.915–0.929 for all K values and FGSM_ASR is unchanged, though clean accuracy is slightly improved at K=10.
+**Key metric:** baseline: FGSM_ASR=0.7740, PGD_ASR=0.9255; K=10: FGSM_ASR=0.7690, PGD_ASR=0.9150, clean=0.8855
+**Status:** NOT SUPPORTED (manifold gradient penalty does not improve robustness beyond negligible variance)
+
+---
+
+## H342 - Adversarial Training + Gradient Penalty Combined
+**Dataset:** Fashion-MNIST
+**Conclusion:** Combining FGSM adversarial training with gradient penalty (on clean or adversarial inputs) does not improve over FGSM-AT alone: all AT+penalty conditions achieve similar PGD_ASR (~0.328–0.360) to plain FGSM-AT (0.336), and gradient penalty alone provides no robustness benefit. The half-half schedule trades clean accuracy for a small ASR increase.
+**Key metric:** fgsm_at: FGSM_ASR=0.3075, PGD_ASR=0.3355, clean=0.7985; fgsm_at+adv_pen: FGSM_ASR=0.3025, PGD_ASR=0.3350; grad_penalty_only: PGD_ASR=0.9200
+**Status:** NOT SUPPORTED (gradient penalty adds no benefit to adversarial training; AT alone is sufficient)
+
+---
+
+## H343 - Gradient Penalty with Contrastive Loss
+**Dataset:** Fashion-MNIST
+**Conclusion:** Contrastive gradient regularisation (aligning same-class gradients, pushing different-class gradients apart) produces meaningful ASR reductions at lam=0.01: FGSM_ASR drops from 0.781 to 0.670 and PGD_ASR from 0.930 to 0.809, with only a small clean accuracy cost (0.872 vs 0.882), making it the most effective purely gradient-based regulariser in this series.
+**Key metric:** lam=0: FGSM_ASR=0.7805, PGD_ASR=0.9295, clean=0.8820; lam=0.01: FGSM_ASR=0.6700, PGD_ASR=0.8085, clean=0.8720, margin=4.99
+**Status:** PARTIALLY SUPPORTED (contrastive gradient alignment reduces ASR noticeably but not to AT-level robustness)
+
+---
+
+## H344 - Input Gradient Spectral Penalty
+**Dataset:** Fashion-MNIST
+**Conclusion:** Penalising the estimated spectral norm of the input Jacobian (Lipschitz regularisation) yields substantial robustness gains: at lam=0.01 FGSM_ASR drops from 0.778 to 0.612 and PGD_ASR from 0.924 to 0.685 with near-unchanged clean accuracy (0.877), and spectral norm is reduced from 6.03 to 2.19, confirming that Lipschitz constraint directly limits adversarial exploitability.
+**Key metric:** lam=0: FGSM_ASR=0.7780, PGD_ASR=0.9235, spectral_norm=6.031; lam=0.01: FGSM_ASR=0.6115, PGD_ASR=0.6845, spectral_norm=2.187, clean=0.8770
+**Status:** SUPPORTED (spectral norm regularisation meaningfully reduces adversarial success rates while preserving clean accuracy)
+
+---
+
+## H345 - ELLE Local Linearity
+**Dataset:** Fashion-MNIST
+**Conclusion:** ELLE local linearity enforcement without adversarial training provides no robustness benefit: PGD ASR remains high (~0.888–0.918) across all lambda values, and higher lambda (1.0) actually increases FGSM ASR (0.778) while reducing margin (5.735). The penalty alone cannot substitute for adversarial training.
+**Key metric:** lambda=0: PGD_ASR=0.916; lambda=1.0: PGD_ASR=0.888, FGSM_ASR=0.778 (worse than baseline)
+**Status:** NOT SUPPORTED
+
+---
+
+## H346 - TRADES Objective
+**Dataset:** Fashion-MNIST
+**Conclusion:** TRADES achieves strong robustness at low beta (beta=1: PGD ASR=0.334, clean=0.850) but over-regularisation at beta≥6 degrades both robustness and clean accuracy, confirming the classic robustness-accuracy trade-off. The sweet spot is beta=1–3 for this dataset scale.
+**Key metric:** beta=1: clean=0.850, PGD_ASR=0.334; beta=6: clean=0.735, PGD_ASR=0.401 (degraded)
+**Status:** SUPPORTED
+
+---
+
+## H347 - Jensen-Shannon TRADES
+**Dataset:** Fashion-MNIST
+**Conclusion:** JSD-TRADES using symmetric Jensen-Shannon divergence instead of KL achieves comparable robustness to standard TRADES (beta=6: PGD ASR=0.326 vs TRADES beta=3: 0.323) while maintaining higher clean accuracy (0.840 vs 0.814), suggesting the bounded symmetric divergence avoids some KL pathologies.
+**Key metric:** beta=6: clean=0.840, PGD_ASR=0.326 vs TRADES beta=3: clean=0.814, PGD_ASR=0.323
+**Status:** PARTIALLY SUPPORTED
+
+---
+
+## H348 - Supervised Contrastive Adversarial Training
+**Dataset:** Fashion-MNIST
+**Conclusion:** Supervised contrastive loss completely fails on this classification task: both SupCon-clean and SupCon-adv achieve near-random clean accuracy (~0.075–0.077) with PGD ASR=1.000, indicating the contrastive objective produces representations incompatible with the downstream linear head in this setup. Only standard FGSM-AT works (PGD ASR=0.324).
+**Key metric:** supcon_adv: clean=0.077, PGD_ASR=1.000; fgsm_at: clean=0.807, PGD_ASR=0.324
+**Status:** NOT SUPPORTED
+
+---
+
+## H349 - GELU Activation + Input Gradient Norm Penalty
+**Dataset:** Fashion-MNIST
+**Conclusion:** Neither GELU activations nor input gradient norm penalty improve robustness; GELU+penalty actually worsens it (PGD ASR=0.936 vs ReLU baseline 0.917). The hypothesis that smooth activations enable effective gradient penalties is not supported — the penalty provides no robustness benefit in either activation regime.
+**Key metric:** GELU+penalty: clean=0.883, PGD_ASR=0.936; ReLU+no_penalty: PGD_ASR=0.917
+**Status:** NOT SUPPORTED
+
+---
+
+## H350 - Fisher-Rao Regularisation (FIRE)
+**Dataset:** Fashion-MNIST
+**Conclusion:** Fisher-Rao regularisation is harmful: low lambda (0.1) shows marginal PGD improvement (0.896 vs 0.911 baseline) but lambda≥1.0 dramatically increases vulnerability (PGD ASR=0.963–0.982) and collapses clean accuracy (0.595 at lambda=10). The geodesic penalty destabilises training rather than improving distributional robustness.
+**Key metric:** lambda=0.1: PGD_ASR=0.896 (marginal gain); lambda=1.0: PGD_ASR=0.963 (worse); lambda=10: clean=0.595
+**Status:** NOT SUPPORTED
+
+---
+
+## H351 - Adversarial Weight Perturbation (AWP)
+**Dataset:** Fashion-MNIST
+**Conclusion:** AWP on top of FGSM-AT provides modest but consistent improvements: gamma=0.001 reduces PGD ASR from 0.342 to 0.321 while maintaining clean accuracy. The weight perturbation flattens the loss landscape around adversarial examples, though gains are small at this training scale.
+**Key metric:** gamma=0 (baseline): PGD_ASR=0.342; gamma=0.001: PGD_ASR=0.321 (best)
+**Status:** PARTIALLY SUPPORTED
+
+---
+
+## H352 - Spectral Alignment Regularisation via FFT
+**Dataset:** Fashion-MNIST
+**Conclusion:** Spectral alignment regularisation penalising frequency-domain differences between clean and adversarial inputs provides no robustness improvement: PGD ASR remains 0.915–0.935 across all lambda values, essentially unchanged from the unregularised baseline (0.923). The frequency-domain invariance objective does not transfer to robustness.
+**Key metric:** lambda=0: PGD_ASR=0.923; lambda=0.01: PGD_ASR=0.915; lambda=0.1: PGD_ASR=0.935 (no trend)
+**Status:** NOT SUPPORTED
+
+---
+
+## H353 - Jacobian Spectral Norm Penalty
+**Dataset:** Fashion-MNIST
+**Conclusion:** Penalising the Jacobian spectral norm (via power iteration) provides only marginal PGD improvement at lambda=0.01 (0.910 vs 0.922 baseline), with no clean accuracy cost. The Lipschitz constraint on the input-output map is theoretically sound but insufficient alone to meaningfully reduce adversarial vulnerability at this scale.
+**Key metric:** lambda=0: PGD_ASR=0.922; lambda=0.01: PGD_ASR=0.910 (small improvement)
+**Status:** PARTIALLY SUPPORTED
+
+---
+
+## H354 - Gradient-Guided CutMix
+**Dataset:** Fashion-MNIST
+**Conclusion:** Both random and gradient-guided CutMix reduce FGSM ASR (0.659–0.666 vs baseline 0.759) but fail to reduce PGD ASR (0.884–0.918 vs 0.910 baseline). Gradient-guided placement offers no advantage over random CutMix, and the additional gradient penalty version slightly worsens PGD robustness (0.918).
+**Key metric:** grad_cutmix: FGSM_ASR=0.666, PGD_ASR=0.903; random_cutmix: FGSM_ASR=0.659, PGD_ASR=0.884
+**Status:** NOT SUPPORTED
+
+---
+
+## H371 - Weight Displacement Trajectory
+**Dataset:** Fashion-MNIST
+**Conclusion:** Adversarially trained models (FGSM, PGD) converge to different weight-space regions than standard training: final displacement is ~1.3 units smaller (8.16–8.22 vs 9.46) with shorter total path length (~13.2 vs 16.3), and adversarial models are ~10 units apart from the standard model in weight space. PGD-AT achieves the best robustness (PGD ASR=0.196) with slightly higher mean cosine similarity (0.223) suggesting more consistent gradient directions.
+**Key metric:** standard: final_disp=9.459, PGD_ASR=0.946; pgd-AT: final_disp=8.225, PGD_ASR=0.196; weight-space dist std↔pgd=10.47
+**Status:** SUPPORTED
+
+---
+
+## H355 - OT + Jacobian Regularisation (OTJR)
+**Dataset:** Fashion-MNIST
+**Conclusion:** Combining sliced Wasserstein OT alignment with Jacobian Frobenius regularisation provides moderate robustness improvement over the unregularised baseline (PGD ASR drops from ~0.92 to 0.682–0.695), but the OT component offers no additional benefit over Jacobian regularisation alone — all three lambda_OT values produce nearly identical results.
+**Key metric:** lam_ot=0: clean=0.880, FGSM_ASR=0.612, PGD_ASR=0.695; lam_ot=1.0: clean=0.873, FGSM_ASR=0.623, PGD_ASR=0.688
+**Status:** PARTIALLY SUPPORTED
+
+---
+
+## H356 - Lipschitz-Proportional Stochastic Depth
+**Dataset:** Fashion-MNIST
+**Conclusion:** Lipschitz-proportional stochastic depth reduces PGD ASR from 0.918 (no dropout) to 0.795 at p_max=0.3, with clean accuracy dropping to 0.821. Fixed-probability stochastic depth achieves similar reductions, suggesting the benefit comes from stochastic depth in general rather than Lipschitz-proportional scheduling specifically.
+**Key metric:** lipschitz_p0.3: clean=0.821, FGSM_ASR=0.685, PGD_ASR=0.795; no_drop: PGD_ASR=0.918
+**Status:** PARTIALLY SUPPORTED
+
+---
+
+## H371 - Weight Displacement Trajectory (Standard vs Adversarial Training)
+**Dataset:** Fashion-MNIST
+**Conclusion:** Adversarial training (FGSM and PGD) produces significantly shorter weight displacement trajectories and smaller final parameter displacement compared to standard training, with FGSM and PGD achieving dramatically lower PGD ASR (0.217 and 0.196 respectively) versus standard training (0.946). The adversarially-trained models converge to a different region of weight space, ~10 L2 units away from the standard-trained solution.
+**Key metric:** standard: clean=0.884, PGD_ASR=0.946, total_path=16.334; fgsm: clean=0.806, PGD_ASR=0.217, total_path=13.112; pgd: clean=0.798, PGD_ASR=0.196, total_path=13.237
+**Status:** SUPPORTED
+
+---
+
+## H357 - Consistency Regularisation for Randomized Smoothing
+**Dataset:** Fashion-MNIST
+**Conclusion:** Consistency regularisation (forcing stable output distributions under Gaussian noise) provides modest adversarial robustness improvements at higher lambda values — PGD ASR drops from 0.915 (lambda=0) to 0.882 (lambda=10), while smoothed accuracy increases from 0.839 to 0.871. The benefit is incremental and the FGSM improvement is more pronounced than PGD, suggesting the noise-smoothing correlation exists but is limited at this scale.
+**Key metric:** lambda=0: clean=0.877, smoothed=0.839, PGD_ASR=0.915; lambda=10.0: clean=0.877, smoothed=0.871, PGD_ASR=0.882
+**Status:** PARTIALLY SUPPORTED

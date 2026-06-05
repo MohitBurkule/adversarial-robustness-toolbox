@@ -129,7 +129,7 @@ def train_condition(meta, Xtr, Ytr, condition):
                     out2 = model(xb_req2)
                     loss_ce2 = F.cross_entropy(out2, yb)
                     grad2 = torch.autograd.grad(loss_ce2, xb_req2, create_graph=True)[0]
-                    loss = loss + GRAD_PEN_LAM * grad2.norm(dim=(1,2,3)).mean()
+                    loss = loss + GRAD_PEN_LAM * grad2.flatten(1).norm(dim=1).mean()
 
             loss.backward()
             opt.step()
