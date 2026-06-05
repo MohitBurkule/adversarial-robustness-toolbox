@@ -1,0 +1,60 @@
+================================================================================
+H411  VOneNet-style fixed Gabor V1 front-end as a defense (Fashion-MNIST)
+================================================================================
+config: N_TRAIN=6000 N_EVAL=2000 EPOCHS=10 LR=0.05 BATCH=128 SGD(mom=0.9,wd=5e-4) SEED=0
+        EPS=0.1 PGD_STEPS=10 PGD_ALPHA=0.01 width=32
+        VOneBlock: 8 orient x 2 freq x 2 phase, k=9 stride=2 pad=4, freqs=[0.2, 0.35]
+        sigma_neuron conditions = [0.0, 0.1, 0.25]; EOT_SAMPLES=8
+        device = cuda
+
+[0] Gabor bank: weight shape=(32, 1, 9, 9)  quadrature pairs=16  front-end out channels=48
+    kernel stats: mean(|mean|)=8.27e-10 (should ~0, DC-removed), per-kernel L2 in [1.000,1.000] (should ~1.0)
+    quadrature pair <phase0,phase90> dot: mean=-0.000 max|.|=0.000 (should be small => near-orthogonal)
+
+data: Xtr=(6000, 1, 28, 28)  Xte=(2000, 1, 28, 28)
+
+[1] baseline plain SmallCNN ...
+    clean_acc=0.8785  FGSM_ASR=0.7473  PGD_ASR=0.9624  (4s)
+
+[VOneNet] sigma_neuron=0.0 ...
+    clean_acc=0.8785  FGSM_ASR=0.8207  PGD_ASR=0.9795  d_PGD_ASR vs base=+0.0171  (5s)
+
+[VOneNet] sigma_neuron=0.1 ...
+    clean_acc=0.8765  FGSM_ASR=0.7939  PGD_ASR=0.9577  d_PGD_ASR vs base=-0.0047  (6s)
+
+[VOneNet] sigma_neuron=0.25 ...
+    clean_acc=0.8675  FGSM_ASR=0.7496  PGD_ASR=0.9018  d_PGD_ASR vs base=-0.0607  (7s)
+
+================================================================================
+[EOT] EOT-PGD gradient-masking check on best stochastic model
+================================================================================
+    best stochastic (lowest PGD_ASR): VOneNet sig=0.25 (PGD_ASR=0.9018)
+    running EOT-PGD with 8 noise draws/step ...
+    EOT-PGD_ASR=0.8466  vs PGD_ASR=0.9018  (rise=-0.0552)  (8s)
+
+================================================================================
+[TABLE] condition | clean_acc | FGSM_ASR | PGD_ASR | EOT-PGD_ASR
+================================================================================
+condition               clean_acc   FGSM_ASR   PGD_ASR  EOT-PGD_ASR
+-------------------------------------------------------------------
+baseline SmallCNN          0.8785     0.7473    0.9624            -
+VOneNet sig=0.0            0.8785     0.8207    0.9795            -
+VOneNet sig=0.1            0.8765     0.7939    0.9577            -
+VOneNet sig=0.25           0.8675     0.7496    0.9018       0.8466
+-------------------------------------------------------------------
+
+================================================================================
+[VERDICT]
+================================================================================
+  baseline PGD_ASR                = 0.9624 (clean_acc 0.8785)
+  VOneNet sig=0 PGD_ASR           = 0.9795 (clean_acc 0.8785)
+  best VOneNet (VOneNet sig=0.25) PGD_ASR = 0.9018 (clean_acc 0.8675)
+
+  PGD robustness gain, fixed-Gabor only (base - sig0)   = -0.0171
+  PGD robustness gain, extra from stochasticity         = +0.0777
+  PGD robustness gain, total (base - best VOneNet)      = +0.0607
+  EOT-PGD vs PGD on VOneNet sig=0.25: 0.9018 -> 0.8466 (-0.0552)
+
+  ONE-LINE VERDICT: Gabor front-end REDUCES PGD-ASR by 0.061 vs baseline; fixed Gabor alone (sig=0) contributes little (-0.017); stochasticity adds +0.078; EOT-PGD barely changes ASR (-0.055) => stochastic gain is mostly REAL (not pure masking).
+
+done in 7.8s

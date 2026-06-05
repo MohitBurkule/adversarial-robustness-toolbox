@@ -1,0 +1,37 @@
+H387 Margin-Adaptive Input-Gradient Penalty Weighting
+======================================================================
+Dataset: fashion_mnist  N_train=6000  N_eval=2000  Epochs=10  Seed=0
+EPS=0.1  PGD_STEPS=10  PGD_ALPHA=0.01
+w_i = softmax(-margin_i / T) over batch (low-margin weighted higher)
+loss = CE + lambda * sum_i w_i * ||grad_x L_i||^2 ; uniform == H288
+
+Condition                      clean_acc   fgsm_asr   pgd_asr    margin   time_s
+--------------------------------------------------------------------------------
+Baseline (CE only) λ=0            0.8720     0.7865    0.9465    5.7284      1.0
+Uniform (H288) λ=0.01             0.8630     0.7905    0.9290    6.4982      2.4
+Uniform (H288) λ=0.1              0.8520     0.8235    0.9655    5.5551      2.4
+Adaptive T=0.5 λ=0.01             0.8635     0.8040    0.9515    6.1042      2.5
+Adaptive T=1 λ=0.01               0.8655     0.7465    0.9095    6.0074      2.5
+Adaptive T=2 λ=0.01               0.8540     0.7765    0.9270    5.6998      2.5
+Adaptive T=0.5 λ=0.1              0.8735     0.7675    0.9495    5.9784      2.5
+Adaptive T=1 λ=0.1                0.8730     0.7875    0.9270    6.3604      2.6
+Adaptive T=2 λ=0.1                0.8615     0.7540    0.9235    6.3766      2.6
+
+Matched-lambda comparisons (uniform vs adaptive):
+  λ=0.01: Adaptive T=0.5 λ=0.01    PGD_ASR=0.9515  vs uniform 0.9290  (Δ=-0.0225, +=adaptive better)
+  λ=0.01: Adaptive T=1 λ=0.01      PGD_ASR=0.9095  vs uniform 0.9290  (Δ=+0.0195, +=adaptive better)
+  λ=0.01: Adaptive T=2 λ=0.01      PGD_ASR=0.9270  vs uniform 0.9290  (Δ=+0.0020, +=adaptive better)
+  λ=0.1: Adaptive T=0.5 λ=0.1     PGD_ASR=0.9495  vs uniform 0.9655  (Δ=+0.0160, +=adaptive better)
+  λ=0.1: Adaptive T=1 λ=0.1       PGD_ASR=0.9270  vs uniform 0.9655  (Δ=+0.0385, +=adaptive better)
+  λ=0.1: Adaptive T=2 λ=0.1       PGD_ASR=0.9235  vs uniform 0.9655  (Δ=+0.0420, +=adaptive better)
+
+Analysis:
+- Baseline PGD_ASR = 0.9465
+- Best uniform (H288): Uniform (H288) λ=0.01  PGD_ASR=0.9290  clean_acc=0.8630
+- Best adaptive:       Adaptive T=1 λ=0.01  PGD_ASR=0.9095  clean_acc=0.8655
+- Best adaptive improvement vs best uniform (PGD ASR): +0.0195
+- Adaptive wins 5/6 matched-lambda comparisons.
+- Rationale: focusing the smoothing budget on low-margin (near-boundary) samples
+  should push the robustness-accuracy frontier outward vs spending it uniformly.
+
+VERDICT: SUPPORTED — adaptive weighting beats uniform on PGD ASR (best adaptive 0.9095 vs best uniform 0.9290).

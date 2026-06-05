@@ -1,0 +1,11 @@
+  lam=0: growth=1.144 {'clean_acc': 0.8830000162124634, 'fgsm_asr': 0.7660000026226044, 'pgd_asr': 0.9259999990463257, 'mean_margin': 6.00687313079834, 'lambda': 0, 'norm_growth': 1.1440238952636719, 'time': 1.3538618087768555}
+  lam=0.1: growth=0.949 {'clean_acc': 0.8774999976158142, 'fgsm_asr': 0.7615000009536743, 'pgd_asr': 0.9184999987483025, 'mean_margin': 5.983656406402588, 'lambda': 0.1, 'norm_growth': 0.9486351013183594, 'time': 1.469273328781128}
+  lam=1.0: growth=0.736 {'clean_acc': 0.8799999952316284, 'fgsm_asr': 0.760000005364418, 'pgd_asr': 0.9149999991059303, 'mean_margin': 5.998596668243408, 'lambda': 1.0, 'norm_growth': 0.7355556488037109, 'time': 1.4835903644561768}
+
+=== H380 RESULTS ===
+  lam=0: clean=0.8830 fgsm_asr=0.7660 pgd_asr=0.9260 margin=6.0069 growth=1.144
+  lam=0.1: clean=0.8775 fgsm_asr=0.7615 pgd_asr=0.9185 margin=5.9837 growth=0.949
+  lam=1.0: clean=0.8800 fgsm_asr=0.7600 pgd_asr=0.9150 margin=5.9986 growth=0.736
+
+Best lambda=1.0: PGD ASR reduced by 0.0110
+SUPPORTED = False

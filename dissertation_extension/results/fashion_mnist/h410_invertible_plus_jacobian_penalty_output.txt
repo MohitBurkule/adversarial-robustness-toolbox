@@ -1,0 +1,50 @@
+================================================================================
+H410  Invertible front-end + input-Jacobian penalty (Fashion-MNIST)
+================================================================================
+config: SMOKE=False N_TRAIN=6000 EPOCHS=10 LR=0.05 BATCH=128 SEED=0 EPS=0.1 PGD_STEPS=10 LAMBDAS=[0.0, 0.01, 0.1] device=cuda
+Penalty = lambda * ||d h_front/d x||_F^2 (stage1 output wrt input), 1 Hutchinson probe/step, on an EXACTLY-invertible i-RevNet trunk.
+
+data: Xtr=(6000, 1, 28, 28)  Xte=(2000, 1, 28, 28)
+
+================================================================================
+[lambda=0.0] invertible i-RevNet (no penalty)
+================================================================================
+    random-init recon error = 2.384e-07
+    post-train recon error  = 9.179e-06
+    lambda=0.0: clean_acc=0.8475  FGSM_ASR=0.9864  PGD_ASR=1.0000  mean_front_jacF2=nan
+
+================================================================================
+[lambda=0.01] invertible i-RevNet (penalty)
+================================================================================
+    random-init recon error = 2.384e-07
+    post-train recon error  = 1.699e-06
+    lambda=0.01: clean_acc=0.8475  FGSM_ASR=0.9298  PGD_ASR=0.9870  mean_front_jacF2=825.711
+
+================================================================================
+[lambda=0.1] invertible i-RevNet (penalty)
+================================================================================
+    random-init recon error = 2.384e-07
+    post-train recon error  = 1.669e-06
+    lambda=0.1: clean_acc=0.8340  FGSM_ASR=0.9089  PGD_ASR=0.9898  mean_front_jacF2=824.361
+
+================================================================================
+[TABLE]
+================================================================================
+lambda      clean_acc   FGSM_ASR    PGD_ASR    front_jacF2    recon_err
+-----------------------------------------------------------------------
+0.0            0.8475     0.9864     1.0000          0.000    9.179e-06
+0.01           0.8475     0.9298     0.9870        825.711    1.699e-06
+0.1            0.8340     0.9089     0.9898        824.361    1.669e-06
+-----------------------------------------------------------------------
+
+================================================================================
+[VERDICT]
+================================================================================
+  lambda=0.01: PGD_ASR 1.0000->0.9870 (-0.0130); clean 0.8475->0.8475 (+0.0000)
+  lambda=0.1: PGD_ASR 1.0000->0.9898 (-0.0102); clean 0.8475->0.8340 (-0.0135)
+
+  best penalised condition: lambda=0.01 (PGD_ASR 0.9870)
+  PGD gain from adding penalty to invertible net = +0.0130; clean cost +0.0000
+  ONE-LINE VERDICT: NEUTRAL: the Jacobian penalty adds little on top of the invertible front-end at these settings.
+
+done in 19.6s

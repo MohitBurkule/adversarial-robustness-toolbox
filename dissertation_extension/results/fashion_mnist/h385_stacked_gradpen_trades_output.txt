@@ -1,0 +1,30 @@
+H385 Stacked Input-Gradient Penalty + TRADES-KL
+======================================================================
+Dataset: fashion_mnist  N_train=6000  N_eval=2000  Epochs=10  Seed=0
+EPS=0.1  PGD_STEPS=10  PGD_ALPHA=0.01
+Inner TRADES PGD: steps=7  eps=0.1
+
+L = CE + beta*KL(p_clean || p_adv) + lambda*||grad_x L||^2
+
+Condition                        clean_acc   fgsm_asr   pgd_asr    margin   time_s
+----------------------------------------------------------------------------------
+Baseline (CE only) β=0 λ=0          0.8580     0.8115    0.9675    6.2599      1.0
+TRADES-KL only β=1                  0.8315     0.3250    0.3260    3.5912      4.3
+TRADES-KL only β=3                  0.8060     0.3355    0.3275    3.5429      4.3
+Input-grad only λ=0.01              0.8750     0.7980    0.9400    6.1894      2.6
+Input-grad only λ=0.1               0.8565     0.7550    0.9190    5.9362      2.5
+Stack β=1 λ=0.01                    0.8200     0.3370    0.3335    3.5501     15.4
+Stack β=1 λ=0.1                     0.8320     0.3220    0.3215    3.8197     17.9
+Stack β=3 λ=0.01                    0.8090     0.3210    0.3150    3.2918     14.8
+Stack β=3 λ=0.1                     0.8015     0.3195    0.3130    3.7148     13.1
+
+Analysis:
+- Baseline PGD_ASR = 0.9675
+- Best single component: TRADES-KL only β=1  PGD_ASR=0.3260  clean_acc=0.8315
+- Best stacked cell:    Stack β=3 λ=0.1  PGD_ASR=0.3130  clean_acc=0.8015
+- Stack improvement vs best single (PGD ASR): +0.0130
+- Routes differ: input-grad penalty smooths the loss surface locally (1st-order),
+  while TRADES-KL explicitly matches clean/adv output distributions. If they were
+  redundant the stack would not improve on the better of the two.
+
+VERDICT: SUPPORTED — the stack beats the best single component on PGD ASR (stack 0.3130 vs single 0.3260).

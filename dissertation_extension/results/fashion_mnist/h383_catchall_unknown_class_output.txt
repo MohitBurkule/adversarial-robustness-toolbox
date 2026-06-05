@@ -1,0 +1,18 @@
+H383: Catch-all Unknown Class — Results
+============================================================
+N_TRAIN=6000, EPOCHS=10, LR=0.05, EPS=0.1, PGD_STEPS=10
+
+Condition                      clean_acc  fgsm_asr  pgd_asr  abs_clean  abs_fgsm  abs_pgd
+-----------------------------------------------------------------------------------------
+baseline_10class                   0.885     0.720    0.956      0.000     0.000    0.000
+unknown_gaussian_1x                0.883     0.791    0.951      0.000     0.001    0.001
+unknown_gaussian_ratio10           0.882     0.743    0.953      0.000     0.000    0.000
+unknown_uniform_1x                 0.883     0.752    0.948      0.000     0.002    0.001
+unknown_inverted_1x                0.878     0.755    0.978      0.000     0.000    0.002
+unknown_mixed_1x                   0.877     0.749    0.961      0.000     0.003    0.010
+
+Key question: does abstention_adv >> abstention_clean?
+
+  unknown_gaussian_1x: fgsm_ratio=infx, pgd_ratio=infx
+  unknown_uniform_1x: fgsm_ratio=infx, pgd_ratio=infx
+  unknown_mixed_1x: fgsm_ratio=infx, pgd_ratio=infx

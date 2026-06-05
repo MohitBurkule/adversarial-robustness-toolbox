@@ -1,0 +1,29 @@
+Phase 1: Training AT model...
+  AT activation stats: ['73.213', '53.345', '26.050']
+  AT eval: {'clean_acc': 0.7714999914169312, 'fgsm_asr': 0.328000009059906, 'pgd_asr': 0.32349997758865356, 'mean_margin': 2.198456048965454}
+
+Phase 2: Standard baseline...
+  Standard activation stats: ['67.999', '56.158', '30.507']
+  Standard eval: {'clean_acc': 0.8790000081062317, 'fgsm_asr': 0.7709999978542328, 'pgd_asr': 0.909000001847744, 'mean_margin': 6.277103424072266}
+
+Phase 3: AT-stats-matched training (lam=0.001)...
+  Matched activation stats: ['72.986', '53.101', '26.060']
+  Matched eval: {'clean_acc': 0.8824999928474426, 'fgsm_asr': 0.7470000088214874, 'pgd_asr': 0.9235000014305115, 'mean_margin': 5.871853828430176}
+
+Phase 3: AT-stats-matched training (lam=0.01)...
+  Matched activation stats: ['73.187', '53.252', '25.833']
+  Matched eval: {'clean_acc': 0.8805000185966492, 'fgsm_asr': 0.7635000050067902, 'pgd_asr': 0.9245000034570694, 'mean_margin': 4.820046901702881}
+
+Phase 3: AT-stats-matched training (lam=0.1)...
+  Matched activation stats: ['73.094', '53.463', '26.060']
+  Matched eval: {'clean_acc': 0.8084999918937683, 'fgsm_asr': 0.6949999928474426, 'pgd_asr': 0.7190000116825104, 'mean_margin': 2.55094051361084}
+
+Best lambda=0.1
+
+=== H381 RESULTS ===
+  standard: clean=0.8790 fgsm_asr=0.7710 pgd_asr=0.9090 margin=6.2771 stats=['68.00', '56.16', '30.51']
+  at_matched: clean=0.8085 fgsm_asr=0.6950 pgd_asr=0.7190 margin=2.5509 stats=['73.09', '53.46', '26.06']
+  actual_AT: clean=0.7715 fgsm_asr=0.3280 pgd_asr=0.3235 margin=2.1985 stats=['73.21', '53.34', '26.05']
+
+AT-stats-matched vs standard PGD ASR delta: 0.1900
+SUPPORTED = True

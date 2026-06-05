@@ -1,0 +1,11 @@
+  budget=10.0: path=10.20 {'clean_acc': 0.8414999842643738, 'fgsm_asr': 0.6004999876022339, 'pgd_asr': 0.7285000085830688, 'mean_margin': 2.905493974685669, 'path_budget': 10.0, 'actual_path': 10.20157103951351, 'time': 1.543426513671875}
+  budget=13.0: path=12.69 {'clean_acc': 0.8629999756813049, 'fgsm_asr': 0.6660000085830688, 'pgd_asr': 0.8205000013113022, 'mean_margin': 3.575854539871216, 'path_budget': 13.0, 'actual_path': 12.689959000563249, 'time': 1.1403241157531738}
+  unconstrained: path=37.10 {'clean_acc': 0.8790000081062317, 'fgsm_asr': 0.7670000046491623, 'pgd_asr': 0.9214999973773956, 'mean_margin': 6.130776882171631, 'path_budget': 16.0, 'actual_path': 37.097158742835745, 'time': 1.0789194107055664}
+
+=== H377 RESULTS ===
+  budget=10.0: clean=0.8415 fgsm_asr=0.6005 pgd_asr=0.7285 margin=2.9055 path=10.20
+  budget=13.0: clean=0.8630 fgsm_asr=0.6660 pgd_asr=0.8205 margin=3.5759 path=12.69
+  unconstrained: clean=0.8790 fgsm_asr=0.7670 pgd_asr=0.9215 margin=6.1308 path=37.10
+
+Best budget=10.0: PGD ASR reduced by 0.1930
+SUPPORTED = True

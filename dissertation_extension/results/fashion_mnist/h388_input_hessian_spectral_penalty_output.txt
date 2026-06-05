@@ -1,0 +1,12 @@
+H388: Input-Hessian spectral-norm (top eigenvalue) penalty
+loss = CE + lambda * lambda_max(Hess_x L); 1-step power iteration
+
+  lambda | clean_acc | FGSM_ASR |  PGD_ASR |   margin
+-----------------------------------------------------
+     0.0 |    0.8810 |   0.7600 |   0.9145 |   6.0108  (baseline)
+   0.001 |    0.8765 |   0.7680 |   0.9250 |   6.1009
+    0.01 |    0.8810 |   0.7610 |   0.9335 |   6.0581
+    0.05 |    0.8780 |   0.7585 |   0.9165 |   6.0258
+-----------------------------------------------------
+
+VERDICT: baseline PGD_ASR=0.9145; best penalized lambda=0.05 PGD_ASR=0.9165 (delta=-0.0020, clean 0.8810->0.8780). Spectral penalty does NOT meaningfully help.

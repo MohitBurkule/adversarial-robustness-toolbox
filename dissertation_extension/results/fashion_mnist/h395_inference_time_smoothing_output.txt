@@ -1,0 +1,19 @@
+Training standard model...
+Clean accuracy: 0.8810
+
+=================================================================
+   sigma | clean_smoothed | naive_pgd_asr | eot_pgd_asr
+-----------------------------------------------------------------
+  sigma=0.0 ...
+    0.00 |         0.8720 |        0.9500 |      0.9460
+  sigma=0.1 ...
+    0.10 |         0.8440 |        0.7880 |      0.8520
+  sigma=0.25 ...
+    0.25 |         0.5140 |        0.7360 |      0.8420
+  sigma=0.5 ...
+    0.50 |         0.1960 |        0.8080 |      0.8480
+=================================================================
+
+Mean naive_pgd_asr=0.8205, mean eot_pgd_asr=0.8720, gap=-0.0515
+Best sigma for clean-robust tradeoff: 0.1 (clean_acc=0.8440, eot_asr=0.8520)
+VERDICT: Mixed — naive ASR=0.821, EOT ASR=0.872; smoothing reduces naive attack but EOT partially recovers. Best sigma=0.1.

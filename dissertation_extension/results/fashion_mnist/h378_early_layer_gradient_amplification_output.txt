@@ -1,0 +1,11 @@
+  uniform: {'clean_acc': 0.8794999718666077, 'fgsm_asr': 0.7685000002384186, 'pgd_asr': 0.9280000030994415, 'mean_margin': 6.060905456542969, 'alphas': [1.0, 1.0, 1.0, 1.0], 'time': 1.1566174030303955}
+  at_mimic: {'clean_acc': 0.8830000162124634, 'fgsm_asr': 0.7615000009536743, 'pgd_asr': 0.9294999986886978, 'mean_margin': 4.688577651977539, 'alphas': [2.0, 1.0, 0.5, 0.3], 'time': 0.8245959281921387}
+  inverse: {'clean_acc': 0.8815000057220459, 'fgsm_asr': 0.7414999902248383, 'pgd_asr': 0.9265000000596046, 'mean_margin': 6.718303203582764, 'alphas': [0.3, 0.5, 1.0, 2.0], 'time': 0.8388690948486328}
+
+=== H378 RESULTS ===
+  uniform: clean=0.8795 fgsm_asr=0.7685 pgd_asr=0.9280 margin=6.0609
+  at_mimic: clean=0.8830 fgsm_asr=0.7615 pgd_asr=0.9295 margin=4.6886
+  inverse: clean=0.8815 fgsm_asr=0.7415 pgd_asr=0.9265 margin=6.7183
+
+AT-mimic vs uniform PGD ASR delta: -0.0015
+SUPPORTED = False

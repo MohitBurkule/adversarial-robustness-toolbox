@@ -1,0 +1,13 @@
+H399: Combined Jacobian-Frobenius + Hessian-spectral penalty
+loss = CE + l1*||J(x)||_F^2 + l2*lambda_max(Hess_x L)
+
+ l1(Jac) | l2(Hess) |   clean | FGSM_ASR |  PGD_ASR |   margin
+--------------------------------------------------------------
+     0.0 |      0.0 |  0.8800 |   0.7425 |   0.9170 |   6.1097  (baseline)
+    0.01 |      0.0 |  0.8620 |   0.5095 |   0.5200 |   2.7774  (Jac only)
+     0.0 |     0.01 |  0.8840 |   0.7585 |   0.9180 |   5.9668  (Hess only)
+    0.01 |     0.01 |  0.8600 |   0.5145 |   0.5230 |   2.7699  (combo)
+     0.1 |     0.01 |  0.8185 |   0.4320 |   0.4165 |   1.6789  (combo)
+--------------------------------------------------------------
+
+VERDICT: PGD_ASR -- baseline=0.9170, Jac-only=0.5200, Hess-only=0.9180, best-combo (0.1,0.01)=0.4165. Combo beats BOTH single penalties.

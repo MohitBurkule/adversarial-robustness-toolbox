@@ -2,10 +2,11 @@
 
 ## Agent Workflow
 
-- **All tasks must be executed via background agents** — never run scripts directly in the main session
-- Use `Agent(run_in_background=True)` for all script execution, fixing, and research tasks
-- Main session only manages agents: dispatches tasks, monitors completions, reports results
-- **For harder tasks (multi-file fixes, research, complex debugging): use `model="opus"`**
+- **The main session does MANAGEMENT ONLY** — never write scripts, run scripts, fix code, or do research directly. Every unit of work is delegated to a background agent.
+- **The main session must NEVER run Bash** — not even for quick checks (ls, grep, reading result files, inspecting status). ALL inspection/checking/verification is delegated to a background agent too.
+- **All tasks must be executed via background agents** — `Agent(run_in_background=True)` for script writing, execution, fixing, research, summary updates, AND status/result checking
+- Main session responsibilities: dispatch agents, receive their completion reports, relay results to the user. That's it. Reading a file with the Read tool to brief an agent is fine; running shell commands is not.
+- **Model choice:** use `model="sonnet"` for straightforward single-script write+run tasks; use `model="opus"` for harder tasks (multi-file fixes, literature research, complex debugging, novel hypothesis design)
 
 ## Project Context
 

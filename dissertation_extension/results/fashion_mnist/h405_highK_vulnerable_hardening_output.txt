@@ -1,0 +1,60 @@
+================================================================================
+H405  High-K (K=1000) vulnerable-sample noise hardening (Fashion-MNIST)
+================================================================================
+config: N_TRAIN=6000 N_EVAL=2000 EPOCHS=10 LR=0.05 BATCH=128 SGD(mom=0.9,wd=5e-4) SEED=0
+        EPS=0.1 PGD_STEPS=10 PGD_ALPHA=0.01 K_COPIES=1000
+        n_target conditions = [30, 300] (run sequentially, n=30 first)
+        vulnerable-test subset = lowest 25% margin
+        device = cuda
+
+data: Xtr=(6000, 1, 28, 28)  Xte=(2000, 1, 28, 28)
+
+[1] training BASE model (standard, no augmentation)...
+    base clean acc=0.8825  FGSM_ASR=0.7467  PGD_ASR=0.9654
+
+[2] ranking TRAINING samples by vulnerability (input-space margin)...
+    train margin: min=-6.697 median=5.897 max=22.494
+    most-vulnerable (lowest margin) sample margins[:5]: [-6.697000026702881, -5.066999912261963, -4.070000171661377, -4.053999900817871, -2.9149999618530273]
+    vulnerable test subset: 500 samples (margin <= 2.242)
+
+================================================================================
+[3.1] CONDITION n_target=30  (K=1000 copies of the 30 most-vulnerable training samples)
+================================================================================
+    aug_size = 36000  (= 6000 + 30*1000)
+    retraining from scratch (seed=0)...
+    RESULT n=30 (K=1000): clean_acc=0.8790  FGSM_ASR=0.7480  PGD_ASR=0.9898
+           vulnerable-subset FGSM_ASR=1.0000  PGD_ASR=1.0000
+           d_clean_acc=-0.0035  d_PGD_ASR=+0.0243 (vs baseline)  (8s)
+
+================================================================================
+[3.2] CONDITION n_target=300  (K=1000 copies of the 300 most-vulnerable training samples)
+================================================================================
+    aug_size = 306000  (= 6000 + 300*1000)
+    retraining from scratch (seed=0)...
+    RESULT n=300 (K=1000): clean_acc=0.8555  FGSM_ASR=0.8890  PGD_ASR=1.0000
+           vulnerable-subset FGSM_ASR=1.0000  PGD_ASR=1.0000
+           d_clean_acc=-0.0270  d_PGD_ASR=+0.0346 (vs baseline)  (43s)
+
+================================================================================
+[4] MAIN TABLE
+================================================================================
+condition               aug_size  clean_acc  FGSM_ASR   PGD_ASR   vuln_FGSM    vuln_PGD
+---------------------------------------------------------------------------------------
+baseline (K=0,n=0)          6000     0.8825    0.7467    0.9654      0.9962      1.0000
+n=30 (K=1000)              36000     0.8790    0.7480    0.9898      1.0000      1.0000
+n=300 (K=1000)            306000     0.8555    0.8890    1.0000      1.0000      1.0000
+---------------------------------------------------------------------------------------
+
+================================================================================
+[5] VERDICT
+================================================================================
+  n=30 (K=1000): PGD_ASR 0.9654->0.9898 (+0.0243); clean_acc 0.8825->0.8790 (-0.0035); vuln_PGD 1.0000->1.0000 (+0.0000)
+  n=300 (K=1000): PGD_ASR 0.9654->1.0000 (+0.0346); clean_acc 0.8825->0.8555 (-0.0270); vuln_PGD 1.0000->1.0000 (+0.0000)
+
+  best (lowest PGD_ASR) targeted condition: n=30 (K=1000)
+  whole-test PGD robustness gain vs baseline = -0.0243 (positive => more robust)
+  vulnerable-subset PGD gain vs baseline    = +0.0000
+  clean-acc change vs baseline              = -0.0035 (KEPT within 0.02)
+  ONE-LINE VERDICT: NO: even at H403's K=1000 multiplicity, targeting a small vulnerable set gives little whole-test robustness; clean acc is preserved.
+
+done in 42.9s

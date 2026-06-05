@@ -1,0 +1,18 @@
+Training AT reference...
+  AT: {'clean_acc': 0.7770000100135803, 'fgsm_asr': 0.32099997997283936, 'pgd_asr': 0.3205000162124634, 'mean_margin': 2.178678274154663}
+  baseline: {'clean_acc': 0.8790000081062317, 'fgsm_asr': 0.7744999974966049, 'pgd_asr': 0.9245000034570694, 'mean_margin': 6.106568336486816, 'time': 0.7294776439666748}
+  coherence_only: {'clean_acc': 0.3725000023841858, 'fgsm_asr': 0.69200000166893, 'pgd_asr': 0.7254999876022339, 'mean_margin': -6.512330532073975, 'time': 0.9475069046020508}
+  layer_lr_only: {'clean_acc': 0.8790000081062317, 'fgsm_asr': 0.7685000002384186, 'pgd_asr': 0.9400000013411045, 'mean_margin': 5.451816082000732, 'time': 0.8322694301605225}
+  all_combined: {'clean_acc': 0.3425000011920929, 'fgsm_asr': 0.7919999957084656, 'pgd_asr': 0.8184999972581863, 'mean_margin': -9.075007438659668, 'time': 1.138106107711792}
+
+=== H382 RESULTS ===
+  actual_AT: clean=0.7770 fgsm_asr=0.3210 pgd_asr=0.3205 margin=2.1787
+  baseline: clean=0.8790 fgsm_asr=0.7745 pgd_asr=0.9245 margin=6.1066
+  coherence_only: clean=0.3725 fgsm_asr=0.6920 pgd_asr=0.7255 margin=-6.5123
+  layer_lr_only: clean=0.8790 fgsm_asr=0.7685 pgd_asr=0.9400 margin=5.4518
+  all_combined: clean=0.3425 fgsm_asr=0.7920 pgd_asr=0.8185 margin=-9.0750
+
+Combined vs baseline PGD ASR delta: 0.1060
+AT vs baseline PGD ASR delta: 0.6040
+Combined recovers 17.5% of AT robustness gain
+SUPPORTED = True

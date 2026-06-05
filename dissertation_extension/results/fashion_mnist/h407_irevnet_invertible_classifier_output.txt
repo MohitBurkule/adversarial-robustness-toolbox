@@ -1,0 +1,34 @@
+================================================================================
+H407  i-RevNet-style EXACTLY-invertible classifier vs SmallCNN (Fashion-MNIST)
+================================================================================
+config: SMOKE=False N_TRAIN=6000 EPOCHS=10 LR=0.05 BATCH=128 SEED=0 EPS=0.1 PGD_STEPS=10 N_BLOCKS=3 device=cuda
+
+data: Xtr=(6000, 1, 28, 28)  Xte=(2000, 1, 28, 28)
+
+[invertibility] random-init recon error max|x-x_rec| = 2.384e-07
+
+[1] training i-RevNet (exactly-invertible trunk + linear head)...
+    post-train recon error max|x-x_rec| = 9.179e-06
+    i-RevNet: clean_acc=0.8475  FGSM_ASR=0.9864  PGD_ASR=1.0000
+
+[2] training standard SmallCNN (lossy MaxPool) baseline...
+    SmallCNN: clean_acc=0.8795  FGSM_ASR=0.7089  PGD_ASR=0.9892
+
+================================================================================
+[3] TABLE
+================================================================================
+model                       clean_acc   FGSM_ASR    PGD_ASR      recon_err
+--------------------------------------------------------------------------
+i-RevNet (invertible)          0.8475     0.9864     1.0000      9.179e-06
+SmallCNN (lossy)               0.8795     0.7089     0.9892            n/a
+--------------------------------------------------------------------------
+
+================================================================================
+[4] VERDICT
+================================================================================
+  i-RevNet recon error 9.18e-06 (EXACTLY invertible confirmed).
+  PGD_ASR: SmallCNN 0.9892 vs i-RevNet 1.0000 (d=-0.0108, positive=>invertible more robust)
+  clean_acc gap (irev - cnn) = -0.0320 (NOT matched)
+  ONE-LINE VERDICT: NO/NEUTRAL: invertibility alone gives no meaningful PGD-ASR advantage over the lossy SmallCNN.
+
+done in 7.9s

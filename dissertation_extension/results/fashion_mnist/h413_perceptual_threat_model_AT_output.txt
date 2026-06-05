@@ -1,0 +1,72 @@
+================================================================================
+H413  Perceptual (brain-like) threat-model adversarial training (Fashion-MNIST)
+================================================================================
+config: SMOKE=False N_TRAIN=6000 N_EVAL=2000 EPOCHS=10 LR=0.05 BATCH=128 SGD(mom=0.9,wd=5e-4) SEED=0
+        EPS(Linf)=0.1 L2_EPS=2.0 PGD_STEPS=10 perc_metric_driving_AT=random
+        ASR = 1 - adv_acc (lower = better);  device = cuda
+
+data: Xtr=(6000, 1, 28, 28)  Xte=(2000, 1, 28, 28)
+
+perceptual bounds (median dist of L-inf eps=0.1 ball):
+    random-feature LPIPS bound = 0.1481
+    gabor-feature   LPIPS bound = 0.0324
+    -> Perceptual-AT driven by 'random', bound=0.1481
+
+================================================================================
+[1] TRAINING 3 MODELS (same backbone, same budget)
+================================================================================
+  training Standard ...
+    done (4s)  clean_acc=0.8835
+  training Linf-AT ...
+    done (9s)  clean_acc=0.7760
+  training Perc-AT(random) ...
+    done (35s)  clean_acc=0.7680
+
+================================================================================
+[2] CROSS-THREAT-MODEL ASR MATRIX  (rows=model, cols=threat; ASR=1-adv_acc)
+================================================================================
+    Standard         Linf_PGD(eps=0.1)    ASR=0.9643  (35s)
+    Standard         L2_PGD(eps=2.0)      ASR=0.9955  (35s)
+    Standard         Perc_PGD(random)     ASR=0.5297  (36s)
+    Standard         Perc_PGD(gabor)      ASR=0.8166  (36s)
+    Standard         Gauss_blur           ASR=0.1924  (36s)
+    Linf-AT          Linf_PGD(eps=0.1)    ASR=0.1604  (36s)
+    Linf-AT          L2_PGD(eps=2.0)      ASR=0.4246  (36s)
+    Linf-AT          Perc_PGD(random)     ASR=0.2429  (37s)
+    Linf-AT          Perc_PGD(gabor)      ASR=0.0947  (37s)
+    Linf-AT          Gauss_blur           ASR=0.0606  (37s)
+    Perc-AT(random)  Linf_PGD(eps=0.1)    ASR=0.2650  (37s)
+    Perc-AT(random)  L2_PGD(eps=2.0)      ASR=0.4740  (37s)
+    Perc-AT(random)  Perc_PGD(random)     ASR=0.1719  (38s)
+    Perc-AT(random)  Perc_PGD(gabor)      ASR=0.1178  (38s)
+    Perc-AT(random)  Gauss_blur           ASR=0.0658  (38s)
+
+================================================================================
+[3] MATRIX
+================================================================================
+model                  clean  Linf_PGD(eps=0.1)    L2_PGD(eps=2.0)   Perc_PGD(random)    Perc_PGD(gabor)         Gauss_blur
+---------------------------------------------------------------------------------------------------------------------------
+Standard              0.8835             0.9643             0.9955             0.5297             0.8166             0.1924
+Linf-AT               0.7760             0.1604             0.4246             0.2429             0.0947             0.0606
+Perc-AT(random)       0.7680             0.2650             0.4740             0.1719             0.1178             0.0658
+---------------------------------------------------------------------------------------------------------------------------
+
+mean ASR over PGD threat models (lower = broader robustness):
+    Standard           mean_PGD_ASR=0.8265  worst=L2_PGD(eps=2.0)(0.9955)  clean=0.8835
+    Linf-AT            mean_PGD_ASR=0.2307  worst=L2_PGD(eps=2.0)(0.4246)  clean=0.7760
+    Perc-AT(random)    mean_PGD_ASR=0.2572  worst=L2_PGD(eps=2.0)(0.4740)  clean=0.7680
+
+================================================================================
+[4] VERDICT
+================================================================================
+  clean acc: Standard=0.8835  Linf-AT=0.7760  Perc-AT(random)=0.7680
+  mean PGD ASR: Standard=0.8265  Linf-AT=0.2307  Perc-AT(random)=0.2572
+
+  Perc-AT vs Linf-AT  ->  mean_PGD_ASR 0.2307->0.2572 (+0.0265)
+  L2 column:   Linf-AT=0.4246  Perc-AT(random)=0.4740
+  Perc column: Linf-AT=0.2429  Perc-AT(random)=0.1719
+  clean-acc difference (Perc-AT - Linf-AT) = -0.0080
+
+  ONE-LINE VERDICT: NO: in this setting L-inf AT generalizes across threat models at least as well as Perceptual-AT; the perceptual threat model did not buy broader robustness.
+
+done in 37.8s

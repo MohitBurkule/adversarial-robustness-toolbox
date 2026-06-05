@@ -127,11 +127,11 @@ def train_with_jacobian_penalty(Xtr, Ytr, lambdas, epochs=EPOCHS, lr=LR):
 
 
 CONDITIONS = {
-    "baseline":       [0.0,  0.0,  0.0],
-    "input_only":     [0.01, 0.0,  0.0],
-    "all_layers":     [0.01, 0.01, 0.01],
-    "input_plus_all": [0.005, 0.005, 0.005],  # + input Jacobian via block0
-    "weighted":       [0.02, 0.01, 0.005],
+    "baseline":       [0.0,    0.0,    0.0],
+    "input_only":     [1e-4,   0.0,    0.0],
+    "all_layers":     [1e-4,   1e-4,   1e-4],
+    "input_plus_all": [5e-5,   5e-5,   5e-5],
+    "weighted":       [1e-4,   5e-5,   2e-5],
 }
 
 

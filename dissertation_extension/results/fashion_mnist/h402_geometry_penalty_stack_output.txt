@@ -1,0 +1,39 @@
+H402 – Weight-Displacement Budget + Input-Grad Penalty Stack
+=================================================================
+Grad penalty λ=0.1, Displacement budget=10.0
+
+[a] Baseline (no penalty, no budget)
+  Clean=0.881  FGSM ASR=0.779  PGD ASR=0.936
+
+[b] Grad-penalty only (λ=0.1)
+  Clean=0.878  FGSM ASR=0.766  PGD ASR=0.921
+
+[c] Displacement-budget only (budget=10.0)
+  Final displacement norm: 9.17
+  Clean=0.883  FGSM ASR=0.773  PGD ASR=0.930
+
+[d] Both (grad-penalty + displacement-budget)
+  Final displacement norm: 9.20
+  Clean=0.882  FGSM ASR=0.773  PGD ASR=0.917
+
+[e] True Adversarial Training (PGD-7, eps=0.1)
+  Clean=0.772  FGSM ASR=0.331  PGD ASR=0.326
+
+=================================================================
+SUMMARY TABLE
+Condition               Clean   FGSM ASR   PGD ASR   Margin
+------------------------------------------------------------
+baseline                0.881      0.779     0.936    5.946
+grad_pen                0.878      0.766     0.921    6.035
+disp_budget             0.883      0.773     0.930    6.046
+both                    0.882      0.773     0.917    6.131
+adv_train               0.772      0.331     0.326    2.148
+
+VERDICT:
+  Grad-pen only: FGSM=0.766, PGD=0.921
+  Disp-budget only: FGSM=0.773, PGD=0.930
+  Stack (both): FGSM=0.773, PGD=0.917
+  True AT: FGSM=0.331, PGD=0.326
+  Stack PGD gap vs AT: +0.592
+  Stack does NOT clearly beat both components individually.
+  Stack lags behind AT by 0.592 PGD ASR
