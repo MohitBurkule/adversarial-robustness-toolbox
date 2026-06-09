@@ -1,0 +1,28 @@
+Device: cuda
+Training Cartesian-STD ...
+Training Polar-STD ...
+Training Cartesian-AT ...
+All models trained.
+
+Evaluating Cartesian-STD ...
+Evaluating Polar-STD ...
+Evaluating Cartesian-AT ...
+
+============================================================
+Model                  CleanAcc   FGSM_ASR    PGD_ASR    BndSmooth
+------------------------------------------------------------
+Cartesian-STD            0.9937     0.2088     0.2038       0.2009
+Polar-STD                0.9950     0.1219     0.1307       0.1316
+Cartesian-AT             0.9925     0.1801     0.1801       0.1431
+============================================================
+
+PASS: Polar-STD FGSM_ASR < Cartesian-STD FGSM_ASR (0.1219 < 0.2088)
+
+Polar displacement under FGSM (Cartesian-STD):
+  mean |Delta_r|     = 0.3739  std = 0.0562
+  mean |Delta_theta| = 0.1214  std = 0.1173
+
+Generating figure ...
+Figure saved to: /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h528_radial_feature_geometry.png
+
+Done.
