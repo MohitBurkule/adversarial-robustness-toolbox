@@ -1,0 +1,53 @@
+======================================================================
+H393: Logit Squeezing + Temperature Scaling
+======================================================================
+
+Loading Fashion-MNIST...
+Train: torch.Size([6000, 1, 28, 28]), Test: torch.Size([2000, 1, 28, 28])
+
+Training standard baseline model (T=1, lambda=0)...
+Baseline: clean_acc=0.882, fgsm_asr=0.767, pgd_asr=0.928, margin=5.989
+
+Running grid T x lambda...
+  T=1, lam=0.0: clean=0.882 fgsm_asr=0.767 pgd_asr=0.927 margin=5.989 transfer_asr=0.924 gap=-0.159
+  Training T=1, lambda=0.001...
+  T=1, lam=0.001: clean=0.883 fgsm_asr=0.773 pgd_asr=0.966 margin=4.949 transfer_asr=0.890 gap=-0.193
+  Training T=1, lambda=0.01...
+  T=1, lam=0.01: clean=0.882 fgsm_asr=0.745 pgd_asr=0.940 margin=3.916 transfer_asr=0.819 gap=-0.194
+  Training T=2, lambda=0.0...
+  T=2, lam=0.0: clean=0.881 fgsm_asr=0.702 pgd_asr=0.910 margin=10.645 transfer_asr=0.678 gap=-0.208
+  Training T=2, lambda=0.001...
+  T=2, lam=0.001: clean=0.878 fgsm_asr=0.743 pgd_asr=0.948 margin=8.355 transfer_asr=0.686 gap=-0.205
+  Training T=2, lambda=0.01...
+  T=2, lam=0.01: clean=0.888 fgsm_asr=0.701 pgd_asr=0.946 margin=6.448 transfer_asr=0.662 gap=-0.245
+  Training T=4, lambda=0.0...
+  T=4, lam=0.0: clean=0.878 fgsm_asr=0.591 pgd_asr=0.883 margin=17.830 transfer_asr=0.619 gap=-0.292
+  Training T=4, lambda=0.001...
+  T=4, lam=0.001: clean=0.876 fgsm_asr=0.671 pgd_asr=0.936 margin=13.665 transfer_asr=0.632 gap=-0.265
+  Training T=4, lambda=0.01...
+  T=4, lam=0.01: clean=0.885 fgsm_asr=0.697 pgd_asr=0.946 margin=10.094 transfer_asr=0.585 gap=-0.249
+
+======================================================================
+RESULTS TABLE
+======================================================================
+   T   lambda   clean  fgsm_asr  pgd_asr  margin  transfer    gap  masking?
+----------------------------------------------------------------------
+   1    0.000   0.882     0.767    0.927   5.989     0.924 -0.159       YES
+   1    0.001   0.883     0.773    0.966   4.949     0.890 -0.193        no
+   1    0.010   0.882     0.745    0.940   3.916     0.819 -0.194        no
+   2    0.000   0.881     0.702    0.910  10.645     0.678 -0.208        no
+   2    0.001   0.878     0.743    0.948   8.355     0.686 -0.205        no
+   2    0.010   0.888     0.701    0.946   6.448     0.662 -0.245        no
+   4    0.000   0.878     0.591    0.883  17.830     0.619 -0.292        no
+   4    0.001   0.876     0.671    0.936  13.665     0.632 -0.265        no
+   4    0.010   0.885     0.697    0.946  10.094     0.585 -0.249        no
+
+======================================================================
+VERDICT
+======================================================================
+Best config: T=4, lambda=0.0
+PGD ASR: 0.927 (baseline) -> 0.883 (best), reduction=0.044
+FGSM-vs-PGD gap: -0.292 (>0.15 suggests masking)
+Transfer ASR: 0.619 vs PGD ASR: 0.883
+
+VERDICT: MARGINAL EFFECT — neither meaningful robustness gain nor clear masking. Effect size is small.

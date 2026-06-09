@@ -1,0 +1,11 @@
+Theme C/C3 | illusion-auxiliary multitask robustness | dataset=svhn aug=illusion_aux seed=2
+
+clean_acc    = 0.8242
+pgd_asr      = 0.9757
+margin_auroc = 0.9769
+
+Compare aug=baseline vs aug=illusion_aux: lower pgd_asr with the human
+illusion auxiliary => making the machine share human confusion regularises
+toward robustness.
+
+[runtime 1.9s]

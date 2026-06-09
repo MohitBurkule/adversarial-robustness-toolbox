@@ -1,0 +1,60 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: EUROSAT
+[*] Executing script: dissertation_extension/hypotheses/h151_gradient_phase.py
+======================================================================
+Hypothesis H151: Input Gradient FFT Phase and Frequency Analysis
+======================================================================
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 35.9s
+
+Using 1000 correctly classified samples for evaluation.
+
+Computing gradient FFT and baseline features...
+
+Evaluating attack outcomes...
+
+Target rates:
+  flipped_FGSM             : positive rate = 0.851
+  flipped_PGD              : positive rate = 0.995
+  min_eps_below_median     : positive rate = 0.500
+
+============================================================
+Univariate AUROC Evaluation
+============================================================
+
+--- Target: flipped_FGSM ---
+  low_freq_fraction         AUROC = 0.5444 (direction: -)
+  dominant_orientation      AUROC = 0.5370 (direction: -)
+  high_to_low_ratio         AUROC = 0.5192 (direction: +)
+  input_grad_l2_norm        AUROC = 0.5563 (direction: +)
+  margin                    AUROC = 0.7046 (direction: -)
+  mean_pix                  AUROC = 0.6261 (direction: -)
+  std_pix                   AUROC = 0.6589 (direction: -)
+
+--- Target: flipped_PGD ---
+  low_freq_fraction         AUROC = 0.7546 (direction: -)
+  dominant_orientation      AUROC = 0.7972 (direction: +)
+  high_to_low_ratio         AUROC = 0.8064 (direction: +)
+  input_grad_l2_norm        AUROC = 0.9996 (direction: +)
+  margin                    AUROC = 0.9996 (direction: -)
+  mean_pix                  AUROC = 0.8062 (direction: -)
+  std_pix                   AUROC = 0.9837 (direction: -)
+
+--- Target: min_eps_below_median ---
+  low_freq_fraction         AUROC = 0.5118 (direction: +)
+  dominant_orientation      AUROC = 0.5025 (direction: +)
+  high_to_low_ratio         AUROC = 0.5153 (direction: -)
+  input_grad_l2_norm        AUROC = 0.5942 (direction: +)
+  margin                    AUROC = 0.6546 (direction: -)
+  mean_pix                  AUROC = 0.5655 (direction: -)
+  std_pix                   AUROC = 0.6274 (direction: -)

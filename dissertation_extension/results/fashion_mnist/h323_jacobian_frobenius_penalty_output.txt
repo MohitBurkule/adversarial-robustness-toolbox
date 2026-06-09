@@ -1,0 +1,6 @@
+H323: Jacobian Frobenius Penalty
+baseline: clean=0.8810 fgsm_asr=0.7735 pgd_asr=0.9270 margin=5.9007
+jacobian(lam=0.001): clean=0.8730 fgsm_asr=0.7035 pgd_asr=0.8490 margin=5.2513
+jacobian(lam=0.01): clean=0.8810 fgsm_asr=0.6190 pgd_asr=0.6760 margin=4.0395
+inputgrad(lam=0.001): clean=0.8800 fgsm_asr=0.7615 pgd_asr=0.9235 margin=6.1265
+inputgrad(lam=0.01): clean=0.8755 fgsm_asr=0.7705 pgd_asr=0.9265 margin=6.0393

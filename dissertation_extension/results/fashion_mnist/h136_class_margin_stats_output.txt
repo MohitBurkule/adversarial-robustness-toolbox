@@ -1,0 +1,42 @@
+Loading Fashion-MNIST dataset...
+Training CNN model...
+Evaluating model correctness...
+Correctly classified samples: 9254/10000
+Computing margins...
+Computing per-class margin distributions...
+Class 0: Mean=5.4563, Std=3.4332, Q25=2.5505, Q50=5.1072, Q75=7.8980
+Class 1: Mean=18.7603, Std=4.7951, Q25=16.2713, Q50=19.5774, Q75=22.1368
+Class 2: Mean=4.8763, Std=2.5008, Q25=2.9375, Q50=4.8712, Q75=6.6796
+Class 3: Mean=6.9122, Std=3.4670, Q25=4.1214, Q50=6.8753, Q75=9.5134
+Class 4: Mean=4.2730, Std=2.5598, Q25=2.2184, Q50=4.1178, Q75=6.1336
+Class 5: Mean=16.9525, Std=6.8004, Q25=12.3860, Q50=17.5014, Q75=21.9608
+Class 6: Mean=3.6133, Std=2.7065, Q25=1.3524, Q50=2.9174, Q75=5.4869
+Class 7: Mean=8.7557, Std=4.1753, Q25=5.4620, Q50=9.1742, Q75=11.8456
+Class 8: Mean=17.6768, Std=7.7182, Q25=11.7177, Q50=17.3139, Q75=23.0132
+Class 9: Mean=10.7583, Std=4.5519, Q25=7.6104, Q50=11.2998, Q75=14.2072
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: deviation_from_class_mean
+  Target: flipped_fgsm  AUROC = 0.7611
+  Target: flipped_pgd   AUROC = 0.8607
+  Target: min_eps       AUROC = 0.7689
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9187
+  Target: flipped_pgd   AUROC = 0.9484
+  Target: min_eps       AUROC = 0.9425
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.5329
+  Target: flipped_pgd   AUROC = 0.5020
+  Target: min_eps       AUROC = 0.6097
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.5995
+  Target: flipped_pgd   AUROC = 0.6415
+  Target: min_eps       AUROC = 0.5394

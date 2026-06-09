@@ -1,0 +1,134 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h169_smoothgrad_at_models.py
+======================================================================
+Hypothesis H169: SmoothGrad Informativeness on Adversarially Trained Models
+======================================================================
+Device: cuda
+
+======================================================================
+Training: Vanilla CNN
+======================================================================
+  [Vanilla] Epoch 1/10  loss=2.1228
+  [Vanilla] Epoch 2/10  loss=1.9034
+  [Vanilla] Epoch 3/10  loss=1.7640
+  [Vanilla] Epoch 4/10  loss=1.6588
+  [Vanilla] Epoch 5/10  loss=1.5776
+  [Vanilla] Epoch 6/10  loss=1.5133
+  [Vanilla] Epoch 7/10  loss=1.4406
+  [Vanilla] Epoch 8/10  loss=1.4001
+  [Vanilla] Epoch 9/10  loss=1.3539
+  [Vanilla] Epoch 10/10  loss=1.2975
+
+============================================================
+Evaluating: Vanilla CNN
+============================================================
+  Clean accuracy on full test set: 0.6250
+  Correctly classified samples used: 625
+   Computing SmoothGrad (K=20, sigma=0.1)...
+   Computing input gradient (1-pass)...
+   Running FGSM attack...
+   Running PGD-10 attack...
+   Binary-searching min_eps...
+  FGSM flip rate (eps=15/255):  0.9008
+  PGD-10 flip rate (eps=15/255): 0.9424
+  Mean min_eps: 0.0206
+
+  Feature                 vs FGSM   vs PGD vs min_eps
+  ----------------------------------------------------
+  margin                   0.9149   0.9563     0.9580
+  smoothgrad_l2_norm       0.9133   0.9840     0.7032
+  smoothgrad_max           0.9088   0.9826     0.6801
+  input_grad_l2_norm       0.8974   0.9592     0.9587
+  top1_prob                0.9187   0.9547     0.9573
+
+======================================================================
+Training: FGSM-AT CNN
+======================================================================
+  [FGSM-AT] Epoch 1/10  loss=2.2835
+  [FGSM-AT] Epoch 2/10  loss=2.2431
+  [FGSM-AT] Epoch 3/10  loss=2.2283
+  [FGSM-AT] Epoch 4/10  loss=2.2094
+  [FGSM-AT] Epoch 5/10  loss=2.1932
+  [FGSM-AT] Epoch 6/10  loss=2.1848
+  [FGSM-AT] Epoch 7/10  loss=2.1780
+  [FGSM-AT] Epoch 8/10  loss=2.1720
+  [FGSM-AT] Epoch 9/10  loss=2.1615
+  [FGSM-AT] Epoch 10/10  loss=2.1540
+
+============================================================
+Evaluating: FGSM-AT CNN
+============================================================
+  Clean accuracy on full test set: 0.4520
+  Correctly classified samples used: 452
+   Computing SmoothGrad (K=20, sigma=0.1)...
+   Computing input gradient (1-pass)...
+   Running FGSM attack...
+   Running PGD-10 attack...
+   Binary-searching min_eps...
+  FGSM flip rate (eps=15/255):  0.5531
+  PGD-10 flip rate (eps=15/255): 0.5796
+  Mean min_eps: 0.0640
+
+  Feature                 vs FGSM   vs PGD vs min_eps
+  ----------------------------------------------------
+  margin                   0.9466   0.9558     0.9406
+  smoothgrad_l2_norm       0.6057   0.6255     0.5788
+  smoothgrad_max           0.6028   0.6229     0.5782
+  input_grad_l2_norm       0.5481   0.5646     0.5256
+  top1_prob                0.8940   0.9159     0.8714
+
+======================================================================
+Training: PGD-AT CNN
+======================================================================
+  [PGD-AT]  Epoch 1/10  loss=2.2717
+  [PGD-AT]  Epoch 2/10  loss=2.2157
+  [PGD-AT]  Epoch 3/10  loss=2.1976
+  [PGD-AT]  Epoch 4/10  loss=2.1751
+  [PGD-AT]  Epoch 5/10  loss=2.1639
+  [PGD-AT]  Epoch 6/10  loss=2.1572
+  [PGD-AT]  Epoch 7/10  loss=2.1492
+  [PGD-AT]  Epoch 8/10  loss=2.1396
+  [PGD-AT]  Epoch 9/10  loss=2.1332
+  [PGD-AT]  Epoch 10/10  loss=2.1287
+
+============================================================
+Evaluating: PGD-AT CNN
+============================================================
+  Clean accuracy on full test set: 0.4580
+  Correctly classified samples used: 458
+   Computing SmoothGrad (K=20, sigma=0.1)...
+   Computing input gradient (1-pass)...
+   Running FGSM attack...
+   Running PGD-10 attack...
+   Binary-searching min_eps...
+  FGSM flip rate (eps=15/255):  0.5655
+  PGD-10 flip rate (eps=15/255): 0.5480
+  Mean min_eps: 0.0617
+
+  Feature                 vs FGSM   vs PGD vs min_eps
+  ----------------------------------------------------
+  margin                   0.9253   0.9281     0.9300
+  smoothgrad_l2_norm       0.5124   0.5120     0.5068
+  smoothgrad_max           0.5135   0.5131     0.5060
+  input_grad_l2_norm       0.5431   0.5392     0.5471
+  top1_prob                0.9069   0.8971     0.8922
+
+======================================================================
+KEY COMPARISON: smoothgrad_l2_norm vs margin vs input_grad_l2_norm
+(AUROC vs PGD-10 flip — primary robustness target)
+======================================================================
+Model                 sg_l2   margin    ig_l2    sg>margin?     sg_adv-sg_vanilla
+  Vanilla CNN        0.9840   0.9563   0.9592           YES               +0.0000
+  FGSM-AT CNN        0.6255   0.9558   0.5646            NO               -0.3585
+  PGD-AT CNN         0.5120   0.9281   0.5392            NO               -0.4720
+
+SmoothGrad advantage over margin (AUROC gap, vs PGD flip):
+  Vanilla CNN  : +0.0277
+  FGSM-AT CNN  : -0.3304
+  PGD-AT CNN   : -0.4162
+
+Direction of SmoothGrad advantage under AT: DECREASES under both FGSM-AT and PGD-AT
+
+Total runtime: 1.5 min
+
+Done.

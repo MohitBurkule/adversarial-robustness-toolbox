@@ -1,0 +1,20 @@
+=== H235: Overfitting Echo ===
+
+[1] Training baseline model...
+[2] Computing per-sample training loss...
+    Train loss: mean=0.0419, max=8.5008, min=-0.0000
+[3] Identifying adversarially vulnerable test samples (baseline)...
+    Baseline vulnerable: 299/300 (99.7%)
+
+[4] Removing top-K memorised samples and retraining...
+    frac=5% (k=3000): vuln=300 (100.0%), Jaccard=0.997, clean_acc=0.927
+    frac=10% (k=6000): vuln=291 (97.0%), Jaccard=0.973, clean_acc=0.920
+    frac=20% (k=12000): vuln=285 (95.0%), Jaccard=0.953, clean_acc=0.897
+
+--- Summary ---
+Baseline vulnerable: 299/300
+  Remove top-5% (k=3000): vuln=300 (100.0%), Jaccard=0.997, clean_acc=0.927
+  Remove top-10% (k=6000): vuln=291 (97.0%), Jaccard=0.973, clean_acc=0.920
+  Remove top-20% (k=12000): vuln=285 (95.0%), Jaccard=0.953, clean_acc=0.897
+Interpretation: Jaccard<1 = vulnerability set shifts; lower Jaccard = more migration of vulnerabilities after removal.
+Runtime: 31.0s

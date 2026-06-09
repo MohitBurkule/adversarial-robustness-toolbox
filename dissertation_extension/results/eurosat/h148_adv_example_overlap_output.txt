@@ -1,0 +1,55 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: EUROSAT
+[*] Executing script: dissertation_extension/hypotheses/h148_adv_example_overlap.py
+======================================================================
+Hypothesis H148: Adversarial Example Overlap (FGSM, BIM, PGD, MIM)
+======================================================================
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 36.4s
+
+Using 1000 correctly classified samples for evaluation.
+
+Generating attacks...
+
+==================================================
+Jaccard Similarity Matrix of Attack Success
+==================================================
+      FGSM    BIM     PGD     MIM   
+FGSM : 1.0000  0.8514  0.8523  0.8523
+BIM  : 0.8514  1.0000  0.9990  0.9990
+PGD  : 0.8523  0.9990  1.0000  0.9980
+MIM  : 0.8523  0.9990  0.9980  1.0000
+
+==================================================
+Mutual Information Matrix of Attack Success
+==================================================
+      FGSM    BIM     PGD     MIM   
+FGSM : 0.4262  0.0076  0.0095  0.0095
+BIM  : 0.0076  0.0261  0.0236  0.0236
+PGD  : 0.0095  0.0236  0.0315  0.0211
+MIM  : 0.0095  0.0236  0.0211  0.0315
+
+Attack Consensus Statistics (number of successful attacks per sample):
+  Vulnerable to 0 attacks: 0.4%
+  Vulnerable to 1 attacks: 0.0%
+  Vulnerable to 2 attacks: 0.2%
+  Vulnerable to 3 attacks: 14.6%
+  Vulnerable to 4 attacks: 84.8%
+
+==================================================
+Univariate AUROC for Target: flipped_by_all_4
+==================================================
+  attack_consensus   AUROC = 1.0000 (direction: +)
+  margin             AUROC = 0.6645 (direction: -)
+  mean_pix           AUROC = 0.6362 (direction: -)
+  std_pix            AUROC = 0.6811 (direction: -)

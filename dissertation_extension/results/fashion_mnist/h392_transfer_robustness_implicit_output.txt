@@ -1,0 +1,40 @@
+======================================================================================
+H392  Transfer robustness of implicit-method models (Fashion-MNIST)
+  N_TRAIN=6000 EPOCHS=10 EPS=0.1 PGD_STEPS=10 lambda=0.1 device=cuda
+  surrogate for transfer adversarials = STANDARD model
+======================================================================================
+
+[1/3] training models ...
+    standard     clean_acc=0.8795  (1.2s)
+    input_grad   clean_acc=0.8855  (4.3s)
+    jacobian     clean_acc=0.8185  (2.0s)
+    pgd_at       clean_acc=0.7730  (3.8s)
+
+[2/3] crafting transfer adversarials on STANDARD surrogate ...
+
+[3/3] white-box vs transfer ASR per model ...
+    standard     done
+    input_grad   done
+    jacobian     done
+    pgd_at       done
+
+Results: white-box (own-grad) vs transfer (standard-surrogate) ASR
+--------------------------------------------------------------------------------------
+model         clean  wbFGSM  trFGSM   wbPGD   trPGD  PGD wb-tr
+--------------------------------------------------------------------------------------
+standard      0.879   0.736   0.736   0.892   0.893     -0.001
+input_grad    0.886   0.748   0.685   0.924   0.837      0.086
+jacobian      0.818   0.310   0.073   0.289   0.057      0.232
+pgd_at        0.773   0.135   0.037   0.129   0.030      0.098
+--------------------------------------------------------------------------------------
+
+interpretation (per defended model):
+  boundary-smoothing  => transfer ASR << own white-box ASR (wb-tr > 0)
+  gradient-masking    => transfer ASR >> own white-box ASR (wb-tr < 0)
+--------------------------------------------------------------------------------------
+  input_grad   PGD wb=0.924 tr=0.837 (gap=+0.086) -> RESISTS-TRANSFER (transfer << white-box): consistent with boundary smoothing, NOT masking
+  jacobian     PGD wb=0.289 tr=0.057 (gap=+0.232) -> RESISTS-TRANSFER (transfer << white-box): consistent with boundary smoothing, NOT masking
+  pgd_at       PGD wb=0.129 tr=0.030 (gap=+0.098) -> RESISTS-TRANSFER (transfer << white-box): consistent with boundary smoothing, NOT masking
+--------------------------------------------------------------------------------------
+
+total runtime 14.3s

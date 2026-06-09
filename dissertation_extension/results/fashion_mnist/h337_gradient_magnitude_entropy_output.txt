@@ -1,0 +1,17 @@
+H337: Gradient Magnitude Entropy Penalty
+============================================================
+Settings: N_TRAIN=6000, EPOCHS=10, LR=0.05, BATCH=128
+Penalty = -entropy(|∇_x L|) — encourages high entropy (diffuse gradient)
+
+lam=0: clean=0.8795 fgsm_asr=0.7835 pgd_asr=0.9280 margin=5.9990 grad_ent=6.1952±0.0687
+lam=0.01: clean=0.8805 fgsm_asr=0.7695 pgd_asr=0.9230 margin=6.0589 grad_ent=6.2047±0.0627
+lam=0.1: clean=0.8790 fgsm_asr=0.7850 pgd_asr=0.9405 margin=6.2832 grad_ent=6.2528±0.0547
+lam=1.0: clean=0.8785 fgsm_asr=0.7140 pgd_asr=0.8770 margin=6.1489 grad_ent=6.3236±0.0399
+
+============================================================
+SUMMARY
+Condition       Clean   FGSM_ASR    PGD_ASR     Margin    GradEnt
+lam=0          0.8795     0.7835     0.9280     5.9990     6.1952
+lam=0.01       0.8805     0.7695     0.9230     6.0589     6.2047
+lam=0.1        0.8790     0.7850     0.9405     6.2832     6.2528
+lam=1.0        0.8785     0.7140     0.8770     6.1489     6.3236

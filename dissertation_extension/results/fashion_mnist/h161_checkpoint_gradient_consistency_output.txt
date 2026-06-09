@@ -1,0 +1,70 @@
+H161: Checkpoint Gradient Consistency vs Adversarial Vulnerability
+======================================================================
+Device : cuda
+Epochs : 15  (checkpoints every 3)
+Eval N : 1000 correctly-classified test samples
+EPS    : 0.05882  (15.0/255)
+
+Training CNN ...
+  epoch  3 -- checkpoint saved (1/5)
+  epoch  6 -- checkpoint saved (2/5)
+  epoch  9 -- checkpoint saved (3/5)
+  epoch 12 -- checkpoint saved (4/5)
+  epoch 15 -- checkpoint saved (5/5)
+
+Total checkpoints saved: 5
+
+Collected 1000 correctly-classified test samples.
+
+Computing FGSM gradients at each checkpoint ...
+    checkpoint 1/5 gradients computed
+    checkpoint 2/5 gradients computed
+    checkpoint 3/5 gradients computed
+    checkpoint 4/5 gradients computed
+    checkpoint 5/5 gradients computed
+
+Deriving gradient consistency features ...
+  grad_consistency : mean=0.8366  std=0.0205  min=0.7638  max=0.8901
+  grad_stability   : mean=0.7604  std=0.2006  min=0.0000  max=0.9337
+
+Computing vulnerability targets on final model ...
+  FGSM flip rate : 0.689
+  PGD  flip rate : 0.980
+  mean min_eps   : 0.0512
+  mean margin    : 11.8069
+
+AUROC Results  (direction-agnostic: max(a, 1-a))
+--------------------------------------------------------------
+Feature                 FGSM_flip  PGD_flip  min_eps  margin_bin
+--------------------------------------------------------------
+grad_consistency            0.743     0.847    0.742       0.714
+grad_stability              0.797     0.985    0.678       0.647
+margin                      0.936     0.986    0.964       1.000
+--------------------------------------------------------------
+
+Interpretation
+======================================================================
+  grad_consistency is a STRONG predictor of FGSM flip (AUROC=0.743)
+  grad_consistency is a STRONG predictor of PGD  flip (AUROC=0.847)
+  grad_consistency is a STRONG predictor of min_eps (AUROC=0.742)
+  grad_stability is a STRONG predictor of FGSM flip (AUROC=0.797)
+  grad_stability is a STRONG predictor of PGD  flip (AUROC=0.985)
+  grad_stability is a STRONG predictor of min_eps (AUROC=0.678)
+
+  Baseline (margin) AUROC for FGSM flip: 0.936
+
+Hypothesis H161 Verdict:
+----------------------------------------------------------------------
+  SUPPORTED: High gradient sign consistency across checkpoints is a
+  strong predictor of adversarial vulnerability, consistent with the
+  hypothesis that a stable attack direction is easier to exploit.
+
+  NOTE: grad_stability (cosine similarity between consecutive
+  checkpoint gradients) outperforms grad_consistency, suggesting that
+  the *magnitude* of gradient drift -- not just sign agreement -- is
+  more informative.
+
+Summary statistics:
+  grad_consistency AUROC (FGSM flip): 0.743
+  grad_stability   AUROC (FGSM flip): 0.797
+  margin           AUROC (FGSM flip): 0.936

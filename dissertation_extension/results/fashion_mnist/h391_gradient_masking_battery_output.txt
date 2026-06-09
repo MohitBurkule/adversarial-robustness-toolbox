@@ -1,0 +1,52 @@
+==============================================================================
+H391  Gradient-masking detection battery (Fashion-MNIST)
+  N_TRAIN=6000 EPOCHS=10 EPS=0.1 PGD_STEPS=10 restarts=10 lambda=0.1 device=cuda
+==============================================================================
+
+[1/4] training models (re-train, no checkpoints) ...
+    standard     clean_acc=0.8810  (2.0s)
+    input_grad   clean_acc=0.8805  (5.1s)
+    jacobian     clean_acc=0.8180  (3.9s)
+    pgd_at       clean_acc=0.7745  (4.0s)
+
+[2/4] crafting transfer adversarials on STANDARD surrogate ...
+
+[3/4] running battery per model ...
+    standard     done (2.2s)
+    input_grad   done (2.2s)
+    jacobian     done (2.1s)
+    pgd_at       done (2.2s)
+
+[4/4] battery results
+------------------------------------------------------------------------------
+model        clean_n  wb_PGD transfer 10xrest   FGSM fgsm-pgd
+------------------------------------------------------------------------------
+standard        1762   0.906    0.908   0.925  0.725   -0.182
+input_grad      1761   0.903    0.825   0.930  0.730   -0.173
+jacobian        1636   0.290    0.059   0.309  0.311    0.021
+pgd_at          1549   0.119    0.028   0.131  0.125    0.006
+------------------------------------------------------------------------------
+
+increasing-steps PGD ASR curve (steps -> ASR):
+model        s=1     s=5     s=10    s=20    s=50   
+standard       0.700   0.930   0.951   0.958   0.963
+input_grad     0.706   0.935   0.962   0.970   0.973
+jacobian       0.302   0.361   0.367   0.367   0.371
+pgd_at         0.123   0.154   0.157   0.158   0.162
+
+per-model masking verdicts:
+  (masking signals are only meaningful for a model CLAIMING robustness,
+   i.e. a low white-box PGD ASR; a wide-open model with ~0.9 ASR cannot
+   be 'masking' since the attacker already wins. Signals are therefore
+   gated on the model appearing robust: white-box ASR < 0.5.)
+------------------------------------------------------------------------------
+  standard     -> N/A (undefended reference; white-box ASR=0.906)
+  input_grad   -> GENUINE  (white-box PGD ASR=0.903, not robust anyway)
+        (no masking signals: transfer<=wb, restarts flat, curve plateaued, FGSM~PGD)
+  jacobian     -> GENUINE  (white-box PGD ASR=0.290, claims robustness)
+        (no masking signals: transfer<=wb, restarts flat, curve plateaued, FGSM~PGD)
+  pgd_at       -> GENUINE  (white-box PGD ASR=0.119, claims robustness)
+        (no masking signals: transfer<=wb, restarts flat, curve plateaued, FGSM~PGD)
+------------------------------------------------------------------------------
+
+total runtime 26.8s

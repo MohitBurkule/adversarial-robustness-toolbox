@@ -1,0 +1,58 @@
+======================================================================
+Hypothesis H151: Input Gradient FFT Phase and Frequency Analysis
+======================================================================
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 37.3s
+
+Using 1000 correctly classified samples for evaluation.
+
+Computing gradient FFT and baseline features...
+
+Evaluating attack outcomes...
+
+Target rates:
+  flipped_FGSM             : positive rate = 0.679
+  flipped_PGD              : positive rate = 0.958
+  min_eps_below_median     : positive rate = 0.500
+
+============================================================
+Univariate AUROC Evaluation
+============================================================
+
+--- Target: flipped_FGSM ---
+  low_freq_fraction         AUROC = 0.5596 (direction: -)
+  dominant_orientation      AUROC = 0.5586 (direction: -)
+  high_to_low_ratio         AUROC = 0.8053 (direction: +)
+  input_grad_l2_norm        AUROC = 0.9181 (direction: +)
+  margin                    AUROC = 0.9138 (direction: -)
+  mean_pix                  AUROC = 0.5724 (direction: +)
+  std_pix                   AUROC = 0.5776 (direction: -)
+
+--- Target: flipped_PGD ---
+  low_freq_fraction         AUROC = 0.7628 (direction: +)
+  dominant_orientation      AUROC = 0.5042 (direction: -)
+  high_to_low_ratio         AUROC = 0.8382 (direction: +)
+  input_grad_l2_norm        AUROC = 0.9200 (direction: +)
+  margin                    AUROC = 0.9161 (direction: -)
+  mean_pix                  AUROC = 0.5591 (direction: -)
+  std_pix                   AUROC = 0.7306 (direction: -)
+
+--- Target: min_eps_below_median ---
+  low_freq_fraction         AUROC = 0.6900 (direction: -)
+  dominant_orientation      AUROC = 0.6197 (direction: -)
+  high_to_low_ratio         AUROC = 0.8381 (direction: +)
+  input_grad_l2_norm        AUROC = 0.9408 (direction: +)
+  margin                    AUROC = 0.9366 (direction: -)
+  mean_pix                  AUROC = 0.6339 (direction: +)
+  std_pix                   AUROC = 0.5277 (direction: -)

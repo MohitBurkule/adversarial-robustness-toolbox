@@ -1,0 +1,12 @@
+========================================================================
+H262 - Gaussian Noise Sigma Sweep During Training
+========================================================================
+
+Loading fashion_mnist ...
+  Train: torch.Size([60000, 1, 28, 28])  Test: torch.Size([2000, 1, 28, 28])
+
+--- sigma=0.00 ---
+  Training done in 6.9s
+  clean_acc=0.9300  FGSM_ASR=0.8440  PGD_ASR=1.0000  mean_margin=9.6856  cert_radius=0.0000
+
+--- sigma=0.02 ---

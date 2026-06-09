@@ -1,0 +1,52 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: SVHN
+[*] Executing script: dissertation_extension/hypotheses/h153_bn_sensitivity.py
+======================================================================
+Hypothesis H153: BatchNorm Running Stats Sensitivity
+======================================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
+
+Training CNN model with BatchNorm...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 61.9s
+
+Using 1000 correctly classified samples for evaluation.
+
+Computing BN drift features (eval vs train mode at batch=1)...
+
+Evaluating attack outcomes...
+
+Target rates:
+  flipped_FGSM             : positive rate = 0.904
+  flipped_PGD              : positive rate = 0.982
+  min_eps_below_median     : positive rate = 0.500
+
+============================================================
+Univariate AUROC Evaluation
+============================================================
+
+--- Target: flipped_FGSM ---
+  bn_drift                  AUROC = 0.6355 (direction: -)
+  margin                    AUROC = 0.6165 (direction: -)
+  mean_pix                  AUROC = 0.6109 (direction: -)
+  std_pix                   AUROC = 0.6446 (direction: -)
+
+--- Target: flipped_PGD ---
+  bn_drift                  AUROC = 0.7613 (direction: +)
+  margin                    AUROC = 0.7114 (direction: +)
+  mean_pix                  AUROC = 0.5241 (direction: -)
+  std_pix                   AUROC = 0.5918 (direction: -)
+
+--- Target: min_eps_below_median ---
+  bn_drift                  AUROC = 0.6611 (direction: -)
+  margin                    AUROC = 0.7554 (direction: -)
+  mean_pix                  AUROC = 0.6018 (direction: -)
+  std_pix                   AUROC = 0.6725 (direction: -)

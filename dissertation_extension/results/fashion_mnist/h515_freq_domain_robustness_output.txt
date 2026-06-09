@@ -1,0 +1,44 @@
+========================================================================
+H515 — Frequency-Domain Adversarial Robustness Analysis
+========================================================================
+
+--- Seed 0 ---
+  [STD] ASR=0.998
+    Original image bands: L=0.944 M=0.051 H=0.004
+    Perturbation bands:   L=0.499 M=0.384 H=0.117
+    High-freq ↔ flip corr: -0.155
+  [PGD-AT] ASR=0.341
+    Original image bands: L=0.944 M=0.051 H=0.004
+    Perturbation bands:   L=0.691 M=0.253 H=0.056
+    High-freq ↔ flip corr: -0.070
+
+--- Seed 1 ---
+  [STD] ASR=0.991
+    Original image bands: L=0.941 M=0.054 H=0.005
+    Perturbation bands:   L=0.481 M=0.368 H=0.152
+    High-freq ↔ flip corr: -0.027
+  [PGD-AT] ASR=0.299
+    Original image bands: L=0.941 M=0.054 H=0.005
+    Perturbation bands:   L=0.696 M=0.249 H=0.056
+    High-freq ↔ flip corr: -0.055
+
+--- Seed 2 ---
+  [STD] ASR=0.993
+    Original image bands: L=0.938 M=0.057 H=0.005
+    Perturbation bands:   L=0.550 M=0.345 H=0.105
+    High-freq ↔ flip corr: -0.130
+  [PGD-AT] ASR=0.329
+    Original image bands: L=0.938 M=0.057 H=0.005
+    Perturbation bands:   L=0.699 M=0.248 H=0.053
+    High-freq ↔ flip corr: -0.070
+
+========================================================================
+CROSS-SEED SUMMARY
+========================================================================
+  [STD] ASR=0.994±0.003  Pert-High=0.124±0.020  HighFreq-Flip-Corr=-0.104
+  [PGD-AT] ASR=0.323±0.018  Pert-High=0.055±0.001  HighFreq-Flip-Corr=-0.065
+
+  Perturbation high-freq energy: STD=0.124 vs AT=0.055
+  → AT does NOT push perturbations to higher frequencies
+
+Total time: 20.3s

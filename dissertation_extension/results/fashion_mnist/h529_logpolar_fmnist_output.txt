@@ -1,0 +1,57 @@
+Device: cuda
+======================================================================
+H529 – Log-Polar Feature Geometry on Fashion-MNIST
+======================================================================
+
+[1/3] Training Cartesian-STD ...
+    epoch 5/15
+    epoch 10/15
+    epoch 15/15
+
+[2/3] Training LogPolar-STD ...
+    epoch 5/15
+    epoch 10/15
+    epoch 15/15
+
+[3/3] Training Cartesian-AT (PGD eps=0.1) ...
+    epoch 5/15
+    epoch 10/15
+    epoch 15/15
+
+Clean accuracy:
+  Cartesian-STD : 0.9242
+  LogPolar-STD  : 0.9048
+  Cartesian-AT  : 0.8532
+
+FGSM ASR sweep:
+  (BLIND = pixel-space attack transferred to LP model; ADAPT = attacker knows LP transform)
+  eps=0.05  Cart-STD=0.715  LP-blind=0.305  LP-adapt=0.744  Cart-AT=0.038
+  eps=0.10  Cart-STD=0.853  LP-blind=0.498  LP-adapt=0.906  Cart-AT=0.074
+  eps=0.15  Cart-STD=0.905  LP-blind=0.615  LP-adapt=0.950  Cart-AT=0.358
+  eps=0.20  Cart-STD=0.927  LP-blind=0.705  LP-adapt=0.961  Cart-AT=0.690
+  eps=0.25  Cart-STD=0.936  LP-blind=0.768  LP-adapt=0.963  Cart-AT=0.849
+  eps=0.30  Cart-STD=0.941  LP-blind=0.816  LP-adapt=0.960  Cart-AT=0.884
+
+PGD-20 ASR at eps=0.2:
+  Cartesian-STD  : 1.000
+  LogPolar-BLIND : 0.716  (pixel-space transfer attack)
+  LogPolar-ADAPT : 1.000  (adaptive, knows transform)
+  Cartesian-AT   : 0.880
+
+============================================================================
+Model                   CleanAcc   FGSM_ASR   PGD_ASR  note
+----------------------------------------------------------------------------
+Cartesian-STD             0.9242     0.9266    1.0000  pixel attack
+LogPolar-BLIND            0.9048     0.7046    0.7155  pixel attack (no transform knowledge)
+LogPolar-ADAPT            0.9048     0.9614    1.0000  adaptive (knows transform)
+Cartesian-AT              0.8532     0.6899    0.8800  pixel attack
+============================================================================
+
+PASS (blind attack): LogPolar-BLIND ASR=0.7046 < Cartesian-STD ASR=0.9266 at eps=0.2
+Key: if BLIND < ADAPT, the transform provides genuine obfuscation benefit.
+
+Generating figure ...
+Figure saved → /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h529_logpolar_fmnist.png
+Text   saved → /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h529_logpolar_fmnist_output.txt
+
+Done.

@@ -1,0 +1,40 @@
+==============================================================================
+H389 - Cumulative front-to-back AT budget allocation (activation-space AT)
+==============================================================================
+Device=cuda  dataset=fashion_mnist  eps=0.1  eps_act_frac=0.25  (of per-layer activation RMS)  epochs=10  n_train=6000
+Activation-space AT = FGSM ascent on chosen layer activations during training.
+
+[clean         ] clean=0.879  FGSM-ASR=0.734  PGD-ASR=0.958  (2s)
+[input_AT      ] clean=0.798  FGSM-ASR=0.150  PGD-ASR=0.189  (5s)
+[act_b0        ] clean=0.808  FGSM-ASR=0.307  PGD-ASR=0.489  (1s)
+[act_b0_b1     ] clean=0.666  FGSM-ASR=0.245  PGD-ASR=0.311  (2s)
+[act_b0_b1_b2  ] clean=0.108  FGSM-ASR=0.000  PGD-ASR=0.000  (2s)
+[act_all       ] clean=0.108  FGSM-ASR=0.000  PGD-ASR=0.000  (2s)
+
+------------------------------------------------------------------------------
+condition        clean  FGSM-ASR  PGD-ASR    budget (layers perturbed)
+------------------------------------------------------------------------------
+clean            0.879     0.734    0.958              none (baseline)
+input_AT         0.798     0.150    0.189        input-space PGD (ref)
+act_b0           0.808     0.307    0.489                       block0
+act_b0_b1        0.666     0.245    0.311                block0+block1
+act_b0_b1_b2     0.108     0.000    0.000         block0+block1+block2
+act_all          0.108     0.000    0.000         block0+b1+b2+head_in
+------------------------------------------------------------------------------
+
+MARGINAL PGD-ASR reduction added by each successive layer (cumulative):
+  (* = COLLAPSED model: clean acc ~ chance, so its ASR is meaningless)
+  clean baseline   PGD-ASR=0.958  (start)
+  +block0          PGD-ASR=0.489  marginal_drop=+0.469  ( 72.5% of usable act-AT reduction)
+  +block1          PGD-ASR=0.311  marginal_drop=+0.178  ( 27.5% of usable act-AT reduction)
+  +block2          PGD-ASR=0.000  clean=0.108 *  -> COLLAPSED, marginal contribution not counted
+  +head_in         PGD-ASR=0.000  clean=0.108 *  -> COLLAPSED, marginal contribution not counted
+  usable activation-AT PGD-ASR reduction (clean->act_b0_b1) = +0.647
+  input-space AT PGD-ASR = 0.189  (reference); clean = 0.958
+  NOTE: perturbing block2 (the 1152-d activation feeding the head) and beyond
+        collapses training -- robustness budget is only spendable on the early
+        conv blocks; the head-adjacent layer cannot absorb activation AT here.
+
+VERDICT: Robustness is FRONT-LOADED -- block0 alone delivers 73% of the usable activation-AT PGD-ASR reduction (clean 0.958 -> block0 0.489); adding block1 only adds a little more, and deeper layers collapse the model rather than help.
+==============================================================================
+total runtime 16s

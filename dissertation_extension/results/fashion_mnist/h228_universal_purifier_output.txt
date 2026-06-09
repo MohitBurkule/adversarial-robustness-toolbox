@@ -1,0 +1,50 @@
+Loading Fashion-MNIST …
+
+Training classifier on full training set …
+  Classifier only: clean=0.923  fgsm_asr=0.827  pgd_asr=1.000
+
+Training PGD purifier on 5000 samples (20 epochs) …
+    epoch 5/20  mse=0.00366
+    epoch 10/20  mse=0.00263
+    epoch 15/20  mse=0.00235
+    epoch 20/20  mse=0.00221
+
+Evaluating PGD purifier …
+  clean_acc (with purifier): 0.920
+  FGSM recovery rate:        0.447
+  PGD recovery rate:         0.360
+  Adaptive PGD ASR:          0.855
+
+Cross-attack generalisation (PGD-trained purifier vs FGSM adversarials):
+  FGSM recovery rate: 0.447  (cross-attack)
+
+Training FGSM purifier on 5000 samples …
+    epoch 5/20  mse=0.00420
+    epoch 10/20  mse=0.00314
+    epoch 15/20  mse=0.00283
+    epoch 20/20  mse=0.00268
+  FGSM-trained purifier: FGSM recovery=0.487  PGD recovery=0.477
+
+======================================================================
+SUMMARY
+======================================================================
+Metric                                             Value
+----------------------------------------------------------------------
+No purifier — clean acc                            0.923
+No purifier — FGSM ASR                             0.827
+No purifier — PGD ASR                              1.000
+PGD purifier — clean acc (clf(P(x_clean)))         0.920
+PGD purifier — FGSM recovery rate                  0.447
+PGD purifier — PGD recovery rate                   0.360
+PGD purifier — adaptive PGD ASR                    0.855
+FGSM purifier — FGSM recovery rate                 0.487
+FGSM purifier — PGD recovery (cross-attack)        0.477
+======================================================================
+
+Conclusions:
+  Purifier clean accuracy drop: 0.003
+  PGD recovery (non-adaptive attack): POOR (0.360)
+  Adaptive attack breaks purifier: YES (adaptive_asr=0.855)
+  Cross-attack generalisation: NO
+
+Done.

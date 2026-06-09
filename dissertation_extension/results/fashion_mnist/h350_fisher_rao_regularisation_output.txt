@@ -1,0 +1,14 @@
+========================================================================
+H350 - Fisher-Rao Regularisation (FIRE, Picot et al. 2021)
+========================================================================
+Device=cuda  dataset=fashion_mnist  N_TRAIN=6000  eps=0.1
+lambda grid: [0, 0.1, 1.0, 10.0]
+  lambda=0      clean=0.882  fgsm_asr=0.757  pgd_asr=0.911  margin=6.108  (1.2s)
+  lambda=0.1    clean=0.878  fgsm_asr=0.758  pgd_asr=0.896  margin=5.912  (1.6s)
+  lambda=1.0    clean=0.877  fgsm_asr=0.799  pgd_asr=0.963  margin=2.122  (1.6s)
+  lambda=10.0   clean=0.595  fgsm_asr=0.949  pgd_asr=0.982  margin=0.076  (1.6s)
+
+Interpretation: Fisher-Rao distance is a geodesic on the statistical
+manifold. Penalising d_FR(p_clean, p_adv) encourages distributional
+stability under FGSM perturbations. Compare to KL-based TRADES (H346).
+========================================================================

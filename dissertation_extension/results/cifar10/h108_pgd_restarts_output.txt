@@ -1,0 +1,52 @@
+/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torchvision/datasets/cifar.py:83: VisibleDeprecationWarning: dtype(): align should be passed as Python or NumPy boolean but got `align=0`. Did you mean to pass a tuple to create a subarray type? (Deprecated NumPy 2.4)
+  entry = pickle.load(f, encoding="latin1")
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: CIFAR10
+[*] Executing script: dissertation_extension/hypotheses/h108_pgd_restarts.py
+============================================================
+Hypothesis H108: PGD Random Restarts Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 42.1s
+Running restarts evaluation on 1000 correctly classified test samples...
+PGD evaluation completed in 8.0s
+
+Adversarial Success by Restart Limit K:
+  K = 1: Success rate = 1.0000
+  K = 5: Success rate = 1.0000
+  K = 10: Success rate = 1.0000
+  K = 20: Success rate = 1.0000
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+Target flipped_at_1 has no variance (all 0 or all 1), skipping.
+
+Target flipped_at_5 has no variance (all 0 or all 1), skipping.
+
+Target flipped_at_10 has no variance (all 0 or all 1), skipping.
+
+Target flipped_at_20 has no variance (all 0 or all 1), skipping.
+
+============================================================
+ANALYSIS OF SAMPLES NEEDING MORE RESTARTS
+============================================================
+  Easy (K=1) (n=1000):
+    margin         : 1.9658
+    mean_pix       : 0.4866
+    std_pix        : 0.1904
+    sobel_mean     : 0.7510
+  Medium (1<K<=10): 0 samples
+  Hard (10<K<=20): 0 samples
+  Robust (K>20): 0 samples

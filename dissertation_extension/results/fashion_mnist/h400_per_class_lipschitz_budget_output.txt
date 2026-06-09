@@ -1,0 +1,37 @@
+H400 – Per-class Lipschitz Budget
+============================================================
+Vulnerable classes (2x weight): ['2:Pullover', '4:Coat', '6:Shirt']
+Class weights (classweighted): {0: 0.0769, 1: 0.0769, 2: 0.1538, 3: 0.0769, 4: 0.1538, 5: 0.0769, 6: 0.1538, 7: 0.0769, 8: 0.0769, 9: 0.0769}
+
+Condition: zero
+  Clean=0.879  FGSM ASR=0.776  PGD ASR=0.936  Margin=6.025
+  Per-class FGSM ASR (vulnerable): Pullover=1.000, Coat=0.927, Shirt=0.974
+
+Condition: uniform
+  Clean=0.881  FGSM ASR=0.697  PGD ASR=0.829  Margin=5.143
+  Per-class FGSM ASR (vulnerable): Pullover=1.000, Coat=0.919, Shirt=0.951
+
+Condition: classweighted
+  Clean=0.877  FGSM ASR=0.711  PGD ASR=0.853  Margin=5.208
+  Per-class FGSM ASR (vulnerable): Pullover=1.000, Coat=0.935, Shirt=0.986
+
+============================================================
+SUMMARY TABLE (overall)
+Condition          Clean   FGSM ASR   PGD ASR   Margin
+-------------------------------------------------------
+zero               0.879      0.776     0.936    6.025
+uniform            0.881      0.697     0.829    5.143
+classweighted      0.877      0.711     0.853    5.208
+
+Per-class FGSM ASR for vulnerable classes:
+Class            zero    uniform  classweighted
+------------------------------------------------
+Pullover        1.000      1.000          1.000
+Coat            0.927      0.919          0.935
+Shirt           0.974      0.951          0.986
+
+VERDICT:
+  Uniform λ: mean ASR on vulnerable classes = 0.957
+  Class-weighted: mean ASR on vulnerable classes = 0.973
+  Clean acc change (uniform -> weighted): +0.004
+  HYPOTHESIS NOT SUPPORTED: class weighting did not clearly help vulnerable classes

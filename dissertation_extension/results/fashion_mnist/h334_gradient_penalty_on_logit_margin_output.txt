@@ -1,0 +1,28 @@
+H334: Gradient Penalty on Logit Margin Loss
+============================================================
+Settings: N_TRAIN=6000, EPOCHS=10, LR=0.05, BATCH=128
+
+margin_lam=0: clean=0.8770 fgsm_asr=0.7530 pgd_asr=0.9180 margin=6.0865
+
+margin_lam=0.001: clean=0.8775 fgsm_asr=0.7660 pgd_asr=0.9225 margin=6.0223
+
+margin_lam=0.01: clean=0.8790 fgsm_asr=0.7875 pgd_asr=0.9335 margin=5.9722
+
+margin_lam=0.1: clean=0.8815 fgsm_asr=0.7670 pgd_asr=0.9365 margin=5.9904
+
+ce_lam=0.001: clean=0.8760 fgsm_asr=0.7660 pgd_asr=0.9165 margin=5.9871
+
+ce_lam=0.01: clean=0.8805 fgsm_asr=0.7850 pgd_asr=0.9285 margin=5.9873
+
+ce_lam=0.1: clean=0.8810 fgsm_asr=0.7505 pgd_asr=0.9115 margin=6.0215
+
+============================================================
+SUMMARY
+Condition                    Clean   FGSM_ASR    PGD_ASR     Margin
+margin_lam=0                0.8770     0.7530     0.9180     6.0865
+margin_lam=0.001            0.8775     0.7660     0.9225     6.0223
+margin_lam=0.01             0.8790     0.7875     0.9335     5.9722
+margin_lam=0.1              0.8815     0.7670     0.9365     5.9904
+ce_lam=0.001                0.8760     0.7660     0.9165     5.9871
+ce_lam=0.01                 0.8805     0.7850     0.9285     5.9873
+ce_lam=0.1                  0.8810     0.7505     0.9115     6.0215

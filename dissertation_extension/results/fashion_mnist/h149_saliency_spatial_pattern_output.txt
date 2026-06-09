@@ -1,0 +1,55 @@
+======================================================================
+Hypothesis H149: Saliency Spatial Pattern Analysis
+======================================================================
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 35.7s
+
+Using 1000 correctly classified samples for evaluation.
+
+Computing saliency and spatial features...
+
+Evaluating attack outcomes...
+
+Target rates:
+  flipped_FGSM             : positive rate = 0.700
+  flipped_PGD              : positive rate = 0.971
+  min_eps_below_median     : positive rate = 0.500
+
+============================================================
+Univariate AUROC Evaluation
+============================================================
+
+--- Target: flipped_FGSM ---
+  saliency_cm_dist          AUROC = 0.7724 (direction: -)
+  saliency_moment_inertia   AUROC = 0.7359 (direction: +)
+  saliency_eccentricity     AUROC = 0.7356 (direction: -)
+  margin                    AUROC = 0.8953 (direction: -)
+  mean_pix                  AUROC = 0.5353 (direction: +)
+  std_pix                   AUROC = 0.6080 (direction: -)
+
+--- Target: flipped_PGD ---
+  saliency_cm_dist          AUROC = 0.8514 (direction: -)
+  saliency_moment_inertia   AUROC = 0.8215 (direction: +)
+  saliency_eccentricity     AUROC = 0.7799 (direction: -)
+  margin                    AUROC = 0.9254 (direction: -)
+  mean_pix                  AUROC = 0.6178 (direction: -)
+  std_pix                   AUROC = 0.7256 (direction: -)
+
+--- Target: min_eps_below_median ---
+  saliency_cm_dist          AUROC = 0.7334 (direction: -)
+  saliency_moment_inertia   AUROC = 0.7316 (direction: +)
+  saliency_eccentricity     AUROC = 0.6682 (direction: -)
+  margin                    AUROC = 0.9337 (direction: -)
+  mean_pix                  AUROC = 0.6127 (direction: +)
+  std_pix                   AUROC = 0.5271 (direction: -)

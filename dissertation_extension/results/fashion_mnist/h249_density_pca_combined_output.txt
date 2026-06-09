@@ -1,0 +1,147 @@
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/model_selection/_split.py:813: UserWarning: The least populated class in y has only 1 members, which is less than n_splits=5.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/model_selection/_validation.py:490: FitFailedWarning: 
+1 fits failed out of a total of 5.
+The score on these train-test partitions for these parameters will be set to nan.
+If these failures are not expected, you can try to debug them by setting error_score='raise'.
+
+Below are more details about the failures:
+--------------------------------------------------------------------------------
+1 fits failed with the following error:
+Traceback (most recent call last):
+  File "/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/model_selection/_validation.py", line 833, in _fit_and_score
+    estimator.fit(X_train, y_train, **fit_params)
+  File "/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/base.py", line 1336, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py", line 1243, in fit
+    raise ValueError(
+ValueError: This solver needs samples of at least 2 classes in the data, but the data contains only one class: np.int64(1)
+
+  warnings.warn(some_fits_failed_message, FitFailedWarning)
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/model_selection/_split.py:813: UserWarning: The least populated class in y has only 1 members, which is less than n_splits=5.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/model_selection/_validation.py:490: FitFailedWarning: 
+1 fits failed out of a total of 5.
+The score on these train-test partitions for these parameters will be set to nan.
+If these failures are not expected, you can try to debug them by setting error_score='raise'.
+
+Below are more details about the failures:
+--------------------------------------------------------------------------------
+1 fits failed with the following error:
+Traceback (most recent call last):
+  File "/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/model_selection/_validation.py", line 833, in _fit_and_score
+    estimator.fit(X_train, y_train, **fit_params)
+  File "/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/base.py", line 1336, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py", line 1243, in fit
+    raise ValueError(
+ValueError: This solver needs samples of at least 2 classes in the data, but the data contains only one class: np.int64(1)
+
+  warnings.warn(some_fits_failed_message, FitFailedWarning)
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/model_selection/_split.py:813: UserWarning: The least populated class in y has only 1 members, which is less than n_splits=5.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/model_selection/_validation.py:490: FitFailedWarning: 
+1 fits failed out of a total of 5.
+The score on these train-test partitions for these parameters will be set to nan.
+If these failures are not expected, you can try to debug them by setting error_score='raise'.
+
+Below are more details about the failures:
+--------------------------------------------------------------------------------
+1 fits failed with the following error:
+Traceback (most recent call last):
+  File "/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/model_selection/_validation.py", line 833, in _fit_and_score
+    estimator.fit(X_train, y_train, **fit_params)
+  File "/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/base.py", line 1336, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py", line 1243, in fit
+    raise ValueError(
+ValueError: This solver needs samples of at least 2 classes in the data, but the data contains only one class: np.int64(1)
+
+  warnings.warn(some_fits_failed_message, FitFailedWarning)
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/model_selection/_split.py:813: UserWarning: The least populated class in y has only 1 members, which is less than n_splits=5.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/model_selection/_validation.py:490: FitFailedWarning: 
+1 fits failed out of a total of 5.
+The score on these train-test partitions for these parameters will be set to nan.
+If these failures are not expected, you can try to debug them by setting error_score='raise'.
+
+Below are more details about the failures:
+--------------------------------------------------------------------------------
+1 fits failed with the following error:
+Traceback (most recent call last):
+  File "/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/model_selection/_validation.py", line 833, in _fit_and_score
+    estimator.fit(X_train, y_train, **fit_params)
+  File "/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/base.py", line 1336, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py", line 1243, in fit
+    raise ValueError(
+ValueError: This solver needs samples of at least 2 classes in the data, but the data contains only one class: np.int64(1)
+
+  warnings.warn(some_fits_failed_message, FitFailedWarning)
+=== H249: Density + PCA Combined Predictor ===
+
+[1] Training model...
+[2] Running PGD attack...
+    PGD ASR: 0.997
+[3] Computing margins...
+[4] Computing neighbourhood density (k=10)...
+    Density: mean=0.2168, std=0.0533
+[5] Computing PCA tail energy (K=100)...
+    Tail energy: mean=0.6857, std=0.0777
+[6] Individual AUROCs...
+    AUROC(margin):      0.983
+    AUROC(density):     0.120
+    AUROC(tail_energy): 0.783
+[7] Logistic regression meta-predictor...
+    Combined AUROC (5-fold CV): nan ± nan
+    Feature importances (|coef|):
+           neg_margin: +0.9148
+          neg_density: -0.6314
+          tail_energy: +0.5940
+[8] Pairwise combination AUROCs...
+          margin+density: nan ± nan
+             margin+tail: nan ± nan
+            density+tail: nan ± nan
+
+--- Summary ---
+PGD ASR: 0.997
+Individual AUROCs: margin=0.983, density=0.120, tail_energy=0.783
+Combined (all 3) AUROC: nan
+Interpretation: combined AUROC > best individual => density/tail carry complementary information beyond margin alone.
+Runtime: 30.9s

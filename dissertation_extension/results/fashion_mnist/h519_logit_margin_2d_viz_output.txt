@@ -1,0 +1,6 @@
+Training accuracy: 0.948
+Fraction flipped by FGSM: 0.237
+Pearson correlation(margin, FGSM_survived): r=0.6672, p=1.5196e-78
+AUC (logit margin predicts FGSM vulnerability): 0.9914
+Saved: results/fashion_mnist/h519_logit_margin_2d_viz.png
+PASS

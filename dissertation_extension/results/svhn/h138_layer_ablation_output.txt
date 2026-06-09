@@ -1,0 +1,57 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: SVHN
+[*] Executing script: dissertation_extension/hypotheses/h138_layer_ablation.py
+============================================================
+Hypothesis H138: Layer Ablation Vulnerability Analysis
+============================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 56.4s
+Using 8618/10000 correctly classified samples
+
+Computing layer ablation features...
+
+Running attacks...
+  FGSM flip rate = 0.9363
+  PGD-10 flip rate = 0.9898
+  Mean min_eps = 0.0279
+
+============================================================
+TARGET: flipped_FGSM | Univariate AUROC
+============================================================
+  max_ablation_drop         AUROC = 0.6832
+  mean_ablation_drop        AUROC = 0.6596
+  std_ablation_drop         AUROC = 0.5727
+  margin                    AUROC = 0.8042
+  mean_pix                  AUROC = 0.6150
+  std_pix                   AUROC = 0.7324
+
+============================================================
+TARGET: flipped_PGD | Univariate AUROC
+============================================================
+  max_ablation_drop         AUROC = 0.5667
+  mean_ablation_drop        AUROC = 0.5368
+  std_ablation_drop         AUROC = 0.6924
+  margin                    AUROC = 0.6473
+  mean_pix                  AUROC = 0.5982
+  std_pix                   AUROC = 0.7485
+
+============================================================
+TARGET: min_eps (continuous) | Univariate AUROC (above median)
+============================================================
+  max_ablation_drop         AUROC = 0.8281
+  mean_ablation_drop        AUROC = 0.8112
+  std_ablation_drop         AUROC = 0.5205
+  margin                    AUROC = 0.8923
+  mean_pix                  AUROC = 0.5854
+  std_pix                   AUROC = 0.6817

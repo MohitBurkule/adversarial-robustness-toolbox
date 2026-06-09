@@ -1,0 +1,48 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: SVHN
+[*] Executing script: dissertation_extension/hypotheses/h142_rfnn_baseline.py
+============================================================
+Hypothesis H142: Random Features Neural Network Baseline
+============================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
+
+Training CNN victim...
+CNN trained in 52.4s
+
+Training RFNN baseline...
+RFNN trained in 51.8s
+
+Using 8663/10000 correctly classified samples from victim (CNN)
+
+Computing features...
+
+Running attacks on CNN victim...
+  FGSM flip rate = 0.9459
+  PGD-10 flip rate = 0.9905
+  Mean min_eps = 0.0256
+
+============================================================
+TARGET: flipped_FGSM | Univariate AUROC
+============================================================
+  rfnn_margin          AUROC = 0.7603
+  rfnn_confidence      AUROC = 0.7833
+  cnn_margin           AUROC = 0.8388
+  mean_pix             AUROC = 0.6050
+  std_pix              AUROC = 0.7481
+
+============================================================
+TARGET: flipped_PGD | Univariate AUROC
+============================================================
+  rfnn_margin          AUROC = 0.7622
+  rfnn_confidence      AUROC = 0.7922
+  cnn_margin           AUROC = 0.7613
+  mean_pix             AUROC = 0.6160
+  std_pix              AUROC = 0.8341
+
+============================================================
+TARGET: min_eps (continuous) | Univariate AUROC (above median)
+============================================================
+  rfnn_margin          AUROC = 0.7196
+  rfnn_confidence      AUROC = 0.7548
+  cnn_margin           AUROC = 0.9047
+  mean_pix             AUROC = 0.5765
+  std_pix              AUROC = 0.6809

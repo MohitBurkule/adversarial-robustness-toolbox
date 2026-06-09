@@ -1,0 +1,74 @@
+======================================================================
+H526 – Polar/Radial Orthogonal Transfer: Density vs ASR
+======================================================================
+
+[1] Pretraining source model (radial task, N=600/class, 600 epochs)...
+   Source train acc (radial): 0.974  (expect ~0.90)
+
+[2] Source model evaluated on angular task (dense, N=400 test)...
+   Source model acc on angular task: 0.499  (expect ~0.50)
+
+[3] Fine-tune sweep...
+    N sweep: [5, 10, 20, 50, 100, 200, 400]
+    Dense:  angular theta spread=0.2 (tight clusters)
+    Sparse: angular theta spread=1.0 (heavy overlap near theta=0)
+    AT: FGSM eps=0.2, 300 fine-tune epochs
+
+  N=5:
+    dense         acc=0.999  FGSM_ASR=0.053
+    sparse        acc=0.910  FGSM_ASR=0.158
+    AT-dense      acc=1.000  FGSM_ASR=0.000
+    rand-dense    acc=1.000  FGSM_ASR=0.000
+
+  N=10:
+    dense         acc=0.909  FGSM_ASR=0.300
+    sparse        acc=0.862  FGSM_ASR=0.286
+    AT-dense      acc=1.000  FGSM_ASR=0.055
+    rand-dense    acc=1.000  FGSM_ASR=0.000
+
+  N=20:
+    dense         acc=0.995  FGSM_ASR=0.108
+    sparse        acc=0.927  FGSM_ASR=0.146
+    AT-dense      acc=1.000  FGSM_ASR=0.007
+    rand-dense    acc=1.000  FGSM_ASR=0.000
+
+  N=50:
+    dense         acc=1.000  FGSM_ASR=0.036
+    sparse        acc=0.919  FGSM_ASR=0.147
+    AT-dense      acc=1.000  FGSM_ASR=0.027
+    rand-dense    acc=1.000  FGSM_ASR=0.000
+
+  N=100:
+    dense         acc=1.000  FGSM_ASR=0.046
+    sparse        acc=0.931  FGSM_ASR=0.133
+    AT-dense      acc=1.000  FGSM_ASR=0.010
+    rand-dense    acc=1.000  FGSM_ASR=0.000
+
+  N=200:
+    dense         acc=1.000  FGSM_ASR=0.031
+    sparse        acc=0.934  FGSM_ASR=0.111
+    AT-dense      acc=1.000  FGSM_ASR=0.002
+    rand-dense    acc=1.000  FGSM_ASR=0.000
+
+  N=400:
+    dense         acc=1.000  FGSM_ASR=0.074
+    sparse        acc=0.939  FGSM_ASR=0.141
+    AT-dense      acc=1.000  FGSM_ASR=0.000
+    rand-dense    acc=1.000  FGSM_ASR=0.000
+
+[4] PASS criterion (at N=20):
+   dense  clean_acc=0.995  FGSM_ASR=0.108
+   sparse clean_acc=0.927  FGSM_ASR=0.146
+   Acc gap  dense-sparse = +0.068  (need >+0.03): OK
+   ASR gap  sparse-dense = +0.038  (need >+0.03): OK
+   rand-dense clean_acc=1.000  FGSM_ASR=0.000
+   Pretrain benefit (dense vs rand-dense) acc  = -0.005
+   Pretrain benefit (dense vs rand-dense) ASR  = -0.108
+
+   => OVERALL: PASS
+
+[5] Saving figure...
+   Figure: results/fashion_mnist/h526_finetune_density_asr.png
+   Text:   results/fashion_mnist/h526_finetune_density_asr_output.txt
+
+Done.

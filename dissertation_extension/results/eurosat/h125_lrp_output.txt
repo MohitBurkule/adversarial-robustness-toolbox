@@ -1,0 +1,40 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: EUROSAT
+[*] Executing script: dissertation_extension/hypotheses/h125_lrp.py
+======================================================================
+Hypothesis H125: LRP Attribution vs Adversarial Vulnerability
+======================================================================
+
+Training CNN model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Using 651 correctly classified test samples
+   Computing LRP attributions...
+   Evaluating attacks...
+
+==================================================
+MODEL PERFORMANCE & ROBUSTNESS
+==================================================
+Clean Accuracy: 0.6510
+FGSM Success: 0.8510
+PGD Success: 0.9508
+Mean min_eps: 0.0108
+
+==================================================
+UNIVARIATE AUROC SCORES
+==================================================
+Feature         | vs FGSM Flip | vs PGD Flip 
+--------------------------------------------------
+margin          | 0.6519       | 0.6083
+mean_pix        | 0.6459       | 0.7108
+std_pix         | 0.6694       | 0.6756
+lrp_total       | 0.8522       | 0.6886
+lrp_entropy     | 0.5415       | 0.5404
+lrp_max         | 0.7984       | 0.6512

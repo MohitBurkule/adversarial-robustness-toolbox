@@ -1,0 +1,55 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h148_adv_example_overlap.py
+======================================================================
+Hypothesis H148: Adversarial Example Overlap (FGSM, BIM, PGD, MIM)
+======================================================================
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 29.0s
+
+Using 1000 correctly classified samples for evaluation.
+
+Generating attacks...
+
+==================================================
+Jaccard Similarity Matrix of Attack Success
+==================================================
+      FGSM    BIM     PGD     MIM   
+FGSM : 1.0000  0.9530  0.9559  0.9589
+BIM  : 0.9530  1.0000  0.9969  0.9939
+PGD  : 0.9559  0.9969  1.0000  0.9969
+MIM  : 0.9589  0.9939  0.9969  1.0000
+
+==================================================
+Mutual Information Matrix of Attack Success
+==================================================
+      FGSM    BIM     PGD     MIM   
+FGSM : 0.2458  0.0602  0.0695  0.0790
+BIM  : 0.0602  0.1019  0.0929  0.0876
+PGD  : 0.0695  0.0929  0.1132  0.1038
+MIM  : 0.0790  0.0876  0.1038  0.1242
+
+Attack Consensus Statistics (number of successful attacks per sample):
+  Vulnerable to 0 attacks: 2.1%
+  Vulnerable to 1 attacks: 0.3%
+  Vulnerable to 2 attacks: 0.3%
+  Vulnerable to 3 attacks: 4.0%
+  Vulnerable to 4 attacks: 93.3%
+
+==================================================
+Univariate AUROC for Target: flipped_by_all_4
+==================================================
+  attack_consensus   AUROC = 1.0000 (direction: +)
+  margin             AUROC = 0.9104 (direction: -)
+  mean_pix           AUROC = 0.7085 (direction: -)
+  std_pix            AUROC = 0.8249 (direction: -)

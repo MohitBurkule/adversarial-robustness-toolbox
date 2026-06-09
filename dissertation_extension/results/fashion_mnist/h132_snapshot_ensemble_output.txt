@@ -1,0 +1,38 @@
+Loading Fashion-MNIST dataset...
+Training CNN model with Cosine Annealing scheduler (3 cycles of 10 epochs)...
+Cycle completed at epoch 10. Saving snapshot 1.
+Cycle completed at epoch 20. Saving snapshot 2.
+Cycle completed at epoch 30. Saving snapshot 3.
+Evaluating snapshot ensemble on test set...
+Victim correctly classified samples: 9354/10000
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: snap_disagreement
+  Target: flipped_fgsm  AUROC = 0.5182
+  Target: flipped_pgd   AUROC = 0.5130
+  Target: min_eps       AUROC = 0.5250
+
+Feature: softmax_variance
+  Target: flipped_fgsm  AUROC = 0.9028
+  Target: flipped_pgd   AUROC = 0.8969
+  Target: min_eps       AUROC = 0.9550
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9090
+  Target: flipped_pgd   AUROC = 0.9363
+  Target: min_eps       AUROC = 0.9556
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.5104
+  Target: flipped_pgd   AUROC = 0.6890
+  Target: min_eps       AUROC = 0.6231
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.6021
+  Target: flipped_pgd   AUROC = 0.6717
+  Target: min_eps       AUROC = 0.5242

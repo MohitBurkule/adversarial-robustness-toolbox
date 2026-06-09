@@ -1,0 +1,14 @@
+========================================================================
+H351 - Adversarial Weight Perturbation (AWP, Wu et al. NeurIPS 2020)
+========================================================================
+Device=cuda  dataset=fashion_mnist  N_TRAIN=6000  eps=0.1
+gamma grid: [0, 0.001, 0.005, 0.01]
+  gamma=0       clean=0.803  fgsm_asr=0.305  pgd_asr=0.342  margin=3.032  (1.7s)
+  gamma=0.001   clean=0.806  fgsm_asr=0.291  pgd_asr=0.321  margin=2.948  (2.3s)
+  gamma=0.005   clean=0.802  fgsm_asr=0.299  pgd_asr=0.322  margin=2.948  (7.6s)
+  gamma=0.01    clean=0.796  fgsm_asr=0.297  pgd_asr=0.336  margin=2.889  (3.4s)
+
+Interpretation: AWP perturbs both inputs and weights adversarially,
+seeking flatter loss landscapes around adversarial examples. gamma=0
+is baseline FGSM-AT; larger gamma adds weight perturbation benefit.
+========================================================================

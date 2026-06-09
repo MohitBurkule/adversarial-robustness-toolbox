@@ -1,0 +1,32 @@
+============================================================
+Hypothesis H114: ZOO Zeroth-Order Attack Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 35.8s
+Evaluating ZOO on 200 correctly classified test samples...
+ZOO evaluations completed in 124.9s
+
+ZOO Attack Success Rate: 0.5450
+Mean Queries used: 1536.94
+Mean queries to flip (for successful attacks): 314.65
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: zoo_flipped (Positive Rate = 0.5450) ---
+  Feature            AUROC Direction 
+  margin            0.9976  -
+  mean_pix          0.5737  +
+  std_pix           0.5308  -

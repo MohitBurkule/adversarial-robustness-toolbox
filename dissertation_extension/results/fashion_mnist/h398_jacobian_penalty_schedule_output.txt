@@ -1,0 +1,37 @@
+H398 – Annealed Jacobian Penalty Schedule
+============================================================
+
+Training schedule: zero
+  λ per epoch: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  Clean Acc=0.886  FGSM ASR=0.771  PGD ASR=0.930  Margin=6.013
+
+Training schedule: constant
+  λ per epoch: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+  Clean Acc=0.873  FGSM ASR=0.685  PGD ASR=0.837  Margin=5.122
+
+Training schedule: high_to_low
+  λ per epoch: [0.2, 0.178, 0.156, 0.133, 0.111, 0.089, 0.067, 0.044, 0.022, 0.0]
+  Clean Acc=0.873  FGSM ASR=0.708  PGD ASR=0.837  Margin=5.293
+
+Training schedule: low_to_high
+  λ per epoch: [0.0, 0.022, 0.044, 0.067, 0.089, 0.111, 0.133, 0.156, 0.178, 0.2]
+  Clean Acc=0.883  FGSM ASR=0.694  PGD ASR=0.829  Margin=5.020
+
+Training schedule: cosine_decay
+  λ per epoch: [0.2, 0.194, 0.177, 0.15, 0.117, 0.083, 0.05, 0.023, 0.006, 0.0]
+  Clean Acc=0.877  FGSM ASR=0.704  PGD ASR=0.852  Margin=5.452
+
+============================================================
+SUMMARY TABLE
+Schedule                Clean   FGSM ASR   PGD ASR   Margin
+------------------------------------------------------------
+zero                    0.886      0.771     0.930    6.013
+constant                0.873      0.685     0.837    5.122
+high_to_low             0.873      0.708     0.837    5.293
+low_to_high             0.883      0.694     0.829    5.020
+cosine_decay            0.877      0.704     0.852    5.452
+
+VERDICT:
+  Constant λ=0.1: FGSM ASR=0.685, PGD ASR=0.837
+  Best robustness schedule: constant (FGSM=0.685, PGD=0.837)
+  HYPOTHESIS NOT SUPPORTED: constant or baseline is best

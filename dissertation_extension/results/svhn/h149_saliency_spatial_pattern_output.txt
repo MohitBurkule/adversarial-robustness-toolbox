@@ -1,0 +1,58 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: SVHN
+[*] Executing script: dissertation_extension/hypotheses/h149_saliency_spatial_pattern.py
+======================================================================
+Hypothesis H149: Saliency Spatial Pattern Analysis
+======================================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 55.6s
+
+Using 1000 correctly classified samples for evaluation.
+
+Computing saliency and spatial features...
+
+Evaluating attack outcomes...
+
+Target rates:
+  flipped_FGSM             : positive rate = 0.955
+  flipped_PGD              : positive rate = 0.995
+  min_eps_below_median     : positive rate = 0.500
+
+============================================================
+Univariate AUROC Evaluation
+============================================================
+
+--- Target: flipped_FGSM ---
+  saliency_cm_dist          AUROC = 0.5201 (direction: -)
+  saliency_moment_inertia   AUROC = 0.5843 (direction: -)
+  saliency_eccentricity     AUROC = 0.5776 (direction: +)
+  margin                    AUROC = 0.8528 (direction: -)
+  mean_pix                  AUROC = 0.6312 (direction: -)
+  std_pix                   AUROC = 0.6715 (direction: -)
+
+--- Target: flipped_PGD ---
+  saliency_cm_dist          AUROC = 0.6034 (direction: -)
+  saliency_moment_inertia   AUROC = 0.6677 (direction: +)
+  saliency_eccentricity     AUROC = 0.6760 (direction: -)
+  margin                    AUROC = 0.6028 (direction: -)
+  mean_pix                  AUROC = 0.6404 (direction: -)
+  std_pix                   AUROC = 0.5998 (direction: -)
+
+--- Target: min_eps_below_median ---
+  saliency_cm_dist          AUROC = 0.5111 (direction: -)
+  saliency_moment_inertia   AUROC = 0.6886 (direction: -)
+  saliency_eccentricity     AUROC = 0.5594 (direction: +)
+  margin                    AUROC = 0.8960 (direction: -)
+  mean_pix                  AUROC = 0.5816 (direction: -)
+  std_pix                   AUROC = 0.6820 (direction: -)

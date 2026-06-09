@@ -1,0 +1,6 @@
+H307: Label Smoothing + Gradient Penalty
+============================================================
+baseline: clean=0.884 fgsm_asr=0.768 pgd_asr=0.913 margin=6.099 time=1.8s
+label_smooth_only: clean=0.882 fgsm_asr=0.680 pgd_asr=0.911 margin=2.702 time=1.3s
+grad_penalty_only: clean=0.876 fgsm_asr=0.774 pgd_asr=0.927 margin=6.118 time=6.5s
+label_smooth_grad_penalty: clean=0.886 fgsm_asr=0.692 pgd_asr=0.907 margin=2.694 time=4.8s

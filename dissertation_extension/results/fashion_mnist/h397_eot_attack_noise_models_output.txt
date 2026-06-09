@@ -1,0 +1,39 @@
+======================================================================================
+H397  EOT-aware attack on noise-augmentation model (Fashion-MNIST)
+  N_TRAIN=6000 EPOCHS=10 EPS=0.1 PGD_STEPS=10 sigma=0.15 K_EOT=10 device=cuda
+======================================================================================
+
+[1/3] training models ...
+    standard     clean_acc=0.8790
+    noise_aug    clean_acc=0.8620 (deterministic eval, no test noise)
+    noise_aug    clean_acc=0.8623 (stochastic eval, test noise sigma=0.15)
+
+[2/3] Regime A: DETERMINISTIC eval (no test-time noise)
+    vanilla-PGD vs EOT-PGD on the fixed deterministic networks
+    standard   corr=1758  PGD=0.913  EOT-PGD=0.726  (delta=-0.187)
+    noise_aug  corr=1724  PGD=0.692  EOT-PGD=0.597  (delta=-0.095)
+
+[3/3] Regime B: STOCHASTIC eval (test-time noise sigma -> randomised defense)
+    single-draw PGD (K=1) vs EOT-PGD (K=10), attacking through noisy inference
+    standard   corr=1542  single-draw-PGD=0.415  EOT-PGD=0.622  (delta=+0.206)
+    noise_aug  corr=1738  single-draw-PGD=0.322  EOT-PGD=0.467  (delta=+0.146)
+
+======================================================================================
+SUMMARY
+--------------------------------------------------------------------------------------
+Regime A (deterministic eval, no test noise):
+model          PGD  EOT-PGD   delta
+standard     0.913    0.726  -0.187
+noise_aug    0.692    0.597  -0.095
+
+Regime B (stochastic test-time-noise defense):
+model       1-draw  EOT-PGD   delta
+standard     0.415    0.622  +0.206
+noise_aug    0.322    0.467  +0.146
+--------------------------------------------------------------------------------------
+
+verdict:
+  EOT does NOT meaningfully raise ASR on the noise model (Regime A delta=-0.095, Regime B delta=+0.146 vs std control +0.206). Any noise-training robustness here is not a single-draw evaluation artefact -- it survives EOT.
+======================================================================================
+
+total runtime 8.0s

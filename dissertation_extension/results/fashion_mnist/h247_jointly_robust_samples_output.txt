@@ -1,0 +1,30 @@
+=== H247: Jointly Robust Samples ===
+
+[Seed 0]
+  FGSM ASR: 0.843, PGD ASR: 0.997, CW(L2) ASR: 0.910
+  Jointly robust: 1/300 (0.3%)
+
+[Seed 1]
+  FGSM ASR: 0.803, PGD ASR: 0.997, CW(L2) ASR: 0.893
+  Jointly robust: 1/300 (0.3%)
+
+[Seed 2]
+  FGSM ASR: 0.823, PGD ASR: 0.997, CW(L2) ASR: 0.900
+  Jointly robust: 1/300 (0.3%)
+
+[Feature clustering of jointly robust set (seed 0)]...
+  Mean pairwise L2 (jointly robust): nan
+  Mean pairwise L2 (random subset):  nan
+
+[Cross-seed Jaccard overlaps]...
+  Seed 0 vs Seed 1: Jaccard=1.000 (|A|=1, |B|=1, |A∩B|=1)
+  Seed 0 vs Seed 2: Jaccard=0.000 (|A|=1, |B|=1, |A∩B|=0)
+  Seed 1 vs Seed 2: Jaccard=0.000 (|A|=1, |B|=1, |A∩B|=0)
+
+--- Summary ---
+  Seed 0: jointly robust = 1/300 (0.3%)
+  Seed 1: jointly robust = 1/300 (0.3%)
+  Seed 2: jointly robust = 1/300 (0.3%)
+Feature clustering: jr_dist=nan vs random_dist=nan
+Interpretation: lower pairwise dist for jr set => clustering in feature space; high cross-seed Jaccard => robust set is consistent.
+Runtime: 48.2s

@@ -1,0 +1,40 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: SVHN
+[*] Executing script: dissertation_extension/hypotheses/h145_friendly_at.py
+============================================================
+Hypothesis H145: FAT (Friendly Adversarial Training)
+============================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
+
+Training Vanilla CNN victim...
+Vanilla CNN trained in 53.5s
+
+Training FAT CNN victim...
+FAT CNN trained in 367.5s
+
+Evaluating Model: Vanilla CNN
+  Test Accuracy: 8680/10000 (86.80%)
+  FGSM flip rate = 0.9396
+  PGD-10 flip rate = 0.9940
+  Mean min_eps = 0.0262
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.8464
+    mean_pix   AUROC = 0.6429
+    std_pix    AUROC = 0.7482
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9610
+    mean_pix   AUROC = 0.7474
+    std_pix    AUROC = 0.8990
+
+Evaluating Model: FAT CNN
+  Test Accuracy: 7712/10000 (77.12%)
+  FGSM flip rate = 0.6828
+  PGD-10 flip rate = 0.7596
+  Mean min_eps = 0.0806
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9180
+    mean_pix   AUROC = 0.5844
+    std_pix    AUROC = 0.6953
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9252
+    mean_pix   AUROC = 0.6036
+    std_pix    AUROC = 0.7484

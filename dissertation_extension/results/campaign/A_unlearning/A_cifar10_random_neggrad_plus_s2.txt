@@ -1,0 +1,19 @@
+Theme A | unlearning x adversarial | A_cifar10_random_neggrad_plus_s2
+dataset=cifar10 forget_kind=random method=neggrad_plus seed=2 eps=0.031 n_forget=800 class=None
+
+split    phase        acc   pgd_asr    margin
+forget   before    0.7462    0.9832     1.613
+forget   after     0.2100    0.8452   -21.379
+retain   before    0.7389    0.9848     1.523
+retain   after     0.3358    0.8950    -7.115
+test     before    0.6380    0.9875     0.923
+test     after     0.3133    0.9149    -8.773
+
+forget_acc_drop = +0.5362  (unlearning effectiveness: higher = more forgotten)
+retain_acc_drop = +0.4031  (collateral damage)
+test_acc_drop   = +0.3247
+forget_asr_rise = -0.1380  (adversarial hole on forget set?)
+test_asr_rise   = -0.0726  (global robustness change)
+forget_margin_drop = +22.992
+
+[runtime 1.6s]

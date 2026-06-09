@@ -1,0 +1,142 @@
+======================================================================
+GEOMETRIC BLIND SPOT THEOREM (arXiv:2604.21395) — 2D CREDIT ANALOGY
+Latent variable design: z = true creditworthiness (unobserved)
+  x1 = 0.7*z + 0.714*noise  [credit score proxy, r≈0.7 with z]
+  x2 = 0.4*z + 0.917*noise  [income proxy, r≈0.4 with z]
+Both features have unit variance by construction.
+======================================================================
+
+KEY INSIGHT:
+  Neither x1 nor x2 is the 'true' feature. A human expert knows x1
+  captures credit behaviour (noisy) and x2 captures income (noisier).
+  The model must learn a weighted combination. Adversarial attacks
+  exploit this combination — a small push along the dSaved h514_decision_boundaries.png
+Saved h514_gradient_directions.png
+Saved h514_adversarial_examples.png
+======================================================================
+GEOMETRIC BLIND SPOT THEOREM (arXiv:2604.21395) — 2D CREDIT ANALOGY
+Latent variable design: z = true creditworthiness (unobserved)
+  x1 = 0.7*z + 0.714*noise  [credit score proxy, r≈0.7 with z]
+  x2 = 0.4*z + 0.917*noise  [income proxy, r≈0.4 with z]
+Both features have unit variance by construction.
+======================================================================
+
+KEY INSIGHT:
+  Neither x1 nor x2 is the 'true' feature. A human expert knows x1
+  captures credit behaviour (noisy) and x2 captures income (noisier).
+  The model must learn a weighted combination. Adversarial attacks
+  exploit this combination — a small push along the decision boundary
+  direction flips the class even though neither feature changed enough
+  to be humanly meaningful.
+
+Bayes-optimal direction: [0.7291, 0.6844]  (= [0.7, 0.4] / norm)
+TDI = cosine(input gradient, Bayes direction)
+  High |TDI| → attack aligned with latent structure (principled)
+  Low  |TDI| → attack exploits noise orthogonal to z (spurious)
+======================================================================
+
+Model: Logistic Regression
+  Test Accuracy          : 0.9500
+  Mean Gradient Norm     : 0.3906
+  Mean TDI               : -0.0237  (abs: 0.9525)
+  FGSM ASR  (eps=0.3)   : 0.2750
+  Mean Boundary Distance : 1.0145
+
+Model: NN Cross-Entropy
+  Test Accuracy          : 0.9500
+  Mean Gradient Norm     : 0.0049
+  Mean TDI               : -0.0049  (abs: 0.9340)
+  FGSM ASR  (eps=0.3)   : 0.2875
+  Mean Boundary Distance : 1.0069
+
+Model: NN Gradient Penalty (λ=0.1)
+  Test Accuracy          : 0.9500
+  Mean Gradient Norm     : 0.0049
+  Mean TDI               : -0.0286  (abs: 0.9255)
+  FGSM ASR  (eps=0.3)   : 0.2875
+  Mean Boundary Distance : 0.9968
+
+Model: NN IRM (λ=10)
+  Test Accuracy          : 0.9375
+  Mean Gradient Norm     : 0.0047
+  Mean TDI               : 0.0179  (abs: 0.9194)
+  FGSM ASR  (eps=0.3)   : 0.2125
+  Mean Boundary Distance : 1.0723
+
+======================================================================
+KEY TEST — Does gradient-penalty model show geometric robustness?
+======================================================================
+Lower TDI for GP model?            CE=0.9340  GP=0.9255  [PASS]
+Larger boundary distance for GP?   CE=1.0069  GP=0.9968  [FAIL]
+Lower FGSM ASR for GP?             CE=0.2875  GP=0.2875  [FAIL]
+
+======================================================================
+KEY TEST — Does IRM model learn invariant features (ignore x2)?
+======================================================================
+Lower TDI for IRM model?            CE=0.9340  IRM=0.9194  [PASS]
+Larger boundary distance for IRM?   CE=1.0069  IRM=1.0723  [PASS]
+Lower FGSM ASR for IRM?             CE=0.2875  IRM=0.2125  [PASS]
+
+======================================================================
+LAMBDA SWEEP — gradient-penalty strength vs robustness metrics
+  λ values: [0.0, 0.1, 1.0, 5.0, 10.0]
+======================================================================
+     λ  test_acc   mean_gn   mean_TDI  fgsm_asr   mean_bd
+---------------------------------------------------------
+   0.0    0.9500    0.0048     0.9417    0.2875    1.0477
+   0.1    0.9500    0.0047     0.9331    0.2875    1.0720
+   1.0    0.9500    0.0046     0.9135    0.2750    1.0246
+   5.0    0.9500    0.0049     0.9019    0.2750    0.9924
+  10.0    0.9500    0.0046     0.9485    0.2875    1.0119
+
+Baseline (λ=0) FGSM ASR : 0.2875
+Baseline (λ=0) |TDI|    : 0.9417
+
+FGSM ASR first drops below baseline at λ = 1.0
+|TDI| first drops below baseline at λ = 0.1
+
+IRM comparison (λ_irm=10):  test_acc=0.9375  |TDI|=0.9194  FGSM_ASR=0.2125  mean_bd=1.0723
+======================================================================
+Saved h514_lambda_sweep.png
+
+======================================================================
+HUMAN ANALOGY — 5 Adversarial Examples (NN Cross-Entropy)
+  Loan applicant: x1=credit_score_proxy (unit var), x2=income_proxy (unit var)
+  'Invisible to human' criterion: |δ1| < 0.15 AND |δ2| < 0.15
+======================================================================
+Model                        x1_orig x2_orig  x1_adv  x2_adv     δ1     δ2    ‖δ‖  Perception
+NN Cross-Entropy              -0.144   0.240   0.156   0.540  0.300  0.300  0.424  borderline
+NN Gradient Penalty (λ=0.1)   -0.144   0.240   0.156   0.540  0.300  0.300  0.424  borderline
+NN IRM (λ=10)                 -0.144   0.240  -0.444  -0.060 -0.300 -0.300  0.424  borderline
+
+NN Cross-Entropy               0.197  -0.400  -0.103  -0.700 -0.300 -0.300  0.424  borderline
+NN Gradient Penalty (λ=0.1)    0.197  -0.400  -0.103  -0.700 -0.300 -0.300  0.424  borderline
+NN IRM (λ=10)                  0.197  -0.400  -0.103  -0.700 -0.300 -0.300  0.424  borderline
+
+NN Cross-Entropy              -0.197   0.262   0.103   0.562  0.300  0.300  0.424  borderline
+NN Gradient Penalty (λ=0.1)   -0.197   0.262   0.103   0.562  0.300  0.300  0.424  borderline
+NN IRM (λ=10)                 -0.197   0.262   0.103   0.562  0.300  0.300  0.424  borderline
+
+NN Cross-Entropy              -0.123  -0.023   0.177   0.277  0.300  0.300  0.424  borderline
+NN Gradient Penalty (λ=0.1)   -0.123  -0.023   0.177   0.277  0.300  0.300  0.424  borderline
+NN IRM (λ=10)                 -0.123  -0.023   0.177   0.277  0.300  0.300  0.424  borderline
+
+NN Cross-Entropy              -0.239   0.775  -0.539   0.475 -0.300 -0.300  0.424  borderline
+NN Gradient Penalty (λ=0.1)   -0.239   0.775  -0.539   0.475 -0.300 -0.300  0.424  borderline
+NN IRM (λ=10)                 -0.239   0.775  -0.539   0.475 -0.300 -0.300  0.424  borderline
+
+======================================================================
+INTERPRETATION
+  The model cannot observe z directly; it must use a weighted combination
+  of x1 and x2. Adversarial examples push along the model's decision
+  boundary, which is oblique (diagonal) because both features contribute.
+
+  For cross-entropy models, the decision boundary lies in data-dense
+  regions. Small, imperceptible perturbations suffice to cross it
+  — adversarial examples appear identical to humans ('invisible to human').
+
+  Gradient-penalty regularization pushes the boundary into sparser regions.
+  Successful attacks require larger, human-visible changes.
+  This is the core prediction of the Geometric Blind Spot theorem.
+======================================================================
+Saved /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/hypotheses/../results/fashion_mnist/h514_geometric_blindspot_output.txt

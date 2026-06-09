@@ -1,0 +1,31 @@
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h244_catastrophic_interference.py:135: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  rho_interf_pgd = spearmanr(aggregate_interference, pgd_succ).correlation
+=== H244: Catastrophic Interference ===
+
+[1] Training baseline model...
+[2] Computing baseline margins and PGD vulnerability...
+    PGD ASR: 1.000
+
+[3] Fine-tuning on each class (1 step(s), 10 samples) and measuring margin change...
+    Class 0: mean margin change=-0.1665, mean |delta|=0.8261
+    Class 1: mean margin change=+0.0460, mean |delta|=0.2517
+    Class 2: mean margin change=+0.0339, mean |delta|=0.3756
+    Class 3: mean margin change=+0.0199, mean |delta|=0.0903
+    Class 4: mean margin change=-1.3870, mean |delta|=2.4104
+    Class 5: mean margin change=-0.3451, mean |delta|=0.4706
+    Class 6: mean margin change=-0.4311, mean |delta|=0.8249
+    Class 7: mean margin change=-0.9953, mean |delta|=2.4088
+    Class 8: mean margin change=+0.0136, mean |delta|=0.1556
+    Class 9: mean margin change=-0.0420, mean |delta|=0.1175
+
+[4] Correlating aggregate interference with PGD vulnerability...
+
+--- Summary ---
+PGD ASR: 1.000
+Mean aggregate interference: 3.4319
+AUROC(interference → PGD success):  nan
+AUROC(margin → PGD success):        nan  [baseline]
+Spearman ρ(interference, margin):   0.113
+Spearman ρ(interference, pgd_succ): nan
+Interpretation: high interference = sample near a class boundary whose margin shifts when a neighbouring class is reinforced, suggesting original model relied on fragile decision geometry.
+Runtime: 22.9s

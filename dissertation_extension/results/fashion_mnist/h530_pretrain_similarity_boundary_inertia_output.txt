@@ -1,0 +1,63 @@
+Device: cuda
+======================================================================
+H530 – Pretrain Similarity → Boundary Inertia → Inherited ASR
+======================================================================
+
+[0] Random-init baseline (no pretrain) ...
+   acc=1.000  FGSM_ASR=0.000
+
+[1] Pretrain sweep over angles: [0, 22, 45, 67, 90]
+    Pretrain: N=600/class, 600 epochs
+    Finetune: N=20/class, 300 epochs
+
+  angle=  0° (similarity=0.00)
+    pretrain_acc=0.998
+    STD  ft_acc=0.952  FGSM_ASR=0.134  disp=0.3559
+    AT   ft_acc=0.575  FGSM_ASR=0.107  disp=0.3342
+
+  angle= 22° (similarity=0.24)
+    pretrain_acc=0.998
+    STD  ft_acc=0.946  FGSM_ASR=0.152  disp=0.2550
+    AT   ft_acc=0.969  FGSM_ASR=0.164  disp=0.2964
+
+  angle= 45° (similarity=0.50)
+    pretrain_acc=0.998
+    STD  ft_acc=0.977  FGSM_ASR=0.176  disp=0.1511
+    AT   ft_acc=1.000  FGSM_ASR=0.019  disp=0.2266
+
+  angle= 67° (similarity=0.74)
+    pretrain_acc=1.000
+    STD  ft_acc=0.993  FGSM_ASR=0.118  disp=0.0243
+    AT   ft_acc=1.000  FGSM_ASR=0.006  disp=0.0746
+
+  angle= 90° (similarity=1.00)
+    pretrain_acc=0.999
+    STD  ft_acc=1.000  FGSM_ASR=0.000  disp=0.0203
+    AT   ft_acc=1.000  FGSM_ASR=0.000  disp=0.0201
+
+======================================================================
+STATISTICS (STD fine-tune):
+  Spearman rho(similarity, ASR)         = -0.600  p=0.2848
+  Spearman rho(boundary_disp, ASR)      = +0.600  p=0.2848
+  Spearman rho(similarity, disp)        = -1.000
+
+AT vs STD fine-tune comparison:
+  angle=  0°  STD ASR=0.134 acc=0.952  |  AT ASR=0.107 acc=0.575  |  AT_disp=0.3342 (STD_disp=0.3559)
+  angle= 22°  STD ASR=0.152 acc=0.946  |  AT ASR=0.164 acc=0.969  |  AT_disp=0.2964 (STD_disp=0.2550)
+  angle= 45°  STD ASR=0.176 acc=0.977  |  AT ASR=0.019 acc=1.000  |  AT_disp=0.2266 (STD_disp=0.1511)
+  angle= 67°  STD ASR=0.118 acc=0.993  |  AT ASR=0.006 acc=1.000  |  AT_disp=0.0746 (STD_disp=0.0243)
+  angle= 90°  STD ASR=0.000 acc=1.000  |  AT ASR=0.000 acc=1.000  |  AT_disp=0.0201 (STD_disp=0.0203)
+
+  Rand-init STD  ASR=0.000  acc=1.000
+
+======================================================================
+PASS criterion 1 (rho > 0.6):           FAIL  rho=-0.600
+PASS criterion 2 (90° ASR > 0° ASR):    FAIL
+PASS criterion 3 (AT reduces ASR ≥3/5): OK  (3/5)
+=> OVERALL: FAIL
+
+Generating figure ...
+Figure → /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h530_pretrain_similarity_boundary_inertia.png
+Text   → /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h530_pretrain_similarity_boundary_inertia_output.txt
+
+Done.

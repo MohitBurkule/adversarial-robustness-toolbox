@@ -1,0 +1,16 @@
+H343: Contrastive Gradient Regularisation
+============================================================
+Settings: N_TRAIN=6000, EPOCHS=10, LR=0.05, BATCH=128
+K_PAIRS=4, MARGIN=1.0
+Same-class pairs: align gradients. Different-class: push apart.
+
+lam=0: clean=0.8820 fgsm_asr=0.7805 pgd_asr=0.9295 margin=6.0324
+lam=0.001: clean=0.8800 fgsm_asr=0.7515 pgd_asr=0.9000 margin=6.1894
+lam=0.01: clean=0.8720 fgsm_asr=0.6700 pgd_asr=0.8085 margin=4.9895
+
+============================================================
+SUMMARY
+Condition       Clean   FGSM_ASR    PGD_ASR     Margin
+lam=0          0.8820     0.7805     0.9295     6.0324
+lam=0.001      0.8800     0.7515     0.9000     6.1894
+lam=0.01       0.8720     0.6700     0.8085     4.9895

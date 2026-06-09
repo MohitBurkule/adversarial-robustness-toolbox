@@ -1,0 +1,6 @@
+H366: Smooth Activation Swap (ReLU vs SiLU)
+==================================================
+condition=relu_baseline adv_train=False | clean=0.881 fgsm_asr=0.774 pgd_asr=0.924 margin=5.941
+condition=silu_baseline adv_train=False | clean=0.876 fgsm_asr=0.782 pgd_asr=0.926 margin=6.684
+condition=relu_fgsm_at adv_train=True | clean=0.802 fgsm_asr=0.307 pgd_asr=0.334 margin=2.600
+condition=silu_fgsm_at adv_train=True | clean=0.804 fgsm_asr=0.317 pgd_asr=0.334 margin=2.604

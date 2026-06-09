@@ -1,0 +1,23 @@
+H293 Gradient Acceleration Penalty vs Momentum
+=================================================================
+Dataset: fashion_mnist  N_train=6000  Epochs=10  Seed=0
+EPS_FGSM=0.1  EPS_PGD=0.1  PGD_STEPS=10
+
+Condition                      clean_acc   fgsm_asr   pgd_asr    margin   time_s
+---------------------------------------------------------------------------
+SGD no-mom λ=0                    0.8445     0.5475    0.7215    4.3597      7.8
+SGD mom=0.9 λ=0                   0.8785     0.4595    0.5290    7.3382     10.9
+no-mom+accel λ=0.001              0.8440     0.5505    0.7215    4.3472     27.9
+no-mom+accel λ=0.01               0.8445     0.5395    0.7095    4.3478     25.9
+no-mom+accel λ=0.1                0.8495     0.5460    0.7215    4.3406     24.5
+mom+accel λ=0.001                 0.8880     0.4600    0.5235    7.7341     24.2
+mom+accel λ=0.01                  0.8880     0.4620    0.5385    7.1479     26.7
+mom+accel λ=0.1                   0.8800     0.4575    0.5370    6.9892     25.7
+
+Key comparisons:
+  (a) vs (b): does momentum alone improve robustness?
+  (a) vs (c): does acceleration penalty alone improve robustness?
+  (b) vs (d): does acceleration penalty add value ON TOP of momentum?
+  (c) vs (b): can penalty substitute for momentum?
+  If (c)~=(b): penalty and momentum are equivalent mechanisms.
+  If (d)>(b): penalty adds orthogonal signal beyond momentum.

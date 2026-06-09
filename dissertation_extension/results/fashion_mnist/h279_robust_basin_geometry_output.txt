@@ -1,0 +1,56 @@
+Loading data...
+  train=6000  eval=200
+
+--- Training standard model ---
+    std epoch 5/10  loss=14.676
+    std epoch 10/10  loss=6.887
+
+--- Training PGD-AT model ---
+    AT epoch 5/10
+    AT epoch 10/10
+
+Weight cosine similarity (std vs AT): 0.8551
+Weight L2 distance (std vs AT):       11.0869
+
+--- Basin geometry: standard ---
+  Random-direction sharpness...
+    r=0.01: mean_loss_increase=0.0000±0.0000
+    r=0.05: mean_loss_increase=-0.0000±0.0001
+    r=0.1: mean_loss_increase=0.0000±0.0001
+  Gradient norm at convergence...
+    grad_norm=11.1704
+  Hutchinson Hessian trace (20 iters)...
+    hessian_trace_proxy=361.3299±222.1581
+
+--- Basin geometry: pgd_at ---
+  Random-direction sharpness...
+    r=0.01: mean_loss_increase=0.0000±0.0000
+    r=0.05: mean_loss_increase=0.0000±0.0001
+    r=0.1: mean_loss_increase=0.0000±0.0001
+  Gradient norm at convergence...
+    grad_norm=19.4795
+  Hutchinson Hessian trace (20 iters)...
+    hessian_trace_proxy=1028.5154±116.9547
+
+--- Linear interpolation path (std -> AT) ---
+  alpha=0.0  train_loss=2.1937
+  alpha=0.1  train_loss=2.2068
+  alpha=0.2  train_loss=2.2124
+  alpha=0.3  train_loss=2.2131
+  alpha=0.4  train_loss=2.2103
+  alpha=0.5  train_loss=2.2045
+  alpha=0.6  train_loss=2.1933
+  alpha=0.7  train_loss=2.1742
+  alpha=0.8  train_loss=2.1440
+  alpha=0.9  train_loss=2.1047
+  alpha=1.0  train_loss=2.0635
+
+--- Evaluating robustness ---
+  [standard] clean=0.8750  FGSM_ASR=0.7200  PGD_ASR=0.9150  margin=6.0536
+  [pgd_at] clean=0.7800  FGSM_ASR=0.3300  PGD_ASR=0.3300  margin=1.7775
+
+--- Per-sample margin vs vulnerability correlation ---
+  [standard] Spearman(margin, pgd_vulnerable): rho=-0.4473  p=3.144e-11
+  [pgd_at] Spearman(margin, pgd_vulnerable): rho=-0.7682  p=3.279e-40
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h279_robust_basin_geometry_output.txt

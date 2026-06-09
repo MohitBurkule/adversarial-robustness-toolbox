@@ -1,0 +1,68 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h124_manifold_mixup.py
+======================================================================
+Hypothesis H124: Manifold Mixup Defense vs Vanilla CNN
+======================================================================
+
+Training Vanilla model...
+  [vanilla] Epoch 1/10 completed
+  [vanilla] Epoch 2/10 completed
+  [vanilla] Epoch 3/10 completed
+  [vanilla] Epoch 4/10 completed
+  [vanilla] Epoch 5/10 completed
+  [vanilla] Epoch 6/10 completed
+  [vanilla] Epoch 7/10 completed
+  [vanilla] Epoch 8/10 completed
+  [vanilla] Epoch 9/10 completed
+  [vanilla] Epoch 10/10 completed
+
+Training Manifold Mixup model...
+  [manifold_mixup] Epoch 1/10 completed
+  [manifold_mixup] Epoch 2/10 completed
+  [manifold_mixup] Epoch 3/10 completed
+  [manifold_mixup] Epoch 4/10 completed
+  [manifold_mixup] Epoch 5/10 completed
+  [manifold_mixup] Epoch 6/10 completed
+  [manifold_mixup] Epoch 7/10 completed
+  [manifold_mixup] Epoch 8/10 completed
+  [manifold_mixup] Epoch 9/10 completed
+  [manifold_mixup] Epoch 10/10 completed
+
+Evaluating Vanilla model...
+   Evaluating attacks...
+
+Evaluating Manifold Mixup model...
+   Evaluating attacks...
+
+==================================================
+VANILLA MODEL RESULTS
+==================================================
+Accuracy: 0.6600
+FGSM Success: 0.9364
+PGD Success: 0.9758
+Mean min_eps: 0.0194
+
+Univariate AUROC vs PGD Flip (Vanilla):
+  margin          : 0.9895
+  mean_pix        : 0.6859
+  std_pix         : 0.8822
+
+==================================================
+MANIFOLD MIXUP MODEL RESULTS
+==================================================
+Accuracy: 0.6870
+FGSM Success: 0.9010
+PGD Success: 0.9491
+Mean min_eps: 0.0238
+
+Univariate AUROC vs PGD Flip (Manifold Mixup):
+  margin          : 0.9511
+  mean_pix        : 0.7887
+  std_pix         : 0.8238
+
+==================================================
+SUMMARY OF AUROC CHANGES (Manifold Mixup vs Vanilla PGD)
+==================================================
+  margin          : Manifold Mixup=0.9511  Vanilla=0.9895  Change=-0.0385
+  mean_pix        : Manifold Mixup=0.7887  Vanilla=0.6859  Change=+0.1029
+  std_pix         : Manifold Mixup=0.8238  Vanilla=0.8822  Change=-0.0584

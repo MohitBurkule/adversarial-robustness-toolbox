@@ -1,0 +1,14 @@
+H372 - Per-layer Jacobian penalty
+============================================================
+
+condition          lambdas                 clean   fgsm    pgd   margin   time
+--------------------------------------------------------------------------
+baseline           [0.0, 0.0, 0.0]         0.879  0.674  0.977    5.963    0.9
+input_only         [0.0001, 0.0, 0.0]      0.863  0.739  0.868    4.450    5.3
+all_layers         [0.0001, 0.0001, 0.0001]  0.767  0.675  0.763    1.624    8.6
+input_plus_all     [5e-05, 5e-05, 5e-05]   0.817  0.755  0.843    2.458    8.7
+weighted           [0.0001, 5e-05, 2e-05]  0.798  0.722  0.817    2.271    8.6
+
+Baseline PGD ASR: 0.977
+Best PGD ASR:     0.763 (all_layers)
+RESULT: SUPPORTED - per-layer Jacobian penalty improves robustness

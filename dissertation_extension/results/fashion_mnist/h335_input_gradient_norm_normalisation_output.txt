@@ -1,0 +1,22 @@
+H335: Input Gradient Norm Normalisation
+============================================================
+Settings: N_TRAIN=6000, EPOCHS=10, LR=0.05, BATCH=128
+
+Condition: standard
+  clean=0.8810 fgsm_asr=0.7680 pgd_asr=0.9205 margin=6.1142
+  grad_norm_mean=1.8448 ± 3.6129
+
+Condition: normalised_grad
+  clean=0.8775 fgsm_asr=0.7640 pgd_asr=0.9295 margin=6.0723
+  grad_norm_mean=1.8196 ± 3.6743
+
+Condition: normalised+penalty
+  clean=0.8780 fgsm_asr=0.7575 pgd_asr=0.9180 margin=6.1047
+  grad_norm_mean=1.8671 ± 3.7465
+
+============================================================
+SUMMARY
+Condition                    Clean   FGSM_ASR    PGD_ASR   GradNorm
+standard                    0.8810     0.7680     0.9205     1.8448
+normalised_grad             0.8775     0.7640     0.9295     1.8196
+normalised+penalty          0.8780     0.7575     0.9180     1.8671

@@ -1,0 +1,25 @@
+===========================================================================
+H290 — Hidden-Layer Adversarial Training
+Dataset: fashion_mnist  N_train=6000  epochs=10  seed=0
+eps_input=0.1  eps_block0=0.5  eps_block1=1.0
+Elapsed: 8.0s
+===========================================================================
+
+Model                   clean_acc   FGSM_ASR   PGD_ASR   margin
+---------------------------------------------------------------
+(a) Baseline               0.8705     0.7510    0.9715   5.2085
+(b) Input FGSM-AT          0.7960     0.3340    0.3580   2.3606
+(c) Block0-AT              0.7875     0.3870    0.4235   1.7884
+(d) Block1-AT              0.8410     0.4775    0.7075   2.5971
+(e) All-layers-AT          0.1045     0.8955    0.8955  -0.0863
+
+Key question: does activation-space AT transfer to input-space robustness?
+
+  Baseline PGD_ASR:      0.9715
+  Input-AT PGD_ASR:      0.3580  (delta=-0.6135)
+  Block0-AT PGD_ASR:     0.4235  (delta=-0.5480)
+  Block1-AT PGD_ASR:     0.7075  (delta=-0.2640)
+  All-layers-AT PGD_ASR: 0.8955  (delta=-0.0760)
+
+  Transfer observed in: Block0-AT, Block1-AT, All-AT
+===========================================================================

@@ -1,0 +1,22 @@
+Device: cuda
+======================================================================
+H531 – FMNIST Pretrain Transfer: Pretraining History Shapes ASR
+======================================================================
+Fine-tune: 2-class FMNIST (T-shirt vs Trouser), N=50/class
+Pretrain epochs: 20  |  Finetune epochs: 40
+
+Fine-tune set: 100 samples
+Test set:      1800 samples
+
+────────────────────────────────────────────────────────────
+[0] Rand-init (no pretrain)
+      epoch 10/40
+      epoch 20/40
+      epoch 30/40
+      epoch 40/40
+  => acc=0.9572  FGSM(ε=0.2)=0.6146  PGD(ε=0.1)=0.1979
+
+────────────────────────────────────────────────────────────
+[1] MNIST-STD pretrain → FMNIST fine-tune
+      epoch 10/20
+      epoch 20/20

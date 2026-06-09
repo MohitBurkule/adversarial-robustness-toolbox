@@ -1,0 +1,21 @@
+Loading Fashion-MNIST dataset...
+
+--- Training Vanilla CNN ---
+Vanilla CNN Correctly classified: 9225/10000
+Computing attack targets for Vanilla CNN...
+Computing features for Vanilla CNN...
+
+UNIVARIATE AUROC RESULTS for Vanilla CNN:
+  Feature: margin     | FGSM: 0.9113 | PGD: 0.9532 | MinEps: 0.9326
+  Feature: mean_pix   | FGSM: 0.5032 | PGD: 0.5469 | MinEps: 0.5889
+  Feature: std_pix    | FGSM: 0.6123 | PGD: 0.6774 | MinEps: 0.5474
+
+--- Training Stochastic Depth CNN ---
+Stochastic Depth CNN Correctly classified: 8918/10000
+Computing attack targets for Stochastic Depth CNN...
+Computing features for Stochastic Depth CNN...
+
+UNIVARIATE AUROC RESULTS for Stochastic Depth CNN:
+  Feature: margin     | FGSM: 0.9051 | PGD: 0.9031 | MinEps: 0.9167
+  Feature: mean_pix   | FGSM: 0.5118 | PGD: 0.5517 | MinEps: 0.5070
+  Feature: std_pix    | FGSM: 0.6318 | PGD: 0.6681 | MinEps: 0.6151

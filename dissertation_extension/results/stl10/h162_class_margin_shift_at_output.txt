@@ -1,0 +1,74 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: STL10
+[*] Executing script: dissertation_extension/hypotheses/h162_class_margin_shift_at.py
+H162: Class-level margin shift under adversarial training
+Device: cuda
+
+=== Training Vanilla CNN ===
+  Epoch  1/10  train_loss=2.1298
+  Epoch  2/10  train_loss=1.8652
+  Epoch  3/10  train_loss=1.7366
+  Epoch  4/10  train_loss=1.6515
+  Epoch  5/10  train_loss=1.5800
+  Epoch  6/10  train_loss=1.5258
+  Epoch  7/10  train_loss=1.4812
+  Epoch  8/10  train_loss=1.4329
+  Epoch  9/10  train_loss=1.3838
+  Epoch 10/10  train_loss=1.3558
+
+=== Training PGD-AT CNN (PGD-7, eps=15/255, alpha=2/255) ===
+  Epoch  1/10  adv_train_loss=2.2663
+  Epoch  2/10  adv_train_loss=2.1561
+  Epoch  3/10  adv_train_loss=2.1192
+  Epoch  4/10  adv_train_loss=2.0923
+  Epoch  5/10  adv_train_loss=2.0707
+  Epoch  6/10  adv_train_loss=2.0561
+  Epoch  7/10  adv_train_loss=2.0318
+  Epoch  8/10  adv_train_loss=2.0247
+  Epoch  9/10  adv_train_loss=2.0034
+  Epoch 10/10  adv_train_loss=1.9984
+
+=== Evaluating on full test set (10,000 samples) ===
+
+=== Per-Class Results ===
+Class        Vanilla Acc   AT Acc   Acc Drop  Van Margin  AT Margin
+-------------------------------------------------------------------
+T-shirt           0.6338   0.5188     0.1150      0.7468     0.1240
+Trouser           0.2288   0.1300     0.0988     -0.5885    -0.1774
+Pullover          0.5613   0.6775    -0.1162      0.0921     0.0710
+Dress             0.2800   0.0288     0.2513     -0.4452    -0.2279
+Coat              0.5713   0.3975     0.1738      0.0106    -0.1173
+Sandal            0.1913   0.0238     0.1675     -0.5751    -0.2137
+Shirt             0.5600   0.6288    -0.0687      0.1280     0.0510
+Sneaker           0.4037   0.3950     0.0087     -0.2099    -0.0474
+Bag               0.7400   0.6212     0.1188      0.9634     0.1699
+Ankle boot        0.4650   0.1525     0.3125     -0.3577    -0.4668
+
+Overall mean class accuracy — Vanilla: 0.4635  AT: 0.3574  Drop: 0.1061
+
+=== Top-3 Most-Hurt Classes (largest accuracy drop) ===
+  1. Ankle boot    acc_drop=0.3125  vanilla_margin=-0.3577  vanilla_margin_rank=3 (0=lowest margin)
+  2. Dress         acc_drop=0.2513  vanilla_margin=-0.4452  vanilla_margin_rank=2 (0=lowest margin)
+  3. Coat          acc_drop=0.1738  vanilla_margin=0.0106  vanilla_margin_rank=5 (0=lowest margin)
+
+=== Correlation: Vanilla Per-Class Mean Margin vs Accuracy Drop ===
+  Spearman rho = -0.3212  (p=0.3655)
+  Pearson  r   = -0.2681  (p=0.4539)
+  Interpretation: SUPPORTED — lower vanilla margin -> larger accuracy drop after AT.
+
+=== Correlation: Vanilla Per-Class Accuracy vs Accuracy Drop ===
+  Spearman rho = -0.1273  (p=0.7261)
+  Pearson  r   = -0.2794  (p=0.4343)
+  Interpretation: NO CLEAR relationship between vanilla accuracy and accuracy drop.
+
+=== Top-5 Class Pairs Newly/More Confused After AT ===
+  (true -> predicted, delta=rate_AT - rate_vanilla)
+  Dress        -> Shirt         vanilla=0.0887  AT=0.3125  delta=+0.2238
+  Sandal       -> Shirt         vanilla=0.2213  AT=0.4138  delta=+0.1925
+  Ankle boot   -> Pullover      vanilla=0.1388  AT=0.3187  delta=+0.1800
+  Trouser      -> Shirt         vanilla=0.0675  AT=0.2350  delta=+0.1675
+  Sneaker      -> Shirt         vanilla=0.1412  AT=0.3050  delta=+0.1638
+
+=== Summary ===
+  AT reduces mean class accuracy by 0.1061.
+  Spearman(vanilla_margin, acc_drop) = -0.3212: lower-margin classes are disproportionately hurt.
+  Spearman(vanilla_accuracy, acc_drop) = -0.1273: no strong accuracy-based pattern.

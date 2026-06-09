@@ -1,0 +1,65 @@
+======================================================================
+H195 — Prototype Distance vs Margin as Adversarial Vulnerability Predictor
+Dataset: fashion_mnist  |  N_te=500  |  eps=0.1  |  seeds=[0, 1, 2]
+======================================================================
+
+--- Seed 0 ---
+  [seed=0] clean acc=0.926
+  features extracted in 7.0s  shape=torch.Size([60000, 256])
+  ASR FGSM=0.808  PGD=1.000
+  AUROC (-min_wrong_dist → FGSM): 0.891
+  AUROC (-min_wrong_dist → PGD):  nan
+  AUROC (-proto_margin   → FGSM): 0.868
+  AUROC (-proto_margin   → PGD):  nan
+  AUROC (-margin         → FGSM): 0.945
+  AUROC (-margin         → PGD):  nan
+  Spearman ρ(min_wrong_dist, margin)  = 0.849  p=7.75e-130
+  Spearman ρ(proto_margin, soft_marg) = 0.866  p=3.69e-141
+
+--- Seed 1 ---
+  [seed=1] clean acc=0.950
+  features extracted in 2.9s  shape=torch.Size([60000, 256])
+  ASR FGSM=0.802  PGD=1.000
+  AUROC (-min_wrong_dist → FGSM): 0.889
+  AUROC (-min_wrong_dist → PGD):  nan
+  AUROC (-proto_margin   → FGSM): 0.906
+  AUROC (-proto_margin   → PGD):  nan
+  AUROC (-margin         → FGSM): 0.933
+  AUROC (-margin         → PGD):  nan
+  Spearman ρ(min_wrong_dist, margin)  = 0.895  p=4.05e-168
+  Spearman ρ(proto_margin, soft_marg) = 0.904  p=1.40e-176
+
+--- Seed 2 ---
+  [seed=2] clean acc=0.932
+  features extracted in 1.3s  shape=torch.Size([60000, 256])
+  ASR FGSM=0.796  PGD=1.000
+  AUROC (-min_wrong_dist → FGSM): 0.931
+  AUROC (-min_wrong_dist → PGD):  nan
+  AUROC (-proto_margin   → FGSM): 0.901
+  AUROC (-proto_margin   → PGD):  nan
+  AUROC (-margin         → FGSM): 0.938
+  AUROC (-margin         → PGD):  nan
+  Spearman ρ(min_wrong_dist, margin)  = 0.876  p=2.08e-149
+  Spearman ρ(proto_margin, soft_marg) = 0.859  p=2.66e-137
+
+======================================================================
+AGGREGATE (mean ± std across seeds)
+======================================================================
+  auroc_fgsm_proto                          : 0.904 ± 0.019
+  auroc_pgd_proto                           : nan ± nan
+  auroc_fgsm_pm                             : 0.892 ± 0.017
+  auroc_pgd_pm                              : nan ± nan
+  auroc_fgsm_marg                           : 0.939 ± 0.005
+  auroc_pgd_marg                            : nan ± nan
+  rho_wrong_vs_margin                       : 0.874 ± 0.019
+  rho_proto_margin_vs_softmax               : 0.877 ± 0.020
+  asr_fgsm                                  : 0.802 ± 0.005
+  asr_pgd                                   : 1.000 ± 0.000
+
+VERDICT
+  NOT SUPPORTED — softmax margin is at least as good as prototype distance.
+  Δ AUROC FGSM (proto − margin) = -0.035
+  Δ AUROC PGD  (proto − margin) = +nan
+
+Total runtime: 115.4s
+

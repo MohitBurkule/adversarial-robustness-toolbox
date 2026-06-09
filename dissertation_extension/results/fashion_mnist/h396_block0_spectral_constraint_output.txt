@@ -1,0 +1,49 @@
+==============================================================================
+H396 - First-block-only spectral normalization (power-iteration)
+==============================================================================
+Device=cuda  dataset=fashion_mnist  eps=0.1  coeffs=[1.5, 1.0, 0.5]  power_iters=2  epochs=10  n_train=6000
+Spectral norm constrains the operator norm of each selected conv's reshaped weight.
+Unconstrained conv operator norms (reshaped-weight sigma_max): block0=1.61, block1=1.25, block2=1.47
+
+--- coeff = 1.5 ------------------------------------------------------------
+[baseline    ] clean=0.878  FGSM-ASR=0.725  PGD-ASR=0.949  inJacF=18.70  (reused)
+[block0_only ] clean=0.876  FGSM-ASR=0.736  PGD-ASR=0.959  inJacF=19.80  sigma[block0=1.61*, block1=1.26, block2=1.47]  (1s)
+[all_blocks  ] clean=0.882  FGSM-ASR=0.725  PGD-ASR=0.960  inJacF=19.29  sigma[block0=1.61*, block1=1.25*, block2=1.49*]  (1s)
+
+--- coeff = 1.0 ------------------------------------------------------------
+[baseline    ] clean=0.878  FGSM-ASR=0.725  PGD-ASR=0.949  inJacF=18.70  (reused)
+[block0_only ] clean=0.877  FGSM-ASR=0.743  PGD-ASR=0.970  inJacF=19.16  sigma[block0=1.62*, block1=1.27, block2=1.47]  (1s)
+[all_blocks  ] clean=0.879  FGSM-ASR=0.735  PGD-ASR=0.957  inJacF=19.79  sigma[block0=1.63*, block1=1.25*, block2=1.48*]  (1s)
+
+--- coeff = 0.5 ------------------------------------------------------------
+[baseline    ] clean=0.878  FGSM-ASR=0.725  PGD-ASR=0.949  inJacF=18.70  (reused)
+[block0_only ] clean=0.882  FGSM-ASR=0.718  PGD-ASR=0.955  inJacF=18.51  sigma[block0=1.61*, block1=1.24, block2=1.48]  (1s)
+[all_blocks  ] clean=0.880  FGSM-ASR=0.740  PGD-ASR=0.963  inJacF=19.36  sigma[block0=1.61*, block1=1.25*, block2=1.48*]  (1s)
+
+------------------------------------------------------------------------------
+ coeff condition      clean  FGSM-ASR  PGD-ASR  inputJacF
+------------------------------------------------------------------------------
+   1.5 baseline       0.878     0.725    0.949      18.70
+   1.5 block0_only    0.876     0.736    0.959      19.80
+   1.5 all_blocks     0.882     0.725    0.960      19.29
+   1.0 baseline       0.878     0.725    0.949      18.70
+   1.0 block0_only    0.877     0.743    0.970      19.16
+   1.0 all_blocks     0.879     0.735    0.957      19.79
+   0.5 baseline       0.878     0.725    0.949      18.70
+   0.5 block0_only    0.882     0.718    0.955      18.51
+   0.5 all_blocks     0.880     0.740    0.963      19.36
+------------------------------------------------------------------------------
+
+Placement analysis at tightest coeff=0.5:
+  PGD-ASR: baseline 0.949 | block0-only 0.955 | all-blocks 0.963
+  block0-only captures 47% of the all-blocks PGD-ASR reduction (block0 drop -0.006 of total -0.014).
+  clean cost: block0-only -0.004 | all-blocks -0.002 (vs baseline 0.878).
+  input-Jacobian Fnorm: baseline 18.70 -> block0-only 18.51 -> all-blocks 19.36.
+
+NOTE: each conv is followed by BatchNorm, whose learnable scale freely re-amplifies
+      the signal -- so constraining the conv WEIGHT operator norm does not bind the
+      effective layer Lipschitz (sigma stays ~1.6 even at coeff=0.5). This is the
+      mechanistic reason spectral norm on convs alone is ineffective here.
+VERDICT: Even at the tightest coeff=0.5, conv-weight spectral norm barely moves PGD-ASR -- with BatchNorm re-amplifying, constraining conv operator norm is not an effective robustness lever for this CNN/eps, so the placement question (block0 vs all) cannot be resolved by this mechanism.
+==============================================================================
+total runtime 11s

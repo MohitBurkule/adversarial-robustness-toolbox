@@ -1,0 +1,6 @@
+H302: Gradient Centralization
+============================================================
+mode=baseline: clean=0.877 fgsm_asr=0.765 pgd_asr=0.930 margin=5.917 time=1.2s
+mode=gc: clean=0.881 fgsm_asr=0.764 pgd_asr=0.954 margin=6.321 time=0.8s
+mode=gc_momentum: clean=0.884 fgsm_asr=0.762 pgd_asr=0.946 margin=6.328 time=0.7s
+mode=gc_adam: clean=0.877 fgsm_asr=0.769 pgd_asr=0.973 margin=6.073 time=0.8s

@@ -1,0 +1,46 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h173_at_variants_clean.py
+======================================================================
+Hypothesis H173: Clean AT Variants Comparison (SAT, FAT, RSLAD, MarginWT)
+Bug fix: pgd_eval() now returns bool flip tensor, not raw adversarial images.
+======================================================================
+
+--- Training Vanilla ---
+  Trained in 22.8s
+  Evaluating Vanilla on 1000 correct test samples...
+  CleanAcc=0.5264  FGSM=0.9080  PGD=0.9490  MinEps=0.0254  MarginAUROC-PGD=0.9407  (n=1000)
+
+--- Training SAT ---
+  Trained in 23.3s
+  Evaluating SAT on 1000 correct test samples...
+  CleanAcc=0.3822  FGSM=0.5570  PGD=0.5560  MinEps=0.0819  MarginAUROC-PGD=0.8784  (n=1000)
+
+--- Training FAT ---
+  Trained in 52.5s
+  Evaluating FAT on 1000 correct test samples...
+  CleanAcc=0.4637  FGSM=0.7270  PGD=0.7500  MinEps=0.0555  MarginAUROC-PGD=0.9382  (n=1000)
+
+--- Training RSLAD ---
+  [RSLAD] Training teacher (PGD-AT)...
+  [RSLAD] Training student (distillation)...
+  Trained in 58.5s
+  Evaluating RSLAD on 1000 correct test samples...
+  CleanAcc=0.3231  FGSM=0.4580  PGD=0.4400  MinEps=0.0973  MarginAUROC-PGD=0.8500  (n=1000)
+
+--- Training MarginWeighted ---
+  Trained in 23.6s
+  Evaluating MarginWeighted on 1000 correct test samples...
+  CleanAcc=0.1006  FGSM=0.0000  PGD=0.0000  MinEps=0.3000  MarginAUROC-PGD=nan  (n=395)
+
+
+======================================================================
+Final Comparison Table
+======================================================================
+Model               CleanAcc   FGSM%    PGD%   MinEps  MarginAUROC-PGD
+----------------------------------------------------------------------
+Vanilla               0.5264  0.9080  0.9490   0.0254           0.9407
+SAT                   0.3822  0.5570  0.5560   0.0819           0.8784
+FAT                   0.4637  0.7270  0.7500   0.0555           0.9382
+RSLAD                 0.3231  0.4580  0.4400   0.0973           0.8500
+MarginWeighted        0.1006  0.0000  0.0000   0.3000             N/A 
+======================================================================

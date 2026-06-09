@@ -1,0 +1,56 @@
+
+Training a_baseline ...
+    ep 1/10  loss=0.7511
+    ep 5/10  loss=0.2146
+    ep 10/10  loss=0.0971
+
+Training b_FGSM-AT ...
+    ep 1/10  loss=1.2583
+    ep 5/10  loss=0.7507
+    ep 10/10  loss=0.6493
+
+Training c_Smooth-FGSM ...
+    ep 1/10  loss=0.8230
+    ep 5/10  loss=0.3112
+    ep 10/10  loss=0.1858
+
+Training d_L2-PGD-AT ...
+    ep 1/10  loss=0.8333
+    ep 5/10  loss=0.3190
+    ep 10/10  loss=0.2002
+==========================================================================
+H283 - Backward gradient normalisation for adversarial training
+==========================================================================
+Device=cuda  dataset=fashion_mnist  N_train=6000  epochs=10  eps_linf=0.1  eps_l2=1.0
+
+  [a_baseline]
+    clean_acc=0.8730  FGSM_ASR=0.7555  PGD(Linf)_ASR=0.9690  PGD(L2)_ASR=0.8770
+
+  [b_FGSM-AT]
+    clean_acc=0.8325  FGSM_ASR=0.2905  PGD(Linf)_ASR=0.3815  PGD(L2)_ASR=0.3595
+
+  [c_Smooth-FGSM]
+    clean_acc=0.8660  FGSM_ASR=0.6645  PGD(Linf)_ASR=0.9005  PGD(L2)_ASR=0.6830
+
+  [d_L2-PGD-AT]
+    clean_acc=0.8685  FGSM_ASR=0.6590  PGD(Linf)_ASR=0.8825  PGD(L2)_ASR=0.6585
+
+==========================================================================
+Summary table:
+  model                    clean_acc   fgsm_asr   pgd_linf    pgd_l2
+  a_baseline                  0.8730     0.7555     0.9690    0.8770
+  b_FGSM-AT                   0.8325     0.2905     0.3815    0.3595
+  c_Smooth-FGSM               0.8660     0.6645     0.9005    0.6830
+  d_L2-PGD-AT                 0.8685     0.6590     0.8825    0.6585
+
+Total runtime: 28.7s
+==========================================================================
+Interpretation: smooth-FGSM and L2-PGD training use a L2-normalised
+gradient direction instead of the sign (Linf direction). If they yield
+better L2 robustness at a similar clean-acc cost, backward gradient
+normalisation IS the key difference — confirming the user's insight that
+NOTHING normalises backward gradients by default, and doing so changes
+the robustness geometry.
+==========================================================================
+
+Results saved to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h283_backward_gradient_normalisation_output.txt

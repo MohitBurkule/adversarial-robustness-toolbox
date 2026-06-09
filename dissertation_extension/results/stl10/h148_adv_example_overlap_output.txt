@@ -1,0 +1,55 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: STL10
+[*] Executing script: dissertation_extension/hypotheses/h148_adv_example_overlap.py
+======================================================================
+Hypothesis H148: Adversarial Example Overlap (FGSM, BIM, PGD, MIM)
+======================================================================
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 9.5s
+
+Using 1000 correctly classified samples for evaluation.
+
+Generating attacks...
+
+==================================================
+Jaccard Similarity Matrix of Attack Success
+==================================================
+      FGSM    BIM     PGD     MIM   
+FGSM : 1.0000  0.9544  0.9602  0.9573
+BIM  : 0.9544  1.0000  0.9939  0.9949
+PGD  : 0.9602  0.9939  1.0000  0.9969
+MIM  : 0.9573  0.9949  0.9969  1.0000
+
+==================================================
+Mutual Information Matrix of Attack Success
+==================================================
+      FGSM    BIM     PGD     MIM   
+FGSM : 0.2242  0.0413  0.0603  0.0507
+BIM  : 0.0413  0.0737  0.0614  0.0565
+PGD  : 0.0603  0.0614  0.0980  0.0777
+MIM  : 0.0507  0.0565  0.0777  0.0861
+
+Attack Consensus Statistics (number of successful attacks per sample):
+  Vulnerable to 0 attacks: 1.3%
+  Vulnerable to 1 attacks: 0.5%
+  Vulnerable to 2 attacks: 0.2%
+  Vulnerable to 3 attacks: 3.9%
+  Vulnerable to 4 attacks: 94.1%
+
+==================================================
+Univariate AUROC for Target: flipped_by_all_4
+==================================================
+  attack_consensus   AUROC = 1.0000 (direction: +)
+  margin             AUROC = 0.9350 (direction: -)
+  mean_pix           AUROC = 0.6155 (direction: -)
+  std_pix            AUROC = 0.7160 (direction: -)

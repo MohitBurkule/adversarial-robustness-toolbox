@@ -1,0 +1,50 @@
+
+Training λ=0.0 ...
+    ep 1/10  CE=0.8455  H=0.0000
+    ep 5/10  CE=0.2373  H=0.0000
+    ep 10/10  CE=0.0413  H=0.0000
+
+Training λ=0.1 ...
+    ep 1/10  CE=0.8446  H=6.3752
+    ep 5/10  CE=0.2274  H=6.4336
+    ep 10/10  CE=0.0485  H=6.4675
+
+Training λ=1.0 ...
+    ep 1/10  CE=0.8485  H=6.4371
+    ep 5/10  CE=0.2825  H=6.5221
+    ep 10/10  CE=0.1598  H=6.5474
+==========================================================================
+H285 - Gradient breadth regularisation
+==========================================================================
+Device=cuda  dataset=fashion_mnist  N_train=3000  epochs=10  eps=0.1  lambdas=[0.0, 0.1, 1.0]
+Regularisation: Loss = CE - λ * H(|∇_x CE|)  (maximise entropy)
+
+  [λ=0.0]
+    clean_acc=0.8715  fgsm_asr=0.7520  pgd_asr=0.9945
+    mean_margin=6.2772  mean_grad_entropy=6.2395
+
+  [λ=0.1]
+    clean_acc=0.8650  fgsm_asr=0.7485  pgd_asr=0.9980
+    mean_margin=6.5463  mean_grad_entropy=6.2668
+
+  [λ=1.0]
+    clean_acc=0.8565  fgsm_asr=0.7035  pgd_asr=0.9545
+    mean_margin=6.1776  mean_grad_entropy=6.3226
+
+==========================================================================
+Summary table:
+       λ   clean_acc   fgsm_asr   pgd_asr    margin    grad_H
+   λ=0.0      0.8715     0.7520    0.9945    6.2772    6.2395
+   λ=0.1      0.8650     0.7485    0.9980    6.5463    6.2668
+   λ=1.0      0.8565     0.7035    0.9545    6.1776    6.3226
+
+Total runtime: 23.5s
+==========================================================================
+Interpretation: if λ>0 models have higher mean_grad_entropy AND lower
+FGSM/PGD ASR, then explicitly regularising gradient breadth improves
+robustness. If clean_acc drops substantially, there is a cost to
+'flattening' the sensitivity map. This is a novel regulariser connecting
+gradient geometry to adversarial robustness.
+==========================================================================
+
+Results saved to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h285_gradient_breadth_regularisation_output.txt

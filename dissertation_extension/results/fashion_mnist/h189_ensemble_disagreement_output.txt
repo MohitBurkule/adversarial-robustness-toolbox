@@ -1,0 +1,39 @@
+==========================================================================
+H189 - Ensemble disagreement vs single-model margin for predicting
+       per-sample adversarial vulnerability (FGSM & PGD)
+==========================================================================
+Device=cuda  dataset=fashion_mnist  N_eval=300  eps=0.1
+Dataset loaded. Xte subset: torch.Size([300, 1, 28, 28])
+  Model seed=0 trained.
+  Model seed=1 trained.
+  Model seed=2 trained.
+
+Clean accuracy (model0): 0.933
+
+Running FGSM attacks on model0 ...
+  FGSM success rate (of all eval): 0.790  (237/300)
+Running PGD attacks on model0 ...
+  PGD  success rate (of all eval): 0.933  (280/300)
+
+==========================================================================
+AUROC RESULTS (higher = better predictor of attack success)
+==========================================================================
+Score                                 FGSM AUROC    PGD AUROC
+------------------------------------------------------------
+(A) Single-model margin (neg)             0.6409       0.0000
+(B) Ensemble entropy (mean probs)         0.6712       0.1155
+(C) Ensemble prob variance                0.6723       0.1241
+(D) Ensemble mean margin (neg)            0.6314       0.0071
+
+==========================================================================
+SPEARMAN CORRELATION: ensemble entropy vs neg-single-margin
+  rho = 0.9544   p = 1.6469e-158
+  (positive rho => high disagreement samples also have low margin)
+==========================================================================
+
+INTERPRETATION:
+  SUPPORT: Ensemble disagreement (entropy) outperforms single-model
+  margin on both FGSM and PGD, consistent with SED (2409.16797).
+
+Total runtime: 126.9s
+==========================================================================

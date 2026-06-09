@@ -1,0 +1,18 @@
+H287 Hutchinson Hessian Trace Penalty — Results
+============================================================
+Dataset: fashion_mnist  N_train=6000  Epochs=10  Seed=0
+EPS_FGSM=0.1  EPS_PGD=0.1  PGD_STEPS=10
+
+     lam   clean_acc   fgsm_asr   pgd_asr   mean_margin   hess_trace_est  mean_ep_s  total_s
+--------------------------------------------------------------------------------------------
+ 0.00000      0.8820     0.4565    0.5415        7.5273           0.0000        0.1      0.9
+ 0.00010      0.8830     0.4600    0.5340        7.4384         152.3383        0.3      3.5
+ 0.00100      0.8750     0.4715    0.5470        7.2788         155.4272        0.6      5.6
+ 0.01000      0.8750     0.4875    0.5580        6.7124         151.2775        0.4      3.7
+
+Analysis:
+- λ=0.0 is standard SGD baseline
+- Lower fgsm_asr/pgd_asr with higher λ → Hessian penalty improves robustness
+- Mean hess_trace_est should decrease with higher λ (flatter minimum achieved)
+- Note: create_graph=True is expensive; expect 3–5× slower training than baseline
+- Compare epoch times across λ to quantify cost

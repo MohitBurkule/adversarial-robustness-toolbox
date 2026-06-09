@@ -1,0 +1,13 @@
+  rho=0: {'clean_acc': 0.8799999952316284, 'fgsm_asr': 0.7664999961853027, 'pgd_asr': 0.9155000001192093, 'mean_margin': 6.152226448059082, 'rho': 0, 'time': 1.0587890148162842}
+  rho=0.01: {'clean_acc': 0.8834999799728394, 'fgsm_asr': 0.7580000013113022, 'pgd_asr': 0.9195000007748604, 'mean_margin': 5.759166717529297, 'rho': 0.01, 'time': 1.9183411598205566}
+  rho=0.05: {'clean_acc': 0.8805000185966492, 'fgsm_asr': 0.6935000121593475, 'pgd_asr': 0.8530000001192093, 'mean_margin': 5.098097801208496, 'rho': 0.05, 'time': 1.8204607963562012}
+  rho=0.1: {'clean_acc': 0.8759999871253967, 'fgsm_asr': 0.6509999930858612, 'pgd_asr': 0.7919999957084656, 'mean_margin': 4.647790908813477, 'rho': 0.1, 'time': 1.83186936378479}
+
+=== H376 RESULTS ===
+  rho=0: clean=0.8800 fgsm_asr=0.7665 pgd_asr=0.9155 margin=6.1522
+  rho=0.01: clean=0.8835 fgsm_asr=0.7580 pgd_asr=0.9195 margin=5.7592
+  rho=0.05: clean=0.8805 fgsm_asr=0.6935 pgd_asr=0.8530 margin=5.0981
+  rho=0.1: clean=0.8760 fgsm_asr=0.6510 pgd_asr=0.7920 margin=4.6478
+
+Best rho=0.1: PGD ASR reduced by 0.1235
+SUPPORTED = True

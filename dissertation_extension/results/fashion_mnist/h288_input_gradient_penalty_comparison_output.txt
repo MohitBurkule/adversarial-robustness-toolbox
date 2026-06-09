@@ -1,0 +1,30 @@
+H288 Input Gradient Penalty Comparison — Definitive Flatness vs Robustness
+======================================================================
+Dataset: fashion_mnist  N_train=6000  Epochs=10  Seed=0
+EPS_FGSM=0.1  EPS_PGD=0.1  PGD_STEPS=10
+SAM_RHO=0.05  Sharpness_rho=0.05  Sharpness_samples=20
+
+Condition                                clean_acc   fgsm_asr   pgd_asr    margin   sharpness   time_s
+------------------------------------------------------------------------------------------------------
+SGD baseline (CE only)                      0.8660     0.4455    0.5245    6.8147      0.0000      0.9
+SGD + input grad penalty (λ=0.01)           0.8875     0.4485    0.5135    7.5211     -0.0001      5.3
+SGD + batch var penalty (λ=0.01)            0.8715     0.4865    0.5660    7.3028      0.0000      2.2
+SGD + Hessian trace penalty (λ=0.001)       0.8730     0.4590    0.5390    6.8561      0.0000      3.6
+SGD + SAM (ρ=0.05)                          0.8780     0.4995    0.5695    6.2296      0.0000      1.7
+Adam baseline (CE only)                     0.8785     0.4605    0.5750    6.8487      0.0001      0.9
+Adam + batch var penalty (λ=0.01)           0.8720     0.5565    0.6335    6.1772      0.0001      1.5
+
+Summary:
+  Best PGD robustness: SGD + input grad penalty (λ=0.01)  PGD_ASR=0.5135  clean_acc=0.8875
+  Baseline clean_acc: 0.8660
+  Clean-acc degradation of best vs baseline: -2.15%
+
+Analysis:
+- Sharpness (post-hoc ρ perturbation) should anti-correlate with robustness
+- Input gradient penalty (Ross 2018) is a natural adversarial defence by design
+- Batch-variance penalty (H286) and Hessian trace (H287) are weight-space flatness methods
+- SAM directly minimises worst-case loss in a weight neighbourhood
+- Compute cost: baseline < batch_var ≈ SAM < input_grad < hess_trace
+- Adam baseline vs SGD baseline reveals optimiser effect independent of penalty
+- If Adam+penalty (g) ≈ Adam baseline (f): second moment subsumes variance penalty
+- If Adam+penalty (g) > Adam baseline (f) by same margin as (c)>(a): penalty adds value beyond Adam

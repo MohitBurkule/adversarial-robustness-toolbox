@@ -1,0 +1,53 @@
+========================================================================
+H265 - Per-Sample Noise Destabilisation Threshold
+========================================================================
+
+Loading fashion_mnist ...
+  Train: torch.Size([60000, 1, 28, 28])  Eval: torch.Size([300, 1, 28, 28])
+
+[1] Training model ...
+    Done in 24.8s
+    Clean acc: 0.9267
+
+[2] Computing sigma_destabilise (K=50 noise reps per sample) ...
+  sigma=0.05: 25 newly destabilised (25/300 total)
+  sigma=0.10: 22 newly destabilised (47/300 total)
+  sigma=0.15: 29 newly destabilised (76/300 total)
+  sigma=0.20: 45 newly destabilised (121/300 total)
+  sigma=0.30: 102 newly destabilised (223/300 total)
+  sigma=0.50: 46 newly destabilised (269/300 total)
+  sigma=0.80: 7 newly destabilised (276/300 total)
+  sigma=1.20: 3 newly destabilised (279/300 total)
+    Done in 4.1s
+    279/300 samples destabilised within sigma_grid
+    mean sigma_dest (finite) = 0.2853
+
+[3] Computing FGSM vulnerability ...
+    FGSM ASR = 0.7842
+
+[4] Computing margins ...
+    mean_margin = 9.6235
+
+[5] Correlation analysis ...
+    Using 257 samples (finite sigma_dest AND correctly classified)
+    Spearman rho(sigma_dest, margin) = 0.6573  p=3.5283e-33
+    (Positive rho means larger sigma_dest = more robust — consistent with hypothesis)
+    AUROC(-sigma_dest → FGSM success) = 0.8438
+    (>0.5 means low sigma_dest predicts FGSM success — supports hypothesis)
+
+    sigma_dest distribution:
+      p  0: 0.0500
+      p 25: 0.2000
+      p 50: 0.3000
+      p 75: 0.3000
+      p100: 1.2000
+
+INTERPRETATION
+------------------------------------------------------------------------
+  Verdict: SUPPORTED: sigma_dest correlates with margin — noise and adversarial probe same geometry
+  rho(sigma_dest, margin)=0.6573
+
+Total time: 32.4s
+========================================================================
+
+Results written to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h265_per_sample_noise_threshold_output.txt

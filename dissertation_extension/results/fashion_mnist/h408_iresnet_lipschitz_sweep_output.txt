@@ -1,0 +1,50 @@
+================================================================================
+H408  i-ResNet Lipschitz-constrained invertible blocks: coeff sweep
+================================================================================
+config: SMOKE=False N_TRAIN=6000 EPOCHS=10 LR=0.05 BATCH=128 SEED=0 EPS=0.1 PGD_STEPS=10
+        coeffs=[0.5, 0.9] (+ uncapped baseline) N_RES_BLOCKS=4 WIDTH=32 FP_ITERS=200 device=cuda
+
+data: Xtr=(6000, 1, 28, 28)  Xte=(2000, 1, 28, 28)
+
+================================================================================
+[condition uncapped] coeff=None
+================================================================================
+    (uncapped baseline: NOT guaranteed invertible -- skip check)
+    uncapped: clean_acc=0.7060  FGSM_ASR=0.8576  PGD_ASR=0.9511
+
+================================================================================
+[condition c=0.5] coeff=0.5
+================================================================================
+    random-init fixed-point recon error = 8.941e-08
+    post-train fixed-point recon error  = 2.086e-07
+    c=0.5: clean_acc=0.1945  FGSM_ASR=0.6504  PGD_ASR=0.6504
+
+================================================================================
+[condition c=0.9] coeff=0.9
+================================================================================
+    random-init fixed-point recon error = 1.192e-07
+    post-train fixed-point recon error  = 3.278e-07
+    c=0.9: clean_acc=0.2255  FGSM_ASR=0.7406  PGD_ASR=0.7517
+
+================================================================================
+[TABLE]
+================================================================================
+condition       clean_acc   FGSM_ASR    PGD_ASR      recon_err
+--------------------------------------------------------------
+uncapped           0.7060     0.8576     0.9511            n/a
+c=0.5              0.1945     0.6504     0.6504      2.086e-07
+c=0.9              0.2255     0.7406     0.7517      3.278e-07
+--------------------------------------------------------------
+
+================================================================================
+[VERDICT]
+================================================================================
+  c=0.5: PGD_ASR 0.9511->0.6504 (-0.3007); clean 0.7060->0.1945 (-0.5115); recon_err=2.09e-07
+  c=0.9: PGD_ASR 0.9511->0.7517 (-0.1995); clean 0.7060->0.2255 (-0.4805); recon_err=3.28e-07
+
+  best capped condition: c=0.5 (PGD_ASR 0.6504)
+  PGD robustness gain vs uncapped = +0.3007; clean cost -0.5115
+  tighter-cap=>lower-PGD monotone trend: True
+  ONE-LINE VERDICT: YES: a hard Lipschitz cap on exactly-invertible residual blocks reduces PGD-ASR -- consistent with bounded input sensitivity (H323/H372/H401) being the real defense.
+
+done in 17.8s

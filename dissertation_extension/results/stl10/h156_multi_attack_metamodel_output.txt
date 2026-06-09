@@ -1,0 +1,72 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: STL10
+[*] Executing script: dissertation_extension/hypotheses/h156_multi_attack_metamodel.py
+================================================================================
+Hypothesis H156: Multi-Attack Meta-Learner (FGSM, BIM, PGD, MIM)
+================================================================================
+
+Training 3 models for ensemble features...
+  Model with seed 0 trained for 10 epochs.
+  Model with seed 1 trained for 10 epochs.
+  Model with seed 2 trained for 10 epochs.
+All models trained in 18.0s
+
+Using 1000 correctly classified samples from Model 0.
+
+Extracting exactly 20 features...
+
+Generating attack outcomes...
+
+Multi-Attack Vulnerability Overlap:
+  Vulnerable to exactly 0 attacks: 1.5%
+  Vulnerable to exactly 1 attacks: 0.1%
+  Vulnerable to exactly 2 attacks: 0.5%
+  Vulnerable to exactly 3 attacks: 4.6%
+  Vulnerable to exactly 4 attacks: 93.3%
+  Vulnerable to AT LEAST ONE attack: 98.5%
+  Vulnerable to ALL FOUR attacks: 93.3%
+
+Fitting Multi-Output Meta-Learner...
+  Using RandomForestClassifier as the fallback base meta-learner.
+
+============================================================
+Top 5 Most Important Features per Attack
+============================================================
+
+--- Attack: FGSM ---
+  grad_std                 : importance = 0.1474
+  grad_l2_norm             : importance = 0.1471
+  margin                   : importance = 0.0868
+  confusion_ratio          : importance = 0.0737
+  act_norm_layer4          : importance = 0.0658
+
+--- Attack: BIM ---
+  grad_l2_norm             : importance = 0.1337
+  grad_std                 : importance = 0.1200
+  top1_prob                : importance = 0.1178
+  confusion_ratio          : importance = 0.0610
+  ens_disagreement         : importance = 0.0589
+
+--- Attack: PGD ---
+  grad_l2_norm             : importance = 0.1281
+  grad_std                 : importance = 0.1231
+  top1_prob                : importance = 0.1136
+  confusion_ratio          : importance = 0.0621
+  entropy_pix              : importance = 0.0598
+
+--- Attack: MIM ---
+  grad_l2_norm             : importance = 0.1396
+  grad_std                 : importance = 0.1307
+  top1_prob                : importance = 0.0887
+  margin                   : importance = 0.0614
+  std_pix                  : importance = 0.0525
+
+============================================================
+Cross-Attack Feature Importance Correlation Matrix
+============================================================
+      FGSM        BIM         PGD         MIM   
+FGSM : 1.0000      0.8171      0.8152      0.9045
+BIM  : 0.8171      1.0000      0.9882      0.9492
+PGD  : 0.8152      0.9882      1.0000      0.9331
+MIM  : 0.9045      0.9492      0.9331      1.0000
+
+Correlation between FGSM-flip and PGD-flip feature importances: 0.8152

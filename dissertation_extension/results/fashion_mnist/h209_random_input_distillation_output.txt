@@ -1,0 +1,48 @@
+H209: Random-Input Distillation
+============================================================
+Does RSLAD robustness transfer survive random inputs?
+
+[Teacher] Training PGD-AT CNN...
+  Teacher trained in 30.7s
+[Student A] Adversarial-input distillation...
+  Student A trained in 30.0s
+[Student B] Uniform random noise distillation...
+  Student B trained in 8.9s
+[Student C] Gaussian noise distillation...
+  Student C trained in 9.1s
+
+--- Results ---
+
+  Student A (adversarial inputs — H146 replication):
+    Clean acc:           0.8300
+    FGSM ASR:            0.2760
+    PGD ASR:             0.2900
+    Mean margin:         0.7107
+    AUROC (margin→PGD):  0.9679
+
+  Student B (uniform random noise inputs):
+    Clean acc:           0.0940
+    FGSM ASR:            0.9060
+    PGD ASR:             0.9060
+    Mean margin:         -0.9865
+    AUROC (margin→PGD):  1.0000
+
+  Student C (Gaussian noise inputs):
+    Clean acc:           0.1720
+    FGSM ASR:            0.9040
+    PGD ASR:             0.9140
+    Mean margin:         -0.4863
+    AUROC (margin→PGD):  0.9997
+
+--- Summary Table ---
+Metric                      Stud-A (adv) Stud-B (uniform) Stud-C (gauss)
+------------------------------------------------------------------------
+  clean_acc                       0.8300           0.0940         0.1720
+  fgsm_asr                        0.2760           0.9060         0.9040
+  pgd_asr                         0.2900           0.9060         0.9140
+  mean_margin                     0.7107          -0.9865        -0.4863
+  auroc_pgd                       0.9679           1.0000         0.9997
+
+--- Interpretation ---
+CONFIRMED: Adversarial inputs are necessary for robustness transfer.
+Random inputs produce no robustness — effect requires data geometry.

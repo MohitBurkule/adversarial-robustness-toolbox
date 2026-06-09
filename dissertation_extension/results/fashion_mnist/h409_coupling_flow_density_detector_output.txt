@@ -1,0 +1,52 @@
+================================================================================
+H409  Coupling-flow exact-likelihood adversarial detector (Fashion-MNIST)
+================================================================================
+config: SMOKE=False N_TRAIN=6000 EPOCHS=10 FLOW_EPOCHS=8 N_COUPLING=8 SEED=0 EPS=0.1 PGD_STEPS=10 device=cuda
+
+data: Xtr=(6000, 1, 28, 28)  Xte=(2000, 1, 28, 28)
+
+[1] training victim SmallCNN...
+    victim clean_acc=0.8795
+
+[2] training affine-coupling flow on clean images (NO labels)...
+    flow epoch 1/8  -logp=-415.24 (-0.5296 nats/dim)
+    flow epoch 2/8  -logp=-1069.01 (-1.3635 nats/dim)
+    flow epoch 3/8  -logp=-1302.97 (-1.6620 nats/dim)
+    flow epoch 4/8  -logp=-1399.92 (-1.7856 nats/dim)
+    flow epoch 5/8  -logp=-1472.76 (-1.8785 nats/dim)
+    flow epoch 6/8  -logp=-1543.54 (-1.9688 nats/dim)
+    flow epoch 7/8  -logp=-1607.61 (-2.0505 nats/dim)
+    flow epoch 8/8  -logp=-1659.44 (-2.1166 nats/dim)
+
+[invertibility] flow x->z->x_rec max|err| = 5.662e-07
+
+[3] building clean / PGD-adversarial test pairs...
+    correctly-classified clean test samples: 1759
+    PGD flip rate on these = 0.9784
+
+[4] computing exact flow log p(x) for clean vs adversarial...
+    log p(clean): mean=1672.7 std=559.0
+    log p(adv)  : mean=-2141.1 std=2878.4
+    mean shift (clean-adv) = +3813.8 (positive => adv lower density, as hypothesised)
+
+================================================================================
+[5] DETECTION AUROC (clean vs PGD-adversarial)
+================================================================================
+detector                                AUROC
+----------------------------------------------
+flow exact -log p(x)                   0.9988
+victim margin (baseline)               0.4995
+victim softmax entropy (base)          0.5000
+flow+margin+entropy (logreg)           0.9989
+----------------------------------------------
+
+================================================================================
+[6] VERDICT
+================================================================================
+  flow exact-likelihood AUROC = 0.9988
+  best classifier-only baseline AUROC = 0.5000
+  combo over best baseline = +0.4989
+  flow invertibility recon error = 5.66e-07 (EXACT bijection)
+  ONE-LINE VERDICT: YES: exact flow density separates clean from PGD-adversarial inputs and beats the classifier-confidence baseline.
+
+done in 8.7s

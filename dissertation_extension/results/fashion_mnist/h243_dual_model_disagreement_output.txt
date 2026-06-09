@@ -1,0 +1,33 @@
+=== H243: Dual Model Disagreement ===
+
+[1] Training model_A on clean data...
+    Model_A clean acc: 0.940
+
+[2] Training model_B with PGD adversarial training...
+    AT Epoch 5: loss=0.6698
+    AT Epoch 10: loss=0.5945
+    Model_B (AT) clean acc: 0.840
+
+[3] Computing disagreement between model_A and model_B...
+    Hard disagreement rate: 0.123
+    Symmetric KL: mean=0.7886, std=0.9999
+
+[4] Running PGD attack on model_A...
+    PGD ASR on model_A: 0.993
+
+[5] Computing AUROCs...
+
+    Agree (n=263): PGD ASR=0.992
+    Disagree (n=37): PGD ASR=1.000
+
+--- Summary ---
+Model_A clean acc: 0.940
+Model_B (AT) clean acc: 0.840
+Hard disagreement rate: 0.123
+PGD ASR on model_A: 0.993
+AUROC(hard_disagree → PGD success):  0.562
+AUROC(sym_KL → PGD success):         0.965
+AUROC(margin → PGD success):         0.997  [baseline]
+Spearman ρ(sym_KL, margin):          -0.460
+Interpretation: AUROC>0.6 for disagreement => A/B disagreement identifies model_A's vulnerable samples.
+Runtime: 60.1s

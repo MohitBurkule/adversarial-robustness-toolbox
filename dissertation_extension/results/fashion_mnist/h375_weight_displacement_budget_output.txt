@@ -1,0 +1,13 @@
+  budget=7.0: disp=7.00 {'clean_acc': 0.8815000057220459, 'fgsm_asr': 0.7484999895095825, 'pgd_asr': 0.931999996304512, 'mean_margin': 5.371253967285156, 'budget': 7.0, 'final_displacement': 6.999999523162842, 'time': 1.4499883651733398}
+  budget=8.0: disp=8.00 {'clean_acc': 0.8824999928474426, 'fgsm_asr': 0.7580000013113022, 'pgd_asr': 0.9254999980330467, 'mean_margin': 5.60362434387207, 'budget': 8.0, 'final_displacement': 8.0, 'time': 1.106942892074585}
+  budget=9.0: disp=9.00 {'clean_acc': 0.8830000162124634, 'fgsm_asr': 0.7604999989271164, 'pgd_asr': 0.9219999983906746, 'mean_margin': 5.882871150970459, 'budget': 9.0, 'final_displacement': 9.0, 'time': 1.0322585105895996}
+  unconstrained: disp=9.20 {'clean_acc': 0.8784999847412109, 'fgsm_asr': 0.761000007390976, 'pgd_asr': 0.9294999986886978, 'mean_margin': 5.975505828857422, 'budget': 10.0, 'final_displacement': 9.203726768493652, 'time': 0.7850127220153809}
+
+=== H375 RESULTS ===
+  budget=7.0: clean=0.8815 fgsm_asr=0.7485 pgd_asr=0.9320 margin=5.3713 disp=7.00
+  budget=8.0: clean=0.8825 fgsm_asr=0.7580 pgd_asr=0.9255 margin=5.6036 disp=8.00
+  budget=9.0: clean=0.8830 fgsm_asr=0.7605 pgd_asr=0.9220 margin=5.8829 disp=9.00
+  unconstrained: clean=0.8785 fgsm_asr=0.7610 pgd_asr=0.9295 margin=5.9755 disp=9.20
+
+Best budget=9.0: PGD ASR reduced by 0.0075
+SUPPORTED = False

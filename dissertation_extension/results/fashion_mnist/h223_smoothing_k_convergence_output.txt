@@ -1,0 +1,25 @@
+======================================================================
+H223 - Smoothing K convergence for robustness signal
+======================================================================
+Device=cuda  N_eval=300  sigma=0.1  eps=0.1
+Training done in 52.4s
+Computing PGD adversarial examples...
+PGD done in 0.4s. ASR=0.997
+
+    K     AUROC   Spearman_rho   Mean_abs_diff
+--------------------------------------------------
+    1    0.5769         0.5321          0.4492  (0.3s)
+    5    0.6271         0.6480          0.4059  (0.8s)
+   10    0.6388         0.6805          0.4020  (1.6s)
+   20    0.6589         0.7101          0.4015  (3.2s)
+   50    0.6773         0.7506          0.3996  (7.8s)
+  100    0.6940         0.7743          0.3988  (10.3s)
+  200    0.6973         0.7668          0.3975  (14.3s)
+
+======================================================================
+SUMMARY
+  AUROC at K=200 (reference):  0.6973
+  Convergence K (AUROC within 0.01 of K=200): 100
+  Interpretation: K>=100 provides a stable smoothed robustness signal
+  Spearman rho shows rank correlation with logit margin across K values
+======================================================================

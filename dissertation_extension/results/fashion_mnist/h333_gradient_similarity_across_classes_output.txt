@@ -1,0 +1,23 @@
+H333: Gradient Similarity Across Classes
+============================================================
+
+Condition: baseline
+  clean_acc=0.8835  fgsm_asr=0.7735  pgd_asr=0.9245  margin=6.1374
+  within_class_grad_sim=0.0922 ± 0.0948
+  across_class_grad_sim=-0.0040 ± 0.0532
+  within_minus_across=0.0961
+
+Condition: fgsm_at
+  clean_acc=0.8000  fgsm_asr=0.3040  pgd_asr=0.3300  margin=2.6209
+  within_class_grad_sim=0.2027 ± 0.1871
+  across_class_grad_sim=-0.0108 ± 0.0837
+  within_minus_across=0.2135
+
+============================================================
+SUMMARY: Gradient Similarity
+Condition          Clean   FGSM_ASR    PGD_ASR   Within_Sim   Across_Sim      W-A
+baseline          0.8835     0.7735     0.9245       0.0922      -0.0040   0.0961
+fgsm_at           0.8000     0.3040     0.3300       0.2027      -0.0108   0.2135
+
+Conclusion: Higher within-class similarity (W-A > 0) → gradient space exploitable.
+AT training should reduce within-class alignment and make across-class gradients more orthogonal.

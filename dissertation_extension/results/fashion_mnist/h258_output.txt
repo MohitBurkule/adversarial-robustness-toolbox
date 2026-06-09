@@ -1,0 +1,48 @@
+============================================================
+H258 — Random Seed Vulnerability Consistency
+============================================================
+
+[1] Training 5 models (seeds 0–4) and running PGD ...
+  Seed 0: clean_acc=0.9267  PGD_ASR=0.9200  (276/300)
+  Seed 1: clean_acc=0.9233  PGD_ASR=0.9233  (277/300)
+  Seed 2: clean_acc=0.9433  PGD_ASR=0.9400  (282/300)
+  Seed 3: clean_acc=0.9333  PGD_ASR=0.9267  (278/300)
+  Seed 4: clean_acc=0.9267  PGD_ASR=0.9267  (278/300)
+
+[2] Per-sample vulnerability frequency across seeds ...
+  Samples vulnerable in >= 100% of models: 263 / 300
+  Samples vulnerable in >= 80% of models: 274 / 300
+  Samples vulnerable in >= 60% of models: 280 / 300
+  Samples vulnerable in >= 40% of models: 285 / 300
+  Samples vulnerable in >= 20% of models: 289 / 300
+
+  Universally vulnerable (all 5 seeds): 263
+  Never vulnerable      (no seeds):            11
+  Partially vulnerable  (1–4 seeds): 26
+
+[3] Pairwise Jaccard similarity of vulnerable sets
+-------------------------------------------------------
+      s0  s1  s2  s3  s4
+  s0  1.000  0.961  0.951  0.965  0.965
+  s1  0.961  1.000  0.934  0.947  0.954
+  s2  0.951  0.934  1.000  0.958  0.958
+  s3  0.965  0.947  0.958  1.000  0.965
+  s4  0.965  0.954  0.958  0.965  1.000
+
+  Mean off-diagonal Jaccard: 0.9558  std=0.0091
+
+[4] Correlation of vulnerability frequency with clean margin (seed 0 model) ...
+  Spearman rho (vuln_freq vs -margin): -0.4273  p=0.0000
+
+[5] AUROC — can vulnerability frequency predict 'universally vulnerable'?
+  AUROC (vuln_freq  -> universal): 1.0000
+  AUROC (-margin    -> universal): 0.1352
+
+[6] Summary statistics
+-------------------------------------------------------
+  Mean ASR across seeds: 0.9273  std=0.0068
+  Mean Jaccard (pairwise): 0.9558
+  Vulnerability entropy (per sample mean): 0.0497
+
+Done in 35.9s
+============================================================

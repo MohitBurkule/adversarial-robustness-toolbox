@@ -1,0 +1,5 @@
+H365: Confidence-Weighted Gradient Penalty
+==================================================
+lambda=0.000 | clean=0.883 fgsm_asr=0.767 pgd_asr=0.913 margin=6.074
+lambda=0.010 | clean=0.883 fgsm_asr=0.699 pgd_asr=0.836 margin=5.374
+lambda=0.100 | clean=0.878 fgsm_asr=0.584 pgd_asr=0.653 margin=4.136

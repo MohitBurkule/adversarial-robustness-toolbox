@@ -1,0 +1,6 @@
+H296: First-Layer-Only Gradient Penalty
+============================================================
+lam=0: clean=0.882 fgsm_asr=0.768 pgd_asr=0.925 margin=6.074 time=1.0s
+lam=0.001: clean=0.878 fgsm_asr=0.767 pgd_asr=0.927 margin=6.078 time=1.9s
+lam=0.01: clean=0.881 fgsm_asr=0.758 pgd_asr=0.917 margin=6.214 time=1.6s
+lam=0.1: clean=0.882 fgsm_asr=0.781 pgd_asr=0.932 margin=5.944 time=1.6s

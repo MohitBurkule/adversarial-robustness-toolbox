@@ -1,0 +1,41 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: KMNIST
+[*] Executing script: dissertation_extension/hypotheses/h116_sign_opt.py
+============================================================
+Hypothesis H116: Sign-OPT Decision Attack Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 39.8s
+Evaluating Sign-OPT on 200 correctly classified test samples...
+Sign-OPT evaluations completed in 29.5s
+
+Sign-OPT Median L2 Perturbation: 10.0000
+Mean L2 Perturbation: 7.1346
+Mean Queries used:     448.86
+
+============================================================
+UNIVARIATE AUROC ANALYSIS (Target: sign_opt_vulnerable)
+============================================================
+
+--- Target: sign_opt_vulnerable (Positive Rate = 0.4150) ---
+  Feature            AUROC Direction 
+  margin            0.7490  -
+  mean_pix          0.7017  -
+  std_pix           0.6957  -
+
+============================================================
+SPEARMAN CORRELATION WITH CONTINUOUS L2 BOUNDARY DISTANCE
+============================================================
+  margin          -> Correlation: +0.4961 (p-value: 7.99e-14)
+  mean_pix        -> Correlation: +0.3757 (p-value: 4.21e-08)
+  std_pix         -> Correlation: +0.3678 (p-value: 8.45e-08)

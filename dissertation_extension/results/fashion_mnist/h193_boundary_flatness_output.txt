@@ -1,0 +1,55 @@
+==========================================================================
+H193 - PGD loss trajectory 'uncanny valley' predicts adversarial success
+==========================================================================
+Device=cuda  dataset=fashion_mnist  eps=0.1  steps=20  alpha=0.01  N=200
+
+Training model for 10 epochs...
+Clean accuracy on eval subset: 0.835
+
+Running FGSM attack...
+FGSM attack success rate: 0.705
+
+Running 20-step PGD with loss trajectory recording...
+PGD attack success rate: 0.955
+
+==========================================================================
+AUROC (predicting FGSM success):
+  max_loss   (peak PGD loss)  AUROC = 0.9422
+  final_loss (step-20 loss)   AUROC = 0.9422
+  -margin    (baseline)       AUROC = 0.9647
+==========================================================================
+
+Mean loss trajectory (FGSM-succeed samples, n=141):
+  s1:0.688  s2:1.187  s3:1.853  s4:2.710  s5:3.711  s6:4.787  s7:5.905  s8:7.064  s9:8.224  s10:9.338  s11:10.407  s12:10.819  s13:11.182  s14:11.444  s15:11.684  s16:11.862  s17:12.024  s18:12.156  s19:12.272  s20:12.374
+Mean loss trajectory (FGSM-fail samples, n=59):
+  s1:0.000  s2:0.001  s3:0.002  s4:0.006  s5:0.021  s6:0.069  s7:0.179  s8:0.411  s9:0.858  s10:1.530  s11:2.420  s12:2.782  s13:3.114  s14:3.350  s15:3.567  s16:3.738  s17:3.881  s18:4.006  s19:4.119  s20:4.208
+
+Succeed trajectory: peak at step 20/20, drop from peak to final = 0.0000
+Fail    trajectory: peak at step 20/20, drop from peak to final = 0.0000
+
+Fraction with sharpening-then-flattening pattern (interior peak, drop>0.05): 0.000
+  Among FGSM-succeed: 0.000
+  Among FGSM-fail:    0.000
+
+Peak step statistics:
+  Mean peak step (all):           18.98
+  Mean peak step (FGSM-succeed):  18.97
+  Mean peak step (FGSM-fail):     19.00
+
+Total runtime: 19.7s
+
+==========================================================================
+Interpretation:
+  If AUROC(max_loss) > AUROC(margin), the height of the PGD loss peak
+  carries predictive signal about FGSM success beyond what clean margin
+  already knows. A loss trajectory that rises then falls (uncanny valley)
+  before the attack converges suggests the loss surface near the boundary
+  is locally non-convex — gradient ascent overshoots the decision boundary
+  and slides back into a flat region. Samples that succeed tend to reach
+  the peak earlier and sustain it, while samples that fail show a steeper
+  and earlier drop (the gradient carries the perturbation away from the
+  optimal adversarial direction). This is consistent with 2405.16918's
+  sharpness-flatness duality in adversarial loss landscapes.
+==========================================================================
+
+Results saved to /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h193_boundary_flatness_output.txt

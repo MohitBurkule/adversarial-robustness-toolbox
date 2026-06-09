@@ -1,0 +1,42 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h146_adv_distillation.py
+============================================================
+Hypothesis H146: Reliable Saliency-Light Adversarial Distillation
+============================================================
+
+Training PGD-AT Teacher CNN...
+Teacher CNN trained in 25.6s
+
+Training Vanilla student victim...
+Vanilla CNN trained in 25.0s
+
+Training RSLAD student victim...
+RSLAD CNN trained in 25.7s
+
+Evaluating Model: Vanilla CNN
+  Test Accuracy: 2035/3925 (51.85%)
+  FGSM flip rate = 0.9474
+  PGD-10 flip rate = 0.9764
+  Mean min_eps = 0.0231
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.9032
+    mean_pix   AUROC = 0.6608
+    std_pix    AUROC = 0.7611
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.9640
+    mean_pix   AUROC = 0.6742
+    std_pix    AUROC = 0.8739
+
+Evaluating Model: RSLAD CNN
+  Test Accuracy: 1225/3925 (31.21%)
+  FGSM flip rate = 0.4245
+  PGD-10 flip rate = 0.4212
+  Mean min_eps = 0.0970
+  Target: flipped_FGSM | Univariate AUROC
+    margin     AUROC = 0.8837
+    mean_pix   AUROC = 0.6571
+    std_pix    AUROC = 0.5677
+  Target: flipped_PGD | Univariate AUROC
+    margin     AUROC = 0.8847
+    mean_pix   AUROC = 0.6496
+    std_pix    AUROC = 0.5699

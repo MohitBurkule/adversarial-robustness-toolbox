@@ -1,0 +1,13 @@
+Theme B | learning rule vs gradient descent | B_fashion_mnist_labelsmooth_cnn_s1
+dataset=fashion_mnist learner=labelsmooth_cnn kind=torch seed=1 eps=0.100
+
+clean_acc           = 0.8708
+whitebox PGD ASR    = 0.9579  (differentiable only)
+blackbox RS ASR     = 0.1033  (shared random-search L-inf, comparable across all)
+margin/conf AUROC   = 0.9507  (does confidence predict which flip?)
+
+Interpretation: if non-GD learners (knn/gbm/rfnn/forward_forward) also show
+high blackbox ASR and margin AUROC > 0.5, adversarial vulnerability is a
+property of the data geometry, not of gradient descent.
+
+[runtime 0.6s]

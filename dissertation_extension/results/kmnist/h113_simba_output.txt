@@ -1,0 +1,43 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: KMNIST
+[*] Executing script: dissertation_extension/hypotheses/h113_simba.py
+============================================================
+Hypothesis H113: SimBA-Pixel Attack Analysis
+============================================================
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 39.4s
+Evaluating SimBA on 200 correctly classified test samples...
+SimBA evaluations completed in 15.8s
+
+SimBA Attack Success Rate: 0.1300
+Mean Queries used: 190.35
+Mean queries to flip (for successful attacks): 125.81
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: simba_flipped (Positive Rate = 0.1300) ---
+  Feature            AUROC Direction 
+  margin            0.9235  -
+  mean_pix          0.6699  -
+  std_pix           0.6793  -
+  sobel_mean        0.6437  -
+
+============================================================
+SPEARMAN CORRELATION WITH QUERIES TO FLIP (Successful Flips only)
+============================================================
+  margin          -> Correlation: +0.8261 (p-value: 2.02e-07)
+  mean_pix        -> Correlation: -0.0985 (p-value: 6.32e-01)
+  std_pix         -> Correlation: -0.0400 (p-value: 8.46e-01)
+  sobel_mean      -> Correlation: -0.0749 (p-value: 7.16e-01)

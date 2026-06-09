@@ -1,0 +1,32 @@
+H386 Jacobian Frobenius Penalty + Confidence Weighting
+======================================================================
+Dataset: fashion_mnist  N_train=6000  N_eval=2000  Epochs=10  Seed=0
+EPS=0.1  PGD_STEPS=10  PGD_ALPHA=0.01
+Hutchinson: 1 sample/step, v~N(0,I); penalty=||J^T v||^2 (unbiased ||J||_F^2)
+loss = CE + lambda * mean( conf^p * penalty );  p=0 -> uniform weighting
+
+Condition                        clean_acc   fgsm_asr   pgd_asr    margin   time_s
+----------------------------------------------------------------------------------
+Baseline (CE only) λ=0              0.8640     0.7975    0.9330    5.9492      1.4
+Jacobian uniform p=0 λ=0.01         0.8550     0.4635    0.4740    2.9369      4.8
+Jacobian uniform p=0 λ=0.1          0.7980     0.4340    0.4185    1.7463      4.5
+Conf-weighted p=1 λ=0.01            0.8570     0.4730    0.4950    2.9767      3.8
+Conf-weighted p=1 λ=0.1             0.8270     0.4380    0.4180    1.9064      2.6
+Conf-weighted p=2 λ=0.01            0.8595     0.4775    0.4970    3.0422      2.5
+Conf-weighted p=2 λ=0.1             0.8380     0.4240    0.4090    2.0445      2.5
+
+Matched-lambda comparisons (uniform vs confidence-weighted):
+  λ=0.01: Conf-weighted p=1 λ=0.01   PGD_ASR=0.4950  vs uniform 0.4740  (Δ=-0.0210, +=cw better)
+  λ=0.01: Conf-weighted p=2 λ=0.01   PGD_ASR=0.4970  vs uniform 0.4740  (Δ=-0.0230, +=cw better)
+  λ=0.1: Conf-weighted p=1 λ=0.1    PGD_ASR=0.4180  vs uniform 0.4185  (Δ=+0.0005, +=cw better)
+  λ=0.1: Conf-weighted p=2 λ=0.1    PGD_ASR=0.4090  vs uniform 0.4185  (Δ=+0.0095, +=cw better)
+
+Analysis:
+- Baseline PGD_ASR = 0.9330
+- Best unweighted Jacobian: Jacobian uniform p=0 λ=0.1  PGD_ASR=0.4185  clean_acc=0.7980
+- Best confidence-weighted: Conf-weighted p=2 λ=0.1  PGD_ASR=0.4090  clean_acc=0.8380
+- Best CW improvement vs best uniform (PGD ASR): +0.0095
+- Rationale: high-confidence samples sit deep in their basin; penalising their
+  Jacobian harder should flatten the decision surface where the model is overconfident.
+
+VERDICT: SUPPORTED — confidence weighting beats the unweighted Jacobian penalty on PGD ASR (best CW 0.4090 vs best uniform 0.4185).

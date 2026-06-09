@@ -1,0 +1,13 @@
+========================================================================
+H353 - Jacobian Spectral Norm Penalty via Power Iteration
+========================================================================
+Device=cuda  dataset=fashion_mnist  N_TRAIN=6000  K_iter=5
+lambda grid: [0, 0.001, 0.01]
+  lambda=0       clean=0.882  fgsm_asr=0.772  pgd_asr=0.922  margin=6.136  (1.1s)
+  lambda=0.001   clean=0.874  fgsm_asr=0.769  pgd_asr=0.916  margin=6.109  (4.0s)
+  lambda=0.01    clean=0.876  fgsm_asr=0.746  pgd_asr=0.910  margin=6.056  (4.2s)
+
+Interpretation: Spectral norm of the Jacobian bounds the Lipschitz
+constant of the network w.r.t. inputs. Penalising it directly constrains
+adversarial sensitivity more tightly than Frobenius norm.
+========================================================================

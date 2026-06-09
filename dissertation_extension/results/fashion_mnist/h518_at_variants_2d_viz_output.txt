@@ -1,0 +1,16 @@
+Training Standard...
+  Standard: Acc=0.9333  FGSM_ASR=0.2083
+Training PGD-AT...
+  PGD-AT: Acc=0.9417  FGSM_ASR=0.3250
+Training TRADES...
+  TRADES: Acc=0.9250  FGSM_ASR=0.2417
+Training MART...
+  MART: Acc=0.9333  FGSM_ASR=0.2500
+
+Saved: /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h518_at_variants_2d_viz.png
+
+=== Summary ===
+  Standard      Acc=0.9333  FGSM_ASR=0.2083
+  PGD-AT        Acc=0.9417  FGSM_ASR=0.3250
+  TRADES        Acc=0.9250  FGSM_ASR=0.2417
+  MART          Acc=0.9333  FGSM_ASR=0.2500

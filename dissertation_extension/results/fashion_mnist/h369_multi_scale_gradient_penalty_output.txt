@@ -1,0 +1,5 @@
+H369: Multi-Scale Gradient Penalty
+==================================================
+lambda=0.0000 | clean=0.878 fgsm_asr=0.762 pgd_asr=0.923 margin=6.002
+lambda=0.0010 | clean=0.863 fgsm_asr=0.780 pgd_asr=0.930 margin=7.227
+lambda=0.0100 | clean=0.871 fgsm_asr=0.769 pgd_asr=0.922 margin=7.166

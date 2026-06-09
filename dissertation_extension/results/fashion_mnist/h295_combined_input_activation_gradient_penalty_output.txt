@@ -1,0 +1,7 @@
+H295: Combined Input + Activation Gradient Penalty
+============================================================
+baseline: clean=0.877 fgsm_asr=0.765 pgd_asr=0.916 margin=6.097 time=1.0s
+lam1=0.01: clean=0.876 fgsm_asr=0.778 pgd_asr=0.936 margin=5.918 time=2.5s
+lam2=0.01: clean=0.882 fgsm_asr=0.757 pgd_asr=0.913 margin=6.001 time=2.8s
+lam1=lam2=0.01: clean=0.877 fgsm_asr=0.765 pgd_asr=0.916 margin=6.062 time=4.0s
+lam1=0.01,lam2=0.001: clean=0.882 fgsm_asr=0.772 pgd_asr=0.931 margin=6.079 time=3.9s

@@ -1,0 +1,26 @@
+=== H240: PCA Tail Subspace ===
+
+[1] Training model...
+[2] Fitting PCA on training images...
+    PCA K=  50: explained variance = 0.8627
+    PCA K= 100: explained variance = 0.9123
+    PCA K= 200: explained variance = 0.9536
+    PCA K= 400: explained variance = 0.9853
+[3] Running FGSM attack...
+    FGSM ASR: 0.837
+[4] Computing tail energy at each K...
+    K=  50: AUROC=0.607, ρ=0.137, mean_tail=0.7684, tail_succ=0.7729, tail_fail=0.7453
+    K= 100: AUROC=0.576, ρ=0.097, mean_tail=0.6816, tail_succ=0.6848, tail_fail=0.6650
+    K= 200: AUROC=0.568, ρ=0.087, mean_tail=0.5398, tail_succ=0.5422, tail_fail=0.5277
+    K= 400: AUROC=0.581, ρ=0.104, mean_tail=0.2939, tail_succ=0.2956, tail_fail=0.2853
+    Margin baseline AUROC: 0.949
+
+--- Summary ---
+FGSM ASR: 0.837
+  K=  50: AUROC=0.607, Spearman_ρ=0.137, tail_energy(success)=0.7729 vs (fail)=0.7453
+  K= 100: AUROC=0.576, Spearman_ρ=0.097, tail_energy(success)=0.6848 vs (fail)=0.6650
+  K= 200: AUROC=0.568, Spearman_ρ=0.087, tail_energy(success)=0.5422 vs (fail)=0.5277
+  K= 400: AUROC=0.581, Spearman_ρ=0.104, tail_energy(success)=0.2956 vs (fail)=0.2853
+  Margin baseline AUROC: 0.949
+Interpretation: AUROC>0.5 for tail_energy => adversarial perturbations prefer low-variance PCA directions.
+Runtime: 79.8s

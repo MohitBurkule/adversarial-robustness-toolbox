@@ -1,0 +1,53 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: STL10
+[*] Executing script: dissertation_extension/hypotheses/h139_vit_vs_cnn.py
+============================================================
+Hypothesis H139: Attention (ViT) vs CNN Adversarial Vulnerability
+============================================================
+
+Training CNN model...
+CNN trained in 6.8s
+
+Training ViT model...
+ViT trained in 8.0s
+
+Using 2032/8000 samples correctly classified by both models
+
+Running attacks on CNN...
+Running attacks on ViT...
+
+CNN: FGSM=0.915, PGD-10=0.961, mean min_eps=0.027
+ViT: FGSM=0.954, PGD-10=0.967, mean min_eps=0.021
+
+Cross-correlation of FGSM vulnerability (flip status): 0.2538
+
+============================================================
+CNN VULNERABILITY ANALYSIS (Univariate AUROC)
+============================================================
+
+Target: flipped_FGSM
+  margin          AUROC = 0.9091
+  mean_pix        AUROC = 0.6170
+  std_pix         AUROC = 0.6780
+  sobel_mean      AUROC = 0.5740
+
+Target: flipped_PGD
+  margin          AUROC = 0.9462
+  mean_pix        AUROC = 0.6817
+  std_pix         AUROC = 0.7070
+  sobel_mean      AUROC = 0.6637
+
+============================================================
+ViT VULNERABILITY ANALYSIS (Univariate AUROC)
+============================================================
+
+Target: flipped_FGSM
+  margin          AUROC = 0.9301
+  mean_pix        AUROC = 0.7750
+  std_pix         AUROC = 0.5355
+  sobel_mean      AUROC = 0.5106
+
+Target: flipped_PGD
+  margin          AUROC = 0.9330
+  mean_pix        AUROC = 0.8626
+  std_pix         AUROC = 0.5391
+  sobel_mean      AUROC = 0.5482

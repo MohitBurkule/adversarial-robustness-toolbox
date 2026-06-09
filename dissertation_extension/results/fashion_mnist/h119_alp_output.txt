@@ -1,0 +1,69 @@
+======================================================================
+Hypothesis H119: ALP Regularization vs Vanilla CNN
+======================================================================
+
+Training Vanilla model...
+  [vanilla] Epoch 1/10 completed
+  [vanilla] Epoch 2/10 completed
+  [vanilla] Epoch 3/10 completed
+  [vanilla] Epoch 4/10 completed
+  [vanilla] Epoch 5/10 completed
+  [vanilla] Epoch 6/10 completed
+  [vanilla] Epoch 7/10 completed
+  [vanilla] Epoch 8/10 completed
+  [vanilla] Epoch 9/10 completed
+  [vanilla] Epoch 10/10 completed
+
+Training ALP model...
+  [alp] Epoch 1/10 completed
+  [alp] Epoch 2/10 completed
+  [alp] Epoch 3/10 completed
+  [alp] Epoch 4/10 completed
+  [alp] Epoch 5/10 completed
+  [alp] Epoch 6/10 completed
+  [alp] Epoch 7/10 completed
+  [alp] Epoch 8/10 completed
+  [alp] Epoch 9/10 completed
+  [alp] Epoch 10/10 completed
+
+Evaluating Vanilla model...
+   Evaluating attacks...
+
+Evaluating ALP model...
+   Evaluating attacks...
+
+==================================================
+VANILLA MODEL RESULTS
+==================================================
+Accuracy: 0.9360
+FGSM Success: 0.6966
+PGD Success: 0.9509
+Mean min_eps: 0.0309
+
+Univariate AUROC vs PGD Flip (Vanilla):
+  margin          : 0.9598
+  mean_pix        : 0.5334
+  std_pix         : 0.6321
+  sobel_mean      : 0.7225
+
+==================================================
+ALP MODEL RESULTS
+==================================================
+Accuracy: 0.8840
+FGSM Success: 0.0000
+PGD Success: 0.7025
+Mean min_eps: 0.0664
+
+Univariate AUROC vs PGD Flip (ALP):
+  margin          : 0.7141
+  mean_pix        : 0.6148
+  std_pix         : 0.6037
+  sobel_mean      : 0.5415
+
+==================================================
+SUMMARY OF AUROC CHANGES (ALP vs Vanilla PGD)
+==================================================
+  margin          : ALP=0.7141  Vanilla=0.9598  Change=-0.2457
+  mean_pix        : ALP=0.6148  Vanilla=0.5334  Change=+0.0814
+  std_pix         : ALP=0.6037  Vanilla=0.6321  Change=-0.0284
+  sobel_mean      : ALP=0.5415  Vanilla=0.7225  Change=-0.1811

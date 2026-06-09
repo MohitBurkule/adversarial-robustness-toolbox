@@ -1,0 +1,45 @@
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/hypotheses/h245_generalisation_gap_robustness.py:161: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  rho = spearmanr(vuln_vectors[n1], vuln_vectors[n2]).correlation
+=== H245: Generalisation Gap & Robustness ===
+
+[Training: no_reg]
+  train_acc=0.975, test_acc=0.917, gen_gap=0.058, PGD_ASR=1.000, margin_AUROC=nan
+
+[Training: dropout_0.3]
+  train_acc=0.974, test_acc=0.903, gen_gap=0.070, PGD_ASR=1.000, margin_AUROC=nan
+
+[Training: dropout_0.5]
+  train_acc=0.973, test_acc=0.910, gen_gap=0.063, PGD_ASR=1.000, margin_AUROC=nan
+
+[Training: wd_1e-4]
+  train_acc=0.973, test_acc=0.920, gen_gap=0.052, PGD_ASR=1.000, margin_AUROC=nan
+
+[Training: wd_1e-2]
+  train_acc=0.923, test_acc=0.897, gen_gap=0.026, PGD_ASR=0.973, margin_AUROC=0.953
+
+[Training: early_stop_e5]
+  train_acc=0.951, test_acc=0.910, gen_gap=0.040, PGD_ASR=0.960, margin_AUROC=0.960
+
+[Cross-model Spearman ρ of vulnerability vectors]
+               no_reg  dropout_  dropout_   wd_1e-4   wd_1e-2  early_st
+    no_reg:       nan       nan       nan       nan       nan       nan
+  dropout_:       nan       nan       nan       nan       nan       nan
+  dropout_:       nan       nan       nan       nan       nan       nan
+   wd_1e-4:       nan       nan       nan       nan       nan       nan
+   wd_1e-2:       nan       nan       nan       nan     1.000     0.283
+  early_st:       nan       nan       nan       nan     0.283     1.000
+
+--- Summary ---
+             Model |  gen_gap |  PGD_ASR | margin_AUROC
+--------------------------------------------------------
+            no_reg |    0.058 |    1.000 |          nan
+       dropout_0.3 |    0.070 |    1.000 |          nan
+       dropout_0.5 |    0.063 |    1.000 |          nan
+           wd_1e-4 |    0.052 |    1.000 |          nan
+           wd_1e-2 |    0.026 |    0.973 |        0.953
+     early_stop_e5 |    0.040 |    0.960 |        0.960
+
+Spearman ρ(gen_gap, PGD_ASR): 0.778
+Cross-model vulnerability ρ(no_reg, early_stop_e5): nan
+Interpretation: positive ρ(gap,ASR) => overfitting correlates with vulnerability; high cross-model ρ => same samples always vulnerable.
+Runtime: 185.0s

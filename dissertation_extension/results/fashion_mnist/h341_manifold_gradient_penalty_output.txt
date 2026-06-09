@@ -1,0 +1,17 @@
+H341: Manifold Gradient Penalty (PCA Projection)
+============================================================
+Settings: N_TRAIN=6000, EPOCHS=10, LR=0.05, BATCH=128, λ=0.01
+Penalty = ||P(P^T ∇_x L)||² where P = top-K PCA eigenvectors
+
+baseline (λ=0): clean=0.8770 fgsm_asr=0.7740 pgd_asr=0.9255 margin=6.0597
+K=10: clean=0.8855 fgsm_asr=0.7690 pgd_asr=0.9150 margin=6.1162
+K=50: clean=0.8805 fgsm_asr=0.7695 pgd_asr=0.9225 margin=6.0857
+K=100: clean=0.8815 fgsm_asr=0.7725 pgd_asr=0.9285 margin=6.1117
+
+============================================================
+SUMMARY
+Condition          Clean   FGSM_ASR    PGD_ASR     Margin
+baseline_k=0      0.8770     0.7740     0.9255     6.0597
+K=10              0.8855     0.7690     0.9150     6.1162
+K=50              0.8805     0.7695     0.9225     6.0857
+K=100             0.8815     0.7725     0.9285     6.1117

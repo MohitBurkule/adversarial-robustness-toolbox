@@ -1,0 +1,32 @@
+==========================================================================
+H220 - Shape-biased training vs adversarial robustness
+==========================================================================
+Device=cuda  dataset=fashion_mnist  N_EVAL=300  eps=0.1
+
+[baseline] standard CNN
+  clean_acc=0.923  fgsm_asr=0.870  pgd_asr=1.000  margin=9.563±6.602  (13.3s)
+
+[random_patch_mask] zero random 8x8 patch per image
+  clean_acc=0.930  fgsm_asr=0.785  pgd_asr=1.000  margin=8.254±5.928  (69.6s)
+
+[saliency_dropout] mask top-20% gradient pixels
+  clean_acc=0.790  fgsm_asr=0.730  pgd_asr=0.970  margin=5.859±8.085  (64.1s)
+
+[spatial_dropout] Dropout2d(0.2) after each conv
+  clean_acc=0.933  fgsm_asr=0.793  pgd_asr=0.993  margin=7.345±5.359  (23.4s)
+
+==========================================================================
+Model                   CleanAcc  FGSM_ASR   PGD_ASR  Margin_mean  Margin_std
+--------------------------------------------------------------------------
+baseline                   0.923     0.870     1.000        9.563       6.602
+random_patch_mask          0.930     0.785     1.000        8.254       5.928
+saliency_dropout           0.790     0.730     0.970        5.859       8.085
+spatial_dropout            0.933     0.793     0.993        7.345       5.359
+
+==========================================================================
+Interpretation:
+  random_patch_mask: ΔFGSM_ASR=-0.085  ΔPGD_ASR=+0.000
+  saliency_dropout: ΔFGSM_ASR=-0.140  ΔPGD_ASR=-0.030
+  spatial_dropout: ΔFGSM_ASR=-0.077  ΔPGD_ASR=-0.007
+Negative delta = reduced vulnerability (shape-bias helps).
+==========================================================================

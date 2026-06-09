@@ -1,0 +1,53 @@
+============================================================
+Hypothesis H110: Diverse Input Method (DIM) Analysis
+============================================================
+
+Training Model A (victim, seed 0)...
+  Seed 0: Epoch 1/10 completed
+  Seed 0: Epoch 2/10 completed
+  Seed 0: Epoch 3/10 completed
+  Seed 0: Epoch 4/10 completed
+  Seed 0: Epoch 5/10 completed
+  Seed 0: Epoch 6/10 completed
+  Seed 0: Epoch 7/10 completed
+  Seed 0: Epoch 8/10 completed
+  Seed 0: Epoch 9/10 completed
+  Seed 0: Epoch 10/10 completed
+Model A training completed in 35.6s
+
+Training Model B (surrogate for transfer, seed 1)...
+  Seed 1: Epoch 1/10 completed
+  Seed 1: Epoch 2/10 completed
+  Seed 1: Epoch 3/10 completed
+  Seed 1: Epoch 4/10 completed
+  Seed 1: Epoch 5/10 completed
+  Seed 1: Epoch 6/10 completed
+  Seed 1: Epoch 7/10 completed
+  Seed 1: Epoch 8/10 completed
+  Seed 1: Epoch 9/10 completed
+  Seed 1: Epoch 10/10 completed
+Model B training completed in 35.2s
+Evaluating DIM on 1000 double-correct test samples...
+Running DIM attack on Model A (self)...
+DIM self-attack success rate: 0.7460
+Running DIM attack on Model B (transfer surrogate)...
+DIM transfer success rate (B -> A): 0.5280
+DIM evaluations completed in 0.9s
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: flipped_DIM (Positive Rate = 0.7460) ---
+  Feature            AUROC Direction 
+  margin            0.9251  -
+  mean_pix          0.5028  -
+  std_pix           0.6074  -
+  sobel_mean        0.6510  -
+
+--- Target: DIM_transfer_to_other_model (Positive Rate = 0.5280) ---
+  Feature            AUROC Direction 
+  margin            0.9135  -
+  mean_pix          0.5427  +
+  std_pix           0.5599  -
+  sobel_mean        0.5637  -

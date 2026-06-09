@@ -1,0 +1,16 @@
+Variant         CleanAcc  PGD_ASR   MeanBD  SpearmanRho
+-------------------------------------------------------
+baseline          0.9305   0.9968   0.0224       0.0547
+input_noise       0.8890   0.6597   0.0537      -0.1992
+hidden_noise      0.9330   0.9834   0.0239       0.0551
+
+
+Key Findings:
+  input_noise vs baseline: ΔPGD_ASR=-0.3370  ΔMeanBD=+0.0312
+  hidden_noise vs baseline: ΔPGD_ASR=-0.0134  ΔMeanBD=+0.0014
+
+  input_noise vs hidden_noise boundary distance: ΔMeanBD=+0.0298 (input_noise further)
+  Spearman rho (clean_margin, min_eps_to_flip):
+    baseline: rho=0.0547
+    input_noise: rho=-0.1992
+    hidden_noise: rho=0.0551

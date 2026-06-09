@@ -1,0 +1,4 @@
+H313: Per-Class Gradient Penalty vs Uniform Penalty
+============================================================
+uniform_lambda: clean_acc=0.8820, fgsm_asr=0.7480, pgd_asr=0.8995, mean_margin=5.9389
+per_class_lambda: clean_acc=0.8795, fgsm_asr=0.7445, pgd_asr=0.8955, mean_margin=5.9247

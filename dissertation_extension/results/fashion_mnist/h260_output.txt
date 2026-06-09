@@ -1,0 +1,47 @@
+============================================================
+H260 — Targeted vs Untargeted Attack Difficulty
+============================================================
+
+[1] Clean evaluation ...
+  Clean accuracy: 0.9200
+  Clean margin  : mean=9.6067  std=6.7291
+  Correctly classified: 276 / 300
+
+[2] Untargeted PGD attack ...
+  Untargeted ASR: 0.9200  (276/300)
+
+[3] Targeted PGD attack (target = (true + 1) % 10) ...
+  Targeted ASR  : 0.9167  (275/300)
+
+[4] Computing per-sample difficulty gap ...
+  gap > 0 (untarg only): 1
+  gap = 0 (both or neither): 299
+  gap < 0 (targ only):   0
+  Mean gap: +0.0033  std=0.0576
+
+[5] Correlation: gap vs margin
+-------------------------------------------------------
+  Spearman rho (gap vs margin):             +0.0992  p=0.0864
+  Spearman rho (untarg_success vs -margin): -0.4699  p=0.0000
+  Spearman rho (targ_success   vs -margin): -0.4406  p=0.0000
+
+[6] AUROC — does margin predict attack success?
+-------------------------------------------------------
+  AUROC (-margin -> untarg_success): 0.0000
+  AUROC (-margin -> targ_success): 0.0399
+
+[7] Attack success rate by margin quartile
+-------------------------------------------------------
+  Q1 (n= 75, margin [-inf, +5.004)):  untarg=0.6800  targ=0.6800  gap=+0.0000
+  Q2 (n= 75, margin [+5.004, +9.569)):  untarg=1.0000  targ=1.0000  gap=+0.0000
+  Q3 (n= 75, margin [+9.569, +14.026)):  untarg=1.0000  targ=1.0000  gap=+0.0000
+  Q4 (n= 75, margin [+14.026, +inf)):  untarg=1.0000  targ=0.9867  gap=+0.0133
+
+[8] Summary
+-------------------------------------------------------
+  Overall ASR gap (untarg - targ): +0.0033
+  Targeted is harder: YES
+  Margin correlates with gap (rho=+0.0992): NOT SIGNIFICANT
+
+Done in 1.2s
+============================================================

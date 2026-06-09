@@ -1,0 +1,30 @@
+==========================================================================
+H179 - Null-Jaccard baseline + cross-norm / decision-based attack invariance
+==========================================================================
+Device=cuda  Linf-eps=0.0588  L2-budget=2.0  EVAL_N=1000
+
+--- Training vanilla CNN ---
+  13.3s
+  eval n=1000
+
+--- Running attacks ---
+  attacks done in 1.4s
+    PGD-Linf   ASR (within budget) = 0.9810
+    DeepFool   ASR (within budget) = 0.9430
+    CW-L2      ASR (within budget) = 0.8430
+    Boundary   ASR (within budget) = 0.0030
+
+--- Pairwise Jaccard: observed vs null ---
+  pair                    observed  null(analytic)       null(perm)    excess
+  PGD-Linf-DeepFool         0.9240          0.9261     0.9259+/-0.0019   -0.0021
+  PGD-Linf-CW-L2            0.8443          0.8295     0.8291+/-0.0028   +0.0148
+  PGD-Linf-Boundary         0.0031          0.0030     0.0030+/-0.0002   +0.0001
+  DeepFool-CW-L2            0.8004          0.8021     0.8022+/-0.0050   -0.0017
+  DeepFool-Boundary         0.0032          0.0030     0.0030+/-0.0004   +0.0002
+  CW-L2-Boundary            0.0036          0.0030     0.0030+/-0.0007   +0.0006
+
+==========================================================================
+If observed Jaccard >> null across the L-inf vs L2 vs decision-based pairs, vulnerability
+is genuinely structural/attack-invariant. If observed ~ null, the original 0.99 was the
+pigeonhole tautology the advisor warned about.
+==========================================================================

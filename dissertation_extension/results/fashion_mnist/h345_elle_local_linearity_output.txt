@@ -1,0 +1,14 @@
+========================================================================
+H345 - ELLE: Efficient Local Linearity Enforcement (ICLR 2024)
+========================================================================
+Device=cuda  dataset=fashion_mnist  N_TRAIN=6000  eps_taylor=0.05
+lambda grid: [0, 0.01, 0.1, 1.0]
+  lambda=0      clean=0.874  fgsm_asr=0.753  pgd_asr=0.916  margin=6.199  (2.1s)
+  lambda=0.01   clean=0.874  fgsm_asr=0.751  pgd_asr=0.918  margin=6.122  (1.8s)
+  lambda=0.1    clean=0.868  fgsm_asr=0.745  pgd_asr=0.914  margin=6.243  (1.7s)
+  lambda=1.0    clean=0.870  fgsm_asr=0.778  pgd_asr=0.888  margin=5.735  (1.8s)
+
+Interpretation: ELLE enforces that the loss surface is locally linear
+around training points, cheaply (no double backprop). Higher lambda
+should reduce PGD ASR by discouraging curvature that PGD exploits.
+========================================================================

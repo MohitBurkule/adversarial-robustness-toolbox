@@ -1,0 +1,93 @@
+================================================================================
+H404  Vulnerable-sample noise hardening (Fashion-MNIST)
+================================================================================
+config: N_TRAIN=6000 N_EVAL=2000 EPOCHS=10 LR=0.05 BATCH=128 SGD(mom=0.9,wd=5e-4) SEED=0
+        EPS=0.1 PGD_STEPS=10 PGD_ALPHA=0.01 K_COPIES=50
+        n_target sweep = [0, 250, 500, 1000, 2000]
+        AT: adv_eps=0.1 adv_steps=7
+        vulnerable-test subset = lowest 25% margin
+        device = cuda
+
+data: Xtr=(6000, 1, 28, 28)  Xte=(2000, 1, 28, 28)
+
+[1] training BASE model (standard, no augmentation)...
+    base clean acc=0.8795  FGSM_ASR=0.7402  PGD_ASR=0.9738
+
+[2] ranking TRAINING samples by vulnerability (input-space margin)...
+    train margin: min=-6.644 median=5.931 max=23.567
+    most-vulnerable (lowest margin) sample margins[:5]: [-6.644000053405762, -5.144000053405762, -4.374000072479248, -3.7920000553131104, -3.739000082015991]
+    vulnerable test subset: 500 samples (margin <= 2.242)
+
+[3] MAIN SWEEP: K=50 noisy copies of the n_target most-vulnerable training samples
+    baseline               aug_size=   6000  acc=0.8795  FGSM=0.7402  PGD=0.9738  (4s)
+    n=250 (vulnerable)     aug_size=  18500  acc=0.8665  FGSM=0.7842  PGD=0.9971  (6s)
+    n=500 (vulnerable)     aug_size=  31000  acc=0.8625  FGSM=0.8017  PGD=0.9954  (10s)
+    n=1000 (vulnerable)    aug_size=  56000  acc=0.8655  FGSM=0.8446  PGD=0.9971  (16s)
+    n=2000 (vulnerable)    aug_size= 106000  acc=0.8625  FGSM=0.8678  PGD=0.9988  (29s)
+
+[4] CONTROL: K=50 copies of the 1000 SAFEST (highest-margin) samples
+    n=1000 (safest)         aug_size=  56000  acc=0.8805  FGSM=0.7093  PGD=0.9744  (35s)
+
+[5] MATCHED-BUDGET UNIFORM: same total extra copies (2000*50=100000) spread over ALL 6000 train samples
+    uniform matched-budget  aug_size= 106000  acc=0.8775  FGSM=0.7333  PGD=0.9835  (50s)
+
+[6] TRUE AT reference (PGD adversarial training)...
+    true AT                 aug_size=   6000  acc=0.7750  FGSM=0.1297  PGD=0.1574  (54s)
+
+================================================================================
+[7] MAIN TABLE
+================================================================================
+condition                   n_target  aug_size clean_acc  FGSM_ASR   PGD_ASR
+----------------------------------------------------------------------------
+baseline                           0      6000    0.8795    0.7402    0.9738
+n=250 (vulnerable)               250     18500    0.8665    0.7842    0.9971
+n=500 (vulnerable)               500     31000    0.8625    0.8017    0.9954
+n=1000 (vulnerable)             1000     56000    0.8655    0.8446    0.9971
+n=2000 (vulnerable)             2000    106000    0.8625    0.8678    0.9988
+n=1000 (safest, control)        1000     56000    0.8805    0.7093    0.9744
+uniform matched-budget             -    106000    0.8775    0.7333    0.9835
+true AT (PGD-AT)                   -      6000    0.7750    0.1297    0.1574
+----------------------------------------------------------------------------
+
+best targeted (vulnerable) condition by PGD_ASR: n=500 (vulnerable) (PGD=0.9954, acc=0.8625)
+
+[8] HEADLINE CURVE (vulnerable-targeting, K=50): n_target vs ASR & clean acc
+   n_target  clean_acc   FGSM_ASR    PGD_ASR
+          0     0.8795     0.7402     0.9738
+        250     0.8665     0.7842     0.9971
+        500     0.8625     0.8017     0.9954
+       1000     0.8655     0.8446     0.9971
+       2000     0.8625     0.8678     0.9988
+  -> from n=0 to n=2000: PGD_ASR 0.9738->0.9988 (+0.0250); clean_acc 0.8795->0.8625 (-0.0170)
+  -> clean acc held within +-0.02 of baseline? True (baseline 0.8795)
+
+[9] EXPLICIT COMPARISONS
+  (a) n=1000 vulnerable vs safest control:
+      vulnerable: acc=0.8655 FGSM=0.8446 PGD=0.9971
+      safest    : acc=0.8805 FGSM=0.7093 PGD=0.9744
+      delta PGD_ASR (vuln - safe) = +0.0227 (negative => targeting vulnerable helps MORE)
+  (b) best vulnerable-targeting vs uniform matched-budget:
+      best vuln (n=500 (vulnerable)): acc=0.8625 FGSM=0.8017 PGD=0.9954
+      uniform matched-budget    : acc=0.8775 FGSM=0.7333 PGD=0.9835
+      delta PGD_ASR (best - uniform) = +0.0119 (negative => targeting beats uniform)
+  (c) best vulnerable-targeting vs true AT (robustness/clean-acc tradeoff):
+      best vuln (n=500 (vulnerable)): acc=0.8625 PGD=0.9954
+      true AT                   : acc=0.7750 PGD=0.1574
+      AT clean-acc cost vs baseline = -0.1045
+      best-vuln clean-acc cost vs baseline = -0.0170
+      PGD gap (best-vuln - AT) = +0.8379 (positive => AT still more robust)
+
+[10] VULNERABLE TEST SUBSET (lowest 25% margin by base model)
+   subset size = 500
+   condition                    FGSM_ASR    PGD_ASR
+   baseline                       1.0000     1.0000
+   best vuln (n=500 (vulnerable))     1.0000     1.0000
+   delta on vulnerable subset: FGSM +0.0000  PGD +0.0000
+
+================================================================================
+[11] VERDICT
+================================================================================
+  Targeted vulnerable-sample noise hardening (best=n=500 (vulnerable)): PGD_ASR 0.974->0.995 (gain -0.022), clean_acc 0.879->0.863 (KEPT); AT reaches PGD 0.157 but costs 0.104 clean acc. Beats uniform matched-budget on PGD? False (best 0.995 vs uniform 0.983).
+  ONE-LINE VERDICT: NO: noise-copy hardening preserves clean accuracy but gives little robustness gain at this scale; AT remains the only strong-robustness route.
+
+done in 53.9s

@@ -1,0 +1,61 @@
+======================================================================
+H254  Cross-Epsilon Vulnerability Rank Preservation
+======================================================================
+
+[1] Loading fashion_mnist ...
+    Eval: torch.Size([300, 1, 28, 28])
+
+[2] Training CNN (seed=0, epochs=10) ...
+
+[3] PGD attacks at eps in [0.01, 0.05, 0.1, 0.2] ...
+    eps=0.010 ...
+      ASR = 0.2300
+    eps=0.050 ...
+      ASR = 0.8933
+    eps=0.100 ...
+      ASR = 1.0000
+    eps=0.200 ...
+      ASR = 1.0000
+
+[4] Pairwise Spearman rho (per-sample success vectors)
+          eps=0.01  eps=0.05  eps=0.10  eps=0.20
+eps=0.01    1.0000   +0.1889      +nan      +nan
+eps=0.05   +0.1889    1.0000      +nan      +nan
+eps=0.10      +nan      +nan    1.0000      +nan
+eps=0.20      +nan      +nan      +nan    1.0000
+
+[5] p-values for each pair:
+    eps=0.01 vs eps=0.05: rho=+0.1889, p=0.001013 -> significant
+    eps=0.01 vs eps=0.10: rho=+nan, p=nan -> not significant
+    eps=0.01 vs eps=0.20: rho=+nan, p=nan -> not significant
+    eps=0.05 vs eps=0.10: rho=+nan, p=nan -> not significant
+    eps=0.05 vs eps=0.20: rho=+nan, p=nan -> not significant
+    eps=0.10 vs eps=0.20: rho=+nan, p=nan -> not significant
+
+[6] Sample Consistency Analysis
+    Always vulnerable (success at all 4 eps):   69 (0.230)
+    Always robust     (failure at all 4 eps):    0 (0.000)
+    Inconsistent      (mixed across eps):            231 (0.770)
+
+    Distribution of per-sample success counts:
+    successes=0/4:    0 (0.000)  
+    successes=1/4:    0 (0.000)  
+    successes=2/4:   32 (0.107)  ####
+    successes=3/4:  199 (0.663)  ##########################
+    successes=4/4:   69 (0.230)  #########
+
+[7] Monotonicity: does ASR increase monotonically with eps?
+    eps=0.01 -> ASR=0.2300
+    eps=0.05 -> ASR=0.8933
+    eps=0.10 -> ASR=1.0000
+    eps=0.20 -> ASR=1.0000
+    Monotone increasing: True
+
+[8] Mean pairwise Spearman rho across all eps pairs: +nan
+
+[9] Interpretation
+    Rankings are weakly preserved: different eps budgets expose largely
+    different subsets of vulnerable samples.
+
+Total time: 38.2s
+======================================================================

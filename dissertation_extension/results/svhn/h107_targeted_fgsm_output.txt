@@ -1,0 +1,69 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: SVHN
+[*] Executing script: dissertation_extension/hypotheses/h107_targeted_fgsm.py
+============================================================
+Hypothesis H107: Targeted FGSM Vulnerability Analysis
+============================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
+
+Training model for 10 epochs...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 56.0s
+
+Computing features...
+Using 7928/10000 correctly classified samples
+
+Running targeted FGSM attacks (9 target classes per sample)...
+Completed in 5.6s
+
+Targeted attack statistics:
+  Flipped to at least one target: 0.983
+  Mean success rate across 9 targets: 0.419
+
+Comparing with untargeted FGSM (single step)...
+Untargeted attack success rate: 0.934
+
+============================================================
+TARGETED FGSM: Univariate AUROC
+============================================================
+  margin          AUROC = 0.7977 (raw = 0.2023)
+  mean_pix        AUROC = 0.6562 (raw = 0.3438)
+  std_pix         AUROC = 0.8377 (raw = 0.1623)
+
+============================================================
+UNTARGETED FGSM: Univariate AUROC (baseline)
+============================================================
+Untargeted FGSM: 0.934 flip rate
+  feature            AUROC Direction 
+  margin          AUROC = 0.7730 (raw = 0.2270)
+  mean_pix        AUROC = 0.6034 (raw = 0.3966)
+  std_pix         AUROC = 0.7398 (raw = 0.2602)
+
+============================================================
+SUMMARY
+============================================================
+Number of correctly classified samples: 7928
+Targeted FGSM - flipped to at least one target: 0.983
+Targeted FGSM - high success rate (>median): 0.332
+Untargeted FGSM (baseline): 0.934
+
+Key finding:
+  Success rate distribution:
+    0 targets flipped: 137 (1.7%)
+    1 targets flipped: 576 (7.3%)
+    2 targets flipped: 1232 (15.5%)
+    3 targets flipped: 1628 (20.5%)
+    4 targets flipped: 1725 (21.8%)
+    5 targets flipped: 1347 (17.0%)
+    6 targets flipped: 794 (10.0%)
+    7 targets flipped: 365 (4.6%)
+    8 targets flipped: 113 (1.4%)
+    9 targets flipped: 11 (0.1%)

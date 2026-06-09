@@ -1,0 +1,12 @@
+Theme C/C12 | illusion susceptibility + robustness | kind=ebbinghaus scheme=physical arch=cnn seed=0
+
+physical_acc       = 1.0000
+human_agreement    = 0.0000  (1.0 => model falls for illusion like a human)
+fgsm_asr           = 0.1462
+pgd_asr            = 1.0000
+
+Compare scheme=physical vs scheme=human at fixed kind/arch/seed: if the
+human-labelled model has lower PGD ASR, training human-like confusion buys
+adversarial robustness.
+
+[runtime 2.5s]

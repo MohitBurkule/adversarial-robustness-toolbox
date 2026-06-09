@@ -1,0 +1,74 @@
+==========================================================================
+H202 - Curriculum Adversarial Training (easy-to-hard scheduling)
+==========================================================================
+Device=cuda  dataset=fashion_mnist  eps=0.1  eval_n=500
+AT PGD: steps=3 alpha=0.033  Eval PGD: steps=10
+Phases: 1-4 (top 50%), 5-7 (top 75%), 8-10 (all samples)
+
+
+[seed 0] Training vanilla model for quartile boundaries...
+  vanilla done (41.6s)
+[seed 0] Training uniform AT...
+  uniform AT done (89.0s): clean=0.854 ASR=0.115
+[seed 0] Training curriculum AT...
+  curriculum AT done (16.3s): clean=0.846 ASR=0.130
+
+  [seed 0] (146.8s)
+  Condition             Clean Acc    PGD ASR     Q1 ASR     Q2 ASR     Q3 ASR     Q4 ASR
+  --------------------------------------------------------------------------------
+  Uniform AT                0.854      0.115      0.324      0.162      0.058      0.016
+  Curriculum AT             0.846      0.130      0.313      0.209      0.066      0.016
+
+  Q1 (hardest) ASR: curriculum lower by 0.011
+
+[seed 1] Training vanilla model for quartile boundaries...
+  vanilla done (5.1s)
+[seed 1] Training uniform AT...
+  uniform AT done (20.4s): clean=0.854 ASR=0.122
+[seed 1] Training curriculum AT...
+  curriculum AT done (15.2s): clean=0.852 ASR=0.148
+
+  [seed 1] (40.7s)
+  Condition             Clean Acc    PGD ASR     Q1 ASR     Q2 ASR     Q3 ASR     Q4 ASR
+  --------------------------------------------------------------------------------
+  Uniform AT                0.854      0.122      0.304      0.189      0.082      0.008
+  Curriculum AT             0.852      0.148      0.391      0.218      0.107      0.016
+
+  Q1 (hardest) ASR: curriculum higher by 0.087
+
+[seed 2] Training vanilla model for quartile boundaries...
+  vanilla done (5.2s)
+[seed 2] Training uniform AT...
+  uniform AT done (21.3s): clean=0.858 ASR=0.128
+[seed 2] Training curriculum AT...
+  curriculum AT done (15.6s): clean=0.844 ASR=0.145
+
+  [seed 2] (42.0s)
+  Condition             Clean Acc    PGD ASR     Q1 ASR     Q2 ASR     Q3 ASR     Q4 ASR
+  --------------------------------------------------------------------------------
+  Uniform AT                0.858      0.128      0.268      0.177      0.100      0.008
+  Curriculum AT             0.844      0.145      0.353      0.176      0.116      0.024
+
+  Q1 (hardest) ASR: curriculum higher by 0.085
+
+==========================================================================
+MEANS across seeds
+  Condition             Clean Acc    PGD ASR     Q1 ASR     Q2 ASR     Q3 ASR     Q4 ASR
+  --------------------------------------------------------------------------------
+  Uniform AT                0.855      0.122      0.299      0.176      0.080      0.011
+  Curriculum AT             0.847      0.141      0.353      0.201      0.096      0.019
+
+==========================================================================
+KEY FINDINGS
+  Net Q1 (hardest) ASR delta (curriculum - uniform): +0.054
+  Net clean acc delta (curriculum - uniform):        -0.008
+  Net overall ASR delta (curriculum - uniform):      +0.019
+
+  Hypothesis verdict: NOT SUPPORTED: no meaningful Q1 benefit; curriculum provides no advantage on hard samples.
+
+Interpretation:
+  Q1 = hardest 25% of test samples (lowest vanilla-model margin).
+  A supported hypothesis means curriculum AT, by warming up on easy samples,
+  builds robustness on hard samples more effectively than uniform AT,
+  consistent with the margin-based selection findings of 2512.22069.
+==========================================================================

@@ -1,0 +1,51 @@
+============================================================
+Hypothesis H139: Attention (ViT) vs CNN Adversarial Vulnerability
+============================================================
+
+Training CNN model...
+CNN trained in 35.2s
+
+Training ViT model...
+ViT trained in 75.9s
+
+Using 8533/10000 samples correctly classified by both models
+
+Running attacks on CNN...
+Running attacks on ViT...
+
+CNN: FGSM=0.702, PGD-10=0.935, mean min_eps=0.054
+ViT: FGSM=0.757, PGD-10=0.937, mean min_eps=0.045
+
+Cross-correlation of FGSM vulnerability (flip status): 0.4007
+
+============================================================
+CNN VULNERABILITY ANALYSIS (Univariate AUROC)
+============================================================
+
+Target: flipped_FGSM
+  margin          AUROC = 0.9122
+  mean_pix        AUROC = 0.5072
+  std_pix         AUROC = 0.6211
+  sobel_mean      AUROC = 0.6256
+
+Target: flipped_PGD
+  margin          AUROC = 0.9358
+  mean_pix        AUROC = 0.5551
+  std_pix         AUROC = 0.6718
+  sobel_mean      AUROC = 0.7250
+
+============================================================
+ViT VULNERABILITY ANALYSIS (Univariate AUROC)
+============================================================
+
+Target: flipped_FGSM
+  margin          AUROC = 0.8577
+  mean_pix        AUROC = 0.5931
+  std_pix         AUROC = 0.6441
+  sobel_mean      AUROC = 0.6526
+
+Target: flipped_PGD
+  margin          AUROC = 0.8224
+  mean_pix        AUROC = 0.6555
+  std_pix         AUROC = 0.6906
+  sobel_mean      AUROC = 0.7200

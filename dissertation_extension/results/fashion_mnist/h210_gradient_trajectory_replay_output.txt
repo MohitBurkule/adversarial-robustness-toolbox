@@ -1,0 +1,33 @@
+/run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/.venv/lib/python3.12/site-packages/sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+H210: Gradient Trajectory Replay (corrected design)
+============================================================
+Testing: does the net weight displacement carry learning?
+
+[Model A] Normal training (seed=0)...
+  Done in 8.4s  ||D|| = 6.9567
+[Model B] Random init (seed=42) + net displacement D...
+[Model C] Random init (seed=42) + unit direction of D, same ||D||...
+[Model D] Random init (seed=42) + random displacement ||D||...
+[Model E] Aligned displacement (greedy first-layer permutation matching)...
+
+--- Results ---
+  A (normal training): clean=0.9140  PGD_ASR=1.0000  AUROC=nan
+  B (different init + net D — same as seq replay): clean=0.1180  PGD_ASR=0.9980  AUROC=0.7114
+  C (different init + per-param unit direction): clean=0.0760  PGD_ASR=0.9240  AUROC=0.4179
+  D (different init + random displacement ||D||): clean=0.1160  PGD_ASR=0.8840  AUROC=0.3435
+  E (approx permutation-aligned D): clean=0.1200  PGD_ASR=0.9540  AUROC=0.9371
+
+--- Summary ---
+Model                                          Clean Acc    PGD ASR
+-------------------------------------------------------------------
+  A normal training                               0.9140     1.0000
+  B net displacement (random init)                0.1180     0.9980
+  C unit direction (random init)                  0.0760     0.9240
+  D random displacement                           0.1160     0.8840
+  E permutation-aligned                           0.1200     0.9540
+
+--- Interpretation ---
+Net displacement vs random displacement: 0.118 vs 0.116
+NOT CONFIRMED: Net displacement from random init fails to produce a classifier.
+Weight initialisation is entangled with the gradient trajectory — cannot be separated.

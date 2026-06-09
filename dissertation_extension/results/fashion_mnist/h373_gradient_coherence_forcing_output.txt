@@ -1,0 +1,13 @@
+  tau=0.0: {'clean_acc': 0.878000020980835, 'fgsm_asr': 0.7629999965429306, 'pgd_asr': 0.9195000007748604, 'mean_margin': 6.024632930755615, 'tau': 0.0, 'time': 1.1489899158477783}
+  tau=0.1: {'clean_acc': 0.3059999942779541, 'fgsm_asr': 0.7299999892711639, 'pgd_asr': 0.7414999902248383, 'mean_margin': -3.8168983459472656, 'tau': 0.1, 'time': 1.052605390548706}
+  tau=0.2: {'clean_acc': 0.3725000023841858, 'fgsm_asr': 0.6910000145435333, 'pgd_asr': 0.7254999876022339, 'mean_margin': -6.526699542999268, 'tau': 0.2, 'time': 1.00166916847229}
+  tau=0.3: {'clean_acc': 0.3630000054836273, 'fgsm_asr': 0.7010000050067902, 'pgd_asr': 0.7305000126361847, 'mean_margin': -6.8425140380859375, 'tau': 0.3, 'time': 0.9847359657287598}
+
+=== H373 RESULTS ===
+  tau=0.0: clean=0.8780 fgsm_asr=0.7630 pgd_asr=0.9195 margin=6.0246
+  tau=0.1: clean=0.3060 fgsm_asr=0.7300 pgd_asr=0.7415 margin=-3.8169
+  tau=0.2: clean=0.3725 fgsm_asr=0.6910 pgd_asr=0.7255 margin=-6.5267
+  tau=0.3: clean=0.3630 fgsm_asr=0.7010 pgd_asr=0.7305 margin=-6.8425
+
+Best tau=0.2: PGD ASR reduced by 0.1940
+SUPPORTED = True

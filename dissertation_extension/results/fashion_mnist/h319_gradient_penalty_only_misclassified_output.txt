@@ -1,0 +1,5 @@
+H319: Gradient Penalty - Selective vs Uniform vs None
+============================================================
+mode=none           : clean_acc=0.8815, fgsm_asr=0.7770, pgd_asr=0.9180, mean_margin=6.1581
+mode=uniform        : clean_acc=0.8795, fgsm_asr=0.7770, pgd_asr=0.9275, mean_margin=6.0042
+mode=misclassified  : clean_acc=0.8820, fgsm_asr=0.7695, pgd_asr=0.9195, mean_margin=6.0464

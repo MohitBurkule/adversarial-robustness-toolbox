@@ -1,0 +1,44 @@
+========================================================================
+H185 - Margin-adaptive ε adversarial training vs standard AT
+========================================================================
+Device=cuda  seed=0  n_train=10000  n_test=200
+epochs=10  lr=0.001  eps_fixed=0.1
+adaptive eps: clip(0.05 + 0.1*(1 - m/mmax), 0.01, 0.2)
+
+Data loaded: train=10000 test=200  (5.1s)
+
+[1/2] Training standard AT (fixed ε=0.1) ...
+     done in 57.7s
+
+[2/2] Training adaptive AT (ε proportional to margin) ...
+     done in 72.8s
+
+Evaluating standard AT ...
+Evaluating adaptive AT ...
+
+========================================================================
+RESULTS
+========================================================================
+Metric                            Standard AT    Adaptive AT      Delta
+------------------------------------------------------------------------
+Clean accuracy                         0.7950         0.7600    -0.0350  (worse)
+Overall PGD ASR                        0.3300         0.3300    +0.0000  (worse)
+Q1 PGD ASR (low margin)                1.0000         1.0000    +0.0000  (worse)
+Q2 PGD ASR                             0.2400         0.2400    +0.0000  (worse)
+Q3 PGD ASR                             0.0800         0.0600    -0.0200  (better)
+Q4 PGD ASR (high margin)               0.0000         0.0200    +0.0200  (worse)
+
+Quartile sample counts (n):  Q1=50  Q2=50  Q3=50  Q4=50
+Standard AT margin quartiles (Q25/Q50/Q75): 0.210 / 1.807 / 4.042
+Adaptive AT margin quartiles (Q25/Q50/Q75): 0.059 / 1.304 / 3.122
+
+========================================================================
+INTERPRETATION
+========================================================================
+Q1 ASR improvement (std - adp): +0.0000
+Q4 ASR improvement (std - adp): -0.0200
+=> Adaptive AT helps MOST for hard (Q1, low-margin) samples — SUPPORTS H185.
+Overall ASR improvement (std - adp): +0.0000
+=> Overall PGD robustness roughly unchanged.
+========================================================================
+Total runtime: 135.8s

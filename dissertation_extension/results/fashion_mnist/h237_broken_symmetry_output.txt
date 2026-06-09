@@ -1,0 +1,23 @@
+=== H237: Broken Symmetry ===
+
+[1] Training model...
+[2] Computing margins...
+    Symmetry gap (hflip):    mean=4.0593
+    Symmetry gap (bright):   mean=6.3751
+    Symmetry gap (contrast): mean=1.2607
+[3] Running FGSM and PGD attacks...
+    FGSM ASR: 0.840, PGD ASR: 0.993
+[4] Computing AUROCs...
+    hflip       : AUROC(→FGSM)=0.312, AUROC(→PGD)=0.233
+    brightness  : AUROC(→FGSM)=0.214, AUROC(→PGD)=0.096
+    contrast    : AUROC(→FGSM)=0.403, AUROC(→PGD)=0.362
+    margin      : AUROC(→FGSM)=0.954, AUROC(→PGD)=0.992  [baseline]
+
+--- Summary ---
+FGSM ASR=0.840, PGD ASR=0.993
+  hflip        gap: AUROC→FGSM=0.312, AUROC→PGD=0.233
+  brightness   gap: AUROC→FGSM=0.214, AUROC→PGD=0.096
+  contrast     gap: AUROC→FGSM=0.403, AUROC→PGD=0.362
+  Margin (baseline):  AUROC→FGSM=0.954, AUROC→PGD=0.992
+Interpretation: AUROC > 0.6 for symmetry gap suggests asymmetric sensitivity predicts vulnerability.
+Runtime: 76.2s

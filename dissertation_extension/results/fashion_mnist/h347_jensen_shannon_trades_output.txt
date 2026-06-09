@@ -1,0 +1,12 @@
+========================================================================
+H347 - Jensen-Shannon TRADES: Symmetric divergence in TRADES
+========================================================================
+Device=cuda  dataset=fashion_mnist  N_TRAIN=6000  eps=0.1
+beta grid: [1, 3, 6]
+  beta=1     clean=0.863  fgsm_asr=0.414  pgd_asr=0.437  margin=5.559  (8.6s)
+  beta=3     clean=0.853  fgsm_asr=0.340  pgd_asr=0.348  margin=5.064  (8.2s)
+  beta=6     clean=0.840  fgsm_asr=0.323  pgd_asr=0.326  margin=4.837  (8.3s)
+
+Interpretation: JSD-TRADES replaces asymmetric KL with bounded symmetric
+JSD. Avoids KL pathologies when distributions diverge; compare with H346.
+========================================================================

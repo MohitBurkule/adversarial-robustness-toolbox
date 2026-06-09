@@ -1,0 +1,6 @@
+H327: Randomised Smoothing Training
+baseline: clean=0.8770 fgsm_asr=0.7670 pgd_asr=0.9155 margin=5.8581
+sigma=0.05: clean=0.8715 fgsm_asr=0.7405 pgd_asr=0.9000 margin=6.3285
+sigma=0.1: clean=0.8630 fgsm_asr=0.7310 pgd_asr=0.8540 margin=6.2877
+sigma=0.2: clean=0.8570 fgsm_asr=0.6450 pgd_asr=0.7335 margin=5.7337
+sigma=0.3: clean=0.8175 fgsm_asr=0.6225 pgd_asr=0.6680 margin=5.3849

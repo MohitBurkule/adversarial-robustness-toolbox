@@ -1,0 +1,39 @@
+Loading Fashion-MNIST dataset...
+Training CNN model with forgetting tracking...
+Epoch 1/10 done
+Epoch 2/10 done
+Epoch 3/10 done
+Epoch 4/10 done
+Epoch 5/10 done
+Epoch 6/10 done
+Epoch 7/10 done
+Epoch 8/10 done
+Epoch 9/10 done
+Epoch 10/10 done
+Correctly classified samples at epoch 10: 9266/10000
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: forgetting_event_count
+  Target: flipped_fgsm  AUROC = 0.5484
+  Target: flipped_pgd   AUROC = 0.5372
+  Target: min_eps       AUROC = 0.5696
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9222
+  Target: flipped_pgd   AUROC = 0.9428
+  Target: min_eps       AUROC = 0.9413
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.5264
+  Target: flipped_pgd   AUROC = 0.5168
+  Target: min_eps       AUROC = 0.6077
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.6014
+  Target: flipped_pgd   AUROC = 0.6521
+  Target: min_eps       AUROC = 0.5420

@@ -1,0 +1,6 @@
+H301: Lion Optimizer Robustness
+============================================================
+opt=sgd: clean=0.880 fgsm_asr=0.760 pgd_asr=0.917 margin=6.063 time=1.2s
+opt=adam: clean=0.877 fgsm_asr=0.770 pgd_asr=0.989 margin=5.100 time=0.7s
+opt=lion: clean=0.877 fgsm_asr=0.731 pgd_asr=0.940 margin=15.791 time=0.9s
+opt=lion_wd: clean=0.872 fgsm_asr=0.716 pgd_asr=0.910 margin=14.469 time=1.0s

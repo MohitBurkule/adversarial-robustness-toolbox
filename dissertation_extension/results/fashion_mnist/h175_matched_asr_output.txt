@@ -1,0 +1,20 @@
+==========================================================================
+H175 - Margin AUROC at matched attack-success rate
+==========================================================================
+Device=cuda  saturated eps=0.0588  EVAL_N=1000
+
+--- Training vanilla CNN ---
+  25.1s
+
+  condition                   eps     ASR   margin AUROC
+  ------------------------------------------------------
+  saturated (15/255)       0.0588   0.976         0.9720
+  matched ASR=30%          0.0170   0.301         0.9649
+  matched ASR=50%          0.0261   0.494         0.9683
+  matched ASR=70%          0.0361   0.690         0.9602
+
+==========================================================================
+If margin AUROC stays high at ASR~50% (balanced label, hardest ROC), margin dominance
+is genuine. If it falls sharply from the saturated number, the high AUROC was inflated
+by label saturation -- the artefact the advisor flagged.
+==========================================================================

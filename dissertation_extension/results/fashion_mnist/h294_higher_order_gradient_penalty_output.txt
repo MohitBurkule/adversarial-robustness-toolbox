@@ -1,0 +1,20 @@
+H294 Higher-Order Input Gradient Penalties
+======================================================================
+Dataset: fashion_mnist  N_train=6000  Epochs=10  Seed=0
+EPS_FGSM=0.1  EPS_PGD=0.1  PGD_STEPS=10
+
+Condition                             clean_acc   fgsm_asr   pgd_asr    margin   time_s
+--------------------------------------------------------------------------------
+baseline                                 0.8770     0.4635    0.5485    6.8986      2.2
+order1 only (λ1=0.01)                    0.8775     0.4535    0.5205    7.5795      8.4
+order2 only (λ2=0.001)                   0.8805     0.4895    0.5475    7.3412     13.1
+order2 only (λ2=0.01)                    0.8840     0.4560    0.5285    7.4618     10.1
+order1+2 (λ1=0.01, λ2=0.001)             0.8710     0.4350    0.5200    7.0287      5.1
+order1+2 (λ1=0.01, λ2=0.01)              0.8790     0.4825    0.5550    6.8996     14.9
+
+Analysis:
+- Order-1 only = H288 winner (input grad norm penalty)
+- Order-2 only = penalises how much sensitivity varies w.r.t. input
+- Order-1+2 = joint penalty on gradient magnitude AND field smoothness
+- Lower PGD_ASR with order-2 → gradient field smoothness helps beyond magnitude
+- Compute cost: order-2 needs 3 backward passes per step

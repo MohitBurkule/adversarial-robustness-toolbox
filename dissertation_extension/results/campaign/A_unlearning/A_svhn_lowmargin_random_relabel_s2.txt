@@ -1,0 +1,19 @@
+Theme A | unlearning x adversarial | A_svhn_lowmargin_random_relabel_s2
+dataset=svhn forget_kind=lowmargin method=random_relabel seed=2 eps=0.031 n_forget=800 class=None
+
+split    phase        acc   pgd_asr    margin
+forget   before    0.2037    1.0000    -1.129
+forget   after     0.2100    0.9821    -0.507
+retain   before    1.0000    0.9815     5.600
+retain   after     0.9383    0.9452     4.074
+test     before    0.8453    0.9771     3.946
+test     after     0.7720    0.9491     2.880
+
+forget_acc_drop = -0.0062  (unlearning effectiveness: higher = more forgotten)
+retain_acc_drop = +0.0617  (collateral damage)
+test_acc_drop   = +0.0733
+forget_asr_rise = -0.0179  (adversarial hole on forget set?)
+test_asr_rise   = -0.0281  (global robustness change)
+forget_margin_drop = -0.623
+
+[runtime 1.5s]

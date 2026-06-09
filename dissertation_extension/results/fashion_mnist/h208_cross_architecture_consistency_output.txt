@@ -1,0 +1,65 @@
+==========================================================================
+H208 - Cross-architecture vulnerability consistency
+==========================================================================
+
+Loading fashion_mnist ...
+  train=60000  eval=300
+
+--- CNN-small (cnn, {'width': 16, 'seed': 0}) ---
+  clean acc = 0.9233
+  FGSM ASR  = 0.7900
+
+--- CNN-wide (cnn, {'width': 64, 'seed': 0}) ---
+  clean acc = 0.9300
+  FGSM ASR  = 0.7333
+
+--- MLP (mlp, {'width': 256}) ---
+  clean acc = 0.9000
+  FGSM ASR  = 0.7600
+
+==========================================================================
+Pairwise Spearman rho of per-sample margins
+==========================================================================
+             CNN-small   CNN-wide        MLP
+CNN-small       1.0000     0.9307     0.8643
+CNN-wide        0.9307     1.0000     0.8462
+MLP             0.8643     0.8462     1.0000
+
+Kendall tau of margin ranks:
+             CNN-small   CNN-wide        MLP
+CNN-small       1.0000     0.7737     0.6793
+CNN-wide        0.7737     1.0000     0.6622
+MLP             0.6793     0.6622     1.0000
+
+==========================================================================
+Cross-architecture AUROC: rows=score source, cols=label source
+  cell(i,j) = AUROC of model-i margin predicting model-j FGSM success
+  diagonal  = own AUROC (self-prediction baseline)
+==========================================================================
+             CNN-small   CNN-wide        MLP
+CNN-small       0.5920     0.6743     0.5253
+CNN-wide        0.5833     0.6987     0.5149
+MLP             0.5925     0.6680     0.5316
+
+==========================================================================
+Summary
+==========================================================================
+  Mean off-diagonal Spearman rho  : 0.8804
+  Mean off-diagonal Kendall tau   : 0.7051
+  Mean own (diagonal) AUROC       : 0.6074
+  Mean cross (off-diag) AUROC     : 0.5930
+  Cross-AUROC vs own-AUROC gap    : -0.0144
+
+  Total runtime: 135.4s
+
+==========================================================================
+Interpretation
+==========================================================================
+  HIGH cross-architecture margin correlation (rho > 0.5): vulnerability
+  ordering is largely shared across architectures, consistent with a
+  DATA-GEOMETRIC explanation — certain input-space regions are close to
+  decision boundaries regardless of the specific classifier.
+  Cross-AUROC is close to own-AUROC (gap < 0.05): a model's margin is
+  nearly as predictive of ANOTHER model's attack success as of its own,
+  further supporting the data-geometric view.
+==========================================================================

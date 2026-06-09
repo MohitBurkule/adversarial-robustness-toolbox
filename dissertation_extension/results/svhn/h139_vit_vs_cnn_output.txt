@@ -1,0 +1,51 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: SVHN
+[*] Executing script: dissertation_extension/hypotheses/h139_vit_vs_cnn.py
+============================================================
+Hypothesis H139: Attention (ViT) vs CNN Adversarial Vulnerability
+============================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
+
+Training CNN model...
+CNN trained in 53.1s
+
+Training ViT model...
+ViT trained in 92.2s
+
+Using 7650/10000 samples correctly classified by both models
+
+Running attacks on CNN...
+Running attacks on ViT...
+
+CNN: FGSM=0.939, PGD-10=0.990, mean min_eps=0.028
+ViT: FGSM=0.989, PGD-10=1.000, mean min_eps=0.015
+
+Cross-correlation of FGSM vulnerability (flip status): 0.1067
+
+============================================================
+CNN VULNERABILITY ANALYSIS (Univariate AUROC)
+============================================================
+
+Target: flipped_FGSM
+  margin          AUROC = 0.8276
+  mean_pix        AUROC = 0.5964
+  std_pix         AUROC = 0.7655
+  sobel_mean      AUROC = 0.7462
+
+Target: flipped_PGD
+  margin          AUROC = 0.7943
+  mean_pix        AUROC = 0.6244
+  std_pix         AUROC = 0.8631
+  sobel_mean      AUROC = 0.8541
+
+============================================================
+ViT VULNERABILITY ANALYSIS (Univariate AUROC)
+============================================================
+
+Target: flipped_FGSM
+  margin          AUROC = 0.8527
+  mean_pix        AUROC = 0.5446
+  std_pix         AUROC = 0.6261
+  sobel_mean      AUROC = 0.6034
+
+Target: flipped_PGD
+  Constant target, skipping.

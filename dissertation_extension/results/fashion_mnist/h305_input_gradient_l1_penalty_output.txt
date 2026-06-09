@@ -1,0 +1,9 @@
+H305: Input Gradient L1 vs L2 Penalty
+============================================================
+norm=baseline lam=0: clean=0.881 fgsm_asr=0.748 pgd_asr=0.913 margin=6.052 time=1.2s
+norm=l1 lam=0.001: clean=0.881 fgsm_asr=0.772 pgd_asr=0.936 margin=5.939 time=4.4s
+norm=l1 lam=0.01: clean=0.881 fgsm_asr=0.755 pgd_asr=0.917 margin=6.016 time=4.3s
+norm=l1 lam=0.1: clean=0.880 fgsm_asr=0.734 pgd_asr=0.881 margin=5.818 time=4.3s
+norm=l2 lam=0.001: clean=0.878 fgsm_asr=0.764 pgd_asr=0.916 margin=6.060 time=4.3s
+norm=l2 lam=0.01: clean=0.882 fgsm_asr=0.782 pgd_asr=0.932 margin=5.952 time=3.8s
+norm=l2 lam=0.1: clean=0.882 fgsm_asr=0.751 pgd_asr=0.905 margin=6.051 time=2.3s

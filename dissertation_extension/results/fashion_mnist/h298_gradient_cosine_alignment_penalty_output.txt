@@ -1,0 +1,6 @@
+H298: Gradient Cosine Alignment Penalty
+============================================================
+lam=0: clean=0.886 fgsm_asr=0.763 pgd_asr=0.917 margin=5.970 time=1.2s
+lam=0.001: clean=0.882 fgsm_asr=0.758 pgd_asr=0.914 margin=6.055 time=6.1s
+lam=0.01: clean=0.884 fgsm_asr=0.753 pgd_asr=0.918 margin=6.113 time=6.7s
+lam=0.1: clean=0.885 fgsm_asr=0.782 pgd_asr=0.925 margin=5.805 time=6.6s

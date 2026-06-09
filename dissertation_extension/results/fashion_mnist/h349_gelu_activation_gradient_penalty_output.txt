@@ -1,0 +1,13 @@
+========================================================================
+H349 - GELU Activation + Input Gradient Norm Penalty (arXiv 2409.20139)
+========================================================================
+Device=cuda  dataset=fashion_mnist  N_TRAIN=6000  lambda=0.01
+  ReLU+no_penalty         clean=0.882  fgsm_asr=0.764  pgd_asr=0.917  margin=6.051  (2.0s)
+  ReLU+penalty            clean=0.881  fgsm_asr=0.766  pgd_asr=0.915  margin=6.020  (3.9s)
+  GELU+no_penalty         clean=0.881  fgsm_asr=0.798  pgd_asr=0.927  margin=6.218  (0.8s)
+  GELU+penalty            clean=0.883  fgsm_asr=0.811  pgd_asr=0.936  margin=6.221  (2.3s)
+
+Interpretation: Smooth activations (GELU) enable meaningful gradient norm
+penalties (ReLU has near-zero gradient almost everywhere after training).
+GELU+penalty should show stronger robustness improvement than ReLU+penalty.
+========================================================================

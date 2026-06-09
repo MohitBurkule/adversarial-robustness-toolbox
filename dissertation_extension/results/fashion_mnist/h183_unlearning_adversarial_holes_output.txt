@@ -1,0 +1,33 @@
+==========================================================================
+H183 - Machine unlearning leaves adversarial residual knowledge / holes
+==========================================================================
+Device=cuda  dataset=fashion_mnist  eps=0.1  small_eps=0.05
+
+[seed 0] forget_class=0  (3.8s)
+  forget clean acc   : 0.795 -> 0.005
+  attractor rate     : 0.097 -> 0.000   (frac of other-class advs landing in forgotten class)
+  adv recovery rate  : 0.263   (forgotten samples pushed back to true label by small PGD)
+
+[seed 1] forget_class=1  (0.8s)
+  forget clean acc   : 0.958 -> 0.932
+  attractor rate     : 0.024 -> 0.001   (frac of other-class advs landing in forgotten class)
+  adv recovery rate  : 0.615   (forgotten samples pushed back to true label by small PGD)
+
+[seed 2] forget_class=2  (0.8s)
+  forget clean acc   : 0.765 -> 0.167
+  attractor rate     : 0.122 -> 0.002   (frac of other-class advs landing in forgotten class)
+  adv recovery rate  : 0.729   (forgotten samples pushed back to true label by small PGD)
+
+==========================================================================
+MEANS across seeds
+  forget clean acc  : 0.839 -> 0.368
+  attractor rate    : 0.081 -> 0.001
+  adv recovery rate : 0.536
+==========================================================================
+Interpretation: high adv-recovery and a non-vanishing attractor rate after
+unlearning => the forgotten class survives as an adversarial residual: the
+boundary is still present and reachable with a small perturbation, even
+though clean accuracy on the class has dropped. This is an empirical
+instance of unlearning failing under adversarial proximity (cf. 2601.22359,
+UMA, 'Machine Unlearning Fails to Remove' ICLR 2025).
+==========================================================================

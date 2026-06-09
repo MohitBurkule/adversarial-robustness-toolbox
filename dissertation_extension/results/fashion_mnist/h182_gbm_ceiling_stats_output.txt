@@ -1,0 +1,31 @@
+==========================================================================
+H182 - Learned AUROC ceiling (GBM) + bootstrap CIs + ECE
+==========================================================================
+Device=cuda  EVAL_N=2000  EPS=0.0588
+
+--- Training vanilla CNN ---
+  25.8s
+  eval n=2000  PGD ASR=0.9535
+
+--- Univariate AUROC with bootstrap 95% CI ---
+  feature              AUROC               95% CI
+  margin              0.9575   [0.9422, 0.9694]
+  input_grad_norm     0.9591   [0.9441, 0.9712]
+  smoothgrad_norm     0.9649   [0.9498, 0.9781]
+  softmax_conf        0.9214   [0.9081, 0.9338]
+  logit_entropy       0.9572   [0.9419, 0.9694]
+  min_eps             0.9706   [0.9635, 0.9783]
+
+  best=min_eps (0.9706)  vs  second=smoothgrad_norm (0.9649)
+  paired-bootstrap mean AUROC diff = +0.0058;  P(best not better) = 0.202  -> INDISTINGUISHABLE
+
+--- Learned ceiling (GBM over all 6 features, 5-fold CV) ---
+  GBM CV-AUROC = 0.9679
+  head-room over best single feature (min_eps) = -0.0027
+  ECE of GBM probabilities = 0.0206
+
+==========================================================================
+Takeaways for Paper 1: report CIs (many features are statistically indistinguishable),
+the GBM head-room quantifies how much a learned combo beats the best single predictor,
+and ECE shows whether the scores are usable for selective prediction.
+==========================================================================

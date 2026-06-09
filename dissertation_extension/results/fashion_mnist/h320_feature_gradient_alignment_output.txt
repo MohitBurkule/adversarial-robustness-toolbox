@@ -1,0 +1,5 @@
+H320: Feature-Gradient Alignment Penalty vs Robustness
+============================================================
+lambda=0.00: clean_acc=0.8845, fgsm_asr=0.7675, pgd_asr=0.9145, mean_margin=6.0526
+lambda=0.01: clean_acc=0.8795, fgsm_asr=0.7590, pgd_asr=0.9160, mean_margin=6.1091
+lambda=0.10: clean_acc=0.8830, fgsm_asr=0.7640, pgd_asr=0.9045, mean_margin=6.2464

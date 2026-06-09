@@ -1,0 +1,40 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: EUROSAT
+[*] Executing script: dissertation_extension/hypotheses/h127_integrated_gradients.py
+======================================================================
+Hypothesis H127: Integrated Gradients Attribution vs Vulnerability
+======================================================================
+
+Training CNN model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Using 666 correctly classified test samples
+   Computing Integrated Gradients attributions...
+   Evaluating attacks...
+
+==================================================
+MODEL PERFORMANCE & ROBUSTNESS
+==================================================
+Clean Accuracy: 0.6660
+FGSM Success: 0.8408
+PGD Success: 0.9715
+Mean min_eps: 0.0102
+
+==================================================
+UNIVARIATE AUROC SCORES
+==================================================
+Feature                | vs FGSM Flip | vs PGD Flip 
+--------------------------------------------------
+margin                 | 0.6719       | 0.6585
+mean_pix               | 0.6410       | 0.5782
+std_pix                | 0.6694       | 0.5535
+IG_total_attribution   | 0.9295       | 0.6624
+IG_entropy             | 0.5043       | 0.6076
+IG_l2_norm             | 0.9318       | 0.6623

@@ -1,0 +1,10 @@
+Theme C/C4 | cross-illusion generalisation | train=brightness_contrast test=delboeuf
+
+transfer physical_acc    = 0.6625
+transfer human_agreement = 1.0000
+transfer pgd_asr         = 1.0000
+
+Does susceptibility to one illusion transfer to another (shared 'human-like'
+perceptual bias) or is each illusion learned idiosyncratically?
+
+[runtime 0.9s]

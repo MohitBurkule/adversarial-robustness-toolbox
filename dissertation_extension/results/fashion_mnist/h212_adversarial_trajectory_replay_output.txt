@@ -1,0 +1,19 @@
+H212: Adversarial Trajectory Replay
+============================================================
+[Model A_clean] Normal training...
+  done 7.9s  ||D_clean||=6.951
+[Model A_at] PGD-AT training...
+  done 16.0s  ||D_adv||=7.005
+  ||D_adv|| / ||D_clean|| ratio: 1.008
+
+--- Results ---
+  A_clean (normal training)                          clean=0.912  PGD_ASR=0.998  AUROC=0.970
+  A_at (PGD-AT training)                             clean=0.840  PGD_ASR=0.264  AUROC=0.915
+  B_clean (rand init + D_clean, H210 baseline)       clean=0.134  PGD_ASR=0.984  AUROC=0.975
+  B_at    (rand init + D_adv  ← THIS HYPOTHESIS)     clean=0.040  PGD_ASR=0.992  AUROC=0.649
+  B_rand  (rand init + random displ ||D_adv||)       clean=0.116  PGD_ASR=0.884  AUROC=0.344
+
+--- Interpretation ---
+Adversarial displacement transfer: clean=0.040  PGD_ASR=0.992
+Clean displacement transfer:       clean=0.134  PGD_ASR=0.984
+REVERSED: Clean trajectory transfers better than adversarial.

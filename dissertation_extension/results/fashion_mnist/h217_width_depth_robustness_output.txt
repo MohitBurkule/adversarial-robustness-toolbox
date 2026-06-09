@@ -1,0 +1,45 @@
+==========================================================================
+=== H217: Model Width vs Depth — adversarial robustness ===
+==========================================================================
+Device=cuda  dataset=fashion_mnist  eps=0.1  N_EVAL=300
+
+--- 1. Architecture parameter counts ---
+  wide_shallow   params=69,194
+  wide_medium    params=65,866
+  narrow_deep    params=17,450
+  standard       params=34,698
+  very_wide      params=687,914
+  very_deep      params=19,802
+
+--- 2. Training (PGD-AT): wide_shallow ---
+  params=69,194  clean=0.087  FGSM=0.000  PGD=0.000  mgn=-0.050  AUROC=nan  (40.6s)
+
+--- 2. Training (PGD-AT): wide_medium ---
+  params=65,866  clean=0.797  FGSM=0.155  PGD=0.188  mgn=1.965  AUROC=0.927  (28.4s)
+
+--- 2. Training (PGD-AT): narrow_deep ---
+  params=17,450  clean=0.787  FGSM=0.140  PGD=0.165  mgn=1.726  AUROC=0.917  (13.2s)
+
+--- 2. Training (PGD-AT): standard ---
+  params=34,698  clean=0.787  FGSM=0.148  PGD=0.195  mgn=1.934  AUROC=0.925  (12.2s)
+
+--- 2. Training (PGD-AT): very_wide ---
+  params=687,914  clean=0.767  FGSM=0.143  PGD=0.200  mgn=2.065  AUROC=0.911  (26.1s)
+
+--- 2. Training (PGD-AT): very_deep ---
+  params=19,802  clean=0.783  FGSM=0.128  PGD=0.157  mgn=1.747  AUROC=0.890  (11.6s)
+
+==========================================================================
+--- Summary ---
+Architecture     Params  CleanAcc  FGSM_ASR  PGD_ASR  MgnMean   AUROC
+wide_shallow     69,194     0.087     0.000    0.000   -0.050     nan
+wide_medium      65,866     0.797     0.155    0.188    1.965   0.927
+narrow_deep      17,450     0.787     0.140    0.165    1.726   0.917
+standard         34,698     0.787     0.148    0.195    1.934   0.925
+very_wide       687,914     0.767     0.143    0.200    2.065   0.911
+very_deep        19,802     0.783     0.128    0.157    1.747   0.890
+==========================================================================
+Interpretation: lower PGD ASR / higher margin under AT at similar param
+count indicates better robustness. If wide architectures consistently
+outperform deep ones, width is the more efficient axis for robustness.
+==========================================================================

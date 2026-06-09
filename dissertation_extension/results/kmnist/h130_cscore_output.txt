@@ -1,0 +1,36 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: KMNIST
+[*] Executing script: dissertation_extension/hypotheses/h130_cscore.py
+Loading Fashion-MNIST dataset...
+Training model 1/5...
+Training model 2/5...
+Training model 3/5...
+Training model 4/5...
+Training model 5/5...
+Evaluating models for C-score...
+Victim correctly classified samples: 9507/10000
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: c_score
+  Target: flipped_fgsm  AUROC = 0.6041
+  Target: flipped_pgd   AUROC = 0.5763
+  Target: min_eps       AUROC = 0.5408
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9610
+  Target: flipped_pgd   AUROC = 0.9544
+  Target: min_eps       AUROC = 0.8901
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.5528
+  Target: flipped_pgd   AUROC = 0.5617
+  Target: min_eps       AUROC = 0.5539
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.5735
+  Target: flipped_pgd   AUROC = 0.5825
+  Target: min_eps       AUROC = 0.5700

@@ -1,0 +1,22 @@
+H331: Per-Epoch Gradient Penalty Analysis
+condition | epoch | clean_acc | fgsm_asr | pgd_asr | inp_grad_norm
+baseline ep=1: clean=0.7655 fgsm_asr=0.6135 pgd_asr=0.6620 inp_grad=0.0030
+baseline ep=2: clean=0.7765 fgsm_asr=0.6515 pgd_asr=0.7475 inp_grad=0.0034
+baseline ep=3: clean=0.8400 fgsm_asr=0.7270 pgd_asr=0.8365 inp_grad=0.0045
+baseline ep=4: clean=0.8425 fgsm_asr=0.7110 pgd_asr=0.8235 inp_grad=0.0044
+baseline ep=5: clean=0.8610 fgsm_asr=0.7095 pgd_asr=0.8280 inp_grad=0.0050
+baseline ep=6: clean=0.8690 fgsm_asr=0.7405 pgd_asr=0.8810 inp_grad=0.0053
+baseline ep=7: clean=0.8615 fgsm_asr=0.7720 pgd_asr=0.9185 inp_grad=0.0066
+baseline ep=8: clean=0.8610 fgsm_asr=0.7580 pgd_asr=0.9060 inp_grad=0.0070
+baseline ep=9: clean=0.8785 fgsm_asr=0.7555 pgd_asr=0.9165 inp_grad=0.0067
+baseline ep=10: clean=0.8785 fgsm_asr=0.7585 pgd_asr=0.9200 inp_grad=0.0069
+gp(lam=0.01) ep=1: clean=0.7670 fgsm_asr=0.6420 pgd_asr=0.6945 inp_grad=0.0030
+gp(lam=0.01) ep=2: clean=0.7770 fgsm_asr=0.7105 pgd_asr=0.8010 inp_grad=0.0035
+gp(lam=0.01) ep=3: clean=0.8055 fgsm_asr=0.7630 pgd_asr=0.8815 inp_grad=0.0051
+gp(lam=0.01) ep=4: clean=0.8410 fgsm_asr=0.7225 pgd_asr=0.8400 inp_grad=0.0049
+gp(lam=0.01) ep=5: clean=0.8670 fgsm_asr=0.7160 pgd_asr=0.8275 inp_grad=0.0048
+gp(lam=0.01) ep=6: clean=0.8575 fgsm_asr=0.7605 pgd_asr=0.8915 inp_grad=0.0060
+gp(lam=0.01) ep=7: clean=0.8620 fgsm_asr=0.7665 pgd_asr=0.9110 inp_grad=0.0067
+gp(lam=0.01) ep=8: clean=0.8605 fgsm_asr=0.7500 pgd_asr=0.9150 inp_grad=0.0071
+gp(lam=0.01) ep=9: clean=0.8795 fgsm_asr=0.7600 pgd_asr=0.9225 inp_grad=0.0070
+gp(lam=0.01) ep=10: clean=0.8780 fgsm_asr=0.7635 pgd_asr=0.9235 inp_grad=0.0072

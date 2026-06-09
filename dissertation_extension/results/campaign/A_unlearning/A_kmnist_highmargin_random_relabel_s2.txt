@@ -1,0 +1,19 @@
+Theme A | unlearning x adversarial | A_kmnist_highmargin_random_relabel_s2
+dataset=kmnist forget_kind=highmargin method=random_relabel seed=2 eps=0.100 n_forget=800 class=None
+
+split    phase        acc   pgd_asr    margin
+forget   before    1.0000    0.1475    15.148
+forget   after     0.9675    0.8514     1.118
+retain   before    0.9993    0.7836     8.473
+retain   after     0.8768    0.7656     1.157
+test     before    0.9227    0.8136     6.533
+test     after     0.7413    0.8345     0.699
+
+forget_acc_drop = +0.0325  (unlearning effectiveness: higher = more forgotten)
+retain_acc_drop = +0.1225  (collateral damage)
+test_acc_drop   = +0.1813
+forget_asr_rise = +0.7039  (adversarial hole on forget set?)
+test_asr_rise   = +0.0209  (global robustness change)
+forget_margin_drop = +14.030
+
+[runtime 1.5s]

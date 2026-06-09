@@ -1,0 +1,52 @@
+==========================================================================
+H184 - Illusion 'human-like' robustness: real or gradient masking?
+==========================================================================
+Device=cuda  kinds=['ebbinghaus', 'muller_lyer', 'ponzo']  eps=0.1
+
+[ebbinghaus s0] (6.9s)
+  physical: phys_acc=1.000  FGSM=0.632  PGD=1.000  blackbox=0.000  transfer=0.000  grad_norm=1.78e-09
+  human   : phys_acc=0.662  FGSM=0.000  PGD=0.000  blackbox=0.000  transfer=0.000  grad_norm=0.00e+00
+
+[ebbinghaus s1] (4.5s)
+  physical: phys_acc=1.000  FGSM=0.355  PGD=1.000  blackbox=0.000  transfer=0.000  grad_norm=1.45e-09
+  human   : phys_acc=0.645  FGSM=0.000  PGD=0.000  blackbox=0.000  transfer=0.000  grad_norm=0.00e+00
+
+[ebbinghaus s2] (4.5s)
+  physical: phys_acc=1.000  FGSM=0.121  PGD=1.000  blackbox=0.000  transfer=0.000  grad_norm=2.10e-07
+  human   : phys_acc=0.665  FGSM=0.000  PGD=0.000  blackbox=0.000  transfer=0.000  grad_norm=0.00e+00
+
+[muller_lyer s0] (1.7s)
+  physical: phys_acc=1.000  FGSM=1.000  PGD=1.000  blackbox=0.000  transfer=0.000  grad_norm=6.44e-08
+  human   : phys_acc=0.662  FGSM=0.000  PGD=0.000  blackbox=0.000  transfer=0.000  grad_norm=0.00e+00
+
+[muller_lyer s1] (1.8s)
+  physical: phys_acc=1.000  FGSM=0.645  PGD=1.000  blackbox=0.001  transfer=0.002  grad_norm=2.26e-07
+  human   : phys_acc=0.645  FGSM=0.000  PGD=0.000  blackbox=0.000  transfer=0.000  grad_norm=0.00e+00
+
+[muller_lyer s2] (1.7s)
+  physical: phys_acc=1.000  FGSM=1.000  PGD=1.000  blackbox=0.000  transfer=0.000  grad_norm=1.13e-07
+  human   : phys_acc=0.665  FGSM=0.000  PGD=0.000  blackbox=0.000  transfer=0.000  grad_norm=0.00e+00
+
+[ponzo s0] (2.9s)
+  physical: phys_acc=1.000  FGSM=0.662  PGD=1.000  blackbox=0.033  transfer=0.059  grad_norm=6.99e-07
+  human   : phys_acc=0.662  FGSM=0.000  PGD=0.000  blackbox=0.000  transfer=0.000  grad_norm=0.00e+00
+
+[ponzo s1] (2.8s)
+  physical: phys_acc=1.000  FGSM=0.645  PGD=1.000  blackbox=0.019  transfer=0.000  grad_norm=1.29e-06
+  human   : phys_acc=0.645  FGSM=0.000  PGD=0.000  blackbox=0.000  transfer=0.000  grad_norm=4.39e-24
+
+[ponzo s2] (2.8s)
+  physical: phys_acc=1.000  FGSM=0.335  PGD=1.000  blackbox=0.007  transfer=0.001  grad_norm=1.00e-06
+  human   : phys_acc=0.665  FGSM=0.000  PGD=0.000  blackbox=0.000  transfer=0.000  grad_norm=0.00e+00
+
+==========================================================================
+MEANS across kinds x seeds
+  physical: phys_acc=1.000  FGSM=0.600  PGD=1.000  blackbox=0.007  transfer=0.007  grad_norm=4.01e-07
+  human   : phys_acc=0.657  FGSM=0.000  PGD=0.000  blackbox=0.000  transfer=0.000  grad_norm=4.88e-25
+==========================================================================
+Masking verdict: if the HUMAN-scheme model has PGD~0 but blackbox/transfer
+ASR clearly > 0 and a collapsed input-gradient norm, its apparent
+robustness is gradient masking, not a genuinely flatter surface. If
+blackbox/transfer are ALSO ~0, the robustness survives gradient-free
+attack and the human-confusion training is a real effect.
+==========================================================================

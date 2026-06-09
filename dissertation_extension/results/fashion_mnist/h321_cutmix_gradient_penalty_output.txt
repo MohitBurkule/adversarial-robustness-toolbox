@@ -1,0 +1,5 @@
+H321: CutMix + Gradient Penalty
+baseline: clean=0.8790 fgsm_asr=0.7525 pgd_asr=0.9130 margin=6.0948
+cutmix_only: clean=0.8600 fgsm_asr=0.6380 pgd_asr=0.8685 margin=2.4768
+cutmix+gp(0.01): clean=0.8630 fgsm_asr=0.6415 pgd_asr=0.8825 margin=2.5333
+gp_only(0.01): clean=0.8830 fgsm_asr=0.7710 pgd_asr=0.9235 margin=6.1211

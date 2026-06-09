@@ -1,0 +1,44 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: KMNIST
+[*] Executing script: dissertation_extension/hypotheses/h134_bnn_variance.py
+Loading Fashion-MNIST dataset...
+Training CNN model with SWAG tracking...
+Epoch 1/10 done
+Epoch 2/10 done
+Epoch 3/10 done
+Epoch 4/10 done
+Epoch 5/10 done
+Epoch 6/10 done
+Epoch 7/10 done
+Epoch 8/10 done
+Epoch 9/10 done
+Epoch 10/10 done
+Computing SWA mean and variance over 25 iterates...
+Evaluating SWA mean model correctness...
+Victim correctly classified samples: 9501/10000
+Drawing K=20 SWAG posterior weight samples...
+Computing attack targets...
+Computing features...
+
+==================================================
+UNIVARIATE AUROC RESULTS
+==================================================
+
+Feature: bnn_predictive_variance
+  Target: flipped_fgsm  AUROC = 0.9683
+  Target: flipped_pgd   AUROC = 0.9612
+  Target: min_eps       AUROC = 0.8790
+
+Feature: margin
+  Target: flipped_fgsm  AUROC = 0.9666
+  Target: flipped_pgd   AUROC = 0.9598
+  Target: min_eps       AUROC = 0.8788
+
+Feature: mean_pix
+  Target: flipped_fgsm  AUROC = 0.5501
+  Target: flipped_pgd   AUROC = 0.5575
+  Target: min_eps       AUROC = 0.5590
+
+Feature: std_pix
+  Target: flipped_fgsm  AUROC = 0.5742
+  Target: flipped_pgd   AUROC = 0.5812
+  Target: min_eps       AUROC = 0.5775

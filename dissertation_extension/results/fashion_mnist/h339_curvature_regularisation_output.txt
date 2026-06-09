@@ -1,0 +1,15 @@
+H339: Curvature Regularisation (Input Hessian Trace)
+============================================================
+Settings: N_TRAIN=6000, EPOCHS=10, LR=0.05, BATCH=128
+Curvature = Tr(H_x L) via Hutchinson estimator (v~Rademacher)
+
+lam=0: clean=0.8800 fgsm_asr=0.7685 pgd_asr=0.9165 margin=6.0052 curvature=10.0406±16.8454
+lam=0.001: clean=0.8730 fgsm_asr=0.7620 pgd_asr=0.9270 margin=6.0365 curvature=9.2876±15.0962
+lam=0.01: clean=0.8755 fgsm_asr=0.7630 pgd_asr=0.9170 margin=6.1502 curvature=8.4491±17.4480
+
+============================================================
+SUMMARY
+Condition       Clean   FGSM_ASR    PGD_ASR     Margin    Curvature
+lam=0          0.8800     0.7685     0.9165     6.0052      10.0406
+lam=0.001      0.8730     0.7620     0.9270     6.0365       9.2876
+lam=0.01       0.8755     0.7630     0.9170     6.1502       8.4491

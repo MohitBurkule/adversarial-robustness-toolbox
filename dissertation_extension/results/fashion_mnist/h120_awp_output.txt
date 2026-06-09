@@ -1,0 +1,66 @@
+======================================================================
+Hypothesis H120: AWP Regularization vs Vanilla CNN
+======================================================================
+
+Training Vanilla model...
+  [vanilla] Epoch 1/10 completed
+  [vanilla] Epoch 2/10 completed
+  [vanilla] Epoch 3/10 completed
+  [vanilla] Epoch 4/10 completed
+  [vanilla] Epoch 5/10 completed
+  [vanilla] Epoch 6/10 completed
+  [vanilla] Epoch 7/10 completed
+  [vanilla] Epoch 8/10 completed
+  [vanilla] Epoch 9/10 completed
+  [vanilla] Epoch 10/10 completed
+
+Training AWP model...
+  [awp] Epoch 1/10 completed
+  [awp] Epoch 2/10 completed
+  [awp] Epoch 3/10 completed
+  [awp] Epoch 4/10 completed
+  [awp] Epoch 5/10 completed
+  [awp] Epoch 6/10 completed
+  [awp] Epoch 7/10 completed
+  [awp] Epoch 8/10 completed
+  [awp] Epoch 9/10 completed
+  [awp] Epoch 10/10 completed
+
+Evaluating Vanilla model...
+   Evaluating attacks...
+
+Evaluating AWP model...
+   Evaluating attacks...
+
+==================================================
+VANILLA MODEL RESULTS
+==================================================
+Accuracy: 0.9360
+FGSM Success: 0.7179
+PGD Success: 0.9551
+Mean min_eps: 0.0309
+
+Univariate AUROC vs PGD Flip (Vanilla):
+  margin          : 0.9680
+  mean_pix        : 0.5116
+  std_pix         : 0.6196
+
+==================================================
+AWP MODEL RESULTS
+==================================================
+Accuracy: 0.3520
+FGSM Success: 0.2188
+PGD Success: 0.3097
+Mean min_eps: 0.1362
+
+Univariate AUROC vs PGD Flip (AWP):
+  margin          : 0.8945
+  mean_pix        : 0.5945
+  std_pix         : 0.5232
+
+==================================================
+SUMMARY OF AUROC CHANGES (AWP vs Vanilla PGD)
+==================================================
+  margin          : AWP=0.8945  Vanilla=0.9680  Change=-0.0735
+  mean_pix        : AWP=0.5945  Vanilla=0.5116  Change=+0.0829
+  std_pix         : AWP=0.5232  Vanilla=0.6196  Change=-0.0964

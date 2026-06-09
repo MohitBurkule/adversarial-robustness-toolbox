@@ -1,0 +1,40 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: EUROSAT
+[*] Executing script: dissertation_extension/hypotheses/h126_smoothgrad.py
+======================================================================
+Hypothesis H126: SmoothGrad Attribution vs Vulnerability
+======================================================================
+
+Training CNN model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Using 665 correctly classified test samples
+   Computing SmoothGrad attributions...
+   Evaluating attacks...
+
+==================================================
+MODEL PERFORMANCE & ROBUSTNESS
+==================================================
+Clean Accuracy: 0.6650
+FGSM Success: 0.8481
+PGD Success: 0.9579
+Mean min_eps: 0.0105
+
+==================================================
+UNIVARIATE AUROC SCORES
+==================================================
+Feature              | vs FGSM Flip | vs PGD Flip 
+--------------------------------------------------
+margin               | 0.6648       | 0.6134
+mean_pix             | 0.6303       | 0.7455
+std_pix              | 0.6612       | 0.6787
+smoothgrad_entropy   | 0.6163       | 0.5107
+smoothgrad_max       | 0.9485       | 0.5237
+smoothgrad_l2_norm   | 0.9528       | 0.5387

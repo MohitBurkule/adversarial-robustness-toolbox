@@ -1,0 +1,70 @@
+/mnt/1tbone/trashy/adversarial-robustness-toolbox/.venv/lib/python3.12/site-packages/torchvision/datasets/cifar.py:83: VisibleDeprecationWarning: dtype(): align should be passed as Python or NumPy boolean but got `align=0`. Did you mean to pass a tuple to create a subarray type? (Deprecated NumPy 2.4)
+  entry = pickle.load(f, encoding="latin1")
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: CIFAR10
+[*] Executing script: dissertation_extension/hypotheses/h120_awp.py
+======================================================================
+Hypothesis H120: AWP Regularization vs Vanilla CNN
+======================================================================
+
+Training Vanilla model...
+  [vanilla] Epoch 1/10 completed
+  [vanilla] Epoch 2/10 completed
+  [vanilla] Epoch 3/10 completed
+  [vanilla] Epoch 4/10 completed
+  [vanilla] Epoch 5/10 completed
+  [vanilla] Epoch 6/10 completed
+  [vanilla] Epoch 7/10 completed
+  [vanilla] Epoch 8/10 completed
+  [vanilla] Epoch 9/10 completed
+  [vanilla] Epoch 10/10 completed
+
+Training AWP model...
+  [awp] Epoch 1/10 completed
+  [awp] Epoch 2/10 completed
+  [awp] Epoch 3/10 completed
+  [awp] Epoch 4/10 completed
+  [awp] Epoch 5/10 completed
+  [awp] Epoch 6/10 completed
+  [awp] Epoch 7/10 completed
+  [awp] Epoch 8/10 completed
+  [awp] Epoch 9/10 completed
+  [awp] Epoch 10/10 completed
+
+Evaluating Vanilla model...
+   Evaluating attacks...
+
+Evaluating AWP model...
+   Evaluating attacks...
+
+==================================================
+VANILLA MODEL RESULTS
+==================================================
+Accuracy: 0.6370
+FGSM Success: 0.9341
+PGD Success: 1.0000
+Mean min_eps: 0.0087
+
+Univariate AUROC vs PGD Flip (Vanilla):
+  margin          : 0.5000
+  mean_pix        : 0.5000
+  std_pix         : 0.5000
+
+==================================================
+AWP MODEL RESULTS
+==================================================
+Accuracy: 0.2620
+FGSM Success: 0.2672
+PGD Success: 0.5267
+Mean min_eps: 0.0966
+
+Univariate AUROC vs PGD Flip (AWP):
+  margin          : 0.7970
+  mean_pix        : 0.5525
+  std_pix         : 0.6779
+
+==================================================
+SUMMARY OF AUROC CHANGES (AWP vs Vanilla PGD)
+==================================================
+  margin          : AWP=0.7970  Vanilla=0.5000  Change=+0.2970
+  mean_pix        : AWP=0.5525  Vanilla=0.5000  Change=+0.0525
+  std_pix         : AWP=0.6779  Vanilla=0.5000  Change=+0.1779

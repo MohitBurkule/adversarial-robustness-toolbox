@@ -1,0 +1,55 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: IMAGENETTE
+[*] Executing script: dissertation_extension/hypotheses/h110_dim.py
+============================================================
+Hypothesis H110: Diverse Input Method (DIM) Analysis
+============================================================
+
+Training Model A (victim, seed 0)...
+  Seed 0: Epoch 1/10 completed
+  Seed 0: Epoch 2/10 completed
+  Seed 0: Epoch 3/10 completed
+  Seed 0: Epoch 4/10 completed
+  Seed 0: Epoch 5/10 completed
+  Seed 0: Epoch 6/10 completed
+  Seed 0: Epoch 7/10 completed
+  Seed 0: Epoch 8/10 completed
+  Seed 0: Epoch 9/10 completed
+  Seed 0: Epoch 10/10 completed
+Model A training completed in 29.1s
+
+Training Model B (surrogate for transfer, seed 1)...
+  Seed 1: Epoch 1/10 completed
+  Seed 1: Epoch 2/10 completed
+  Seed 1: Epoch 3/10 completed
+  Seed 1: Epoch 4/10 completed
+  Seed 1: Epoch 5/10 completed
+  Seed 1: Epoch 6/10 completed
+  Seed 1: Epoch 7/10 completed
+  Seed 1: Epoch 8/10 completed
+  Seed 1: Epoch 9/10 completed
+  Seed 1: Epoch 10/10 completed
+Model B training completed in 29.1s
+Evaluating DIM on 1000 double-correct test samples...
+Running DIM attack on Model A (self)...
+DIM self-attack success rate: 0.9280
+Running DIM attack on Model B (transfer surrogate)...
+DIM transfer success rate (B -> A): 0.8560
+DIM evaluations completed in 0.8s
+
+============================================================
+UNIVARIATE AUROC ANALYSIS
+============================================================
+
+--- Target: flipped_DIM (Positive Rate = 0.9280) ---
+  Feature            AUROC Direction 
+  margin            0.8946  -
+  mean_pix          0.7371  -
+  std_pix           0.8152  -
+  sobel_mean        0.8333  -
+
+--- Target: DIM_transfer_to_other_model (Positive Rate = 0.8560) ---
+  Feature            AUROC Direction 
+  margin            0.8646  -
+  mean_pix          0.6921  -
+  std_pix           0.7208  -
+  sobel_mean        0.7414  -

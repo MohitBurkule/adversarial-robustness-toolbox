@@ -1,0 +1,5 @@
+H315: High-Frequency Gradient Penalty vs Robustness
+============================================================
+lambda=0.00: clean_acc=0.8785, fgsm_asr=0.7615, pgd_asr=0.9195, mean_margin=6.0352
+lambda=0.01: clean_acc=0.8740, fgsm_asr=0.7695, pgd_asr=0.9195, mean_margin=6.0073
+lambda=0.10: clean_acc=0.8785, fgsm_asr=0.7675, pgd_asr=0.9175, mean_margin=6.0277

@@ -1,0 +1,27 @@
+H342: AT + Gradient Penalty Combined
+============================================================
+Settings: N_TRAIN=6000, EPOCHS=10, LR=0.05, BATCH=128, λ=0.01, FGSM_eps=0.1
+6 conditions: baseline, fgsm_at, grad_penalty, fgsm_at+clean_pen, fgsm_at+adv_pen, half-half
+
+(a) Baseline
+  clean=0.8790 fgsm_asr=0.7790 pgd_asr=0.9320 margin=5.9552
+(b) FGSM-AT
+  clean=0.7985 fgsm_asr=0.3075 pgd_asr=0.3355 margin=2.6042
+(c) Grad penalty (clean x)
+  clean=0.8820 fgsm_asr=0.7630 pgd_asr=0.9200 margin=5.9724
+(d) FGSM-AT + grad penalty on clean x
+  clean=0.8000 fgsm_asr=0.3075 pgd_asr=0.3285 margin=2.5658
+(e) FGSM-AT + grad penalty on adv x
+  clean=0.8010 fgsm_asr=0.3025 pgd_asr=0.3350 margin=2.5989
+(f) Half-half: 50% clean+penalty, 50% AT
+  clean=0.8425 fgsm_asr=0.3225 pgd_asr=0.3600 margin=3.1515
+
+============================================================
+SUMMARY
+Condition                              Clean   FGSM_ASR    PGD_ASR     Margin
+baseline                              0.8790     0.7790     0.9320     5.9552
+fgsm_at                               0.7985     0.3075     0.3355     2.6042
+grad_penalty                          0.8820     0.7630     0.9200     5.9724
+fgsm_at_grad_penalty_clean            0.8000     0.3075     0.3285     2.5658
+fgsm_at_grad_penalty_adv              0.8010     0.3025     0.3350     2.5989
+half_half                             0.8425     0.3225     0.3600     3.1515

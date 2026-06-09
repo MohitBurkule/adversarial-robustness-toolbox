@@ -1,0 +1,4 @@
+H324: Virtual Adversarial Training
+baseline: clean=0.8795 fgsm_asr=0.7735 pgd_asr=0.9215 margin=6.0037
+VAT(eps=0.1): clean=0.8740 fgsm_asr=0.7485 pgd_asr=0.9125 margin=5.8912
+FGSM-AT: clean=0.8110 fgsm_asr=0.2940 pgd_asr=0.3365 margin=3.0952

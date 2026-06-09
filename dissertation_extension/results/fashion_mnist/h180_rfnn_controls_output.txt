@@ -1,0 +1,22 @@
+==========================================================================
+H180 - Random-feature controls (conv prior vs input geometry)
+==========================================================================
+Device=cuda  EVAL_N=1000  FEAT_TRAIN_N=8000  EPS=0.0588
+
+--- Training reference CNN ---
+  14.1s
+  reference PGD ASR = 0.9600  (eval n=1000)
+
+--- AUROC of each predictor vs reference-CNN PGD vulnerability ---
+  predictor                     AUROC
+  TrainedCNN margin            0.9432   (reference)
+  RandomCNN (conv prior)       0.8673
+  RandomMLP (no conv)          0.8479
+  GaussProj (pure input)       0.8680
+  RawPixels                    0.8296
+
+==========================================================================
+If RandomMLP / GaussProj match RandomCNN -> vulnerability is input geometry.
+If RandomCNN >> RandomMLP/GaussProj -> the conv ARCHITECTURAL prior does the work,
+refuting the 'input geometry alone' framing (advisor's central objection to Paper 6).
+==========================================================================

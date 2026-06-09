@@ -1,0 +1,6 @@
+H306: Mixup + Gradient Penalty
+============================================================
+baseline: clean=0.877 fgsm_asr=0.765 pgd_asr=0.923 margin=6.065 time=2.3s
+mixup_only: clean=0.877 fgsm_asr=0.723 pgd_asr=0.973 margin=3.165 time=1.2s
+grad_penalty_only: clean=0.875 fgsm_asr=0.761 pgd_asr=0.921 margin=6.050 time=6.3s
+mixup_grad_penalty: clean=0.880 fgsm_asr=0.720 pgd_asr=0.953 margin=3.147 time=4.5s

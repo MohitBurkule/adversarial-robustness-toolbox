@@ -1,0 +1,53 @@
+================================================================================
+H412  Recurrent backbone with variable inference iterations T (Fashion-MNIST)
+================================================================================
+config: N_TRAIN=6000 N_EVAL=2000 EPOCHS=10 LR=0.05 BATCH=128 SGD(mom=0.9,wd=5e-4) SEED=0
+        EPS=0.1 PGD_STEPS=10 PGD_ALPHA=0.01 ch=64
+        TRAIN scheme: ONE model, loss AVERAGED over T in [1, 3, 5]
+        INFERENCE T sweep = [1, 2, 3, 5, 8, 12]  (same trained model, T set at forward)
+        ASR = 1 - adv_acc over originally-correct samples (lower=better)
+        device = cuda
+
+data: Xtr=(6000, 1, 28, 28)  Xte=(2000, 1, 28, 28)
+
+[1] training ONE recurrent model (loss averaged over T_TRAIN_SET)...
+    trained in 6s
+
+[2] sweeping inference T (white-box: attacker attacks at the same T)...
+    T= 1: cost=    1.9ms clean_acc=0.7840 FGSM_ASR=0.7526 PGD_ASR=0.8418 margin=+1.641
+    T= 2: cost=    2.8ms clean_acc=0.7885 FGSM_ASR=0.7584 PGD_ASR=0.8402 margin=+1.991
+    T= 3: cost=    3.7ms clean_acc=0.7930 FGSM_ASR=0.7661 PGD_ASR=0.8537 margin=+2.074
+    T= 5: cost=    4.9ms clean_acc=0.7950 FGSM_ASR=0.7742 PGD_ASR=0.8660 margin=+2.088
+    T= 8: cost=    7.6ms clean_acc=0.7885 FGSM_ASR=0.7812 PGD_ASR=0.8852 margin=+2.040
+    T=12: cost=   10.5ms clean_acc=0.7860 FGSM_ASR=0.7863 PGD_ASR=0.9001 margin=+1.975
+
+[3] gradient-masking check: transfer attacks crafted at T=1 -> evaluated at T=8
+    white-box  @T=8 : FGSM_ASR=0.7812  PGD_ASR=0.8852
+    transfer T1->T8 : FGSM_ASR=0.7191  PGD_ASR=0.8136
+    transfer stronger than white-box at T=8? NO -> white-box is the real threat (no obvious masking)
+
+================================================================================
+[4] MAIN TABLE  (cost relative to T=1)
+================================================================================
+  T     fwd_ms   fwd_xT1  clean_acc  FGSM_ASR   PGD_ASR    margin
+-----------------------------------------------------------------
+  1        1.9      1.00     0.7840    0.7526    0.8418    +1.641
+  2        2.8      1.49     0.7885    0.7584    0.8402    +1.991
+  3        3.7      1.95     0.7930    0.7661    0.8537    +2.074
+  5        4.9      2.56     0.7950    0.7742    0.8660    +2.088
+  8        7.6      3.99     0.7885    0.7812    0.8852    +2.040
+ 12       10.5      5.54     0.7860    0.7863    0.9001    +1.975
+-----------------------------------------------------------------
+
+================================================================================
+[5] VERDICT
+================================================================================
+  T=1  : clean_acc=0.7840 PGD_ASR=0.8418 (fast, 1x cost)
+  best PGD-robust T=2: clean_acc=0.7885 PGD_ASR=0.8402 cost=1.49x
+  PGD_ASR change T=1 -> best = -0.0016 (gain=+0.0016, positive => more iterations help)
+  clean_acc change (best vs T=1) = +0.0045
+  PGD_ASR monotonically lower from T=1 to T=12? False
+  gradient-masking check: no obvious masking
+  ONE-LINE VERDICT: NO: increasing inference T does not meaningfully reduce PGD-ASR (best gain +0.002) despite up to 5.5x compute; the recurrent settling buys speed/robustness trade-off but no real robustness.
+
+done in 7.1s

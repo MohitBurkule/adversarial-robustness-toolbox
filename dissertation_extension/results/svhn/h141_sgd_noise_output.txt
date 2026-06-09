@@ -1,0 +1,47 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: SVHN
+[*] Executing script: dissertation_extension/hypotheses/h141_sgd_noise.py
+============================================================
+Hypothesis H141: SGD Noise Sensitivity Analysis
+============================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
+
+Training K=3 perturbed models from seed=42...
+  Model 0 trained in 53.3s
+  Model 1 trained in 53.2s
+  Model 2 trained in 52.9s
+
+Using 8592/10000 correctly classified samples from victim (Model 0)
+
+Computing disagreement metrics...
+
+Running attacks on victim...
+  FGSM flip rate = 0.9495
+  PGD-10 flip rate = 0.9900
+  Mean min_eps = 0.0262
+
+============================================================
+TARGET: flipped_FGSM | Univariate AUROC
+============================================================
+  vote_agreement       AUROC = 0.5252
+  softmax_variance     AUROC = 0.8939
+  margin               AUROC = 0.9050
+  mean_pix             AUROC = 0.6429
+  std_pix              AUROC = 0.7945
+
+============================================================
+TARGET: flipped_PGD | Univariate AUROC
+============================================================
+  vote_agreement       AUROC = 0.5265
+  softmax_variance     AUROC = 0.8535
+  margin               AUROC = 0.8660
+  mean_pix             AUROC = 0.6955
+  std_pix              AUROC = 0.7776
+
+============================================================
+TARGET: min_eps (continuous) | Univariate AUROC (above median)
+============================================================
+  vote_agreement       AUROC = 0.5454
+  softmax_variance     AUROC = 0.8976
+  margin               AUROC = 0.9252
+  mean_pix             AUROC = 0.5773
+  std_pix              AUROC = 0.6968

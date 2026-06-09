@@ -1,0 +1,62 @@
+===========================================================================
+H225 - Training bit-depth quantisation and adversarial robustness
+===========================================================================
+Device=cuda  N_eval=300  eps=0.1  epochs=10
+Training set size: 60000
+
+--- bit_depth=3 ---
+  Mode A (train-q, test-orig): clean=0.930  fgsm_asr=0.827  pgd_asr=0.997  margin=9.511  (42.7s)
+  Mode B (train-orig, test-q):  clean=0.930  fgsm_asr=0.863  pgd_asr=0.993  margin=9.282  (43.6s)
+  Mode C (train-q, test-q):     clean=0.927  fgsm_asr=0.827  pgd_asr=1.000  margin=9.361  (25.7s)
+
+--- bit_depth=4 ---
+  Mode A (train-q, test-orig): clean=0.920  fgsm_asr=0.830  pgd_asr=0.997  margin=9.478  (23.8s)
+  Mode B (train-orig, test-q):  clean=0.927  fgsm_asr=0.850  pgd_asr=1.000  margin=9.480  (15.3s)
+  Mode C (train-q, test-q):     clean=0.927  fgsm_asr=0.853  pgd_asr=0.997  margin=9.439  (7.8s)
+
+--- bit_depth=5 ---
+  Mode A (train-q, test-orig): clean=0.937  fgsm_asr=0.823  pgd_asr=0.990  margin=9.574  (15.7s)
+  Mode B (train-orig, test-q):  clean=0.940  fgsm_asr=0.820  pgd_asr=0.997  margin=9.325  (16.5s)
+  Mode C (train-q, test-q):     clean=0.933  fgsm_asr=0.793  pgd_asr=0.997  margin=9.799  (11.7s)
+
+--- bit_depth=6 ---
+  Mode A (train-q, test-orig): clean=0.933  fgsm_asr=0.840  pgd_asr=0.997  margin=9.616  (10.4s)
+  Mode B (train-orig, test-q):  clean=0.933  fgsm_asr=0.860  pgd_asr=0.997  margin=9.523  (9.3s)
+  Mode C (train-q, test-q):     clean=0.930  fgsm_asr=0.833  pgd_asr=0.997  margin=9.738  (7.8s)
+
+--- bit_depth=8 ---
+  Mode A (train-q, test-orig): clean=0.940  fgsm_asr=0.833  pgd_asr=0.993  margin=9.605  (8.3s)
+  Mode B (train-orig, test-q):  clean=0.927  fgsm_asr=0.827  pgd_asr=1.000  margin=9.565  (7.9s)
+  Mode C (train-q, test-q):     clean=0.930  fgsm_asr=0.823  pgd_asr=0.997  margin=9.680  (7.3s)
+
+===========================================================================
+FULL TABLE
+ bit  mode                        clean_acc   fgsm_asr   pgd_asr   mean_margin
+---------------------------------------------------------------------------
+   3  A_train_q_test_orig            0.9300     0.8267    0.9967        9.5110
+   3  B_train_orig_test_q            0.9300     0.8633    0.9933        9.2820
+   3  C_train_q_test_q               0.9267     0.8267    1.0000        9.3613
+   4  A_train_q_test_orig            0.9200     0.8300    0.9967        9.4785
+   4  B_train_orig_test_q            0.9267     0.8500    1.0000        9.4802
+   4  C_train_q_test_q               0.9267     0.8533    0.9967        9.4394
+   5  A_train_q_test_orig            0.9367     0.8233    0.9900        9.5742
+   5  B_train_orig_test_q            0.9400     0.8200    0.9967        9.3250
+   5  C_train_q_test_q               0.9333     0.7933    0.9967        9.7986
+   6  A_train_q_test_orig            0.9333     0.8400    0.9967        9.6158
+   6  B_train_orig_test_q            0.9333     0.8600    0.9967        9.5227
+   6  C_train_q_test_q               0.9300     0.8333    0.9967        9.7376
+   8  A_train_q_test_orig            0.9400     0.8333    0.9933        9.6046
+   8  B_train_orig_test_q            0.9267     0.8267    1.0000        9.5651
+   8  C_train_q_test_q               0.9300     0.8233    0.9967        9.6800
+
+===========================================================================
+ANALYSIS: Mode A (train-quantised, test-original) robustness vs bit depth:
+  bit=3  pgd_asr=0.9967  clean_acc=0.9300
+  bit=4  pgd_asr=0.9967  clean_acc=0.9200
+  bit=5  pgd_asr=0.9900  clean_acc=0.9367
+  bit=6  pgd_asr=0.9967  clean_acc=0.9333
+  bit=8  pgd_asr=0.9933  clean_acc=0.9400
+
+  PGD ASR: 3-bit training=0.9967  vs  8-bit training=0.9933
+  HYPOTHESIS NOT SUPPORTED: Bit-depth reduction alone does not confer robustness.
+===========================================================================

@@ -1,0 +1,19 @@
+Theme A | unlearning x adversarial | A_fashion_mnist_highmargin_random_relabel_s2
+dataset=fashion_mnist forget_kind=highmargin method=random_relabel seed=2 eps=0.100 n_forget=800 class=None
+
+split    phase        acc   pgd_asr    margin
+forget   before    1.0000    0.3700    13.776
+forget   after     1.0000    1.0000     1.702
+retain   before    0.9281    0.9906     4.598
+retain   after     0.8771    0.9967     1.844
+test     before    0.8753    0.9200     5.035
+test     after     0.8440    0.9976     1.662
+
+forget_acc_drop = +0.0000  (unlearning effectiveness: higher = more forgotten)
+retain_acc_drop = +0.0510  (collateral damage)
+test_acc_drop   = +0.0313
+forget_asr_rise = +0.6300  (adversarial hole on forget set?)
+test_asr_rise   = +0.0776  (global robustness change)
+forget_margin_drop = +12.075
+
+[runtime 1.6s]

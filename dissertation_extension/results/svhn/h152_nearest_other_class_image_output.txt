@@ -1,0 +1,59 @@
+[*] Patching torchvision.datasets.FashionMNIST to redirect to: SVHN
+[*] Executing script: dissertation_extension/hypotheses/h152_nearest_other_class_image.py
+======================================================================
+Hypothesis H152: Nearest Other-Class Interpolation Boundary Distance
+======================================================================
+[*] Truncating large test dataset from 26032 to 10000 to prevent GPU CUDA OOM.
+
+Training model...
+  Epoch 1/10 completed
+  Epoch 2/10 completed
+  Epoch 3/10 completed
+  Epoch 4/10 completed
+  Epoch 5/10 completed
+  Epoch 6/10 completed
+  Epoch 7/10 completed
+  Epoch 8/10 completed
+  Epoch 9/10 completed
+  Epoch 10/10 completed
+Training completed in 61.5s
+
+Using 1000 evaluation samples and 2000 pool samples.
+
+Computing interpolation flip boundaries...
+  Calculating pixel L2 distances...
+  Running interpolation predictions...
+    processed 200/1000 samples
+    processed 400/1000 samples
+    processed 600/1000 samples
+    processed 800/1000 samples
+    processed 1000/1000 samples
+
+Evaluating attack outcomes...
+
+Target rates:
+  flipped_FGSM             : positive rate = 0.937
+  flipped_PGD              : positive rate = 0.994
+  min_eps_below_median     : positive rate = 0.500
+
+============================================================
+Univariate AUROC Evaluation
+============================================================
+
+--- Target: flipped_FGSM ---
+  t_flip                    AUROC = 0.7225 (direction: -)
+  margin                    AUROC = 0.7883 (direction: -)
+  mean_pix                  AUROC = 0.5610 (direction: -)
+  std_pix                   AUROC = 0.7120 (direction: -)
+
+--- Target: flipped_PGD ---
+  t_flip                    AUROC = 0.6948 (direction: -)
+  margin                    AUROC = 0.7161 (direction: -)
+  mean_pix                  AUROC = 0.5639 (direction: -)
+  std_pix                   AUROC = 0.8340 (direction: -)
+
+--- Target: min_eps_below_median ---
+  t_flip                    AUROC = 0.7415 (direction: -)
+  margin                    AUROC = 0.9002 (direction: -)
+  mean_pix                  AUROC = 0.5684 (direction: -)
+  std_pix                   AUROC = 0.6769 (direction: -)

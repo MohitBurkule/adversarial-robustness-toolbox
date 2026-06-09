@@ -1,0 +1,19 @@
+Theme A | unlearning x adversarial | A_kmnist_class_neggrad_plus_s1
+dataset=kmnist forget_kind=class method=neggrad_plus seed=1 eps=0.100 n_forget=799 class=5
+
+split    phase        acc   pgd_asr    margin
+forget   before    1.0000    0.9825     8.563
+forget   after     0.0000       nan       nan
+retain   before    0.9982    0.7009     9.184
+retain   after     0.1123    0.0000       nan
+test     before    0.9073    0.8281     6.516
+test     after     0.0940    0.0000       nan
+
+forget_acc_drop = +1.0000  (unlearning effectiveness: higher = more forgotten)
+retain_acc_drop = +0.8858  (collateral damage)
+test_acc_drop   = +0.8133
+forget_asr_rise = +nan  (adversarial hole on forget set?)
+test_asr_rise   = -0.8281  (global robustness change)
+forget_margin_drop = +nan
+
+[runtime 1.5s]

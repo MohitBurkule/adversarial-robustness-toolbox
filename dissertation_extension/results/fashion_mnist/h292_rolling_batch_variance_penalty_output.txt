@@ -1,0 +1,23 @@
+H292 Rolling K-batch Gradient Variance Penalty
+=================================================================
+Dataset: fashion_mnist  N_train=6000  Epochs=10  Seed=0
+EPS_FGSM=0.1  EPS_PGD=0.1  PGD_STEPS=10
+
+   K     lam   clean_acc   fgsm_asr   pgd_asr    margin   time_s
+-----------------------------------------------------------------
+   2   0.000      0.8835     0.4840    0.5395    7.0118      1.5
+   2   0.001      0.8815     0.4600    0.5260    7.2458     30.7
+   2   0.010      0.8835     0.4660    0.5350    7.2943     34.1
+   2   0.100      0.8825     0.4575    0.5400    7.0414     32.5
+   5   0.001      0.8840     0.4830    0.5395    7.6645     45.0
+   5   0.010      0.8820     0.4870    0.5520    7.1671     32.6
+   5   0.100      0.8705     0.4665    0.5400    6.7920      3.4
+  10   0.001      0.8840     0.4810    0.5530    7.1630      5.2
+  10   0.010      0.8895     0.4500    0.5090    7.5384      5.1
+  10   0.100      0.8895     0.4675    0.5340    7.1759      5.2
+
+Analysis:
+- Baseline: K=2, λ=0 (standard SGD)
+- Larger K = more history = smoother penalty signal
+- Lower PGD_ASR with larger K/λ → history helps
+- Compare to H286 (K=2 only) to see if history adds value

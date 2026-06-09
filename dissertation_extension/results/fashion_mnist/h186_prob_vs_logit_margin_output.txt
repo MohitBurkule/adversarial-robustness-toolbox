@@ -1,0 +1,36 @@
+==========================================================================
+H186 - Probability-space vs logit-space margin: adversarial AUROC
+==========================================================================
+Device=cuda  dataset=fashion_mnist  eps=0.1  pgd_steps=10  n_eval=500
+
+[seed 0]  n_correct=465  fgsm_succ=0.832  pgd_succ=1.000  (90.8s)
+  AUROC logit margin : FGSM=0.9609  PGD=nan
+  AUROC prob  margin : FGSM=0.9594  PGD=nan
+  Spearman(logit,prob): r=0.9985  p=0.00e+00
+
+[seed 1]  n_correct=468  fgsm_succ=0.797  pgd_succ=1.000  (26.5s)
+  AUROC logit margin : FGSM=0.9454  PGD=nan
+  AUROC prob  margin : FGSM=0.9424  PGD=nan
+  Spearman(logit,prob): r=0.9980  p=0.00e+00
+
+[seed 2]  n_correct=468  fgsm_succ=0.816  pgd_succ=1.000  (15.8s)
+  AUROC logit margin : FGSM=0.9471  PGD=nan
+  AUROC prob  margin : FGSM=0.9457  PGD=nan
+  Spearman(logit,prob): r=0.9983  p=0.00e+00
+
+==========================================================================
+MEAN across seeds
+  AUROC logit margin : FGSM=0.9512  PGD=nan
+  AUROC prob  margin : FGSM=0.9492  PGD=nan
+  Spearman r (mean)  : 0.9983
+
+FINDING
+  Better predictor   : NEITHER (tie / inconsistent across attacks)
+  AUROC delta (prob-logit): FGSM=-0.0020  PGD=+nan
+
+Interpretation:
+  AUROC >> 0.5 means margin reliably separates vulnerable from robust
+  samples. A margin with higher AUROC is a better per-sample oracle.
+  High Spearman r indicates the two margins rank samples similarly;
+  low r would mean softmax nonlinearity genuinely reorders vulnerability.
+==========================================================================

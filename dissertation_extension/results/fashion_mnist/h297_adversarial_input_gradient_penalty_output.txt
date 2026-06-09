@@ -1,0 +1,9 @@
+H297: Adversarial Input Gradient Penalty
+============================================================
+adv_grad_penalty lam=0: clean=0.881 fgsm_asr=0.768 pgd_asr=0.922 margin=6.053 time=1.0s
+adv_grad_penalty lam=0.001: clean=0.877 fgsm_asr=0.759 pgd_asr=0.908 margin=6.170 time=2.9s
+adv_grad_penalty lam=0.01: clean=0.877 fgsm_asr=0.748 pgd_asr=0.903 margin=6.067 time=2.9s
+adv_grad_penalty lam=0.1: clean=0.877 fgsm_asr=0.751 pgd_asr=0.909 margin=6.103 time=3.3s
+clean_grad_penalty lam=0.001: clean=0.881 fgsm_asr=0.774 pgd_asr=0.920 margin=6.031 time=4.2s
+clean_grad_penalty lam=0.01: clean=0.882 fgsm_asr=0.773 pgd_asr=0.924 margin=5.937 time=2.3s
+clean_grad_penalty lam=0.1: clean=0.886 fgsm_asr=0.763 pgd_asr=0.921 margin=6.117 time=2.3s

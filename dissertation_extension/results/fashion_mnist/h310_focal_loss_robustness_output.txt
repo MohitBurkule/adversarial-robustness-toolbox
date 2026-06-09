@@ -1,0 +1,7 @@
+H310: Focal Loss (gamma grid) vs Robustness
+============================================================
+gamma=0.0 (CE): clean_acc=0.8805, fgsm_asr=0.7690, pgd_asr=0.9230, mean_margin=6.0674
+gamma=0.5 (FL(g=0.5)): clean_acc=0.1050, fgsm_asr=0.8950, pgd_asr=0.8950, mean_margin=nan
+gamma=1.0 (FL(g=1)): clean_acc=0.8840, fgsm_asr=0.7425, pgd_asr=0.9160, mean_margin=3.7242
+gamma=2.0 (FL(g=2)): clean_acc=0.8875, fgsm_asr=0.7380, pgd_asr=0.9185, mean_margin=2.8263
+gamma=5.0 (FL(g=5)): clean_acc=0.8715, fgsm_asr=0.7655, pgd_asr=0.9465, mean_margin=1.5691

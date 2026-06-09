@@ -1,0 +1,7 @@
+H330: Proximal Gradient Training
+SGD_baseline: clean=0.8765 fgsm_asr=0.7610 pgd_asr=0.9105 margin=6.1178
+SGD+prox(1e-4): clean=0.8755 fgsm_asr=0.7615 pgd_asr=0.9285 margin=2.2196
+SGD+prox(1e-3): clean=0.7595 fgsm_asr=0.6145 pgd_asr=0.6775 margin=0.8075
+Adam_baseline: clean=0.8740 fgsm_asr=0.7685 pgd_asr=0.9870 margin=5.1585
+Adam+prox(1e-4): clean=0.8575 fgsm_asr=0.6170 pgd_asr=0.8735 margin=1.1312
+Adam+prox(1e-3): clean=0.1050 fgsm_asr=0.8950 pgd_asr=0.8950 margin=0.0000

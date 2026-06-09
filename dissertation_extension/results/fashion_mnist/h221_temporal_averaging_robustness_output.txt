@@ -1,0 +1,36 @@
+==========================================================================
+H221 - Temporal averaging (simulated video) as adversarial defence
+==========================================================================
+Device=cuda  dataset=fashion_mnist  N_EVAL=300  eps=0.1  noise_std=0.05
+
+[image_model] Training standard CNN on single frames...
+  Done in 10.0s
+
+[video_model] Training CNN on averaged 3-frame clips...
+  Done in 20.6s
+
+Clean accuracy - image_model: 0.937  video_model: 0.923
+
+Computing attack success rates...
+  image_model: frame_independent (FGSM on single frame)...
+    ASR=0.790
+  image_model: temporally_consistent (same δ, single frame sees it)...
+    ASR=0.790
+  video_model: frame_independent (δ only on centre frame)...
+    ASR=0.404
+  video_model: temporally_consistent (same δ on all frames)...
+    ASR=0.807
+
+==========================================================================
+Model             CleanAcc  FrameIndep_ASR  TempConsist_ASR
+----------------------------------------------------------
+image_model          0.937           0.790            0.790
+video_model          0.923           0.404            0.807
+
+==========================================================================
+Interpretation:
+  Frame-independent ASR delta (video-image): -0.386
+  Temporally-consistent ASR delta (video-image): +0.017
+  Negative delta on frame-independent = temporal averaging acts as smoothing.
+  Similar delta on temporally-consistent = attack not neutralised by averaging.
+==========================================================================

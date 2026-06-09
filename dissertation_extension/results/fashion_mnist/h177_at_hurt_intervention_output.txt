@@ -1,0 +1,36 @@
+==========================================================================
+H177 - Targeted intervention on the AT-hurt set
+==========================================================================
+Device=cuda  EPOCHS=10  EPS=0.0588  fragile_frac=0.1
+
+--- Train vanilla + compute train margins ---
+  vanilla trained in 16.7s; fragile (bottom 10%) margin <= 1.4720, n=6000
+  vanilla test acc = 0.9150
+
+--- Train AT-uniform ---
+  37.0s  cleanAcc=0.8800  PGD-ASR=0.1960  minEps=0.1845  hurt=103  gained=33
+
+--- Train AT-downweight ---
+  36.6s  cleanAcc=0.8730  PGD-ASR=0.1975  minEps=0.1655  hurt=111  gained=27
+
+--- Train AT-upweight ---
+  36.8s  cleanAcc=0.8685  PGD-ASR=0.2105  minEps=0.1753  hurt=145  gained=52
+
+--- Train AT-exclude ---
+  36.6s  cleanAcc=0.8865  PGD-ASR=0.2025  minEps=0.1631  hurt=93  gained=36
+
+==========================================================================
+Intervention comparison (delta vs AT-uniform)
+==========================================================================
+mode          cleanAcc   dClean  PGD-ASR   minEps   hurt   dHurt  gained
+------------------------------------------------------------------------
+uniform         0.8800  +0.0000   0.1960   0.1845    103      +0      33
+downweight      0.8730  -0.0070   0.1975   0.1655    111      +8      27
+upweight        0.8685  -0.0115   0.2105   0.1753    145     +42      52
+exclude         0.8865  +0.0065   0.2025   0.1631     93     -10      36
+
+--- Profile of hurt vs gained samples (AT-uniform), by vanilla test margin ---
+  hurt    (vanilla-correct, AT-wrong):  n= 103  vanilla margin mean=1.7439
+  preserved (vanilla-correct, AT-right): n=1727  vanilla margin mean=10.6431
+  gained  (vanilla-wrong, AT-right):    n=  33  vanilla margin mean=0.6932  (symmetry probe: do gains have distinctive pre-AT margin?)
+==========================================================================

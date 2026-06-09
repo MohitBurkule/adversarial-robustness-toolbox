@@ -1,0 +1,19 @@
+Theme A | unlearning x adversarial | A_kmnist_random_finetune_retain_s0
+dataset=kmnist forget_kind=random method=finetune_retain seed=0 eps=0.100 n_forget=800 class=None
+
+split    phase        acc   pgd_asr    margin
+forget   before    0.9962    0.6901     9.044
+forget   after     0.9937    0.7157     9.743
+retain   before    0.9994    0.6757     9.235
+retain   after     1.0000    0.6946    10.000
+test     before    0.9227    0.7789     6.860
+test     after     0.9193    0.7781     7.447
+
+forget_acc_drop = +0.0025  (unlearning effectiveness: higher = more forgotten)
+retain_acc_drop = -0.0006  (collateral damage)
+test_acc_drop   = +0.0033
+forget_asr_rise = +0.0256  (adversarial hole on forget set?)
+test_asr_rise   = -0.0008  (global robustness change)
+forget_margin_drop = -0.699
+
+[runtime 1.3s]

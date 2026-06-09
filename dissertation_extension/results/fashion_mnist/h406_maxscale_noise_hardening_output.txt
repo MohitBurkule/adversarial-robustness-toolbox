@@ -1,0 +1,109 @@
+==========================================================================================
+H406  Max-scale random-noise hardening of vulnerable train samples (Fashion-MNIST)
+==========================================================================================
+config: N_TRAIN=6000 N_EVAL=2000 EPOCHS=10 LR=0.05 BATCH=512 STEPS/EPOCH=1024 SGD(mom=0.9,wd=5e-4) SEED=0
+        EPS=0.1 PGD_STEPS=10 PGD_ALPHA=0.01
+        conditions (n_target,K) = [(0, 0), (300, 2000), (1000, 2000), (3000, 2000), (6000, 2000), (6000, 5000)]
+        vulnerable-test subset = lowest 25% margin
+        device = cuda
+        gpu    = NVIDIA GeForce RTX 4090
+        GPU-MAX: data resident on GPU, on-the-fly per-batch noise, no materialized aug set
+
+data: Xtr=(6000, 1, 28, 28) (device=cuda:0)  Xte=(2000, 1, 28, 28)
+
+[1] training BASE model (no augmentation, same step budget)...
+    base clean_acc=0.8760  FGSM_ASR=0.7860  PGD_ASR=1.0000  (train 30.3s, 173,336 samples/sec)
+
+[2] ranking TRAINING samples by vulnerability (input-space margin)...
+    train margin: min=4.639 median=8.242 max=16.102
+    vulnerable test subset: 500 samples (margin <= 3.138)  base vuln_PGD=1.0000
+    [perf] baseline train samples/sec = 173,336 (steps/epoch=1024, batch=512)
+
+==========================================================================================
+[3.1] CONDITION n_target=300 (300)  K=2000
+==========================================================================================
+    aug_size = 606,000  (= 6000 originals + 300*2000 on-the-fly noisy copies)
+    retraining from scratch (seed=0, on-the-fly GPU noise)...
+    RESULT n=300,K=2000: clean_acc=0.8370  FGSM_ASR=0.8787  PGD_ASR=1.0000  vuln_PGD=1.0000
+           d_clean_acc=-0.0390  d_PGD_ASR=+0.0000 (vs baseline)
+           [perf] wall=30.7s  samples/sec=170,709  (64s total)
+
+==========================================================================================
+[3.2] CONDITION n_target=1000 (1000)  K=2000
+==========================================================================================
+    aug_size = 2,006,000  (= 6000 originals + 1000*2000 on-the-fly noisy copies)
+    retraining from scratch (seed=0, on-the-fly GPU noise)...
+    RESULT n=1000,K=2000: clean_acc=0.8365  FGSM_ASR=0.9032  PGD_ASR=0.9934  vuln_PGD=1.0000
+           d_clean_acc=-0.0395  d_PGD_ASR=-0.0066 (vs baseline)
+           [perf] wall=30.9s  samples/sec=169,499  (95s total)
+
+==========================================================================================
+[3.3] CONDITION n_target=3000 (3000)  K=2000
+==========================================================================================
+    aug_size = 6,006,000  (= 6000 originals + 3000*2000 on-the-fly noisy copies)
+    retraining from scratch (seed=0, on-the-fly GPU noise)...
+    RESULT n=3000,K=2000: clean_acc=0.8615  FGSM_ASR=0.8764  PGD_ASR=0.9965  vuln_PGD=1.0000
+           d_clean_acc=-0.0145  d_PGD_ASR=-0.0035 (vs baseline)
+           [perf] wall=31.0s  samples/sec=168,957  (126s total)
+
+==========================================================================================
+[3.4] CONDITION n_target=6000 (ALL)  K=2000
+==========================================================================================
+    aug_size = 12,006,000  (= 6000 originals + 6000*2000 on-the-fly noisy copies)
+    retraining from scratch (seed=0, on-the-fly GPU noise)...
+    RESULT n=ALL,K=2000: clean_acc=0.8750  FGSM_ASR=0.7029  PGD_ASR=0.9977  vuln_PGD=1.0000
+           d_clean_acc=-0.0010  d_PGD_ASR=-0.0023 (vs baseline)
+           [perf] wall=30.7s  samples/sec=170,600  (157s total)
+
+==========================================================================================
+[3.5] CONDITION n_target=6000 (ALL)  K=5000
+==========================================================================================
+    aug_size = 30,006,000  (= 6000 originals + 6000*5000 on-the-fly noisy copies)
+    retraining from scratch (seed=0, on-the-fly GPU noise)...
+    RESULT n=ALL,K=5000: clean_acc=0.8775  FGSM_ASR=0.7111  PGD_ASR=0.9949  vuln_PGD=1.0000
+           d_clean_acc=+0.0015  d_PGD_ASR=-0.0051 (vs baseline)
+           [perf] wall=30.8s  samples/sec=170,014  (188s total)
+
+==========================================================================================
+[4] MAIN TABLE
+==========================================================================================
+condition             eff_aug wall_time_s  clean_acc   FGSM_ASR    PGD_ASR   vuln_PGD
+-------------------------------------------------------------------------------------
+baseline (n=0,K=0)        6,000        30.3     0.8760     0.7860     1.0000     1.0000
+n=300,K=2000          606,000        30.7     0.8370     0.8787     1.0000     1.0000
+n=1000,K=2000       2,006,000        30.9     0.8365     0.9032     0.9934     1.0000
+n=3000,K=2000       6,006,000        31.0     0.8615     0.8764     0.9965     1.0000
+n=ALL,K=2000       12,006,000        30.7     0.8750     0.7029     0.9977     1.0000
+n=ALL,K=5000       30,006,000        30.8     0.8775     0.7111     0.9949     1.0000
+-------------------------------------------------------------------------------------
+
+[4b] PERF (GPU saturation)
+condition           samples/sec  wall_time_s
+baseline (n=0,K=0)        173,336         30.3
+n=300,K=2000            170,709         30.7
+n=1000,K=2000           169,499         30.9
+n=3000,K=2000           168,957         31.0
+n=ALL,K=2000            170,600         30.7
+n=ALL,K=5000            170,014         30.8
+  peak augmented throughput: 170,709 samples/sec (n=300,K=2000, aug=606,000)
+
+==========================================================================================
+[5] VERDICT
+==========================================================================================
+  n=300,K=2000: PGD_ASR 1.0000->1.0000 (+0.0000); clean_acc 0.8760->0.8370 (-0.0390); vuln_PGD 1.0000->1.0000 (+0.0000)
+  n=1000,K=2000: PGD_ASR 1.0000->0.9934 (-0.0066); clean_acc 0.8760->0.8365 (-0.0395); vuln_PGD 1.0000->1.0000 (+0.0000)
+  n=3000,K=2000: PGD_ASR 1.0000->0.9965 (-0.0035); clean_acc 0.8760->0.8615 (-0.0145); vuln_PGD 1.0000->1.0000 (+0.0000)
+  n=ALL,K=2000: PGD_ASR 1.0000->0.9977 (-0.0023); clean_acc 0.8760->0.8750 (-0.0010); vuln_PGD 1.0000->1.0000 (+0.0000)
+  n=ALL,K=5000: PGD_ASR 1.0000->0.9949 (-0.0051); clean_acc 0.8760->0.8775 (+0.0015); vuln_PGD 1.0000->1.0000 (+0.0000)
+
+  best (lowest PGD_ASR) targeted condition: n=1000,K=2000 (aug=2,006,000)
+  whole-test PGD robustness gain vs baseline = +0.0066 (positive => more robust)
+  vulnerable-subset PGD gain vs baseline     = +0.0000
+  clean-acc change vs baseline               = -0.0395 (DROPPED >0.02)
+  ONE-LINE VERDICT: NO: even at the EXTREME (n=ALL training samples, K up to 5000) random uniform L-inf noise multiplicity gives no whole-test robustness. This CONFIRMS H404/H405: random-noise hardening is a dead end regardless of scale; PGD curvature is not addressed by axis-aligned random noise.
+
+  GPU speedup: peak 170,709 samples/sec with data GPU-resident + on-the-fly noise + BATCH=512.
+  Largest condition (aug=30,006,000) trained in 31.0s; whole sweep in 188.1s.
+  H405's per-batch host->device copies + materialized aug set are eliminated; memory stays flat (only int index grows).
+
+done in 188.1s
