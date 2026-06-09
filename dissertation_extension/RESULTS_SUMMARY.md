@@ -1592,3 +1592,107 @@ All results are for Fashion-MNIST unless noted. Attacks: FGSM and PGD (eps=0.1) 
 **Conclusion:** Consistency regularisation (forcing stable output distributions under Gaussian noise) provides modest adversarial robustness improvements at higher lambda values — PGD ASR drops from 0.915 (lambda=0) to 0.882 (lambda=10), while smoothed accuracy increases from 0.839 to 0.871. The benefit is incremental and the FGSM improvement is more pronounced than PGD, suggesting the noise-smoothing correlation exists but is limited at this scale.
 **Key metric:** lambda=0: clean=0.877, smoothed=0.839, PGD_ASR=0.915; lambda=10.0: clean=0.877, smoothed=0.871, PGD_ASR=0.882
 **Status:** PARTIALLY SUPPORTED
+
+---
+
+## H372 - Per-Layer Jacobian Penalty
+**Dataset:** Fashion-MNIST
+**Conclusion:** Penalising the Frobenius norm of the Jacobian at every block (via Hutchinson random projections) significantly improves robustness: the all_layers condition reduces PGD ASR from 0.977 to 0.763, with the weighted variant achieving 0.817. The improvement comes at a cost to clean accuracy (0.767–0.817) and training time (~9x slower), but confirms that layer-wise Jacobian regularisation is substantially more effective than input-only gradient penalties.
+**Key metric:** baseline: PGD_ASR=0.977; all_layers: clean=0.767, PGD_ASR=0.763; input_only: clean=0.863, PGD_ASR=0.868
+**Status:** SUPPORTED
+
+---
+
+## H373 - Gradient Coherence Forcing
+**Dataset:** Fashion-MNIST
+**Conclusion:** Forcing gradient coherence by suppressing updates with low consecutive-batch cosine similarity (τ>0) reduces PGD ASR (best: 0.725 at τ=0.2) but at severe cost to clean accuracy (0.306–0.373 vs 0.878 baseline). The filtering effectively acts as aggressive regularisation, confirming that gradient coherence correlates with robustness but cannot be forced cheaply without destroying clean performance.
+**Key metric:** tau=0.0: clean=0.878, PGD_ASR=0.920; tau=0.2: clean=0.373, PGD_ASR=0.725
+**Status:** PARTIALLY SUPPORTED
+
+---
+
+## H374 - Layer-Specific Learning Rates (AT-Mimicking)
+**Dataset:** Fashion-MNIST
+**Conclusion:** Mimicking the per-layer learning-rate pattern of adversarial training (higher LR for early layers, lower for the head) provides no robustness benefit: the AT-mimic condition (PGD ASR=0.932) is virtually identical to uniform (0.924) and inverse (0.902) schedules. The layer-displacement pattern seen in AT cannot be replicated by merely rescaling learning rates.
+**Key metric:** uniform: PGD_ASR=0.924; at_mimic: PGD_ASR=0.932; inverse: PGD_ASR=0.902
+**Status:** NOT SUPPORTED
+
+---
+
+## H375 - Weight Displacement Budget
+**Dataset:** Fashion-MNIST
+**Conclusion:** Constraining total weight displacement to AT-like levels (7–9 L2 units) provides negligible robustness improvement: PGD ASR ranges from 0.922–0.932 across all budget values versus 0.930 unconstrained. Simply keeping weights close to initialisation does not reproduce the robustness of adversarial training.
+**Key metric:** budget=9.0: PGD_ASR=0.922 (best, only 0.008 below unconstrained 0.930)
+**Status:** NOT SUPPORTED
+
+---
+
+## H376 - Anti-SAM Sharpness Seeking
+**Dataset:** Fashion-MNIST
+**Conclusion:** Anti-SAM (perturbing weights toward sharper minima, opposite of SAM) unexpectedly improves adversarial robustness: at ρ=0.1 PGD ASR drops from 0.916 to 0.792 and FGSM ASR from 0.767 to 0.651, with only marginal clean accuracy loss (0.876). This counterintuitive result suggests deliberate sharpness injection creates loss-landscape geometry that is harder to exploit with gradient-based attacks.
+**Key metric:** rho=0: PGD_ASR=0.916; rho=0.1: clean=0.876, PGD_ASR=0.792
+**Status:** SUPPORTED
+
+---
+
+## H377 - Gradient Step Length Budget
+**Dataset:** Fashion-MNIST
+**Conclusion:** Constraining the total weight-space path length (cumulative step budget) to AT-like levels substantially improves robustness: budget=10.0 achieves PGD ASR=0.729 (vs 0.921 unconstrained) though clean accuracy drops to 0.841. The result confirms that AT's shorter optimisation trajectory is functionally significant — budgeted training forces more efficient use of each gradient step, producing more robust solutions.
+**Key metric:** budget=10.0: clean=0.842, FGSM_ASR=0.601, PGD_ASR=0.729; unconstrained: PGD_ASR=0.921
+**Status:** SUPPORTED
+
+---
+
+## H378 - Early-Layer Gradient Amplification
+**Dataset:** Fashion-MNIST
+**Conclusion:** Amplifying gradients for early layers to match the AT displacement pattern (AT-mimic: [2.0,1.0,0.5,0.3]) provides no robustness benefit: AT-mimic (PGD ASR=0.930) is essentially identical to uniform (0.928) and inverse (0.927) schedules. Gradient-hook rescaling cannot replicate the robustness advantages of AT's per-layer weight movement.
+**Key metric:** uniform: PGD_ASR=0.928; at_mimic: PGD_ASR=0.930; inverse: PGD_ASR=0.927
+**Status:** NOT SUPPORTED
+
+---
+
+## H379 - Trajectory Straightness Penalty
+**Dataset:** Fashion-MNIST
+**Conclusion:** Penalising high-curvature weight-trajectory updates (suppressing steps that deviate from the previous direction) provides negligible robustness benefit: best PGD ASR=0.923 at λ=0.1 versus 0.927 baseline, with clean accuracy unchanged. Forcing straighter optimisation trajectories does not yield the robustness advantages associated with AT's more coherent gradient directions.
+**Key metric:** lam=0: PGD_ASR=0.927; lam=0.1: PGD_ASR=0.923 (negligible improvement)
+**Status:** NOT SUPPORTED
+
+---
+
+## H380 - Weight Norm Trajectory Control
+**Dataset:** Fashion-MNIST
+**Conclusion:** Penalising weight-norm growth rate beyond an AT-like allowed growth (1.0) provides no meaningful robustness benefit: the best condition (λ=1.0) reduces PGD ASR by only 0.011 (0.926→0.915) with clean accuracy essentially unchanged (0.880). Controlling weight-norm growth rate alone does not replicate the robustness of adversarial training.
+**Key metric:** lam=0: clean=0.883, PGD_ASR=0.926; lam=1.0: clean=0.880, PGD_ASR=0.915 (Δ=−0.011)
+**Status:** NOT SUPPORTED
+
+---
+
+## H381 - Feature Activation Statistics Matching
+**Dataset:** Fashion-MNIST
+**Conclusion:** Forcing a standard model to match AT-like per-block activation magnitudes (mean ||h_k||) via a penalty loss significantly reduces adversarial vulnerability at λ=0.1: PGD ASR drops from 0.909 to 0.719 (−19.0 pp) and FGSM ASR from 0.771 to 0.695, though clean accuracy falls to 0.808. The matched activation statistics closely reproduce the AT model's statistics ([73.09, 53.46, 26.06] vs AT [73.21, 53.34, 26.05]), confirming that activation magnitudes are a meaningful proxy for adversarial robustness.
+**Key metric:** standard: clean=0.879, PGD_ASR=0.909; at_stats_matched (λ=0.1): clean=0.808, PGD_ASR=0.719; actual_AT: clean=0.771, PGD_ASR=0.324
+**Status:** SUPPORTED
+
+---
+
+## H382 - Combined AT Geometry Proxy
+**Dataset:** Fashion-MNIST
+**Conclusion:** Combining gradient coherence forcing (τ=0.2), layer-specific learning rates, and displacement budget produces only 17.5% of AT's robustness gain while causing severe clean accuracy collapse (0.343 vs 0.879 baseline). Gradient coherence forcing dominates and crashes clean accuracy; layer LR alone provides no robustness (PGD ASR=0.940 vs baseline 0.925). The combined proxy approach fails as a viable AT substitute.
+**Key metric:** baseline: clean=0.879, PGD_ASR=0.925; coherence_only: clean=0.373, PGD_ASR=0.725; all_combined: clean=0.343, PGD_ASR=0.819; actual_AT: clean=0.777, PGD_ASR=0.321
+**Status:** NOT SUPPORTED
+
+---
+
+## H383 - Catch-All Unknown Class
+**Dataset:** Fashion-MNIST
+**Conclusion:** Adding an explicit class 10 ("unknown") as an adversarial escape route completely fails: abstention rates on adversarial examples are essentially zero (0.0–1.0%) across all unknown-sample conditions, no better than clean abstention (0.0%). The unknown class does not activate in response to adversarial perturbations, providing no robustness benefit, and PGD ASR remains 0.948–0.978 across conditions.
+**Key metric:** baseline: PGD_ASR=0.956, abs_pgd=0.000; unknown_mixed_1x: PGD_ASR=0.961, abs_pgd=0.010
+**Status:** NOT SUPPORTED
+
+---
+
+## H384 - Noise Copy Multiplicity
+**Dataset:** Fashion-MNIST
+**Conclusion:** Augmenting training with K noisy copies per clean image (σ=0.15) consistently reduces FGSM ASR (0.735→0.582, −15.3 pp at K=16) and modestly reduces PGD ASR (0.953→0.921, −3.2 pp), with clean accuracy unchanged (~0.880). Decision margin climbs from 6.3 to 14.2 as K increases. The benefit saturates by K=8→16 with marginal additional gains, and PGD improvement is much weaker than FGSM improvement, indicating noise augmentation hardens against weak gradient attacks but not strong iterative ones.
+**Key metric:** K=0: clean=0.883, FGSM_ASR=0.735, PGD_ASR=0.953, margin=6.34; K=16: clean=0.874, FGSM_ASR=0.582, PGD_ASR=0.921, margin=14.23; ΔFGSM=−15.3pp, ΔPGD=−3.2pp
+**Status:** SUPPORTED (saturates at K=8–16; PGD benefit modest)

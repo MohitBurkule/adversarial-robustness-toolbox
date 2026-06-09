@@ -1,0 +1,102 @@
+Device: cuda
+======================================================================
+H532 – Margin Dynamics During Training
+======================================================================
+
+──── Part 1: 2D Gaussian blobs ────
+
+[2D] Training STD model ...
+
+[2D] Training AT model ...
+
+[2D] Final metrics:
+  STD: acc=0.990  ASR=0.024  margin_mean=46.885
+  AT:  acc=0.993  ASR=0.008  margin_mean=25.663
+
+Generating Figure 1 (2D) ...
+Figure 1 → /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h532_margin_dynamics_2d.png
+
+──── Part 2: Fashion-MNIST (T-shirt vs Trouser) ────
+  Train: 12000  Test: 2000
+
+[FMNIST] Training STD model ...
+  ep   1/30  acc=0.988  ASR=0.212  margin_mean=8.938
+  ep   2/30  acc=0.993  ASR=0.213  margin_mean=8.824
+  ep   3/30  acc=0.992  ASR=0.228  margin_mean=9.281
+  ep   4/30  acc=0.993  ASR=0.251  margin_mean=9.420
+  ep   5/30  acc=0.992  ASR=0.294  margin_mean=9.309
+  ep   6/30  acc=0.993  ASR=0.367  margin_mean=11.254
+  ep   7/30  acc=0.995  ASR=0.557  margin_mean=8.455
+  ep   8/30  acc=0.994  ASR=0.637  margin_mean=7.770
+  ep   9/30  acc=0.995  ASR=0.662  margin_mean=9.843
+  ep  10/30  acc=0.997  ASR=0.634  margin_mean=12.097
+  ep  11/30  acc=0.997  ASR=0.699  margin_mean=13.020
+  ep  12/30  acc=0.996  ASR=0.828  margin_mean=13.237
+  ep  13/30  acc=0.996  ASR=0.804  margin_mean=11.548
+  ep  14/30  acc=0.997  ASR=0.828  margin_mean=13.947
+  ep  15/30  acc=0.997  ASR=0.806  margin_mean=15.709
+  ep  16/30  acc=0.996  ASR=0.822  margin_mean=16.201
+  ep  17/30  acc=0.997  ASR=0.756  margin_mean=16.687
+  ep  18/30  acc=0.997  ASR=0.837  margin_mean=16.638
+  ep  19/30  acc=0.996  ASR=0.868  margin_mean=17.895
+  ep  20/30  acc=0.998  ASR=0.827  margin_mean=18.642
+  ep  21/30  acc=0.998  ASR=0.836  margin_mean=19.307
+  ep  22/30  acc=0.997  ASR=0.827  margin_mean=19.932
+  ep  23/30  acc=0.997  ASR=0.842  margin_mean=19.841
+  ep  24/30  acc=0.997  ASR=0.840  margin_mean=20.035
+  ep  25/30  acc=0.997  ASR=0.846  margin_mean=20.228
+  ep  26/30  acc=0.997  ASR=0.851  margin_mean=20.306
+  ep  27/30  acc=0.996  ASR=0.843  margin_mean=20.428
+  ep  28/30  acc=0.996  ASR=0.845  margin_mean=20.438
+  ep  29/30  acc=0.996  ASR=0.851  margin_mean=20.421
+  ep  30/30  acc=0.996  ASR=0.849  margin_mean=20.430
+
+[FMNIST] Training AT model ...
+  ep   1/30  acc=0.988  ASR=0.040  margin_mean=5.305
+  ep   2/30  acc=0.989  ASR=0.030  margin_mean=6.723
+  ep   3/30  acc=0.991  ASR=0.022  margin_mean=7.214
+  ep   4/30  acc=0.990  ASR=0.017  margin_mean=7.105
+  ep   5/30  acc=0.991  ASR=0.018  margin_mean=7.291
+  ep   6/30  acc=0.989  ASR=0.017  margin_mean=7.086
+  ep   7/30  acc=0.990  ASR=0.012  margin_mean=6.465
+  ep   8/30  acc=0.991  ASR=0.013  margin_mean=7.992
+  ep   9/30  acc=0.993  ASR=0.014  margin_mean=9.014
+  ep  10/30  acc=0.993  ASR=0.012  margin_mean=10.165
+  ep  11/30  acc=0.992  ASR=0.017  margin_mean=9.238
+  ep  12/30  acc=0.991  ASR=0.008  margin_mean=10.226
+  ep  13/30  acc=0.990  ASR=0.012  margin_mean=9.323
+  ep  14/30  acc=0.994  ASR=0.011  margin_mean=10.577
+  ep  15/30  acc=0.994  ASR=0.015  margin_mean=10.498
+  ep  16/30  acc=0.994  ASR=0.009  margin_mean=12.266
+  ep  17/30  acc=0.994  ASR=0.016  margin_mean=11.377
+  ep  18/30  acc=0.995  ASR=0.014  margin_mean=11.483
+  ep  19/30  acc=0.995  ASR=0.016  margin_mean=12.117
+  ep  20/30  acc=0.994  ASR=0.014  margin_mean=12.540
+  ep  21/30  acc=0.995  ASR=0.015  margin_mean=12.022
+  ep  22/30  acc=0.996  ASR=0.015  margin_mean=12.224
+  ep  23/30  acc=0.996  ASR=0.014  margin_mean=12.891
+  ep  24/30  acc=0.995  ASR=0.015  margin_mean=12.170
+  ep  25/30  acc=0.995  ASR=0.008  margin_mean=12.431
+  ep  26/30  acc=0.995  ASR=0.015  margin_mean=12.760
+  ep  27/30  acc=0.996  ASR=0.016  margin_mean=12.891
+  ep  28/30  acc=0.996  ASR=0.014  margin_mean=12.846
+  ep  29/30  acc=0.996  ASR=0.015  margin_mean=12.902
+  ep  30/30  acc=0.996  ASR=0.015  margin_mean=12.919
+
+[FMNIST] Final metrics:
+  STD: acc=0.9960  ASR=0.8494  margin_mean=20.4295
+  AT:  acc=0.9955  ASR=0.0146  margin_mean=12.9191
+
+Generating Figure 2 (FMNIST) ...
+Figure 2 → /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h532_margin_dynamics_fmnist.png
+
+======================================================================
+PASS: AT final margin (12.9191) <= STD final margin (20.4295)
+=> FAIL
+
+2D geometric margin: STD=1.3897  AT=1.4771
+AT geometric margin > STD: confirmed
+
+Text   → /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h532_margin_dynamics_training_output.txt
+
+Done.

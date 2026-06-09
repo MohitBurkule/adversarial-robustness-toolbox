@@ -1,0 +1,29 @@
+========================================================================
+H517 — Adversarial Robustness Distillation
+========================================================================
+
+--- Seed 0 ---
+  STD baseline: clean=0.879  adv=0.003
+   Teacher eps |  T-clean    T-adv |  S-clean    S-adv | Transfer%
+         0.050 |    0.817    0.385 |    0.851    0.105 |     27.3%
+         0.100 |    0.766    0.516 |    0.840    0.104 |     20.2%
+         0.200 |    0.719    0.533 |    0.826    0.071 |     13.3%
+
+--- Seed 1 ---
+  STD baseline: clean=0.872  adv=0.000
+   Teacher eps |  T-clean    T-adv |  S-clean    S-adv | Transfer%
+         0.050 |    0.819    0.370 |    0.821    0.047 |     12.7%
+         0.100 |    0.769    0.510 |    0.814    0.099 |     19.4%
+         0.200 |    0.711    0.552 |    0.816    0.054 |      9.8%
+
+========================================================================
+CROSS-SEED SUMMARY
+========================================================================
+  Teacher eps=0.050: T-adv=0.378±0.008  S-adv=0.076±0.029  Transfer=20.0%
+  Teacher eps=0.100: T-adv=0.513±0.003  S-adv=0.102±0.002  Transfer=19.8%
+  Teacher eps=0.200: T-adv=0.543±0.009  S-adv=0.063±0.009  Transfer=11.6%
+
+  Best student robustness from teacher eps=0.100 (adv_acc=0.102)
+  → NON-MONOTONIC: strongest teacher is NOT the best for distillation
+
+Total time: 55.6s

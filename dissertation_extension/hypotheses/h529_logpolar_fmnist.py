@@ -181,7 +181,13 @@ class SmallCNN(nn.Module):
 # Attacks
 # ──────────────────────────────────────────────────────────────────────────────
 def fgsm_attack(model, x, y, eps, preprocess=None):
-    """FGSM in the native space of the model (preprocess applied after perturb)."""
+    """
+    FGSM attack always in PIXEL space.
+    If preprocess is given, gradients flow: pixel → preprocess → model.
+    This means for LogPolar models we compute grad w.r.t. the log-polar input
+    (adaptive attack).  Use fgsm_pixel_attack for the correct retinal-defense
+    experiment where the attacker is blind to the transform.
+    """
     xv = x.clone().detach().requires_grad_(True)
     inp = preprocess(xv) if preprocess else xv
     F.cross_entropy(model(inp), y).backward()
@@ -189,7 +195,33 @@ def fgsm_attack(model, x, y, eps, preprocess=None):
     return x_adv
 
 
+def fgsm_pixel_attack(model, x, y, eps):
+    """
+    FGSM attack in PIXEL space against a Cartesian model (no preprocess).
+    For use against LogPolar model: craft perturbation on pixels, then
+    the log-polar transform is applied during eval — attacker cannot
+    back-prop through the transform (black-box to transform).
+    """
+    xv = x.clone().detach().requires_grad_(True)
+    F.cross_entropy(model(xv), y).backward()
+    return (x + eps * xv.grad.sign()).clamp(0, 1).detach()
+
+
+def pgd_pixel_attack(model, x, y, eps, step, steps):
+    """PGD in pixel space, no preprocess — transform-blind attacker."""
+    x_adv = x.clone().detach() + torch.empty_like(x).uniform_(-eps, eps)
+    x_adv = x_adv.clamp(0, 1)
+    for _ in range(steps):
+        x_adv = x_adv.requires_grad_(True)
+        loss = F.cross_entropy(model(x_adv), y)
+        grad = torch.autograd.grad(loss, x_adv)[0]
+        x_adv = (x_adv.detach() + step * grad.sign()).clamp(
+            x - eps, x + eps).clamp(0, 1)
+    return x_adv.detach()
+
+
 def pgd_attack(model, x, y, eps, step, steps, preprocess=None):
+    """Adaptive PGD (grad flows through preprocess)."""
     x_adv = x.clone().detach() + torch.empty_like(x).uniform_(-eps, eps)
     x_adv = x_adv.clamp(0, 1)
     for _ in range(steps):
@@ -203,7 +235,11 @@ def pgd_attack(model, x, y, eps, step, steps, preprocess=None):
 
 
 def eval_asr(model, loader, eps, attack_fn, preprocess=None):
-    """ASR on correctly-classified examples."""
+    """
+    ASR on correctly-classified examples.
+    attack_fn(model, x, y, eps) → x_adv  (pixel space)
+    preprocess applied to x_adv before model inference.
+    """
     total_correct = 0
     total_flipped = 0
     model.eval()
@@ -215,7 +251,7 @@ def eval_asr(model, loader, eps, attack_fn, preprocess=None):
         if correct_mask.sum() == 0:
             continue
         xc, yc = x[correct_mask], y[correct_mask]
-        x_adv = attack_fn(model, xc, yc, eps, preprocess)
+        x_adv = attack_fn(model, xc, yc, eps)    # always pixel-space output
         inp_adv = preprocess(x_adv) if preprocess else x_adv
         with torch.no_grad():
             flipped = (model(inp_adv).argmax(1) != yc).sum().item()
@@ -324,50 +360,79 @@ def _run():
     print(f"  Cartesian-AT  : {acc_at:.4f}")
 
     # ── FGSM eps sweep ────────────────────────────────────────────────────────
+    # Three attack protocols:
+    #   Cart-STD:      FGSM in pixel space, no transform
+    #   LogPolar-BLIND: FGSM crafted against Cartesian-STD (transfer attack),
+    #                   then log-polar transform applied at inference
+    #                   → simulates attacker blind to the transform
+    #   LogPolar-ADAPT: FGSM crafted with gradient through log-polar transform
+    #                   → adaptive attacker who knows the transform
+    #   Cart-AT:       FGSM in pixel space, AT model
     print("\nFGSM ASR sweep:")
-    asr_cs_list, asr_lp_list, asr_at_list = [], [], []
+    print("  (BLIND = pixel-space attack transferred to LP model; "
+          "ADAPT = attacker knows LP transform)")
+    asr_cs_list, asr_lp_blind_list, asr_lp_adapt_list, asr_at_list = [], [], [], []
     for eps in EPS_LIST:
-        def _fgsm_eps(model, x, y, e, pre): return fgsm_attack(model, x, y, e, pre)
+        # Cartesian-STD: normal pixel attack
         asr_cs = eval_asr(cart_std, test_loader, eps,
-                          lambda m,x,y,e,p: fgsm_attack(m,x,y,e,None),  None)
-        asr_lp = eval_asr(lp_std,   test_loader, eps,
-                          lambda m,x,y,e,p: fgsm_attack(m,x,y,e,logpolar_transform),
-                          logpolar_transform)
-        asr_at = eval_asr(cart_at,  test_loader, eps,
-                          lambda m,x,y,e,p: fgsm_attack(m,x,y,e,None),  None)
+                          lambda m,x,y,e: fgsm_pixel_attack(m,x,y,e), None)
+
+        # LogPolar-BLIND: craft attack on Cartesian-STD (same arch, pixel space),
+        # then apply LP transform for LogPolar model inference
+        asr_lp_blind = eval_asr(lp_std, test_loader, eps,
+                                 lambda m,x,y,e: fgsm_pixel_attack(cart_std,x,y,e),
+                                 logpolar_transform)
+
+        # LogPolar-ADAPT: adaptive attack through the transform
+        asr_lp_adapt = eval_asr(lp_std, test_loader, eps,
+                                 lambda m,x,y,e: fgsm_attack(m,x,y,e,logpolar_transform),
+                                 logpolar_transform)
+
+        # Cart-AT
+        asr_at = eval_asr(cart_at, test_loader, eps,
+                          lambda m,x,y,e: fgsm_pixel_attack(m,x,y,e), None)
+
         asr_cs_list.append(asr_cs)
-        asr_lp_list.append(asr_lp)
+        asr_lp_blind_list.append(asr_lp_blind)
+        asr_lp_adapt_list.append(asr_lp_adapt)
         asr_at_list.append(asr_at)
-        print(f"  eps={eps:.2f}  Cart-STD={asr_cs:.3f}  LogPolar={asr_lp:.3f}  Cart-AT={asr_at:.3f}")
+        print(f"  eps={eps:.2f}  Cart-STD={asr_cs:.3f}  LP-blind={asr_lp_blind:.3f}"
+              f"  LP-adapt={asr_lp_adapt:.3f}  Cart-AT={asr_at:.3f}")
 
     # ── PGD ASR at eval_eps ───────────────────────────────────────────────────
     print(f"\nPGD-20 ASR at eps={EVAL_EPS}:")
     pgd_cs = eval_asr(cart_std, test_loader, EVAL_EPS,
-                      lambda m,x,y,e,p: pgd_attack(m,x,y,e,PGD_STEP,PGD_STEPS,None), None)
-    pgd_lp = eval_asr(lp_std,   test_loader, EVAL_EPS,
-                      lambda m,x,y,e,p: pgd_attack(m,x,y,e,PGD_STEP,PGD_STEPS,logpolar_transform),
-                      logpolar_transform)
-    pgd_at = eval_asr(cart_at,  test_loader, EVAL_EPS,
-                      lambda m,x,y,e,p: pgd_attack(m,x,y,e,PGD_STEP,PGD_STEPS,None), None)
-    print(f"  Cartesian-STD : {pgd_cs:.3f}")
-    print(f"  LogPolar-STD  : {pgd_lp:.3f}")
-    print(f"  Cartesian-AT  : {pgd_at:.3f}")
+                      lambda m,x,y,e: pgd_pixel_attack(m,x,y,e,PGD_STEP,PGD_STEPS), None)
+    # LP-blind PGD: attack crafted on Cartesian-STD, evaluated on LP model
+    pgd_lp_blind = eval_asr(lp_std, test_loader, EVAL_EPS,
+                             lambda m,x,y,e: pgd_pixel_attack(cart_std,x,y,e,PGD_STEP,PGD_STEPS),
+                             logpolar_transform)
+    pgd_lp_adapt = eval_asr(lp_std, test_loader, EVAL_EPS,
+                             lambda m,x,y,e: pgd_attack(m,x,y,e,PGD_STEP,PGD_STEPS,logpolar_transform),
+                             logpolar_transform)
+    pgd_at = eval_asr(cart_at, test_loader, EVAL_EPS,
+                      lambda m,x,y,e: pgd_pixel_attack(m,x,y,e,PGD_STEP,PGD_STEPS), None)
+    print(f"  Cartesian-STD  : {pgd_cs:.3f}")
+    print(f"  LogPolar-BLIND : {pgd_lp_blind:.3f}  (pixel-space transfer attack)")
+    print(f"  LogPolar-ADAPT : {pgd_lp_adapt:.3f}  (adaptive, knows transform)")
+    print(f"  Cartesian-AT   : {pgd_at:.3f}")
 
     # ── Summary table ─────────────────────────────────────────────────────────
     idx_eval = EPS_LIST.index(EVAL_EPS)
-    print("\n" + "=" * 62)
-    print(f"{'Model':<18} {'CleanAcc':>9} {'FGSM_ASR':>10} {'PGD_ASR':>9}")
-    print("-" * 62)
-    print(f"{'Cartesian-STD':<18} {acc_cs:>9.4f} {asr_cs_list[idx_eval]:>10.4f} {pgd_cs:>9.4f}")
-    print(f"{'LogPolar-STD':<18} {acc_lp:>9.4f} {asr_lp_list[idx_eval]:>10.4f} {pgd_lp:>9.4f}")
-    print(f"{'Cartesian-AT':<18} {acc_at:>9.4f} {asr_at_list[idx_eval]:>10.4f} {pgd_at:>9.4f}")
-    print("=" * 62)
+    print("\n" + "=" * 76)
+    print(f"{'Model':<22} {'CleanAcc':>9} {'FGSM_ASR':>10} {'PGD_ASR':>9}  note")
+    print("-" * 76)
+    print(f"{'Cartesian-STD':<22} {acc_cs:>9.4f} {asr_cs_list[idx_eval]:>10.4f} {pgd_cs:>9.4f}  pixel attack")
+    print(f"{'LogPolar-BLIND':<22} {acc_lp:>9.4f} {asr_lp_blind_list[idx_eval]:>10.4f} {pgd_lp_blind:>9.4f}  pixel attack (no transform knowledge)")
+    print(f"{'LogPolar-ADAPT':<22} {acc_lp:>9.4f} {asr_lp_adapt_list[idx_eval]:>10.4f} {pgd_lp_adapt:>9.4f}  adaptive (knows transform)")
+    print(f"{'Cartesian-AT':<22} {acc_at:>9.4f} {asr_at_list[idx_eval]:>10.4f} {pgd_at:>9.4f}  pixel attack")
+    print("=" * 76)
 
-    passed = asr_lp_list[idx_eval] < asr_cs_list[idx_eval]
+    passed = asr_lp_blind_list[idx_eval] < asr_cs_list[idx_eval]
     verdict = "PASS" if passed else "FAIL"
-    print(f"\n{verdict}: LogPolar FGSM ASR={asr_lp_list[idx_eval]:.4f} "
-          f"{'<' if passed else '>='} Cartesian FGSM ASR={asr_cs_list[idx_eval]:.4f} "
-          f"at eps={EVAL_EPS}")
+    print(f"\n{verdict} (blind attack): LogPolar-BLIND ASR={asr_lp_blind_list[idx_eval]:.4f} "
+          f"{'<' if passed else '>='} Cartesian-STD ASR={asr_cs_list[idx_eval]:.4f} at eps={EVAL_EPS}")
+    print("Key: if BLIND < ADAPT, the transform provides genuine obfuscation benefit.")
 
     # ── Visualise log-polar transform + adversarial examples ─────────────────
     print("\nGenerating figure ...")
@@ -391,11 +456,11 @@ def _run():
     sel_y = torch.stack(selected_y)
 
     sel_x_lp = logpolar_transform(sel_x)
-    sel_x_adv_cs  = fgsm_attack(cart_std, sel_x, sel_y, EVAL_EPS, None)
-    sel_x_adv_lp  = fgsm_attack(lp_std,   sel_x, sel_y, EVAL_EPS, logpolar_transform)
-    # adversarial perturbation magnitudes
-    delta_cs = (sel_x_adv_cs - sel_x).abs()
-    delta_lp = (sel_x_adv_lp - sel_x).abs()
+    # Pixel-space attack on Cartesian model
+    sel_x_adv_cs   = fgsm_pixel_attack(cart_std, sel_x, sel_y, EVAL_EPS)
+    # Blind pixel-space attack (crafted on cart_std) → applied to LP model (via transform)
+    sel_x_adv_blind = fgsm_pixel_attack(cart_std, sel_x, sel_y, EVAL_EPS)
+    sel_x_adv_blind_lp = logpolar_transform(sel_x_adv_blind)   # what LP model sees
 
     CLASS_NAMES = ["T-shirt", "Trouser", "Pullover", "Dress", "Coat", "Sandal"]
 
@@ -413,13 +478,14 @@ def _run():
     n_ex = len(selected_x)
     gs = fig.add_gridspec(4, n_ex + 2, hspace=0.45, wspace=0.35)
 
+    # Rows: original | log-polar | adv pixel | adv pixel after LP transform
     row_labels = [
-        "Original\n(pixel space)",
-        "Log-polar\ntransform",
-        f"FGSM adv\n(Cartesian, ε={EVAL_EPS})",
-        f"FGSM adv\n(LogPolar, ε={EVAL_EPS})",
+        "Original (pixel)",
+        "Log-polar view\n(what LP model sees)",
+        f"FGSM adv pixel\n(ε={EVAL_EPS}, blind attack)",
+        f"Blind adv → LP transform\n(what LP model sees from blind attack)",
     ]
-    tensors = [sel_x, sel_x_lp, sel_x_adv_cs, sel_x_adv_lp]
+    tensors = [sel_x, sel_x_lp, sel_x_adv_blind, sel_x_adv_blind_lp]
 
     for row_i, (label, imgs) in enumerate(zip(row_labels, tensors)):
         for col_i in range(n_ex):
@@ -429,49 +495,51 @@ def _run():
             ax.axis("off")
             if row_i == 0:
                 ax.set_title(CLASS_NAMES[col_i], fontsize=8, fontweight="bold")
-        # Row label on the right
         ax_lbl = fig.add_subplot(gs[row_i, n_ex])
         ax_lbl.axis("off")
-        ax_lbl.text(0.0, 0.5, label, va="center", ha="left", fontsize=8,
+        ax_lbl.text(0.0, 0.5, label, va="center", ha="left", fontsize=7.5,
                     transform=ax_lbl.transAxes)
 
-    # FGSM eps sweep (last column, spanning 2 rows)
+    # FGSM eps sweep — all 4 conditions
     ax_sweep = fig.add_subplot(gs[0:2, n_ex + 1])
-    ax_sweep.plot(EPS_LIST, asr_cs_list, "o-",  color="#c0392b", label="Cartesian-STD", lw=2)
-    ax_sweep.plot(EPS_LIST, asr_lp_list, "s--", color="#2980b9", label="LogPolar-STD",  lw=2)
-    ax_sweep.plot(EPS_LIST, asr_at_list, "^:",  color="#27ae60", label="Cartesian-AT",  lw=2)
+    ax_sweep.plot(EPS_LIST, asr_cs_list,       "o-",  color="#c0392b", label="Cartesian-STD", lw=2)
+    ax_sweep.plot(EPS_LIST, asr_lp_blind_list, "s--", color="#2980b9", label="LP-BLIND (pixel attack)", lw=2)
+    ax_sweep.plot(EPS_LIST, asr_lp_adapt_list, "D:",  color="#8e44ad", label="LP-ADAPT (knows transform)", lw=2)
+    ax_sweep.plot(EPS_LIST, asr_at_list,       "^-.", color="#27ae60", label="Cartesian-AT",  lw=2)
     ax_sweep.axvline(EVAL_EPS, color="gray", ls=":", lw=1)
     ax_sweep.set_xlabel("FGSM ε", fontsize=9)
     ax_sweep.set_ylabel("ASR", fontsize=9)
-    ax_sweep.set_title("FGSM ASR vs ε", fontsize=9, fontweight="bold")
-    ax_sweep.legend(fontsize=7.5)
+    ax_sweep.set_title("FGSM ASR vs ε\nBLIND=pixel attack; ADAPT=through transform", fontsize=8)
+    ax_sweep.legend(fontsize=7)
     ax_sweep.set_ylim(-0.05, 1.05)
     ax_sweep.tick_params(labelsize=7)
 
-    # PGD bar chart (last 2 cols, rows 2-3)
+    # Bar chart at eval_eps
     ax_bar = fig.add_subplot(gs[2:4, n_ex:])
-    model_labels = ["Cartesian\nSTD", "LogPolar\nSTD", "Cartesian\nAT"]
-    fgsm_vals = [asr_cs_list[idx_eval], asr_lp_list[idx_eval], asr_at_list[idx_eval]]
-    pgd_vals  = [pgd_cs, pgd_lp, pgd_at]
-    x_pos = np.arange(3)
+    model_labels = ["Cart\nSTD", "LP\nBLIND", "LP\nADAPT", "Cart\nAT"]
+    fgsm_vals = [asr_cs_list[idx_eval], asr_lp_blind_list[idx_eval],
+                 asr_lp_adapt_list[idx_eval], asr_at_list[idx_eval]]
+    pgd_vals  = [pgd_cs, pgd_lp_blind, pgd_lp_adapt, pgd_at]
+    x_pos = np.arange(4)
     w = 0.35
+    colors4 = ["#e74c3c","#3498db","#8e44ad","#2ecc71"]
     bars1 = ax_bar.bar(x_pos - w/2, fgsm_vals, w, label=f"FGSM ε={EVAL_EPS}",
-                       color=["#e74c3c","#3498db","#2ecc71"], alpha=0.8, edgecolor="k", lw=0.7)
+                       color=colors4, alpha=0.8, edgecolor="k", lw=0.7)
     bars2 = ax_bar.bar(x_pos + w/2, pgd_vals,  w, label=f"PGD-20 ε={EVAL_EPS}",
-                       color=["#c0392b","#2980b9","#27ae60"], alpha=0.55, edgecolor="k", lw=0.7,
-                       hatch="//")
+                       color=colors4, alpha=0.45, edgecolor="k", lw=0.7, hatch="//")
     for bar, v in list(zip(bars1, fgsm_vals)) + list(zip(bars2, pgd_vals)):
         ax_bar.text(bar.get_x() + bar.get_width()/2, v + 0.01,
                     f"{v:.2f}", ha="center", va="bottom", fontsize=7)
     ax_bar.set_xticks(x_pos)
     ax_bar.set_xticklabels(model_labels, fontsize=8)
     ax_bar.set_ylabel("ASR", fontsize=9)
-    ax_bar.set_title(f"FGSM & PGD ASR at ε={EVAL_EPS}\n(clean acc shown below)", fontsize=8.5, fontweight="bold")
+    ax_bar.set_title(f"ASR at ε={EVAL_EPS}\nBLIND vs ADAPT gap = obfuscation benefit", fontsize=8.5)
     ax_bar.legend(fontsize=7.5)
     ax_bar.set_ylim(0, 1.15)
-    ax_bar.text(0,   -0.18, f"acc={acc_cs:.3f}", ha="center", fontsize=7, transform=ax_bar.get_xaxis_transform())
-    ax_bar.text(1,   -0.18, f"acc={acc_lp:.3f}", ha="center", fontsize=7, transform=ax_bar.get_xaxis_transform())
-    ax_bar.text(2,   -0.18, f"acc={acc_at:.3f}", ha="center", fontsize=7, transform=ax_bar.get_xaxis_transform())
+    acc_labels = [acc_cs, acc_lp, acc_lp, acc_at]
+    for i, av in enumerate(acc_labels):
+        ax_bar.text(i, -0.18, f"acc={av:.3f}", ha="center", fontsize=7,
+                    transform=ax_bar.get_xaxis_transform())
     ax_bar.tick_params(labelsize=7)
 
     plt.savefig(FIG_PATH, dpi=150, bbox_inches="tight")

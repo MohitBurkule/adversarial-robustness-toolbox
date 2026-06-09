@@ -1,0 +1,14 @@
+Training standard teacher …
+Training robust (AT) teacher …
+Training student from std teacher …
+Training student from robust teacher …
+
+Model                Test Acc     FGSM ASR    PGD ASR
+------------------------------------------------------
+Std Teacher             0.950        0.242      0.292
+Robust Teacher          0.925        0.292      0.292
+Std Student             0.950        0.267      0.308
+Rob Student             0.958        0.292      0.300
+
+Saved: /run/media/mohit/NewVolume1/adversarial-robustness-toolbox/dissertation_extension/results/fashion_mnist/h522_robust_distillation_2d_viz.png
+DONE

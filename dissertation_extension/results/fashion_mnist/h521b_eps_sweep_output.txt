@@ -1,0 +1,6 @@
+4-class dataset: corners ±0.75, std=0.45, N=300/class
+Nearest-neighbour gap ≈ 0.60
+
+   eps   STD_acc   STD_ASR    AT_acc    AT_ASR   acc_drop
+------------------------------------------------------------
+  0.05     0.911     0.025     0.910     0.023     +0.001
