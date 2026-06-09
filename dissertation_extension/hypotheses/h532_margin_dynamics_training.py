@@ -308,11 +308,78 @@ def train_2d_record(model, Xt, Yt, Xte, Yte, epochs, at=False, eps=FGSM_EPS_2D):
     return rec, snapshots
 
 
+GEO_CHECKPTS_FM = [1, 5, 10, 15, 20, 25, 30]  # compute geo margin at these epochs
+GEO_SUBSET_FM   = 100  # number of test points for binary-search geo margin (speed)
+
+
+def boundary_roughness_fm(model, X_sub, Y_sub):
+    """
+    Boundary roughness = mean cosine distance between gradient directions of
+    neighbouring correctly-classified pairs.  Smooth boundary → gradients point
+    the same way (low roughness).  Jagged boundary → gradients vary wildly
+    (high roughness).  Uses N*(N-1)/2 pairs from the subset, capped at 200.
+    Returns mean (1 - cosine_similarity) over pairs.
+    """
+    model.eval()
+    with torch.no_grad():
+        correct = model(X_sub).argmax(1) == Y_sub
+    Xc, Yc = X_sub[correct], Y_sub[correct]
+    n = min(len(Xc), 30)  # cap at 30 points → at most 435 pairs
+    Xc, Yc = Xc[:n], Yc[:n]
+    grads = []
+    for i in range(n):
+        xi = Xc[i:i+1].clone().detach().requires_grad_(True)
+        F.cross_entropy(model(xi), Yc[i:i+1]).backward()
+        g = xi.grad.detach().view(-1).float()
+        g = g / (g.norm() + 1e-8)
+        grads.append(g)
+    if len(grads) < 2: return 0.0
+    G = torch.stack(grads)  # (n, D)
+    cos_sim = (G @ G.T).clamp(-1, 1)  # (n, n)
+    # upper triangle (i<j)
+    mask = torch.triu(torch.ones(n, n, dtype=torch.bool), diagonal=1)
+    roughness = (1.0 - cos_sim[mask]).mean().item()
+    return roughness
+
+
+def geometric_margin_fm(model, X_sub, Y_sub, eps_search=1.0, steps=20):
+    """Binary-search geometric margin for image-space models.
+    X_sub: (N,1,28,28) on DEVICE. Returns mean distance-to-boundary."""
+    model.eval()
+    margins = []
+    with torch.no_grad():
+        correct = model(X_sub).argmax(1) == Y_sub
+    Xc, Yc = X_sub[correct], Y_sub[correct]
+    if len(Xc) == 0: return 0.0
+    for i in range(len(Xc)):
+        xi = Xc[i:i+1].clone().detach().requires_grad_(True)
+        F.cross_entropy(model(xi), Yc[i:i+1]).backward()
+        direction = xi.grad.sign().detach()
+        lo, hi = 0.0, eps_search
+        for _ in range(steps):
+            mid = (lo + hi) / 2
+            x_mid = (Xc[i:i+1] + mid * direction).clamp(0, 1)
+            with torch.no_grad():
+                pred = model(x_mid).argmax(1)
+            if pred == Yc[i]: lo = mid
+            else:             hi = mid
+        margins.append(hi)
+    return float(np.mean(margins))
+
+
 def train_fm_record(model, tr_loader, te_loader, epochs, at=False, eps=FGSM_EPS_FM):
     opt  = optim.Adam(model.parameters(), lr=LR_FM)
     sched = optim.lr_scheduler.CosineAnnealingLR(opt, epochs)
-    rec  = dict(epoch=[], lm_mean=[], lm_std=[], acc=[], asr=[],
+    rec  = dict(epoch=[], lm_mean=[], lm_std=[], acc=[], asr=[], geo=[], roughness=[],
                 lm_hist_first=None, lm_hist_last=None)
+
+    # Fixed subset for geo margin (same 100 points every epoch)
+    geo_x, geo_y = [], []
+    for x, y in te_loader:
+        geo_x.append(x); geo_y.append(y)
+        if sum(len(b) for b in geo_x) >= GEO_SUBSET_FM: break
+    geo_x = torch.cat(geo_x)[:GEO_SUBSET_FM].to(DEVICE)
+    geo_y = torch.cat(geo_y)[:GEO_SUBSET_FM].to(DEVICE)
 
     # Collect a fixed eval batch for logit margin (same points each epoch)
     eval_x, eval_y = [], []
@@ -339,15 +406,22 @@ def train_fm_record(model, tr_loader, te_loader, epochs, at=False, eps=FGSM_EPS_
         lm  = logit_margin(model, eval_x, eval_y)
         a   = acc_loader(model, te_loader)
         asr = fgsm_asr_loader(model, te_loader, eps)
+        do_geo = ep in GEO_CHECKPTS_FM
+        geo   = geometric_margin_fm(model, geo_x, geo_y) if do_geo else None
+        rough = boundary_roughness_fm(model, geo_x, geo_y) if do_geo else None
         rec["epoch"].append(ep)
         rec["lm_mean"].append(lm.mean().item())
         rec["lm_std"].append(lm.std().item())
         rec["acc"].append(a)
         rec["asr"].append(asr)
+        if geo is not None:
+            rec["geo"].append((ep, geo))
+            rec["roughness"].append((ep, rough))
         if ep == 1:
             rec["lm_hist_first"] = lm.numpy().copy()
+        geo_str = f"  geo_m={geo:.3f}  rough={rough:.3f}" if geo is not None else ""
         print(f"  ep {ep:3d}/{epochs}  acc={a:.3f}  ASR={asr:.3f}  "
-              f"margin_mean={lm.mean():.3f}")
+              f"margin_mean={lm.mean():.3f}{geo_str}")
 
     rec["lm_hist_last"] = lm.numpy().copy()
     return rec
@@ -517,16 +591,20 @@ def _run():
     rec_fm_at = train_fm_record(fm_at, tr_loader, te_loader, EPOCHS_FM, at=True)
 
     print("\n[FMNIST] Final metrics:")
+    geo_std_fm  = rec_fm_std["geo"][-1][1]  if rec_fm_std["geo"]  else float("nan")
+    geo_at_fm   = rec_fm_at["geo"][-1][1]   if rec_fm_at["geo"]   else float("nan")
+    rough_std_fm = rec_fm_std["roughness"][-1][1] if rec_fm_std["roughness"] else float("nan")
+    rough_at_fm  = rec_fm_at["roughness"][-1][1]  if rec_fm_at["roughness"]  else float("nan")
     print(f"  STD: acc={rec_fm_std['acc'][-1]:.4f}  ASR={rec_fm_std['asr'][-1]:.4f}  "
-          f"margin_mean={rec_fm_std['lm_mean'][-1]:.4f}")
+          f"logit_m={rec_fm_std['lm_mean'][-1]:.4f}  geo_m={geo_std_fm:.4f}  rough={rough_std_fm:.4f}")
     print(f"  AT:  acc={rec_fm_at['acc'][-1]:.4f}  ASR={rec_fm_at['asr'][-1]:.4f}  "
-          f"margin_mean={rec_fm_at['lm_mean'][-1]:.4f}")
+          f"logit_m={rec_fm_at['lm_mean'][-1]:.4f}  geo_m={geo_at_fm:.4f}  rough={rough_at_fm:.4f}")
 
     # ── Figure 2 ─────────────────────────────────────────────────────────────
     print("\nGenerating Figure 2 (FMNIST) ...")
-    fig2, axes2 = plt.subplots(1, 4, figsize=(20, 5))
+    fig2, axes2 = plt.subplots(1, 6, figsize=(28, 5))
     fig2.suptitle("H532 – Margin Dynamics on Fashion-MNIST (T-shirt vs Trouser)\n"
-                  "CE training shrinks logit margin; AT training grows it",
+                  "Logit margin, geometric margin, boundary roughness, accuracy, ASR",
                   fontsize=11, fontweight="bold")
 
     ep_fm = rec_fm_std["epoch"]
@@ -563,8 +641,32 @@ def _run():
     ax.set_title(f"FGSM ASR (ε={FGSM_EPS_FM}) over training\nSTD ASR rises; AT ASR falls", fontsize=8.5)
     ax.legend(fontsize=8); ax.tick_params(labelsize=8); ax.set_ylim(-0.02, 1.02)
 
-    # Logit margin histogram: first vs last epoch
+    # Geometric margin (checkpoints)
     ax = axes2[3]
+    geo_ep_std = [g[0] for g in rec_fm_std["geo"]]
+    geo_v_std  = [g[1] for g in rec_fm_std["geo"]]
+    geo_ep_at  = [g[0] for g in rec_fm_at["geo"]]
+    geo_v_at   = [g[1] for g in rec_fm_at["geo"]]
+    ax.plot(geo_ep_std, geo_v_std, "o-", color="steelblue",  lw=2, ms=5, label="STD")
+    ax.plot(geo_ep_at,  geo_v_at,  "s-", color="darkorange", lw=2, ms=5, label="AT")
+    ax.set_xlabel("Epoch", fontsize=9); ax.set_ylabel("Geometric margin (ε to flip)", fontsize=9)
+    ax.set_title("Geometric margin per epoch\n(binary-search, 100-pt subset)", fontsize=8.5)
+    ax.legend(fontsize=8); ax.tick_params(labelsize=8)
+
+    # Boundary roughness
+    ax = axes2[4]
+    rough_ep_std = [r[0] for r in rec_fm_std["roughness"]]
+    rough_v_std  = [r[1] for r in rec_fm_std["roughness"]]
+    rough_ep_at  = [r[0] for r in rec_fm_at["roughness"]]
+    rough_v_at   = [r[1] for r in rec_fm_at["roughness"]]
+    ax.plot(rough_ep_std, rough_v_std, "o-", color="steelblue",  lw=2, ms=5, label="STD")
+    ax.plot(rough_ep_at,  rough_v_at,  "s-", color="darkorange", lw=2, ms=5, label="AT")
+    ax.set_xlabel("Epoch", fontsize=9); ax.set_ylabel("Roughness (1 − mean cosine)", fontsize=9)
+    ax.set_title("Boundary roughness per epoch\n(gradient direction variance)", fontsize=8.5)
+    ax.legend(fontsize=8); ax.tick_params(labelsize=8)
+
+    # Logit margin histogram: first vs last epoch
+    ax = axes2[5]
     bins = np.linspace(-3, 10, 50)
     ax.hist(rec_fm_std["lm_hist_first"], bins=bins, alpha=0.4, color="steelblue",
             label="STD ep=1",  density=True)

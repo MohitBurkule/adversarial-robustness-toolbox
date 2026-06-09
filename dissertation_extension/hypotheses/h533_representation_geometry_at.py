@@ -351,7 +351,7 @@ def _run():
     for col, (name, feats) in enumerate([("STD", feats_std), ("AT", feats_at)]):
         idx = np.random.default_rng(SEED).choice(len(feats), TSNE_N, replace=False)
         emb = TSNE(n_components=2, perplexity=40, random_state=SEED,
-                   n_iter=500).fit_transform(feats[idx])
+                   max_iter=500).fit_transform(feats[idx])
         ax = axes[0, col]
         for c in range(10):
             mask = labs[idx] == c
